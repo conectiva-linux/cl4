@@ -1,0 +1,68 @@
+--- jpeg-6a/makefile.cfg.ewt	Tue Oct 14 00:23:55 1997
++++ jpeg-6a/makefile.cfg	Tue Oct 14 00:23:59 1997
+@@ -21,6 +21,8 @@
+ 
+ # The name of your C compiler:
+ CC= @CC@
++SONAME=libjpeg.so.6
++SHLIBNAME=libjpeg.so.6.0.1
+ 
+ # You may need to adjust these cc options:
+ CFLAGS= @CFLAGS@ @CPPFLAGS@ @INCLUDEFLAGS@
+@@ -108,6 +110,7 @@
+         jdsample.o jdcolor.o jquant1.o jquant2.o jdmerge.o
+ # These objectfiles are included in libjpeg.a
+ LIBOBJECTS= $(CLIBOBJECTS) $(DLIBOBJECTS) $(COMOBJECTS)
++SHLIBOBJECTS= $(LIBOBJECTS:%.o=%.so)
+ # object files for sample applications (excluding library files)
+ COBJECTS= cjpeg.o rdppm.o rdgif.o rdtarga.o rdrle.o rdbmp.o rdswitch.o \
+         cdjpeg.o
+@@ -116,7 +119,7 @@
+ TROBJECTS= jpegtran.o rdswitch.o cdjpeg.o
+ 
+ 
+-all: @ANSI2KNR@ libjpeg.a cjpeg djpeg jpegtran rdjpgcom wrjpgcom
++all: @ANSI2KNR@ libjpeg.a $(SHLIBNAME) cjpeg djpeg jpegtran rdjpgcom wrjpgcom
+ 
+ # This rule causes ansi2knr to be invoked.
+ @ISANSICOM@.c.o:
+@@ -133,14 +136,17 @@
+ 	$(AR) libjpeg.a  $(LIBOBJECTS)
+ 	$(AR2) libjpeg.a
+ 
+-cjpeg: $(COBJECTS) libjpeg.a
+-	$(LN) $(LDFLAGS) -o cjpeg $(COBJECTS) libjpeg.a $(LDLIBS)
++$(SHLIBNAME): @ANSI2KNR@ $(SHLIBOBJECTS)
++	gcc -o $(SHLIBNAME) -Wl,-soname,$(SONAME) -shared $(SHLIBOBJECTS)
+ 
+-djpeg: $(DOBJECTS) libjpeg.a
+-	$(LN) $(LDFLAGS) -o djpeg $(DOBJECTS) libjpeg.a $(LDLIBS)
++cjpeg: $(COBJECTS) $(SHLIBNAME)
++	$(LN) $(LDFLAGS) -o cjpeg $(COBJECTS) $(SHLIBNAME) $(LDLIBS)
+ 
+-jpegtran: $(TROBJECTS) libjpeg.a
+-	$(LN) $(LDFLAGS) -o jpegtran $(TROBJECTS) libjpeg.a $(LDLIBS)
++djpeg: $(DOBJECTS) $(SHLIBNAME)
++	$(LN) $(LDFLAGS) -o djpeg $(DOBJECTS) $(SHLIBNAME) $(LDLIBS)
++
++jpegtran: $(TROBJECTS) $(SHLIBNAME)
++	$(LN) $(LDFLAGS) -o jpegtran $(TROBJECTS) $(SHLIBNAME) $(LDLIBS)
+ 
+ rdjpgcom: rdjpgcom.o
+ 	$(LN) $(LDFLAGS) -o rdjpgcom rdjpgcom.o $(LDLIBS)
+@@ -176,7 +182,7 @@
+ 
+ clean:
+ 	$(RM) *.o cjpeg djpeg jpegtran libjpeg.a rdjpgcom wrjpgcom
+-	$(RM) ansi2knr core testout* config.log config.status
++	$(RM) ansi2knr core testout* config.log config.status $(SHLIBNAME)
+ 
+ distribute:
+ 	$(RM) jpegsrc.tar*
+@@ -272,3 +278,6 @@
+ wrbmp.o: wrbmp.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h cderror.h
+ rdrle.o: rdrle.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h cderror.h
+ wrrle.o: wrrle.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h cderror.h
++
++%.so : %.c
++	$(CC) -c -fPIC $(CFLAGS) $(CPPFLAGS) $< -o $@
