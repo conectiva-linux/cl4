@@ -1,0 +1,12 @@
+diff -ur xmailbox-2.2.orig/MailboxP.h xmailbox-2.2/MailboxP.h
+--- xmailbox-2.2.orig/MailboxP.h	Wed May 17 22:50:03 1995
++++ xmailbox-2.2/MailboxP.h	Wed Aug 16 16:16:47 1995
+@@ -36,7 +36,7 @@
+ 
+ #include "Mailbox.h"
+ #include <X11/Xaw/SimpleP.h>
+-#include <xpm.h>
++#include <X11/xpm.h>
+ 
+ #ifdef SYSV
+ #define MAILBOX_DIRECTORY "/usr/mail"

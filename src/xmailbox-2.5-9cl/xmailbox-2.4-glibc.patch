@@ -1,0 +1,20 @@
+--- xmailbox-2.4/Mailbox.c.ewt	Wed Aug 14 16:28:30 1996
++++ xmailbox-2.4/Mailbox.c	Wed Aug 14 16:28:46 1996
+@@ -280,7 +280,7 @@
+ 
+ 	while (wait3(&status, WNOHANG, 0) >= 0);
+ #ifdef linux
+-	signal(SIGCHLD, (SignalHandler)zombiekiller);
++	signal(SIGCHLD, (void *)zombiekiller);
+ #endif
+ }
+ 
+@@ -294,7 +294,7 @@
+ #ifdef SYSV
+ 	signal(SIGCLD, zombiekiller);
+ #elif defined(linux)
+-	signal(SIGCHLD, (SignalHandler)zombiekiller);
++	signal(SIGCHLD, (void *)zombiekiller);
+ #else
+ 	signal(SIGCHLD, zombiekiller);
+ #endif
