@@ -1,0 +1,12 @@
+# KDE Config File
+[KDE Desktop Entry]
+Name=KLyX
+Name[pt_BR]=KLyX
+Type=Application
+Exec=klyx
+Icon=lyx.xpm
+DocPath=kmail.html
+Comment=KLyX - a word processor for the K Desktop Environment
+Comment[pt_BR]=KLyX - Um processador de textos para o KDE
+Comment[es]=KLyX - Procesador de textos basado en Lyx
+Terminal=0

@@ -1,0 +1,12 @@
+diff -uNr klyx-0.9.9/po/Makefile.in klyx-0.9.9-pt_BR/po/Makefile.in
+--- klyx-0.9.9/po/Makefile.in	Tue Feb  9 14:55:11 1999
++++ klyx-0.9.9-pt_BR/po/Makefile.in	Tue Jun 29 19:54:57 1999
+@@ -152,7 +152,7 @@
+ x_includes = @x_includes@
+ x_libraries = @x_libraries@
+ 
+-GMOFILES = no.gmo sv.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo nl.gmo 	tr.gmo sk.gmo hr.gmo pt.gmo cs.gmo sl.gmo pl.gmo
++GMOFILES = no.gmo sv.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo nl.gmo pt_BR.gmo tr.gmo sk.gmo hr.gmo pt.gmo cs.gmo sl.gmo pl.gmo
+ 
+ POFILES = $(GMOFILES:.gmo=.po) 
+ PACKAGE = klyx

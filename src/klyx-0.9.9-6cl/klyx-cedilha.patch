@@ -1,0 +1,70 @@
+--- lib/kbd/portuges.kmap.orig	Tue Dec  8 17:19:11 1998
++++ lib/kbd/portuges.kmap	Tue Dec  8 17:21:36 1998
+@@ -3,6 +3,8 @@
+ #
+ # blame me, jcardoso@inescn.pt, not lyx
+ #
++# kxmod para cedilhas - cavassin@conectiva.com.br
++#
+ 
+ \kmod ´ acute aeiouAEIOU
+ \kmod ` grave aA
+@@ -10,10 +12,10 @@
+ \kmod ^ circumflex eaoEAO
+ 
+ \kxmod acute i "\\'{\\i}"
++\kxmod acute c "\\c{c}"                # C cedilla
++\kxmod acute C "\\c{C}"                # C cedilla
+ 
+ # \kxmod acute ´ ´
+ # \kxmod grave ` "$\\grave{}$"	# is this really needed?!
+ # \kxmod tilde ~ ~
+ # \kxmod circumflex ^ ^
+-
+-
+--- lib/kbd/american.kmap.orig	Tue Dec  8 17:21:51 1998
++++ lib/kbd/american.kmap	Tue Dec  8 17:26:21 1998
+@@ -1,10 +1,11 @@
++# C cedillhas - cavassin@conectiva.com.br
+ \kmod ' acute all
+ \kmod ` grave all
+ \kmod ~ tilde all
+ \kmod . dot all
+ \kmod _ underbar all
+ \kmod - macron all
+-\kmod "," cedilla all
++#\kmod "," cedilla all
+ \kmod ; underdot all
+ \kmod ^ circumflex all
+ \kmod < tie all
+@@ -13,6 +14,8 @@
+ \kmod / hugarian_umlaut all
+ \kmod : umlaut all
+ \kmod ? circle all
++\kxmod acute c "\\c{c}"      # C cedilla
++\kxmod acute C "\\c{C}"      # C cedilla
+ # \kxmod acute i "\\'{\\i}"
+ # \kxmod grave i "\\`{\\i}"
+ # \kxmod tilde i "\\~{\\i}"
+--- lib/kbd/default.kmap.orig	Tue Dec  8 18:01:50 1998
++++ lib/kbd/default.kmap	Tue Dec  8 18:02:09 1998
+@@ -21,4 +21,6 @@
+ \kxmod acute i "\\'{\\i}"	# use only root of i for i acute
+ \kxmod umlaut i "\\\"{\\i}"	# not really needed
+ \kxmod umlaut j "\\\"{\\j}"	# not really needed
++\kxmod acute c "\\c{c}"      # C cedilla
++\kxmod acute C "\\c{C}"      # C cedilla
+ 
+--- lib/lyxrc.orig	Tue Dec  8 18:13:34 1998
++++ lib/lyxrc	Tue Dec  8 18:15:05 1998
+@@ -125,8 +125,8 @@
+ # keyboard, that is if you need one. You'll need one if you for instance
+ # want to type German documents on an American keyboard. In that case,
+ # uncomment these three lines:
+-#\kbmap true
+-#\kbmap_primary german
++\kbmap true
++#\kbmap_primary portuges
+ #\kbmap_secondary american
+ # The following keyboards are supported: american, czech, francais,
+ # french, german, german-2, magyar, magyar-2, portuges, romanian,

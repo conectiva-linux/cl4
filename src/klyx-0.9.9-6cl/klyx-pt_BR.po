@@ -1,0 +1,3827 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Klyx\n"
+"POT-Creation-Date: 21-04-1999  03:11+0100\n"
+"PO-Revision-Date: 20-06-1999 12:32+4\n"
+"Last-Translator: Sandro Henrique <sandro@conectiva.com.br>\n"
+"Language-Team: pt_BR <ldp-br.conectiva.com.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"First-Translator: Sandro Henrique <sandro@conectiva.com.br>\n"
+
+#: src/AskForTextDialog.C:33
+msgid "Please enter text"
+msgstr "Por favor informe o texto"
+
+#: src/BufferView.C:358
+msgid "Formatting document..."
+msgstr "Formatando documento"
+
+#: src/BufferView.C:425 src/BufferView.C:429
+msgid "No more errors"
+msgstr "Sem erros"
+
+#: src/BulletShapeDialog.C:41
+msgid "Change bullet for depth"
+msgstr "Alterando indicador de profundidade"
+
+#: src/BulletShapeDialog.C:46
+msgid "1"
+msgstr "1"
+
+#: src/BulletShapeDialog.C:51
+msgid "2"
+msgstr "2"
+
+#: src/BulletShapeDialog.C:55
+msgid "3"
+msgstr "3"
+
+#: src/BulletShapeDialog.C:59
+msgid "4"
+msgstr "4"
+
+#: src/BulletShapeDialog.C:64
+msgid "Group"
+msgstr "Grupo"
+
+#: src/BulletShapeDialog.C:112
+msgid "Size:"
+msgstr "Tamanho:"
+
+#: src/BulletShapeDialog.C:132
+msgid "LaTeX:"
+msgstr "LaTeX:"
+
+#: src/BulletShapeDialog.C:155
+msgid "Bullet Shapes"
+msgstr "Formato de Indicadores"
+
+#: src/CharacterStyleDialog.C:193 src/LyXView.C:435
+msgid "Family"
+msgstr "Família"
+
+#: src/CharacterStyleDialog.C:199 src/CharacterStyleDialog.C:218
+#: src/CharacterStyleDialog.C:235 src/CharacterStyleDialog.C:256
+#: src/CharacterStyleDialog.C:293 src/CharacterStyleDialog.C:314
+#: src/ParagraphDialog.C:157 src/ParagraphDialog.C:162
+msgid "Keep"
+msgstr "Manter"
+
+#: src/CharacterStyleDialog.C:203
+msgid "SansSerif"
+msgstr "SansSerif"
+
+#: src/CharacterStyleDialog.C:205
+msgid "Typewriter"
+msgstr "Typewriter"
+
+#: src/CharacterStyleDialog.C:207 src/CharacterStyleDialog.C:224
+#: src/CharacterStyleDialog.C:245 src/CharacterStyleDialog.C:282
+#: src/CharacterStyleDialog.C:303 src/CharacterStyleDialog.C:334
+msgid "Reset"
+msgstr "Reinicializar"
+
+#: src/CharacterStyleDialog.C:212 src/LyXView.C:461
+msgid "Series"
+msgstr "Séries"
+
+#: src/CharacterStyleDialog.C:220
+msgid "Medium"
+msgstr "Médio"
+
+#: src/CharacterStyleDialog.C:222
+msgid "Bold"
+msgstr "Negrito"
+
+#: src/CharacterStyleDialog.C:229 src/LyXView.C:486
+msgid "Shape"
+msgstr "Forma"
+
+#: src/CharacterStyleDialog.C:237
+msgid "Upright"
+msgstr "Acima à direita"
+
+#: src/CharacterStyleDialog.C:241
+msgid "Slanted"
+msgstr "Inclinado"
+
+#: src/CharacterStyleDialog.C:243
+msgid "Small Caps"
+msgstr "Minúsculas"
+
+#: src/CharacterStyleDialog.C:250 src/LyXView.C:514
+msgid "Size"
+msgstr "Tamanho"
+
+#: src/CharacterStyleDialog.C:258
+msgid "Tiny"
+msgstr "Minúsculo"
+
+#: src/CharacterStyleDialog.C:260
+msgid "Smallest"
+msgstr "Mínimo"
+
+#: src/CharacterStyleDialog.C:262
+msgid "Smaller"
+msgstr "Menor"
+
+#: src/CharacterStyleDialog.C:264
+msgid "Small"
+msgstr "Pequeno"
+
+#: src/CharacterStyleDialog.C:266 src/LyXView.C:401
+msgid "Normal"
+msgstr "Normal"
+
+#: src/CharacterStyleDialog.C:268
+msgid "Large"
+msgstr "Grande"
+
+#: src/CharacterStyleDialog.C:270
+msgid "Larger"
+msgstr "Maior"
+
+#: src/CharacterStyleDialog.C:272
+msgid "Largest"
+msgstr "Muito Grande"
+
+#: src/CharacterStyleDialog.C:274
+msgid "Huge"
+msgstr "Imensa"
+
+#: src/CharacterStyleDialog.C:276
+msgid "Huger"
+msgstr "Exagerada"
+
+#: src/CharacterStyleDialog.C:278
+msgid "Increase"
+msgstr "Aumentar"
+
+#: src/CharacterStyleDialog.C:280
+msgid "Decrease"
+msgstr "Diminuir"
+
+#: src/CharacterStyleDialog.C:287 src/LyXView.C:555
+msgid "Misc"
+msgstr "Diversos"
+
+#: src/CharacterStyleDialog.C:295
+msgid "Emph"
+msgstr "Enfatizar"
+
+#: src/CharacterStyleDialog.C:297
+msgid "Underbar"
+msgstr "Sob a barra"
+
+#: src/CharacterStyleDialog.C:299
+msgid "Noun"
+msgstr "Não"
+
+#: src/CharacterStyleDialog.C:301 src/ExportCustomDialog.C:46
+msgid "LaTeX"
+msgstr "LaTeX"
+
+#: src/CharacterStyleDialog.C:308 src/LyXView.C:585
+msgid "Color"
+msgstr "Cor"
+
+#: src/CharacterStyleDialog.C:316
+msgid "None"
+msgstr "Nenhuma"
+
+#: src/CharacterStyleDialog.C:318
+msgid "Black"
+msgstr "Preto"
+
+#: src/CharacterStyleDialog.C:320
+msgid "White"
+msgstr "Branco"
+
+#: src/CharacterStyleDialog.C:322
+msgid "Red"
+msgstr "Vermelho"
+
+#: src/CharacterStyleDialog.C:324
+msgid "Green"
+msgstr "Verde"
+
+#: src/CharacterStyleDialog.C:326
+msgid "Blue"
+msgstr "Azul"
+
+#: src/CharacterStyleDialog.C:328
+msgid "Cyan"
+msgstr "Ciano"
+
+#: src/CharacterStyleDialog.C:330
+msgid "Magenta"
+msgstr "Magenta"
+
+#: src/CharacterStyleDialog.C:332
+msgid "Yellow"
+msgstr "Amarelo"
+
+#: src/CharacterStyleDialog.C:357
+msgid "Character Style"
+msgstr "Estilo de Caracter"
+
+#: src/Chktex.C:90
+msgid "ChkTeX warning id #"
+msgstr "ChkTeX aviso nro. #"
+
+#: src/CreditsDialog.C:27
+msgid "All these people have contributed to the KLyX project. Thanks,"
+msgstr "Todas estas pessoas contribuíram para o projeto KlyX. Obrigado,"
+
+#: src/CreditsDialog.C:31
+msgid "Matthias"
+msgstr "Matthias"
+
+#: src/CreditsDialog.C:47
+msgid "Credits"
+msgstr "Créditos"
+
+#: src/CreditsDialog.C:84
+msgid ""
+"ERROR: KLyX wasn't able to read CREDITS file\n"
+"\n"
+"Please install correctly to estimate the great\n"
+"amount of work other people have done for the KLyX project."
+msgstr ""
+"ERRO: KLyX não pode abrir o arquivo CREDITS \n"
+"\n"
+"Por favor, instale-o corretamente para verificar\n"
+"todo o trabalho realizado por uma série de pessoas no desenvolvimento\n"
+"do projeto Klyx."
+
+
+#: src/DocumentLayoutDialog.C:57
+msgid "Class:"
+msgstr "Classe:"
+
+#: src/DocumentLayoutDialog.C:71
+msgid "Pagestyle:"
+msgstr "Estilo de Páginas:"
+
+#: src/DocumentLayoutDialog.C:88
+msgid "Fonts:"
+msgstr "Fonte:"
+
+#: src/DocumentLayoutDialog.C:108
+msgid "Font Size:"
+msgstr "Tamanho de Fonte:"
+
+#: src/DocumentLayoutDialog.C:126
+msgid "Language:"
+msgstr "Linguagem:"
+
+#: src/DocumentLayoutDialog.C:177
+msgid "PS Driver:"
+msgstr "Programa PS:"
+
+#: src/DocumentLayoutDialog.C:199
+msgid "Encoding:"
+msgstr "Codificação:"
+
+#: src/DocumentLayoutDialog.C:216
+msgid "Default Skip:"
+msgstr "Ignorar Padrão:"
+
+#: src/DocumentLayoutDialog.C:243
+msgid "Spacing:"
+msgstr "Espaçamento:"
+
+#: src/DocumentLayoutDialog.C:274
+msgid "Sides"
+msgstr "Lados"
+
+#: src/DocumentLayoutDialog.C:278 src/DocumentLayoutDialog.C:294
+msgid "One"
+msgstr "Um"
+
+#: src/DocumentLayoutDialog.C:284 src/DocumentLayoutDialog.C:300
+msgid "Two"
+msgstr "Dois"
+
+#: src/DocumentLayoutDialog.C:290 src/MathMatrixDialog.C:41
+msgid "Columns"
+msgstr "Colunas"
+
+#: src/DocumentLayoutDialog.C:307
+msgid "Separation"
+msgstr "Separação"
+
+#: src/DocumentLayoutDialog.C:311
+msgid "&Indent"
+msgstr "&Indentação"
+
+#: src/DocumentLayoutDialog.C:317
+msgid "S&kip"
+msgstr "I&gnorar"
+
+#: src/DocumentLayoutDialog.C:326
+msgid "&Bullet Shapes"
+msgstr "&Formato dos Identificadores"
+
+#: src/DocumentLayoutDialog.C:334
+msgid "Use A&MS Math"
+msgstr "Use Mat A&MS"
+
+#: src/DocumentLayoutDialog.C:343
+msgid "Float placement"
+msgstr "Local do Objeto Flutuante"
+
+#: src/DocumentLayoutDialog.C:355
+msgid "Extra options"
+msgstr "Opções Extras"
+
+#: src/DocumentLayoutDialog.C:371
+msgid "Section number depth"
+msgstr "Profundidade do número de seção"
+
+#: src/DocumentLayoutDialog.C:390
+msgid "Table of contents depth"
+msgstr "Profundidade da tabela de conteúdo"
+
+#: src/DocumentLayoutDialog.C:437
+msgid "Document layout"
+msgstr "Layout do documento"
+
+#: src/DocumentLayoutDialog.C:459
+msgid "Should I set some parameters to"
+msgstr "Devo configurar alguns parâmetros para"
+
+#: src/DocumentLayoutDialog.C:461
+msgid "the defaults of this document class?"
+msgstr "os parâmetros desta classe de documentos?"
+
+#: src/EditFigureDialog.C:76
+msgid "EPS Fi&gure:"
+msgstr "Fi&gura  EPS"
+
+#: src/EditFigureDialog.C:87
+msgid "&Browse..."
+msgstr "&Mostrar"
+
+#: src/EditFigureDialog.C:94 src/ParagraphExtraDialog.C:56
+msgid "Width"
+msgstr "Largura"
+
+#: src/EditFigureDialog.C:100
+msgid "Defa&ult"
+msgstr "Pa&drão"
+
+#: src/EditFigureDialog.C:105
+msgid "&cm"
+msgstr "&cm"
+
+#: src/EditFigureDialog.C:110
+msgid "inc&hes"
+msgstr "pole&gadas"
+
+#: src/EditFigureDialog.C:115
+#, c-format
+msgid "% of &Page"
+msgstr "% da &Página"
+
+#: src/EditFigureDialog.C:120
+msgid "% &of Column"
+msgstr "% da &Coluna"
+
+#: src/EditFigureDialog.C:135
+msgid "Height"
+msgstr "Altura"
+
+#: src/EditFigureDialog.C:141
+msgid "Defaul&t"
+msgstr "Pad&rão"
+
+#: src/EditFigureDialog.C:146
+msgid "c&m"
+msgstr "c&m"
+
+#: src/EditFigureDialog.C:151
+msgid "inche&s"
+msgstr "pole&gadas"
+
+#: src/EditFigureDialog.C:156
+#, c-format
+msgid "% of Pag&e"
+msgstr "% da Pá&gina"
+
+#: src/EditFigureDialog.C:171
+msgid "Rotation"
+msgstr "Rotação"
+
+#: src/EditFigureDialog.C:180
+msgid "Ang&le"
+msgstr "Ân&gulo"
+
+#: src/EditFigureDialog.C:191
+msgid "Display"
+msgstr "Mostrar"
+
+#: src/EditFigureDialog.C:197
+msgid "Di&splay as monochrome"
+msgstr "Mos&trar monocromático "
+
+#: src/EditFigureDialog.C:203
+msgid "D&isplay as grayscale"
+msgstr "M&ostrar em escala de cinza"
+
+#: src/EditFigureDialog.C:208
+msgid "&Display in color"
+msgstr "Mos&trar em cores"
+
+#: src/EditFigureDialog.C:213
+msgid "Do not displa&y this figure"
+msgstr "&Não mostrar a figura"
+
+#: src/EditFigureDialog.C:226
+msgid "Display &Frame"
+msgstr "Mostrar &Subjanela"
+
+#: src/EditFigureDialog.C:231
+msgid "Do T&ranslations"
+msgstr "Executar T&raduções"
+
+#: src/EditFigureDialog.C:241
+msgid "Subfigure"
+msgstr "Subfigura"
+
+#: src/EditFigureDialog.C:250
+msgid "Cap&tion"
+msgstr "Tí&tulo"
+
+#: src/EditFigureDialog.C:273 src/ParagraphDialog.C:245
+msgid "&Apply"
+msgstr "&Aplicar"
+
+#: src/EditFigureDialog.C:287
+msgid "Full Screen Pre&view"
+msgstr "Pré Visualização em &Tela Cheia"
+
+#: src/EditFigureDialog.C:297
+msgid "Edit Figure"
+msgstr "Editar Figura"
+
+#: src/EditFigureDialog.C:368
+msgid "Error during rendering "
+msgstr "Erro durante a renderização"
+
+#: src/EditFigureDialog.C:407
+msgid ""
+"*.eps *.ps|All Postscript Files\n"
+"*.eps|Inlined Postscript (*.eps)\n"
+"*.ps|Postscript (*.ps)"
+msgstr ""
+"*.eps *.ps|Todos Arquivos Postscript\n"
+"*.eps|Postscript Anexado (*.eps)\n"
+"*.ps|Postscript (*.ps)"
+
+#: src/EditFigureDialog.C:410
+msgid "EPS Figure"
+msgstr "Figura EPS"
+
+#: src/EditFigureDialog.C:421
+#, c-format
+msgid ""
+"Filename can't contain any of these characters:\n"
+"space, '#', '~', '$' or '%'."
+msgstr ""
+"Nome de arquivo não pode conter nenhum destes caracteres:\n"
+"espaço, '#', '~', '$' or '%'."
+
+#: src/ExportCustomDialog.C:37
+msgid "Filetype"
+msgstr "Tipo de Arquivo"
+
+#: src/ExportCustomDialog.C:41
+msgid "LyX"
+msgstr "LyX"
+
+#: src/ExportCustomDialog.C:50
+msgid "DVI"
+msgstr "DVI"
+
+#: src/ExportCustomDialog.C:54
+msgid "PostScript"
+msgstr "PostScript"
+
+#: src/ExportCustomDialog.C:58
+msgid "ASCII"
+msgstr "ASCII"
+
+#: src/ExportCustomDialog.C:62
+msgid "Command:"
+msgstr "Comando:"
+
+#: src/ExportCustomDialog.C:80
+msgid "Export custom type"
+msgstr "Exportar tipo customizado"
+
+#: src/FindReplaceDialog.C:35
+msgid "&Find"
+msgstr "&Localizar"
+
+#: src/FindReplaceDialog.C:48
+msgid "Replace &with"
+msgstr "Substituir &por"
+
+#: src/FindReplaceDialog.C:81
+msgid "&Replace"
+msgstr "&Substituir"
+
+#: src/FindReplaceDialog.C:89
+msgid "Replace &All"
+msgstr "Substituir &Tudo"
+
+#: src/FindReplaceDialog.C:103
+msgid "Ca&se sensitive"
+msgstr "Sensível a &Maius./Minusc."
+
+#: src/FindReplaceDialog.C:111
+msgid "&Match word"
+msgstr "&Coincidir a palavra"
+
+#: src/FindReplaceDialog.C:132
+msgid "Find and Replace"
+msgstr "Localizar e Substituir"
+
+#: src/FontLoader.C:257
+msgid "Loading font into X-Server..."
+msgstr "Carregando fonte no servidor X"
+
+#: src/InsertBibitemDialog.C:25
+msgid "BibTeX"
+msgstr "BibTeX"
+
+#: src/InsertBibitemDialog.C:28 src/insetbib.C:124
+msgid "Key:"
+msgstr "Chave:"
+
+#: src/InsertBibitemDialog.C:37 src/insetbib.C:125
+msgid "Label:"
+msgstr "Etiqueta:"
+
+#: src/InsertCitationReferenceDialog.C:28
+msgid "Insert Citation"
+msgstr "Inserir Citação:"
+
+#: src/InsertCitationReferenceDialog.C:31
+msgid "&Key:"
+msgstr "&Chave"
+
+#: src/InsertCitationReferenceDialog.C:41
+msgid "&Remark:"
+msgstr "&Observação"
+
+#: src/InsertCrossReferenceDialog.C:40
+msgid "Insert &Page Number"
+msgstr "Inserir Número de &Página"
+
+#: src/InsertCrossReferenceDialog.C:48
+msgid "&Insert Reference"
+msgstr "&Inserir Referência"
+
+#: src/InsertCrossReferenceDialog.C:57
+msgid "&Go to Reference"
+msgstr "&Ir para a Referência"
+
+#: src/InsertCrossReferenceDialog.C:90
+msgid "Insert Cross Reference"
+msgstr "Inserir Referência Cruzada"
+
+#: src/InsertCrossReferenceDialog.C:214
+msgid "*** No labels found in document ***"
+msgstr "*** Nenhuma etiqueta encontrada no documento ***"
+
+#: src/InsertErrorDialog.C:29
+msgid "LaTeX Error"
+msgstr "Erro LaTeX"
+
+#: src/InsertFigureDialog.C:25
+msgid "Type"
+msgstr "Tipo"
+
+#: src/InsertFigureDialog.C:31
+msgid "&Encapsulated Postscript (*.eps, *.ps)"
+msgstr "Postscript &Encapsulado (*.eps, *.ps)"
+
+#: src/InsertFigureDialog.C:37
+msgid "&Inlined EPS (*.eps, *.ps)"
+msgstr "EPS &Inserido (*.eps, *.ps)"
+
+#: src/InsertFigureDialog.C:67 src/LyXView.C:207
+msgid "Insert figure"
+msgstr "Inserir figura"
+
+#: src/InsertIncludeDialog.C:57
+msgid "Filename: "
+msgstr "Nome do arquivo"
+
+#: src/InsertIncludeDialog.C:71
+msgid "&Browse"
+msgstr "&Mostrar"
+
+#: src/InsertIncludeDialog.C:83
+msgid "&Use include"
+msgstr "&Utilizar inclusão"
+
+#: src/InsertIncludeDialog.C:89
+msgid "Use &input"
+msgstr "Utilizar &entrada"
+
+#: src/InsertIncludeDialog.C:94
+msgid "&Verbatim"
+msgstr "&Textual"
+
+#: src/InsertIncludeDialog.C:104
+msgid "&Don't typeset"
+msgstr "&Não usar conjunto de caracteres"
+
+#: src/InsertIncludeDialog.C:110
+msgid "Vi&sible space"
+msgstr "Espaço V&isível"
+
+#: src/InsertIncludeDialog.C:117
+msgid "&Load"
+msgstr "&Carregar"
+
+#: src/InsertIncludeDialog.C:146
+msgid "Insert Include File"
+msgstr "Inserir Arquivo de Inclusões"
+
+#: src/InsertIncludeDialog.C:183
+msgid "*.tex|TeX Documents (*.tex)"
+msgstr "*.tex|Documentos TeX (*.tex)"
+
+#: src/InsertIncludeDialog.C:185 src/lyx_cb.C:964
+msgid "*|All Files"
+msgstr "*|Todos os Arquivos"
+
+#: src/InsertIncludeDialog.C:187 src/lyxfunc.C:2341 src/lyxfunc.C:2364
+#: src/lyxfunc.C:2414
+msgid "*.lyx|LyX Documents (*.lyx)"
+msgstr "*.lyx|Documentos LyX  (*.lyx)"
+
+#: src/InsertIncludeDialog.C:192
+msgid "Select Child Document"
+msgstr "Selecionar Documento Filho"
+
+#: src/InsertIndexEntryDialog.C:27
+msgid "Enter index entry:"
+msgstr "Informe a entrada no índice"
+
+#: src/InsertIndexEntryDialog.C:49
+msgid "Insert Index Entry"
+msgstr "Inserir Entrada no Índice"
+
+#: src/InsertInfoDialog.C:28 src/insetinfo.C:66 src/insetinfo.C:85
+msgid "Note"
+msgstr "Nota"
+
+#: src/InsertLabelDialog.C:20 src/LyXAction.C:659
+msgid "Insert Label"
+msgstr "Inserir Etiqueta"
+
+#: src/InsertLabelDialog.C:23
+msgid "Enter new label to insert:"
+msgstr "Informe a nova etiqueta a ser inserida:"
+
+#: src/InsertTableDialog.C:34
+msgid "Rows:"
+msgstr "Linhas:"
+
+#: src/InsertTableDialog.C:55
+msgid "Columns:"
+msgstr "Colunas:"
+
+#: src/InsertTableDialog.C:99 src/LyXView.C:203
+msgid "Insert table"
+msgstr "Inserir Tabela"
+
+#: src/KLyXMenu.C:151
+msgid "&Layout"
+msgstr "&Layout"
+
+#: src/KLyXMenu.C:194
+msgid "&Documents"
+msgstr "&Documentos"
+
+#: src/KLyXMenu.C:240
+msgid "&Credits"
+msgstr "&Créditos"
+
+#: src/KLyXMenu.C:242
+msgid "&Introduction"
+msgstr "&Introdução"
+
+#: src/KLyXMenu.C:243
+msgid "&Tutorial"
+msgstr "&Tutorial"
+
+#: src/KLyXMenu.C:244
+msgid "&How Do I"
+msgstr "&Como eu faço"
+
+#: src/KLyXMenu.C:245
+msgid "&User's Guide"
+msgstr "&Guia do Usuário"
+
+#: src/KLyXMenu.C:246
+msgid "&Advanced Editing"
+msgstr "Edição Avan&çada"
+
+#: src/KLyXMenu.C:247
+msgid "Cu&stomization"
+msgstr "Cu&stomização"
+
+#: src/KLyXMenu.C:248
+msgid "&Reference Manual"
+msgstr "Manual de &Referência"
+
+#: src/KLyXMenu.C:249
+msgid "&Known Bugs"
+msgstr "&Problemas Conhecidos"
+
+#: src/KLyXMenu.C:250
+msgid "&LaTeX Configuration"
+msgstr "Configuação do &LaTeX"
+
+#: src/KLyXMenu.C:532
+msgid "&Multicolumn"
+msgstr "&Multicolunas"
+
+#: src/KLyXMenu.C:541
+msgid "Line &Top"
+msgstr "Linha de &Topo"
+
+#: src/KLyXMenu.C:548
+msgid "Line &Bottom"
+msgstr "Linha de &Base"
+
+#: src/KLyXMenu.C:555
+msgid "Line &Left"
+msgstr "Linha &Esquerda"
+
+#: src/KLyXMenu.C:562
+msgid "Line &Right"
+msgstr "Linha &Direita"
+
+#: src/KLyXMenu.C:574
+msgid "Align L&eft"
+msgstr "Alinhar À &Esquerda"
+
+#: src/KLyXMenu.C:578
+msgid "Align R&ight"
+msgstr "Alinhar À &Direita "
+
+#: src/KLyXMenu.C:582
+msgid "Align &Center"
+msgstr "Alinhar ao &Centro"
+
+#: src/KLyXMenu.C:588
+msgid "Append R&ow"
+msgstr "Adicionar &Linha"
+
+#: src/KLyXMenu.C:590
+msgid "Append Col&umn"
+msgstr "Adicionar &Coluna"
+
+#: src/KLyXMenu.C:593
+msgid "Delete Ro&w"
+msgstr "Remover &Linha"
+
+#: src/KLyXMenu.C:595
+msgid "Delete Colum&n"
+msgstr "Remover &Coluna"
+
+#: src/KLyXMenu.C:598
+msgid "&Delete Table"
+msgstr "Remover &Tabela"
+
+#: src/KLyXMenu.C:602
+msgid "&Insert table"
+msgstr "&Inserir Tabela"
+
+#: src/KLyXMenu.C:621
+msgid "C&opy"
+msgstr "&Copiar"
+
+#: src/KLyXMenu.C:628
+msgid "&Find & Replace..."
+msgstr "&Encontrar &Substituir"
+
+#: src/KLyXMenu.C:629
+msgid "&Go to Error"
+msgstr "&Ir para Erro"
+
+#: src/KLyXMenu.C:630
+msgid "&Go to Note"
+msgstr "&Ir para Nota"
+
+#: src/KLyXMenu.C:644
+msgid "&New..."
+msgstr "&Novo..."
+
+#: src/KLyXMenu.C:645
+msgid "New from &template..."
+msgstr "Novo a Partir de &Modelo..."
+
+#: src/KLyXMenu.C:654
+msgid "Save &as..."
+msgstr "Salvar &como..."
+
+#: src/KLyXMenu.C:655
+msgid "&Revert to saved"
+msgstr "&Reverter para o documento salvo"
+
+#: src/KLyXMenu.C:657
+msgid "Pre&view"
+msgstr "Pré &Visualização"
+
+#: src/KLyXMenu.C:659
+msgid "&Fax..."
+msgstr "&Fax..."
+
+#: src/KLyXMenu.C:662
+msgid "View &DVI"
+msgstr "Ver &DVI"
+
+#: src/KLyXMenu.C:663
+msgid "View &PostScript"
+msgstr "Ver &PostScript"
+
+#: src/KLyXMenu.C:664
+msgid "&Update DVI"
+msgstr "&Atualizar DVI"
+
+#: src/KLyXMenu.C:665
+msgid "Update P&ostscript"
+msgstr "Atualiza P&ostscript"
+
+#: src/KLyXMenu.C:694
+msgid "as &LaTeX..."
+msgstr "como &LaTeX..."
+
+#: src/KLyXMenu.C:695 src/KLyXMenu.C:701
+msgid "as &DVI..."
+msgstr "como &DVI..."
+
+#: src/KLyXMenu.C:696 src/KLyXMenu.C:702
+msgid "as &PostScript..."
+msgstr "como &PostScript..."
+
+#: src/KLyXMenu.C:697 src/KLyXMenu.C:703
+msgid "as Ascii &Text..."
+msgstr "como &Texto ASCII..."
+
+#: src/KLyXMenu.C:698
+msgid "Custo&m..."
+msgstr "Custo&mizar..."
+
+#: src/KLyXMenu.C:700
+msgid "as &LinuxDoc..."
+msgstr "como &LinuxDoc..."
+
+#: src/KLyXMenu.C:706
+msgid "&Export"
+msgstr "&Exportar"
+
+#: src/KLyXMenu.C:713
+msgid "&Delete Window"
+msgstr "&Remover Janela"
+
+#: src/KLyXMenu.C:714
+msgid "&Split horizontal"
+msgstr "&Divisão horizontal"
+
+#: src/KLyXMenu.C:715
+msgid "Split &vertical"
+msgstr "Divisão &vertical "
+
+#: src/KLyXMenu.C:721
+msgid "&Un-Split"
+msgstr "&Juntar"
+
+#: src/KLyXMenu.C:725
+msgid "&Window"
+msgstr "&Janela"
+
+#: src/KLyXMenu.C:753
+msgid "&Open/Close"
+msgstr "&Abrir/Fechar"
+
+#: src/KLyXMenu.C:754
+msgid "&Melt"
+msgstr "&Dissolver"
+
+#: src/KLyXMenu.C:755
+msgid "Open &All Footnotes/Margin Notes"
+msgstr "Abrir &Todas as Notas de Rodapé/Margem"
+
+#: src/KLyXMenu.C:756
+msgid "&Close All Footnotes/Margin Notes"
+msgstr "Fechar &Todas as Notas de Rodapé/Margem"
+
+#: src/KLyXMenu.C:757
+msgid "O&pen All Figures/Tables"
+msgstr "A&brir Todas as Figuras/Tabelas"
+
+#: src/KLyXMenu.C:758
+msgid "C&lose All Figures/Tables"
+msgstr "Fechar Todas as Figuras/Tabelas"
+
+#: src/KLyXMenu.C:760
+msgid "&Remove All Error Boxes"
+msgstr "&Remover Todas as Caixas de Erro"
+
+#: src/KLyXMenu.C:761
+msgid "Flo&ats and Insets"
+msgstr "Flu&tuantes e Inserções"
+
+#: src/KLyXMenu.C:766
+msgid "Ta&ble"
+msgstr "Ta&bela"
+
+#: src/KLyXMenu.C:769
+msgid "&Spellchecker..."
+msgstr "&Verificação ortográfica..."
+
+#: src/KLyXMenu.C:770
+msgid "C&heck TeX"
+msgstr "V&erificar TeX "
+
+#: src/KLyXMenu.C:771
+msgid "&Document Structure..."
+msgstr "&Estrutura de Documento..."
+
+#: src/KLyXMenu.C:777 src/KLyXMenu.C:792
+msgid "&Register"
+msgstr "&Registrar"
+
+#: src/KLyXMenu.C:778
+msgid "Check&In Changes"
+msgstr "Verificar &Mudanças"
+
+#: src/KLyXMenu.C:779
+msgid "Check &Out for Edit"
+msgstr "Checar para &Edição"
+
+#: src/KLyXMenu.C:787
+msgid "Revert to &last version"
+msgstr "Reverter para a &última versão"
+
+#: src/KLyXMenu.C:788
+msgid "&Undo last check in"
+msgstr "&Desfazer última verificação"
+
+#: src/KLyXMenu.C:789
+msgid "Show &History"
+msgstr "Mostrar &Histórico"
+
+#: src/KLyXMenu.C:793
+msgid "&Version Control"
+msgstr "&Controle de Versão"
+
+#: src/KLyXMenu.C:797
+msgid "Vie&w LaTeX log file"
+msgstr "Ver arquivo de histórico LaTeX "
+
+#: src/KLyXMenu.C:799
+msgid "Paste Primary Selection as Lines"
+msgstr "Colar Seleção Primária como Linhas"
+
+#: src/KLyXMenu.C:801
+msgid "Paste Primary Selection as Paragraph"
+msgstr "Colar Seleção Primária como Parágrafo"
+
+#: src/KLyXMenu.C:833
+msgid "&Character..."
+msgstr "&Caracter..."
+
+#: src/KLyXMenu.C:834
+msgid "&Paragraph..."
+msgstr "&Parágrafo..."
+
+#: src/KLyXMenu.C:835
+msgid "&Document..."
+msgstr "&Documento..."
+
+#: src/KLyXMenu.C:836
+msgid "P&aper..."
+msgstr "P&apel..."
+
+#: src/KLyXMenu.C:837
+msgid "&Quotes..."
+msgstr "&Citação..."
+
+#: src/KLyXMenu.C:840
+msgid "E&mphasize Style"
+msgstr "Estilo &Enfático"
+
+#: src/KLyXMenu.C:841
+msgid "&Noun Style"
+msgstr "Sem &Estilo"
+
+#: src/KLyXMenu.C:842
+msgid "&Bold Style"
+msgstr "&Negrito"
+
+#: src/KLyXMenu.C:843
+msgid "&TeX Style"
+msgstr "Estilo &TeX"
+
+#: src/KLyXMenu.C:845
+msgid "Start of Appendi&x"
+msgstr "Início de Apêndi&ce"
+
+#: src/KLyXMenu.C:846
+msgid "Change En&vironment Depth"
+msgstr "Mudar Profundidade de &Ambiente"
+
+#: src/KLyXMenu.C:847
+msgid "&LaTeX Preamble..."
+msgstr "Preâmbulo &LaTeX..."
+
+#: src/KLyXMenu.C:848
+msgid "&Save layout as default"
+msgstr "&Salvar Layout como Padrão"
+
+#: src/KLyXMenu.C:882
+msgid "Fi&gure..."
+msgstr "Fi&gura..."
+
+#: src/KLyXMenu.C:883
+msgid "Ta&ble..."
+msgstr "Ta&bela..."
+
+#: src/KLyXMenu.C:885
+msgid "In&clude File..."
+msgstr "Incluir &Arquivo..."
+
+#: src/KLyXMenu.C:890
+msgid "As &Lines"
+msgstr "Como &Linhas"
+
+#: src/KLyXMenu.C:892
+msgid "As &Paragraphs"
+msgstr "Como &Parágrafos"
+
+#: src/KLyXMenu.C:894
+msgid "Insert &ASCII File"
+msgstr "Inserir Arquivo &ASCII"
+
+#: src/KLyXMenu.C:898
+msgid "Insert Ly&X File..."
+msgstr "Inserir Arquivo &Lyx..."
+
+#: src/KLyXMenu.C:901
+msgid "&Footnote"
+msgstr "&Nota de Rodapé"
+
+#: src/KLyXMenu.C:902
+msgid "&Margin Note"
+msgstr "Nota de &Margem"
+
+#: src/KLyXMenu.C:907
+msgid "&Figure Float"
+msgstr "&Figura Flutuante"
+
+#: src/KLyXMenu.C:909
+msgid "&Table Float"
+msgstr "&Tabela Flutuante"
+
+#: src/KLyXMenu.C:911
+msgid "&Wide Figure Float"
+msgstr "&Figura Grande Flutuante"
+
+#: src/KLyXMenu.C:913
+msgid "W&ide Table Float"
+msgstr "Tabela &Grande Flutuante"
+
+#: src/KLyXMenu.C:915
+msgid "&Algorithm Float"
+msgstr "&Algoritmo Flutuante"
+
+#: src/KLyXMenu.C:917
+msgid "Fl&oats"
+msgstr "Flutuan&tes"
+
+#: src/KLyXMenu.C:922
+msgid "Table of &Contents"
+msgstr "Tabela de &Conteúdo"
+
+#: src/KLyXMenu.C:924
+msgid "List of &Figures"
+msgstr "Lista de &Figuras"
+
+#: src/KLyXMenu.C:926
+msgid "List of &Tables"
+msgstr "Lista de &Tabelas"
+
+#: src/KLyXMenu.C:928
+msgid "&Index List"
+msgstr "Lista de &Índice"
+
+#: src/KLyXMenu.C:930
+msgid "&BibTeX Reference..."
+msgstr "Referência &BibTeX..."
+
+#: src/KLyXMenu.C:932
+msgid "List of &Algorithms"
+msgstr "Lista de &Algoritmos"
+
+#: src/KLyXMenu.C:934
+msgid "Lists & TOC"
+msgstr "Listas & Tabela de Conteúdo"
+
+#: src/KLyXMenu.C:940
+msgid "&HFill"
+msgstr "Preenchimento &Horizontal"
+
+#: src/KLyXMenu.C:942
+msgid "Hyphenation &Point"
+msgstr "&Ponto de Hifenização"
+
+#: src/KLyXMenu.C:944
+msgid "Protected &Blank"
+msgstr "&Branco Protegido"
+
+#: src/KLyXMenu.C:946
+msgid "&Linebreak"
+msgstr "&Quebra de Linha"
+
+#: src/KLyXMenu.C:948
+msgid "Ell&ipsis"
+msgstr "Elip&se"
+
+#: src/KLyXMenu.C:950
+msgid "&End of sentence period"
+msgstr "&Fim de sentença"
+
+#: src/KLyXMenu.C:952
+msgid "Ordinary &Quote (\")"
+msgstr "Citação Comum  (\")"
+
+#: src/KLyXMenu.C:954
+msgid "&Special Character"
+msgstr "Caracter E&special"
+
+#: src/KLyXMenu.C:959
+msgid "&Note"
+msgstr "&Nota"
+
+#: src/KLyXMenu.C:960
+msgid "&Label..."
+msgstr "&Etiqueta..."
+
+#: src/KLyXMenu.C:962
+msgid "Cross-&Reference..."
+msgstr "Referência &Cruzada..."
+
+#: src/KLyXMenu.C:964
+msgid "C&itation Reference..."
+msgstr "Referência de C&itação..."
+
+#: src/KLyXMenu.C:966
+msgid "In&dex Entry..."
+msgstr "Entrada no Í&ndice..."
+
+#: src/KLyXMenu.C:971
+msgid "&URL"
+msgstr "&URL"
+
+#: src/KLyXMenu.C:972
+msgid "&HTML URL"
+msgstr "URL &HTML"
+
+#: src/KLyXMenu.C:1028
+msgid "Screen &Options..."
+msgstr "Opções de &Telas..."
+
+#: src/KLyXMenu.C:1030
+msgid "&Spellchecker Options..."
+msgstr "Opções de &Verificações Ortográficas..."
+
+#: src/KLyXMenu.C:1032
+msgid "&Keyboard..."
+msgstr "&Teclado..."
+
+#: src/KLyXMenu.C:1034
+msgid "&LaTeX..."
+msgstr "&LaTex..."
+
+#: src/KLyXMenu.C:1037
+msgid "&Reconfigure"
+msgstr "&Reconfigurar"
+
+#: src/KLyXMenu.C:1165
+msgid "Opening help file"
+msgstr "Abrindo arquivos de ajuda"
+
+#: src/KLyXToolBar.C:657 src/KLyXToolBar.C:670
+msgid "Wrong Alignment."
+msgstr "Alinhamento incorreto."
+
+#: src/KLyXToolBar.C:658 src/KLyXToolBar.C:671
+msgid ""
+"Non multicolumn cells with fixed width can only\n"
+"be left aligned in LaTeX."
+msgstr ""
+"Células multicolunas com tamanho fixo podem somente\n"
+"serem alinhas à esquerda na LaTeX."
+
+#: src/KLyXToolBar.C:659 src/KLyXToolBar.C:672 src/text2.C:1788
+#: src/text2.C:1798 src/text2.C:2004 src/text2.C:2014
+msgid "sorry."
+msgstr "desculpe."
+
+#: src/KLyXToolBar.C:697 src/LyXView.C:388
+msgid "Width of Column"
+msgstr "Largura da Coluna"
+
+#: src/KLyXToolBar.C:698
+msgid "Width of Column:"
+msgstr "Largura da Coluna:"
+
+#: src/KLyXToolBar.C:706
+msgid "You entered an invalid Length:"
+msgstr "Foi informado um tamanho inválido:"
+
+#: src/KLyXToolBar.C:708
+msgid "A valid example is \"25mm\""
+msgstr "Um exemplo de tamanho válido é \"25mm\""
+
+#: src/KLyXToolBar.C:774
+msgid ""
+"No font change defined. You may want to set some properties in the combo "
+"boxes..."
+msgstr "Nenhuma mudança de fonte foi definida. Pode-se configurar algumas " 
+" opções nas janelas..."
+
+#: src/KeyboardOptionsDialog.C:29
+msgid "Language"
+msgstr "Idioma"
+
+#: src/KeyboardOptionsDialog.C:33
+msgid "Primary"
+msgstr "Primário"
+
+#: src/KeyboardOptionsDialog.C:42 src/KeyboardOptionsDialog.C:58
+msgid "Other"
+msgstr "Outro"
+
+#: src/KeyboardOptionsDialog.C:49
+msgid "Secondary"
+msgstr "Secundário"
+
+#: src/KeyboardOptionsDialog.C:66
+msgid ""
+"Error:\n"
+"\n"
+"Keymap\n"
+"not found"
+msgstr ""
+"Erro:\n"
+"\n"
+"Mapa de teclado\n"
+"não localizado."
+
+
+#: src/KeyboardOptionsDialog.C:78
+msgid "Mapping"
+msgstr "Mapeamento"
+
+#: src/KeyboardOptionsDialog.C:82
+msgid "&No key mapping"
+msgstr "&Sem mapa de teclado"
+
+#: src/KeyboardOptionsDialog.C:89
+msgid "P&rimary key map"
+msgstr "Mapa &Primário"
+
+#: src/KeyboardOptionsDialog.C:96
+msgid "S&econdary key map"
+msgstr "Mapa &Secundário"
+
+#: src/KeyboardOptionsDialog.C:104
+msgid "Character Set"
+msgstr "Conjunto de Caracteres"
+
+#: src/KeyboardOptionsDialog.C:111
+msgid "Set"
+msgstr "Configurar"
+
+#: src/KeyboardOptionsDialog.C:117
+msgid "Swap &Y and Z"
+msgstr "Alternar &Y e Z"
+
+#: src/KeyboardOptionsDialog.C:131
+msgid "Keyboard Options"
+msgstr "Opções de Teclado"
+
+#: src/LaTeX.C:289 src/LaTeX.C:303 src/LaTeX.C:404
+msgid "Run #"
+msgstr "Executar #"
+
+#: src/LaTeX.C:291 src/LaTeX.C:307 src/LaTeX.C:363 src/LaTeX.C:405
+msgid "LaTeX run number "
+msgstr "Número de execução LaTeX "
+
+#: src/LaTeX.C:329 src/LaTeX.C:386
+msgid "Running MakeIndex."
+msgstr "Executar Geração de Índice"
+
+#: src/LaTeX.C:340
+msgid "Running BibTeX."
+msgstr "Executar BibTeX."
+
+#: src/LaTeXOptionsDialog.C:27
+msgid "LaTeX Options"
+msgstr "Opções LaTeX"
+
+#: src/LaTeXOptionsDialog.C:29
+msgid "Allo&w accents on ALL characters"
+msgstr "Permi&tir acentos em TODOS os caracteres"
+
+#: src/LaTeXPreambleDialog.C:35
+msgid "LaTeX Preamble"
+msgstr "Preâmbulo LaTeX"
+
+#: src/LaTeXPreambleDialog.C:65
+msgid "LaTeX preamble set"
+msgstr "Configuração de preâmbulo LaTeX"
+
+#: src/LyXAction.C:594
+msgid "Describe command"
+msgstr "Descrever comando"
+
+#: src/LyXAction.C:595
+msgid "Select previous char"
+msgstr "Selecionar caracter anterior"
+
+#: src/LyXAction.C:596
+msgid "Exchange cursor and selection mark"
+msgstr "Alterar cursos e marca de seleção"
+
+#: src/LyXAction.C:597
+msgid "Insert bibtex"
+msgstr "Inserir bibtex"
+
+#: src/LyXAction.C:598
+msgid "Autosave"
+msgstr "Salvamento automático"
+
+#: src/LyXAction.C:599
+msgid "Go to beginning of document"
+msgstr "Ir para o início do documento"
+
+#: src/LyXAction.C:600
+msgid "Select to beginning of document"
+msgstr "Selecionar o início do documento"
+
+#: src/LyXAction.C:602
+msgid "Go to end of document"
+msgstr "Ir para o fim do documento"
+
+#: src/LyXAction.C:603
+msgid "Select to end of document"
+msgstr "Selecionar o fim do documento"
+
+#: src/LyXAction.C:604
+msgid "Fax"
+msgstr "Fax"
+
+#: src/LyXAction.C:605
+msgid "New document"
+msgstr "Novo documento"
+
+#: src/LyXAction.C:606
+msgid "New document from template"
+msgstr "Novo documento a partir de modelo"
+
+#: src/LyXAction.C:608
+msgid "Switch to previous document"
+msgstr "Alternar para o documento anterior"
+
+#: src/LyXAction.C:610
+msgid "Revert to saved"
+msgstr "Reverter para o documento salvo"
+
+#: src/LyXAction.C:611
+msgid "Update DVI"
+msgstr "Atualizar DVI"
+
+#: src/LyXAction.C:612
+msgid "Update PostScript"
+msgstr "Atualizar Postscript"
+
+#: src/LyXAction.C:613
+msgid "View DVI"
+msgstr "Ver DVI"
+
+#: src/LyXAction.C:614
+msgid "View PostScript"
+msgstr "Ver Postscript"
+
+#: src/LyXAction.C:615
+msgid "View Custom Format"
+msgstr "Ver Formato Customizado"
+
+#: src/LyXAction.C:616
+msgid "View Custom Format Update"
+msgstr "Ver Formato Customizado Atualizado"
+
+#: src/LyXAction.C:617
+msgid "Check TeX"
+msgstr "Ver TeX"
+
+#: src/LyXAction.C:621
+msgid "Go one char back"
+msgstr "Retorna um caracter"
+
+#: src/LyXAction.C:622
+msgid "Go one char forward"
+msgstr "Avança um caracter"
+
+#: src/LyXAction.C:623
+msgid "Insert citation"
+msgstr "Inserir citação"
+
+#: src/LyXAction.C:624
+msgid "Execute command"
+msgstr "Executar comando"
+
+#: src/LyXAction.C:627
+msgid "Decrement environment depth"
+msgstr "Decrescer profundidade de ambiente"
+
+#: src/LyXAction.C:628
+msgid "Increment environment depth"
+msgstr "Incrementar profundidade de ambiente"
+
+#: src/LyXAction.C:629 src/LyXView.C:190
+msgid "Change environment depth"
+msgstr "Alterar profundidade de ambiente"
+
+#: src/LyXAction.C:630
+msgid "Change itemize bullet settings"
+msgstr "Alterar configurações de indicadores de itens"
+
+#: src/LyXAction.C:631
+msgid "Go down"
+msgstr "Descer"
+
+#: src/LyXAction.C:632
+msgid "Select next line"
+msgstr "Selecionar a próxima linha"
+
+#: src/LyXAction.C:633
+msgid "Choose Paragraph Environment"
+msgstr "Escolher o Ambiente de Parágrafo"
+
+#: src/LyXAction.C:634
+msgid "Go to next error"
+msgstr "Ir para o próximo erro"
+
+#: src/LyXAction.C:635
+msgid "Insert Figure"
+msgstr "Inserir Figura"
+
+#: src/LyXAction.C:636
+msgid "Find & Replace"
+msgstr "Encontrar e &Substituir"
+
+#: src/LyXAction.C:637
+msgid "Toggle bold"
+msgstr "Alternar negrito"
+
+#: src/LyXAction.C:638
+msgid "Toggle code style"
+msgstr "Alternar estilo de código"
+
+#: src/LyXAction.C:639
+msgid "Default font style"
+msgstr "Estilo de fonte padrão"
+
+#: src/LyXAction.C:640 src/LyXView.C:169
+msgid "Toggle emphasize"
+msgstr "Alternar enfatização"
+
+#: src/LyXAction.C:641 src/LyXView.C:177 src/LyXView.C:619
+msgid "Toggle user defined style"
+msgstr "Alternar estilo definido pelo usuário"
+
+#: src/LyXAction.C:642
+msgid "Toggle user defined style in toolbar"
+msgstr "Alternar estilo definido pelo usuário na barra de ferramentas"
+
+#: src/LyXAction.C:643 src/LyXView.C:173
+msgid "Toggle noun style"
+msgstr "Alternar sem estilo"
+
+#: src/LyXAction.C:644
+msgid "Toggle roman font style"
+msgstr "Alternar estilo de fonte roman"
+
+#: src/LyXAction.C:645
+msgid "Toggle sans font style"
+msgstr "Alternar estilo de fonte sans"
+
+#: src/LyXAction.C:646
+msgid "Set font size"
+msgstr "Configurar tamanho de fonte"
+
+#: src/LyXAction.C:647
+msgid "Show font state"
+msgstr "Mostrar estado da fonte"
+
+#: src/LyXAction.C:648
+msgid "Toggle font underline"
+msgstr "Alternar fonte sublinhada"
+
+#: src/LyXAction.C:649
+msgid "Insert Footnote"
+msgstr "Inserir Nota de Rodapé"
+
+#: src/LyXAction.C:650
+msgid "Select next char"
+msgstr "Selecionar próximo caracter "
+
+#: src/LyXAction.C:651
+msgid "Insert horizontal fill"
+msgstr "Inserir preenchimento horizontal"
+
+#: src/LyXAction.C:652
+msgid "Insert hyphenation point"
+msgstr "Inserir ponto de hifenização"
+
+#: src/LyXAction.C:653
+msgid "Insert ... dots"
+msgstr "Inserir...reticiências"
+
+#: src/LyXAction.C:654
+msgid "Insert end of sentence period"
+msgstr "Inserir ponto final"
+
+#: src/LyXAction.C:655
+msgid "Turn off keymap"
+msgstr "Desativar mapa de teclado"
+
+#: src/LyXAction.C:656
+msgid "Use primary keymap"
+msgstr "Usar mapa de teclado primário"
+
+#: src/LyXAction.C:657
+msgid "Use secondary keymap"
+msgstr "Usar mapa de teclado secundário"
+
+#: src/LyXAction.C:658
+msgid "Toggle keymap"
+msgstr "Alternar mapa de teclado"
+
+#: src/LyXAction.C:660
+msgid "Copy paragraph environment type"
+msgstr "Copiar tipo de ambiente de parágrafo"
+
+#: src/LyXAction.C:661
+msgid "Paste paragraph environment type"
+msgstr "Colar tipo de ambiente de parágrafo"
+
+#: src/LyXAction.C:662
+msgid "Specify paper size and margins"
+msgstr "Especificar tamanho do papel e margens"
+
+#: src/LyXAction.C:663
+msgid "Go to beginning of line"
+msgstr "Ir para o início da linha"
+
+#: src/LyXAction.C:664
+msgid "Select to beginning of line"
+msgstr "Selecionar o início da linha"
+
+#: src/LyXAction.C:665
+msgid "Go to end of line"
+msgstr "Ir para o fim da linha"
+
+#: src/LyXAction.C:666
+msgid "Select to end of line"
+msgstr "Selecionar o fim da linha"
+
+#: src/LyXAction.C:667
+msgid "Exit"
+msgstr "Sair"
+
+#: src/LyXAction.C:668
+msgid "Insert Margin note"
+msgstr "Inserir Nota de Margem"
+
+#: src/LyXAction.C:669
+msgid "Math Greek"
+msgstr "Matemática Grega"
+
+#: src/LyXAction.C:670 src/LyXView.C:198
+msgid "Math mode"
+msgstr "Modo Matemático"
+
+#: src/LyXAction.C:671
+msgid "Go one paragraph down"
+msgstr "Descer um parágrafo"
+
+#: src/LyXAction.C:672
+msgid "Select next paragraph"
+msgstr "Selecionar o próximo parágrafo"
+
+#: src/LyXAction.C:673
+msgid "Go one paragraph up"
+msgstr "Subir um parágrafo"
+
+#: src/LyXAction.C:674
+msgid "Select previous paragraph"
+msgstr "Selecionar o parágrafo anterior"
+
+#: src/LyXAction.C:676
+msgid "Insert protected space"
+msgstr "Inserir espaço protegido"
+
+#: src/LyXAction.C:677
+msgid "Insert quote"
+msgstr "Inserir citação"
+
+#: src/LyXAction.C:678
+msgid "Reconfigure"
+msgstr "Reconfigurar"
+
+#: src/LyXAction.C:680
+msgid "Insert cross reference"
+msgstr "Inserir referência cruzada"
+
+#: src/LyXAction.C:681
+msgid "Insert Table"
+msgstr "Inserir Tabela"
+
+#: src/LyXAction.C:682 src/LyXView.C:194
+msgid "Toggle TeX style"
+msgstr "Alternar estilo TeX"
+
+#: src/LyXAction.C:684
+msgid "Remove all error boxes"
+msgstr "Remover todas as caixas de erro"
+
+#: src/LyXAction.C:685
+msgid "Open a new view window"
+msgstr "Abrir uma nova janela"
+
+#: src/LyXAction.C:686
+msgid "Delete the current view"
+msgstr "Remover a janela atual"
+
+#: src/LyXAction.C:687
+msgid "Split horizontally the current view"
+msgstr "Dividir horizontalmente a visão atual"
+
+#: src/LyXAction.C:688
+msgid "Split vertically the current view"
+msgstr "Dividir verticalmente a visão atual"
+
+#: src/LyXAction.C:689
+msgid "Unsplit the current view"
+msgstr "Remover divisão da janela atual"
+
+#: src/LyXAction.C:690
+msgid "Close the current view"
+msgstr "Fechar a visão atual"
+
+#: src/LyXAction.C:691
+msgid "Change view"
+msgstr "Mudar visão"
+
+#: src/LyXAction.C:727
+msgid "No description available!"
+msgstr "Nenhuma descrição disponível"
+
+#: src/LyXView.C:122
+msgid "Choose paragraph environment"
+msgstr "Escolher o ambiente do parágrafo"
+
+#: src/LyXView.C:127
+msgid "New"
+msgstr "Novo"
+
+#: src/LyXView.C:131
+msgid "New From Template"
+msgstr "Novo A Partir de Modelo"
+
+#: src/LyXView.C:143
+msgid "Preview"
+msgstr "Pré Visualização"
+
+#: src/LyXView.C:147
+msgid "Update Preview"
+msgstr "Atualizar Pré Visualização"
+
+#: src/LyXView.C:182
+msgid "Insert footnote"
+msgstr "Inserir Nota de Rodapé"
+
+#: src/LyXView.C:186
+msgid "Insert margin note"
+msgstr "Inserir nota de margem"
+
+#: src/LyXView.C:215
+msgid "Square root"
+msgstr "Raiz quadrada"
+
+#: src/LyXView.C:219
+msgid "Fraction"
+msgstr "Fração"
+
+#: src/LyXView.C:224
+msgid "Sum"
+msgstr "Total"
+
+#: src/LyXView.C:228
+msgid "Integral"
+msgstr "Integral"
+
+#: src/LyXView.C:232
+msgid "Exponent"
+msgstr "Expoente"
+
+#: src/LyXView.C:236
+msgid "Index"
+msgstr "Índice"
+
+#: src/LyXView.C:241 src/MathDelimiterDialog.C:266
+msgid "Delimiter"
+msgstr "Delimitador"
+
+#: src/LyXView.C:245
+msgid "Decoration"
+msgstr "Decoração"
+
+#: src/LyXView.C:249 src/MathSpacingDialog.C:70
+msgid "Spacing"
+msgstr "Espaçamento"
+
+#: src/LyXView.C:253 src/MathMatrixDialog.C:91
+msgid "Matrix"
+msgstr "Matriz"
+
+#: src/LyXView.C:257
+msgid "Equation"
+msgstr "Equação"
+
+#: src/LyXView.C:262
+msgid "Greek characters"
+msgstr "Caracteres gregos"
+
+#: src/LyXView.C:266
+msgid "Binary operators"
+msgstr "Operadores binários"
+
+#: src/LyXView.C:270
+msgid "Binary relations"
+msgstr "Relações binárias"
+
+#: src/LyXView.C:274
+msgid "Arrows"
+msgstr "Setas"
+
+#: src/LyXView.C:278
+msgid "Variably-sized symbols"
+msgstr "Símbolos de tamanhos variáveis"
+
+#: src/LyXView.C:282
+msgid "Functions"
+msgstr "Funções"
+
+#: src/LyXView.C:295
+msgid "Table style"
+msgstr "Estilo de Tabela"
+
+#: src/LyXView.C:298
+msgid "Portrait"
+msgstr "Retrato"
+
+#: src/LyXView.C:299
+msgid "Landscape"
+msgstr "Paisagem"
+
+#: src/LyXView.C:300
+msgid "Long"
+msgstr "Longa"
+
+#: src/LyXView.C:306
+msgid "Left Border"
+msgstr "Borda Esquerda"
+
+#: src/LyXView.C:312
+msgid "Right Border"
+msgstr "Borda Direita"
+
+#: src/LyXView.C:318
+msgid "Top Border"
+msgstr "Borda Superior"
+
+#: src/LyXView.C:324
+msgid "Bottom Border"
+msgstr "Borda Inferior"
+
+#: src/LyXView.C:332
+msgid "Add Row"
+msgstr "Adicionar Linha"
+
+#: src/LyXView.C:337
+msgid "Delete Row"
+msgstr "Apagar Linha"
+
+#: src/LyXView.C:342
+msgid "Add Column"
+msgstr "Adicionar Coluna"
+
+#: src/LyXView.C:347
+msgid "Delete Column"
+msgstr "Remover Coluna"
+
+#: src/LyXView.C:354
+msgid "Align Left"
+msgstr "Alinhar À Esquerda"
+
+#: src/LyXView.C:360
+msgid "Align Center"
+msgstr "Alinhar Ao Centro"
+
+#: src/LyXView.C:366
+msgid "Align Right"
+msgstr "Alinhar À Direita"
+
+#: src/LyXView.C:376
+msgid "Multicolumn"
+msgstr "Multicoluna"
+
+#: src/LyXView.C:382
+msgid "Rotate Cell"
+msgstr "Rotação de Células"
+
+#: src/LyXView.C:396
+msgid "Special flags for long tables"
+msgstr "Indicadores especiais para tabelas longas"
+
+#: src/LyXView.C:402
+msgid "First head"
+msgstr "Primeiro cabeçalho"
+
+#: src/LyXView.C:403
+msgid "Head"
+msgstr "Cabeçalho"
+
+#: src/LyXView.C:404
+msgid "Foot"
+msgstr "Rodapé"
+
+#: src/LyXView.C:405
+msgid "Last foot"
+msgstr "Último rodapé"
+
+#: src/LyXView.C:406
+msgid "New page"
+msgstr "Nova página"
+
+#: src/LyXView.C:413
+msgid "Delete Table"
+msgstr "Remover Tabela"
+
+#: src/LyXView.C:442
+msgid "Family::Keep"
+msgstr "Família: Manter"
+
+#: src/LyXView.C:444
+msgid "Family::Roman"
+msgstr "Família::Roman"
+
+#: src/LyXView.C:446
+msgid "Family::SansSerif"
+msgstr "Família::SansSerif"
+
+#: src/LyXView.C:448
+msgid "Family::Typewriter"
+msgstr "Family::Typewriter"
+
+#: src/LyXView.C:450
+msgid "Family::Reset"
+msgstr "Família::Reincializar"
+
+#: src/LyXView.C:467
+msgid "Series::Keep"
+msgstr "Serie::Manter"
+
+#: src/LyXView.C:469
+msgid "Series::Medium"
+msgstr "Serie::Médio"
+
+#: src/LyXView.C:471
+msgid "Series::Bold"
+msgstr "Séries::Negrito"
+
+#: src/LyXView.C:473
+msgid "Series::Reset"
+msgstr "Séries::Reinicializar"
+
+#: src/LyXView.C:494
+msgid "Shape::Keep"
+msgstr "Formato::Manter"
+
+#: src/LyXView.C:496
+msgid "Shape::Upright"
+msgstr "Formato::Cima e Direita"
+
+#: src/LyXView.C:498
+msgid "Shape::Italic"
+msgstr "Formato::Itálico"
+
+#: src/LyXView.C:500
+msgid "Shape::Slanted"
+msgstr "Formato::"
+
+#: src/LyXView.C:502
+msgid "Shape::SmallCaps"
+msgstr "Formato::Minúsculo"
+
+#: src/LyXView.C:504
+msgid "Shape::Reset"
+msgstr "Formato::Reinicializar"
+
+#: src/LyXView.C:521
+msgid "Size::Keep"
+msgstr "Tamanho::Manter"
+
+#: src/LyXView.C:523
+msgid "Size::Tiny"
+msgstr "Tamanho::Minúsculo"
+
+#: src/LyXView.C:525
+msgid "Size::Smallest"
+msgstr "Tamanho::Mínimo"
+
+#: src/LyXView.C:527
+msgid "Size::Smaller"
+msgstr "Tamanho::Menor"
+
+#: src/LyXView.C:529
+msgid "Size::Small"
+msgstr "Tamanho::Pequeno"
+
+#: src/LyXView.C:531
+msgid "Size::Normal"
+msgstr "Tamanho::Normal"
+
+#: src/LyXView.C:533
+msgid "Size::Large"
+msgstr "Tamanho::Grande"
+
+#: src/LyXView.C:535
+msgid "Size::Larger"
+msgstr "Tamanho::Maior"
+
+#: src/LyXView.C:537
+msgid "Size::Largest"
+msgstr "Tamanho::Muito Grande"
+
+#: src/LyXView.C:539
+msgid "Size::Huge"
+msgstr "Tamanho::Imenso"
+
+#: src/LyXView.C:541
+msgid "Size::Huger"
+msgstr "Tamanho::Exagerado"
+
+#: src/LyXView.C:543
+msgid "Size::Increase"
+msgstr "Tamanho::Aumentar"
+
+#: src/LyXView.C:545
+msgid "Size::Decrease"
+msgstr "Tamanho::Diminuir"
+
+#: src/LyXView.C:547
+msgid "Size::Reset"
+msgstr "Tamanho::Reinicializar"
+
+#: src/LyXView.C:568
+msgid "Misc::Keep"
+msgstr "Diversos::Manter"
+
+#: src/LyXView.C:570
+msgid "Misc::Emph"
+msgstr "Diversos::Enfático"
+
+#: src/LyXView.C:572
+msgid "Misc::Underbar"
+msgstr "Diversos::Sob a Barra"
+
+#: src/LyXView.C:574
+msgid "Misc::Noun"
+msgstr "Diversos::Nenhum"
+
+#: src/LyXView.C:576
+msgid "Misc::LaTeX"
+msgstr "Diversos::LaTeX"
+
+#: src/LyXView.C:578
+msgid "Misc::Reset"
+msgstr "Diversos::Reinicializa"
+
+#: src/LyXView.C:592
+msgid "Color::Keep"
+msgstr "Cor::Manter"
+
+#: src/LyXView.C:594
+msgid "Color::None"
+msgstr "Cor::Nenhuma"
+
+#: src/LyXView.C:596
+msgid "Color::Black"
+msgstr "Cor::Preta"
+
+#: src/LyXView.C:598
+msgid "Color::White"
+msgstr "Cor::Branca"
+
+#: src/LyXView.C:600
+msgid "Color::Red"
+msgstr "Cor::Vermelha"
+
+#: src/LyXView.C:602
+msgid "Color::Green"
+msgstr "Cor::Verde"
+
+#: src/LyXView.C:604
+msgid "Color::Blue"
+msgstr "Cor::Azul"
+
+#: src/LyXView.C:606
+msgid "Color::Cyan"
+msgstr "Cor::Ciano"
+
+#: src/LyXView.C:608
+msgid "Color::Magenta"
+msgstr "Cor::Magenta"
+
+#: src/LyXView.C:610
+msgid "Color::Yellow"
+msgstr "Cor::Amarela"
+
+#: src/LyXView.C:612
+msgid "Color::Reset"
+msgstr "Cor::Reinicializar"
+
+#: src/LyXView.C:1072 src/minibuffer.C:171
+msgid " (Changed)"
+msgstr " (Alterado)"
+
+#: src/LyXView.C:1074
+msgid " (read only)"
+msgstr " (somente leitura)"
+
+#: src/LyXView.C:1099 src/lyxfunc.C:2324 src/lyxfunc.C:2382
+msgid "Opening document"
+msgstr "Abrindo documento"
+
+#: src/LyXView.C:1104 src/lyxfunc.C:2329 src/lyxfunc.C:2387 src/lyxfunc.C:2434
+msgid "Document"
+msgstr "Documento"
+
+#: src/LyXView.C:1106 src/lyxfunc.C:2331 src/lyxfunc.C:2389
+msgid "opened."
+msgstr "aberto."
+
+#: src/LyXView.C:1108 src/lyxfunc.C:2391
+msgid "Could not open document"
+msgstr "Não foi possível abrir o documento"
+
+#: src/MathDelimiterDialog.C:38
+msgid "Left"
+msgstr "Esquerdo"
+
+#: src/MathDelimiterDialog.C:46
+msgid "Right"
+msgstr "Direito"
+
+#: src/MathMatrixDialog.C:29
+msgid "Rows"
+msgstr "Linhas"
+
+#: src/MathMatrixDialog.C:56 src/ParagraphDialog.C:40
+#: src/ParagraphExtraDialog.C:74
+msgid "Alignment"
+msgstr "Alinhamento"
+
+#: src/MathMatrixDialog.C:60
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: src/MathMatrixDialog.C:70
+msgid "Vertical"
+msgstr "Vertical"
+
+#: src/MathMatrixDialog.C:76 src/ParagraphExtraDialog.C:77
+msgid "Top"
+msgstr "Topo"
+
+#: src/MathMatrixDialog.C:77
+msgid "Center"
+msgstr "Centro"
+
+#: src/MathMatrixDialog.C:78 src/ParagraphExtraDialog.C:85
+msgid "Bottom"
+msgstr "Base"
+
+#: src/MathSpacingDialog.C:31
+msgid "&Thin"
+msgstr "&Fino"
+
+#: src/MathSpacingDialog.C:35
+msgid "&Medium"
+msgstr "&Médio"
+
+#: src/MathSpacingDialog.C:39
+msgid "&Thick"
+msgstr "&Espesso"
+
+#: src/MathSpacingDialog.C:43
+msgid "&Negative"
+msgstr "&Negativo"
+
+#: src/MathSpacingDialog.C:47
+msgid "&Square inch"
+msgstr "&Polegada quadrada"
+
+#: src/MathSpacingDialog.C:51
+msgid "T&wo square inches"
+msgstr "&Duas polegadas quadradas"
+
+#: src/PaperFormatDialog.C:56
+msgid "&Papersize:"
+msgstr "&Tamanho de Papel"
+
+#: src/PaperFormatDialog.C:77
+msgid "&Special:"
+msgstr "E&special"
+
+#: src/PaperFormatDialog.C:86
+msgid "&Use Geometry Package"
+msgstr "&Usar Pacote Geométrico"
+
+#: src/PaperFormatDialog.C:92
+msgid "Orientation"
+msgstr "Orientação"
+
+#: src/PaperFormatDialog.C:96
+msgid "P&ortrait"
+msgstr "R&etrato"
+
+#: src/PaperFormatDialog.C:102
+msgid "&Landscape"
+msgstr "&Paisagem"
+
+#: src/PaperFormatDialog.C:109
+msgid "Margins"
+msgstr "Margens"
+
+#: src/PaperFormatDialog.C:119
+msgid "&Top:"
+msgstr "&Topo"
+
+#: src/PaperFormatDialog.C:130
+msgid "&Bottom:"
+msgstr "&Base"
+
+#: src/PaperFormatDialog.C:144
+msgid "&Left:"
+msgstr "&Esquerdo"
+
+#: src/PaperFormatDialog.C:155
+msgid "&Right:"
+msgstr "&Direito"
+
+#: src/PaperFormatDialog.C:164
+msgid "Custom Papersize"
+msgstr "Tamanho Customizado de Papel"
+
+#: src/PaperFormatDialog.C:174
+msgid "&Width:"
+msgstr "&Largura"
+
+#: src/PaperFormatDialog.C:189
+msgid "&Height:"
+msgstr "&Altura"
+
+#: src/PaperFormatDialog.C:200
+msgid "Foot/Head Margins"
+msgstr "Margens de Cabeçalho e Rodapé"
+
+#: src/PaperFormatDialog.C:209
+msgid "&Headheight:"
+msgstr "&Margem de Cabeçalho"
+
+#: src/PaperFormatDialog.C:224
+msgid "&Headsep:"
+msgstr "Se&parador de Cabeçalho"
+
+#: src/PaperFormatDialog.C:235
+msgid "&Footskip:"
+msgstr "Altura de &Rodapé"
+
+#: src/PaperFormatDialog.C:249 src/PaperFormatDialog.C:422
+#: src/PaperFormatDialog.C:433 src/PaperFormatDialog.C:444
+#: src/PaperFormatDialog.C:455 src/PaperFormatDialog.C:466
+#: src/PaperFormatDialog.C:477 src/PaperFormatDialog.C:488
+#: src/PaperFormatDialog.C:499 src/PaperFormatDialog.C:510
+#: src/ParagraphExtraDialog.C:365
+msgid "Warning: Invalid Length (valid example: 10mm)"
+msgstr "Atenção: Tamanho Inválido (exemplo válido: 10 mm)"
+
+#: src/PaperFormatDialog.C:277
+msgid "Configure PaperFormat"
+msgstr "Configurar Formato de Papel"
+
+#: src/PaperFormatDialog.C:305
+msgid "Paper layout set"
+msgstr "Configurar Layout de Papel"
+
+#: src/PaperLayout.C:60
+msgid "Document is read-only.  No changes to layout permitted."
+msgstr "Documento está aberto somente com permissões de leitura."
+
+#: src/ParagraphDialog.C:45
+msgid "&Right"
+msgstr "&Direita"
+
+#: src/ParagraphDialog.C:50
+msgid "&Left"
+msgstr "&Esquerda"
+
+#: src/ParagraphDialog.C:55
+msgid "&Block"
+msgstr "&Bloco"
+
+#: src/ParagraphDialog.C:61
+msgid "&Center"
+msgstr "&Centro"
+
+#: src/ParagraphDialog.C:67
+msgid "Lines"
+msgstr "Linhas"
+
+#: src/ParagraphDialog.C:72
+msgid "Ab&ove"
+msgstr "A&cima"
+
+#: src/ParagraphDialog.C:77
+msgid "B&elow"
+msgstr "A&baixo"
+
+#: src/ParagraphDialog.C:83
+msgid "Pagebreaks"
+msgstr "Quebra de página"
+
+#: src/ParagraphDialog.C:87
+msgid "Abo&ve"
+msgstr "Aci&ma"
+
+#: src/ParagraphDialog.C:92
+msgid "Belo&w"
+msgstr "Abai&xo"
+
+#: src/ParagraphDialog.C:101
+msgid "Vertical Spaces"
+msgstr "Espaço Vertical"
+
+#: src/ParagraphDialog.C:111
+msgid "Above:"
+msgstr "Acima:"
+
+#: src/ParagraphDialog.C:117
+msgid "Below:"
+msgstr "Abaixo:"
+
+#: src/ParagraphDialog.C:171
+msgid "Indent"
+msgstr "Indentação"
+
+#: src/ParagraphDialog.C:174
+msgid "&No indent"
+msgstr "&Sem indentação"
+
+#: src/ParagraphDialog.C:183
+msgid "Line spacing"
+msgstr "Espaçamento de Linha"
+
+#: src/ParagraphDialog.C:218
+msgid "&Label Width:"
+msgstr "Largura de &Etiqueta:"
+
+#: src/ParagraphDialog.C:228
+msgid "E&xtra Options"
+msgstr "Opções &Extras"
+
+#: src/ParagraphDialog.C:261
+msgid "Paragraph Environment"
+msgstr "Ambiente de Parágrafo"
+
+#: src/ParagraphExtraDialog.C:34
+msgid "Extra Options"
+msgstr "Opções Extras"
+
+#: src/ParagraphExtraDialog.C:37
+msgid "&Indented Paragraph"
+msgstr "&Indentação de Parágrafo"
+
+#: src/ParagraphExtraDialog.C:43
+msgid "&Minipage"
+msgstr "&Mini Página"
+
+#: src/ParagraphExtraDialog.C:49
+msgid "&Floatflt"
+msgstr "&Flutuante"
+
+#: src/ParagraphExtraDialog.C:59
+msgid "Length"
+msgstr "Tamanho"
+
+#: src/ParagraphExtraDialog.C:66
+#, c-format
+msgid "or %"
+msgstr "ou %"
+
+#: src/ParagraphExtraDialog.C:81
+msgid "Middle"
+msgstr "Meio"
+
+#: src/ParagraphExtraDialog.C:90
+msgid "HFill between Minipage paragraphs"
+msgstr "Preenchimento horizontal entre parágrafos de mini páginas"
+
+#: src/ParagraphExtraDialog.C:93
+msgid "Start new Minipage"
+msgstr "Iniciar nova Mini Página"
+
+#: src/ParagraphExtraDialog.C:106
+msgid "ParagraphExtra Layout"
+msgstr "Layout de Parágrafo Extra"
+
+#: src/ParagraphExtraDialog.C:297
+msgid "Read-only buffer"
+msgstr "Buffer somente de leitura"
+
+#: src/ParagraphExtraDialog.C:298
+msgid "Buffer is read-only.  No changes to layout permitted."
+msgstr "Buffer é somente de leitura. Alterações não são permitidas."
+
+#: src/ParagraphExtraDialog.C:340
+msgid "ParagraphExtra layout set"
+msgstr "Configuração de layout de parágrafo extra"
+
+#: src/ParagraphExtraDialog.C:364
+msgid "Invalid Length"
+msgstr "Tamanho inválido"
+
+#: src/ParagraphExtraDialog.C:373
+msgid "Invalid Value"
+msgstr "Valor Inválido"
+
+#: src/ParagraphExtraDialog.C:374
+msgid "Warning: Invalid percent value (0-100)"
+msgstr "Aviso: Valor percentual inválido (0-100)"
+
+#: src/QuotesDialog.C:29
+msgid "Type: "
+msgstr "Tipo: "
+
+#: src/QuotesDialog.C:45
+msgid "&Single"
+msgstr "&Simples"
+
+#: src/QuotesDialog.C:50
+msgid "&Double"
+msgstr "&Duplo"
+
+#: src/QuotesDialog.C:64
+msgid "Configure Quotes"
+msgstr "Configurar Citações"
+
+#: src/QuotesDialog.C:73
+msgid "Quotes type set"
+msgstr "Conjunto de tipos de citações"
+
+#: src/ScreenFontsDialog.C:21
+msgid "Roman Font"
+msgstr "Fonte Roman"
+
+#: src/ScreenFontsDialog.C:29
+msgid "Sans Serif Font"
+msgstr "Fontes Sans Serif"
+
+#: src/ScreenFontsDialog.C:38
+msgid "Typewriter Font"
+msgstr "Fonte Typewriter"
+
+#: src/ScreenFontsDialog.C:47
+msgid "Font Norm"
+msgstr "Fonte Normal"
+
+#: src/ScreenFontsDialog.C:55
+msgid "Font Zoom"
+msgstr "Fonte Aumentada"
+
+#: src/ScreenOptionsTabDialog.C:18
+msgid "&Toolbars"
+msgstr "&Barra de Ferramentas"
+
+#: src/ScreenOptionsTabDialog.C:22
+msgid "Defaults"
+msgstr "Padrões"
+
+#: src/ScreenToolbarsDialog.C:24
+msgid "General"
+msgstr "Geral"
+
+#: src/ScreenToolbarsDialog.C:30 src/ScreenToolbarsDialog.C:40
+#: src/ScreenToolbarsDialog.C:50 src/ScreenToolbarsDialog.C:60
+msgid "Always visible"
+msgstr "Sempre visível"
+
+#: src/ScreenToolbarsDialog.C:31 src/ScreenToolbarsDialog.C:41
+#: src/ScreenToolbarsDialog.C:51 src/ScreenToolbarsDialog.C:61
+msgid "Never visible"
+msgstr "Invisível"
+
+#: src/ScreenToolbarsDialog.C:34
+msgid "Math"
+msgstr "Matemática"
+
+#: src/ScreenToolbarsDialog.C:42 src/ScreenToolbarsDialog.C:52
+msgid "Automatic"
+msgstr "Automática"
+
+#: src/ScreenToolbarsDialog.C:44
+msgid "Tables"
+msgstr "Tabelas"
+
+#: src/ScreenToolbarsDialog.C:54
+msgid "Character"
+msgstr "Caracter"
+
+#: src/SendFaxDialog.C:42
+msgid "Destination"
+msgstr "Destino"
+
+#: src/SendFaxDialog.C:46
+msgid "Fax no."
+msgstr "Nro. Do Fax"
+
+#: src/SendFaxDialog.C:53
+msgid "Dest. name"
+msgstr "Nome de destino"
+
+#: src/SendFaxDialog.C:60
+msgid "Company"
+msgstr "Companhia"
+
+#: src/SendFaxDialog.C:67
+msgid "Phone Book"
+msgstr "Agenda Telefônica"
+
+#: src/SendFaxDialog.C:71
+msgid "S&elect from"
+msgstr "Selecionar &de"
+
+#: src/SendFaxDialog.C:77
+msgid "&Add to"
+msgstr "&Adicionar a"
+
+#: src/SendFaxDialog.C:83
+msgid "&Delete from"
+msgstr "&Apagar de"
+
+#: src/SendFaxDialog.C:94
+msgid "Comment"
+msgstr "Comentário"
+
+#: src/SendFaxDialog.C:112
+msgid "Send a fax"
+msgstr "Enviar um fax"
+
+#: src/SendFaxDialog.C:185 src/SendFaxDialog.C:217
+msgid "* Save *"
+msgstr "* Salvar *"
+
+#: src/SendFaxDialog.C:229 src/buffer.C:225 src/buffer.C:235 src/buffer.C:3102
+#: src/bufferlist.C:586 src/bufferlist.C:614 src/lyx_cb.C:481 src/lyx_cb.C:781
+msgid "Error!"
+msgstr "Erro!"
+
+#: src/SendFaxDialog.C:229
+msgid "Cannot open phone book: "
+msgstr "Não foi possível abrir a agenda telefônica"
+
+#: src/SendFaxDialog.C:258
+msgid "Select"
+msgstr "Selecionar"
+
+#: src/SendFaxDialog.C:271
+msgid "Phonebook"
+msgstr "Agenda Telefônica"
+
+#: src/SendFaxDialog.C:337
+msgid "Message View"
+msgstr "Visualizar Mensagem"
+
+#: src/SpellCheckDialog.C:24
+msgid "Unknown:"
+msgstr "Desconhecido"
+
+#: src/SpellCheckDialog.C:32
+msgid "Replace:"
+msgstr "Substituir:"
+
+#: src/SpellCheckDialog.C:39
+msgid "Alternatives:"
+msgstr "Opções:"
+
+#: src/SpellCheckDialog.C:54
+msgid "&Start spellchecking"
+msgstr "&Iniciar verificação ortográfica"
+
+#: src/SpellCheckDialog.C:59
+msgid "&Insert in personal dictionary"
+msgstr "&Inserir dicionário pessoal"
+
+#: src/SpellCheckDialog.C:64
+msgid "&Accept word in this session"
+msgstr "&Aceitar palavra nesta sessão"
+
+#: src/SpellCheckDialog.C:69
+msgid "I&gnore word"
+msgstr "I&gnorar palavra"
+
+#: src/SpellCheckDialog.C:74
+msgid "R&eplace word"
+msgstr "&Substituir palavra"
+
+#: src/SpellCheckDialog.C:79
+msgid "Stop spellchecking"
+msgstr "Para verificação Ortográfica"
+
+#: src/SpellCheckDialog.C:84
+msgid "Spellchecker &Options"
+msgstr "Verificação Ortográfica  &Opções"
+
+#: src/SpellCheckDialog.C:89
+msgid "Close spellchecker"
+msgstr "Fechar Correção Ortográfica"
+
+#: src/SpellCheckDialog.C:94
+msgid "Spellchecker"
+msgstr "Verificação Ortográfica"
+
+#: src/SpellcheckerOptionsDialog.C:21
+msgid "Dictionary"
+msgstr "Dicionário"
+
+#: src/SpellcheckerOptionsDialog.C:24
+msgid "Use language of &document"
+msgstr "Usar linguagem do &documento"
+
+#: src/SpellcheckerOptionsDialog.C:28
+msgid "&Use alternate language"
+msgstr "&Usar linguagem alternativa"
+
+#: src/SpellcheckerOptionsDialog.C:41
+msgid "&Treat run-together words as legal"
+msgstr "&Tratar palavras hifenizadas como válidas"
+
+#: src/SpellcheckerOptionsDialog.C:44
+msgid "&Input Encoding xswitch to ispell"
+msgstr "&Receber codificação xswitch para ispell "
+
+#: src/SpellcheckerOptionsDialog.C:47
+msgid "Use alternate &personal dictionary:"
+msgstr "Usar dicionário pessoal &alternativo"
+
+#: src/SpellcheckerOptionsDialog.C:55
+msgid "&Extra special chars allowed in words"
+msgstr "Aceita &caracteres especiais em palavras"
+
+#: src/TableOfContentsDialog.C:99
+msgid "Depth"
+msgstr "Profundidade"
+
+#: src/TableOfContentsDialog.C:115
+msgid "&Goto"
+msgstr "&Ir Para"
+
+#: src/TableOfContentsDialog.C:142
+msgid "Document Structure"
+msgstr "Estrutura de Documento"
+
+#: src/TableOfContentsDialog.C:180
+msgid "*** No Document ***"
+msgstr "*** Sem Documento ***"
+
+#: src/TableOfContentsDialog.C:348
+msgid ""
+"Couldn't find this label\n"
+"in current document."
+msgstr "Não foi possível encontrar a etiqueta neste documento"
+
+#: src/TableOfContentsDialog.C:363 src/TableOfContentsDialog.C:371
+msgid "(*** No entry ***)"
+msgstr "(*** Sem informação ***)"
+
+#: src/VCLogDialog.C:35
+msgid "VC Log"
+msgstr "VC Log"
+
+#: src/VCLogDialog.C:78
+msgid "No RCS History!"
+msgstr "Sem histórico RCS!"
+
+#: src/ViewLogfileDialog.C:35
+msgid "View Logfile"
+msgstr "Ver arquivos de histórico"
+
+#: src/ViewLogfileDialog.C:76
+msgid "NO LATEX LOGFILE"
+msgstr "Não há arquivo de registros"
+
+#: src/buffer.C:226 src/buffer.C:236 src/bufferlist.C:655
+msgid "Cannot open specified file:"
+msgstr "Não foi possível abrir o arquivo especificado:"
+
+#: src/buffer.C:327
+msgid "Textclass Loading Error!"
+msgstr "Carga da Classe Texto com Erro!"
+
+#: src/buffer.C:328
+msgid "Can't load textclass "
+msgstr "Não foi possível carregar a classe"
+
+#: src/buffer.C:330
+msgid "-- substituting default"
+msgstr "--substituindo o padrão"
+
+#: src/buffer.C:1044
+#, c-format
+msgid "Warning: need lyxformat %.2f but found %.2f\n"
+msgstr "Aviso: é necessário o formato lyx %.2f, mas foi encontrado %.2f\n"
+
+#: src/buffer.C:1048
+#, c-format
+msgid "ERROR: need lyxformat %.2f but found %.2f\n"
+msgstr "Aviso: é necessário o formato lyx %.2f, mas foi encontrado %.2f\n"
+
+#: src/buffer.C:1054
+msgid "Warning!"
+msgstr "Aviso!"
+
+#: src/buffer.C:1055
+msgid "Reading of document is not complete"
+msgstr "Leitura do documento não foi completada"
+
+#: src/buffer.C:1056
+msgid "Maybe the document is truncated"
+msgstr "Talvez o documento esteja truncado"
+
+#: src/buffer.C:1062 src/buffer.C:1069 src/buffer.C:1072
+msgid "ERROR!"
+msgstr "ERRO!"
+
+#: src/buffer.C:1063
+msgid "Old LyX file format found. Use LyX 0.10.x to read this!"
+msgstr "Formato LyX antigo encontrado. Use o Lyx 0.10 para ler o documento."
+
+#: src/buffer.C:1069
+msgid "Not a LyX file!"
+msgstr "Não é um arquivo Lyx"
+
+#: src/buffer.C:1072
+msgid "Unable to read file!"
+msgstr "Não foi possível ler o arquivo!"
+
+#: src/buffer.C:1088 src/buffer.C:1090
+msgid "Error! Document is read-only: "
+msgstr "Erro! Documento somente pode ser lido!"
+
+#: src/buffer.C:1099 src/buffer.C:1101 src/buffer.C:1108 src/buffer.C:1110
+msgid "Error! Cannot write file: "
+msgstr "Erro! Não foi possível gravar o arquivo:"
+
+#: src/buffer.C:1142 src/buffer.C:1145
+msgid "Error! Could not close file properly: "
+msgstr "Erro! Não foi possível fechar o arquivos adequadamente:"
+
+#: src/buffer.C:1190 src/buffer.C:1507
+msgid "Error: Cannot write file:"
+msgstr "Erro: Não foi possível gravar o arquivo:"
+
+#: src/buffer.C:1295
+msgid "Error: Cannot open temporary file:"
+msgstr "Erro: Não foi possível abrir o arquivo temporário."
+
+#: src/buffer.C:1957 src/buffer.C:2314
+msgid "Error! Could not close file properly:"
+msgstr "Erro! Não foi possível fechar o arquivo adequadamente:"
+
+#: src/buffer.C:2046
+#, c-format
+msgid "Style %s not allowed before first Section.\n"
+msgstr "Estilo %s não é permitido antes da primeira Seção.\n"
+
+#: src/buffer.C:2159
+#, c-format
+msgid "Style %s not allowed after first Section.\n"
+msgstr "Estilo %s não é permitido após a primeira Seção.\n"
+
+#: src/buffer.C:2275 src/buffer.C:3024 src/buffer.C:3045 src/paragraph.C:2790
+msgid "LYX_ERROR:"
+msgstr "Erro Lyx:"
+
+#: src/buffer.C:2275
+msgid "Cannot write file"
+msgstr "Não foi possível gravar o arquivo."
+
+#: src/buffer.C:2398
+msgid "Error : table of contents not allowed in body.\n"
+msgstr "Erro: tabela de conteúdo não é permitida no corpo do documento.\n"
+
+#: src/buffer.C:2405
+msgid "Error : unhandled inset.\n"
+msgstr "Erro: campo sem referência\n"
+
+#: src/buffer.C:2418
+msgid "Error : incomplete macro.\n"
+msgstr "Erro: macro incompleta.\n"
+
+#: src/buffer.C:2473
+msgid "Running LaTeX..."
+msgstr "Executando LaTeX..."
+
+#: src/buffer.C:2490
+msgid "LaTeX did not work!"
+msgstr "LaTeX não funciona!"
+
+#: src/buffer.C:2491
+msgid "Missing log file:"
+msgstr "Arquivo de registro ausente:"
+
+#: src/buffer.C:2496 src/buffer.C:2502
+msgid "Done"
+msgstr "Feito"
+
+#: src/buffer.C:2539
+msgid "Running chktex..."
+msgstr "Executando chktex..."
+
+#: src/buffer.C:2555
+msgid "chktex did not work!"
+msgstr "chktex não funciona!"
+
+#: src/buffer.C:2556
+msgid "Could not run with file:"
+msgstr "Não foi possível executar com este arquivo:"
+
+#: src/buffer.C:3025 src/buffer.C:3046 src/paragraph.C:2790
+msgid "Cannot open temporary file:"
+msgstr "Não foi possível abrir arquivo temporário:"
+
+#: src/buffer.C:3095
+msgid "Error! Can't open temporary file:"
+msgstr "Erro! Não foi possível abrir o arquivo temporário:"
+
+#: src/buffer.C:3103
+msgid "Error executing *roff command on table"
+msgstr "Erro na execução do comando *roff na tabela"
+
+#: src/buffer.C:3286 src/lyx_cb.C:2550 src/text.C:1882
+msgid "Impossible Operation!"
+msgstr "Operação Impossível!"
+
+#: src/buffer.C:3287
+msgid "Cannot insert table/list in table."
+msgstr "Não é possível inserir tabela e lista na tabela."
+
+#: src/buffer.C:3288 src/lyx_cb.C:2552 src/text.C:1884 src/text.C:4024
+#: src/text.C:4032 src/text.C:4047 src/text.C:4064 src/text2.C:2107
+#: src/text2.C:2117
+msgid "Sorry."
+msgstr "Desculpe."
+
+#: src/bufferlist.C:157 src/bufferlist.C:325
+msgid "Changes in document:"
+msgstr "Alterações no documento."
+
+#: src/bufferlist.C:159 src/bufferlist.C:327
+msgid "Save document?"
+msgstr "Salvar documento?"
+
+#: src/bufferlist.C:175
+msgid "Some documents were not saved:"
+msgstr "Alguns documentos não foram salvos"
+
+#: src/bufferlist.C:176
+msgid "Exit anyway?"
+msgstr "Sair?"
+
+#: src/bufferlist.C:187
+msgid "Saving document"
+msgstr "Salvando documento"
+
+#: src/bufferlist.C:260
+msgid "Document saved as"
+msgstr "Documento salvo como"
+
+#: src/bufferlist.C:271
+msgid "Could not delete auto-save file!"
+msgstr "Não foi possível apagar o arquivo de salvamento automático!"
+
+#: src/bufferlist.C:281
+msgid "Save failed!"
+msgstr "Salvamento falhou!"
+
+#: src/bufferlist.C:436
+msgid "lyx: Attempting to save document "
+msgstr "Lyx: tentando salvar o documento"
+
+#: src/bufferlist.C:439
+msgid " as..."
+msgstr " como..."
+
+#: src/bufferlist.C:463
+msgid "  Save seems succesful. Phew."
+msgstr " Salvamento bem sucedido."
+
+#: src/bufferlist.C:466
+msgid "  Save failed! Trying..."
+msgstr " Salvamento falhou! Tentando novamente..."
+
+#: src/bufferlist.C:468
+msgid "  Save failed! Bummer. Document is lost."
+msgstr " Salvamento falhou! Documento foi perdido."
+
+#: src/bufferlist.C:497
+msgid "An emergency save of this document exists!"
+msgstr "Existe uma cópia salva deste documento! "
+
+#: src/bufferlist.C:499
+msgid "Try to load that instead?"
+msgstr "Tentar carregar esta mais recente?"
+
+#: src/bufferlist.C:518
+msgid "Autosave file is newer."
+msgstr "Cópia do salvamento automático é mais recente"
+
+#: src/bufferlist.C:520
+msgid "Load that one instead?"
+msgstr "Carregar esta?"
+
+#: src/bufferlist.C:586
+msgid "Unable to open template"
+msgstr "Não foi possível abrir o modelo"
+
+#: src/bufferlist.C:615
+msgid "Could not convert file"
+msgstr "Não foi possível converter o arquivo"
+
+#: src/bufferlist.C:622 src/lyxfunc.C:2296
+msgid "Document is already open:"
+msgstr "Documento já está aberto:"
+
+#: src/bufferlist.C:624
+msgid "Do you want to reload that document?"
+msgstr "Quer recarregar o documento?"
+
+#: src/bufferlist.C:638
+msgid "File `"
+msgstr "Arquivo '"
+
+#: src/bufferlist.C:639
+msgid "' is read-only."
+msgstr "' é somente para leitura."
+
+#: src/bufferlist.C:657
+msgid "Create new document with this name?"
+msgstr "Criar novo documento com este nome?"
+
+#: src/figinset.C:1087
+msgid "[render error]"
+msgstr "[erro de renderização]"
+
+#: src/figinset.C:1088
+msgid "[rendering ... ]"
+msgstr "[renderizando...]"
+
+#: src/figinset.C:1090
+msgid "[no file]"
+msgstr "[sem arquivo]"
+
+#: src/figinset.C:1091
+msgid "[not displayed]"
+msgstr "[não listado]"
+
+#: src/figinset.C:1092
+msgid "[no ghostscript]"
+msgstr "[sem o arquivo ghostscript]"
+
+#: src/figinset.C:1094
+msgid "[unknown error]"
+msgstr "[erro desconhecido]"
+
+#: src/figinset.C:1331 src/figinset.C:1464
+msgid "empty figure path"
+msgstr "[caminho da figura está vazio]"
+
+#: src/filetools.C:163 src/filetools.C:172 src/filetools.C:180
+msgid "LyX Internal Error!"
+msgstr "Erro Interno do Lyx!"
+
+#: src/filetools.C:164
+msgid "Could not test if directory is writeable"
+msgstr "Não é possível testar pois não há permissão de gravação no diretório"
+
+#: src/filetools.C:173
+msgid "Cannot open directory test file"
+msgstr "Não foi possível abrir arquivo de teste"
+
+#: src/filetools.C:181
+msgid "Created test file but cannot remove it?"
+msgstr "Criado arquivo de teste, mas não foi possível removê-lo?"
+
+#: src/filetools.C:279
+msgid "Error! Cannot open directory:"
+msgstr "Erro! Não foi possível abrir o diretório:"
+
+#: src/filetools.C:291
+msgid "Error! Could not remove file:"
+msgstr "Erro! Não foi possível remover o arquivo:"
+
+#: src/filetools.C:305
+msgid "Error! Couldn't create temporary directory:"
+msgstr "Erro! Não foi possível criar o diretório temporário:"
+
+#: src/filetools.C:318
+msgid "Error! Couldn't delete temporary directory:"
+msgstr "Erro! Não foi possível apagar diretório temporário!"
+
+#: src/filetools.C:397
+msgid "Internal error!"
+msgstr "Erro interno!"
+
+#: src/filetools.C:398
+msgid "Call to createDirectory with invalid name"
+msgstr "Chamada a criação de diretório com nome inválido"
+
+#: src/filetools.C:406
+msgid "Error! Couldn't create directory:"
+msgstr "Erro! Não foi possível criar o diretório"
+
+#: src/filetools.C:861 src/lyx_cb.C:329 src/lyxfunc.C:2289
+msgid "---unnamed---"
+msgstr "--- sem nome ---"
+
+#: src/formula.C:831
+msgid "Math greek mode on"
+msgstr "Modo Matemático Grego Ativado "
+
+#: src/formula.C:842
+msgid "Math greek keyboard on"
+msgstr "Teclado matemático grego ativado"
+
+#: src/formula.C:844
+msgid "Math greek keyboard off"
+msgstr "Teclado matemático grego desativado"
+
+#: src/formula.C:859 src/formula.C:1145
+msgid "TeX mode"
+msgstr "Modo Tex"
+
+#: src/formula.C:874
+msgid "No number"
+msgstr "Sem número"
+
+#: src/formula.C:877
+msgid "Number"
+msgstr "Número"
+
+#: src/formula.C:1040
+msgid "math text mode"
+msgstr "modo matemático texto"
+
+#: src/formula.C:1049
+msgid "Invalid action in math mode!"
+msgstr "Ação inválida em modo matemático!"
+
+#: src/formulamacro.C:131 src/formulamacro.C:155
+msgid "Macro: "
+msgstr "Macro: "
+
+#: src/insetbib.C:148
+msgid "BibTeX Generated References"
+msgstr "Referências BibTeX geradas"
+
+#: src/insetbib.C:181
+msgid "Database:"
+msgstr "Bases de dados:"
+
+#: src/insetbib.C:182
+msgid "Style:"
+msgstr "Estilo:"
+
+#: src/insetinclude.C:96
+msgid "Input"
+msgstr "Entrada"
+
+#: src/insetinclude.C:98
+msgid "Verbatim Input"
+msgstr "Entrada textual"
+
+#: src/insetinclude.C:100
+msgid "Include"
+msgstr "Incluir"
+
+#: src/insetindex.C:47
+msgid "Index: "
+msgstr "Índice: "
+
+#: src/insetindex.C:77
+msgid "PrintIndex"
+msgstr "Imprimir Índice"
+
+#: src/insetref.C:62
+msgid "Page: "
+msgstr "Página: "
+
+#: src/insetref.C:64
+msgid "Ref: "
+msgstr "Ref: "
+
+#: src/intl.C:229 src/intl.C:230
+msgid "Other..."
+msgstr "Outra..."
+
+#: src/kbmap.C:303
+msgid "   options: "
+msgstr "   opções: "
+
+#: src/layout.C:1288
+msgid "LyX wasn't able to find it's layout descriptions!"
+msgstr "Lyx não pode encontrar as descrições de layout!"
+
+#: src/layout.C:1289
+msgid "Check that the file \"textclass.lst\""
+msgstr "Verificar se o arquivo \"textclass.lst\""
+
+#: src/layout.C:1290
+msgid "is installed correctly. Sorry, has to exit :-("
+msgstr "está instalado corretamente. Perdão, mas o programa será finalizado."
+
+#: src/lyx_cb.C:337
+msgid "Save failed. Rename and try again?"
+msgstr "Falha no salvamento. Renomear e tentar novamente?"
+
+#: src/lyx_cb.C:339
+msgid "(If not, document is not saved.)"
+msgstr "(Caso a resposta seja negativa, o documento não será salvo.)"
+
+#: src/lyx_cb.C:361
+msgid ""
+"*.lyx|Klyx Documents (*.lyx)\n"
+"*|All Files"
+msgstr ""
+"*.lyx|Documentos Klyx (*.lyx)\n"
+"*|Todos os Arquivos "
+
+#: src/lyx_cb.C:364
+msgid "Enter Filename to Save Document as"
+msgstr "Informar o Nome do Arquivos para Salvar o Documento como"
+
+#: src/lyx_cb.C:367 src/lyxfunc.C:2279 src/lyxfunc.C:2371 src/lyxfunc.C:2418
+msgid "Canceled."
+msgstr "Cancelado."
+
+#: src/lyx_cb.C:378
+msgid "Same name as document already has:"
+msgstr "Já existe um documento com o nome de:"
+
+#: src/lyx_cb.C:380
+msgid "Save anyway?"
+msgstr "Salvar assim mesmo?"
+
+#: src/lyx_cb.C:386
+msgid "Another document with same name open!"
+msgstr "Há outro documento de mesmo nome aberto!"
+
+#: src/lyx_cb.C:388
+msgid "Replace with current document?"
+msgstr "Substituir com o documento atual?"
+
+#: src/lyx_cb.C:396
+msgid "Document renamed to '"
+msgstr "Documento renomeado para '"
+
+#: src/lyx_cb.C:398
+msgid "', but not saved..."
+msgstr "', mas ainda não salvo..."
+
+#: src/lyx_cb.C:404
+msgid "Document already exists:"
+msgstr "Documento já existe:"
+
+#: src/lyx_cb.C:406
+msgid "Replace file?"
+msgstr "Substituir arquivo?"
+
+#: src/lyx_cb.C:443
+msgid "One error detected"
+msgstr "Erro detectado"
+
+#: src/lyx_cb.C:444
+msgid "You should try to fix it."
+msgstr "Você deveria tentar corrigi-los."
+
+#: src/lyx_cb.C:447
+msgid " errors detected."
+msgstr " erros detectados"
+
+#: src/lyx_cb.C:448
+msgid "You should try to fix them."
+msgstr "Você deverá corrigi-los."
+
+#: src/lyx_cb.C:450
+msgid "There where errors during the LaTeX run."
+msgstr "Houve erros durante a execução do LaTeX."
+
+#: src/lyx_cb.C:461
+msgid "Chktex is no fun for LinuxDoc."
+msgstr "Chktex não é compatível com LinuxDoc."
+
+#: src/lyx_cb.C:470
+msgid "No warnings found."
+msgstr "Nenhum aviso de erro encontrado."
+
+#: src/lyx_cb.C:472
+msgid "One warning found."
+msgstr "Um aviso encontrado."
+
+#: src/lyx_cb.C:473
+msgid "Use 'Edit->Go to Error' to find it."
+msgstr "Usar 'Editar->Ir Para o Erro' para encontrá-lo."
+
+#: src/lyx_cb.C:476
+msgid " warnings found."
+msgstr " avisos encontrados."
+
+#: src/lyx_cb.C:477
+msgid "Use 'Edit->Go to Error' to find them."
+msgstr "Usar 'Editar->Ir Para o Erro' para encontrá-los."
+
+#: src/lyx_cb.C:479
+msgid "Chktex run successfully"
+msgstr "Chktex foi executado com sucesso"
+
+#: src/lyx_cb.C:481
+msgid "It seems chktex does not work."
+msgstr "Parece que o programa Chktex não está funcionando."
+
+#: src/lyx_cb.C:537 src/lyx_cb.C:540
+msgid "Executing command:"
+msgstr "Executando o comando:"
+
+#: src/lyx_cb.C:754
+msgid ""
+"*.tex|LaTex Files (*.tex)\n"
+"*|All Files"
+msgstr ""
+"*.tex|Arquivos LaTex (*.tex)\n"
+"*|Todos os Arquivos"
+
+#: src/lyx_cb.C:757
+msgid "Export LaTeX File"
+msgstr "Exportar Arquivo LaTeX"
+
+#: src/lyx_cb.C:769
+msgid "Nice LaTeX file saved as"
+msgstr "Arquivo LaTeX salvo como"
+
+#: src/lyx_cb.C:781
+msgid "Document class must be linuxdoc."
+msgstr "A classe de documento deve ser Linuxdoc"
+
+#: src/lyx_cb.C:791
+msgid "*.sgml|LinuxDoc SGML file (*.sgml)"
+msgstr "*.sgml|Arquivo LinuxDoc SGML (*.sgml)"
+
+#: src/lyx_cb.C:799
+msgid "Building LinuxDoc SGML file `"
+msgstr "Construindo arquivo LinuxDoc SGML `"
+
+#: src/lyx_cb.C:803
+msgid "LinuxDoc SGML file"
+msgstr "Arquivo LinjuxDoc SGML"
+
+#: src/lyx_cb.C:804
+msgid "built"
+msgstr "construído"
+
+#: src/lyx_cb.C:816
+msgid "*.txt|Text Files"
+msgstr "*.txt|Arquivos Text"
+
+#: src/lyx_cb.C:817
+msgid "Export Text File"
+msgstr "Exportar Arquivo Texto"
+
+#: src/lyx_cb.C:827
+msgid "Ascii file saved as"
+msgstr "Arquivo ASCII salvo como"
+
+#: src/lyx_cb.C:878
+msgid "Autosaving current document..."
+msgstr "Salvamento automático do documento atual..."
+
+#: src/lyx_cb.C:918
+msgid "Autosave Failed!"
+msgstr "Salvamento automático falhou!"
+
+#: src/lyx_cb.C:965
+msgid "File to Insert"
+msgstr "Arquivo Para Inserção"
+
+#: src/lyx_cb.C:973
+msgid "Error! Cannot open specified file:"
+msgstr "Erro! Não foi possível abrir o arquivo especificado: "
+
+#: src/lyx_cb.C:1017
+msgid "sec: "
+msgstr "sec: "
+
+#: src/lyx_cb.C:1019
+msgid "fig: "
+msgstr "fig: "
+
+#: src/lyx_cb.C:1022
+msgid "tab: "
+msgstr "tab: "
+
+#: src/lyx_cb.C:1059
+msgid "Inserting Footnote..."
+msgstr "Inserindo Nota de Rodapé..."
+
+#: src/lyx_cb.C:1117
+msgid "Importing LinuxDoc SGML file `"
+msgstr "Importanto arquivo LinuxDoc SGML`"
+
+#: src/lyx_cb.C:1125
+msgid "Converting LinuxDoc SGML to TeX file..."
+msgstr "Convertendo LinuxDoc SGML para arquivo TeX..."
+
+#: src/lyx_cb.C:1132
+msgid "Converting LinuxDoc SGML to dvi file..."
+msgstr "Convertendo LinuxDoc SGML para arquivo DVI..."
+
+#: src/lyx_cb.C:1577 src/lyx_gui_misc.C:209
+msgid "Any changes will be ignored"
+msgstr "Todas as alterações serão ignoradas"
+
+#: src/lyx_cb.C:1578 src/lyx_gui_misc.C:210
+msgid "The document is read-only:"
+msgstr "O documento tem permissões somente de leitura:"
+
+#: src/lyx_cb.C:1631
+msgid ""
+"Do you want to save the current settings\n"
+"for Character, Document, Paper and Quotes\n"
+"as default for new documents?"
+msgstr ""
+"Deseja salvar as configurações atuais\n"
+"para Caracter, Documento, Papel e Citações\n"
+"como padrões para um novo documento?"
+
+#: src/lyx_cb.C:1685 src/lyx_cb.C:1696
+msgid "Open/Close..."
+msgstr "Abrir/Fechar..."
+
+#: src/lyx_cb.C:1717
+msgid "No further undo information"
+msgstr "Não é possível desfazer"
+
+#: src/lyx_cb.C:1727
+msgid "Redo not yet supported in math mode"
+msgstr "Refazer não é suportado no modo matemático"
+
+#: src/lyx_cb.C:1736
+msgid "No further redo information"
+msgstr "Não é possível refazer"
+
+#: src/lyx_cb.C:1914
+msgid "Font: "
+msgstr "Fonte: "
+
+#: src/lyx_cb.C:1918
+msgid ", Depth: "
+msgstr ", Profundidade: "
+
+#: src/lyx_cb.C:1945
+msgid "Inserting margin note..."
+msgstr "Inserindo nota de margem..."
+
+#: src/lyx_cb.C:1978
+msgid "Paragraph environment type copied"
+msgstr "Ambiente de tipo de parágrafo copiada"
+
+#: src/lyx_cb.C:1987
+msgid "Paragraph environment type set"
+msgstr "Ambiente de tipo de parágrafo configurada"
+
+#: src/lyx_cb.C:2039
+msgid "Melt"
+msgstr "Dissolver"
+
+#: src/lyx_cb.C:2062
+msgid "Changed environment depth (in possible range, maybe not)"
+msgstr "Profundidade de ambiente alterada (nas faixas possíveis)"
+
+#: src/lyx_cb.C:2080
+msgid ""
+"No font change defined. Use Character under the Layout menu to define font "
+"change."
+msgstr ""
+"Nenhuma mudança de fonte definida. Usar Caracter sob o menu de Layout para " 
+" definir a mudança de fonte. "
+
+#: src/lyx_cb.C:2280
+msgid "Paragraph layout set"
+msgstr "Configuração de layout de parágrafo"
+
+#: src/lyx_cb.C:2383
+msgid "Converting document to new document class..."
+msgstr "Convertendo documento para uma nova classe..."
+
+#: src/lyx_cb.C:2395
+msgid "One paragraph couldn't be converted"
+msgstr "Um parágrafo não pode ser convertido"
+
+#: src/lyx_cb.C:2398
+msgid " paragraphs couldn't be converted"
+msgstr " parágrafos não podem ser convertidos"
+
+#: src/lyx_cb.C:2400
+msgid "Conversion Errors!"
+msgstr "Erros de Conversão!"
+
+#: src/lyx_cb.C:2401
+msgid "into chosen document class"
+msgstr "em classes de documentos escolhidos"
+
+#: src/lyx_cb.C:2474
+msgid "Document layout set"
+msgstr "Configuração de layout de documento"
+
+#: src/lyx_cb.C:2514 src/lyx_cb.C:2518
+msgid "No more notes"
+msgstr "Sem outras notas"
+
+#: src/lyx_cb.C:2551
+msgid "Cannot insert table in table."
+msgstr "Não foi possível inserir uma tabela em outra"
+
+#: src/lyx_cb.C:2556
+msgid "Inserting table..."
+msgstr "Inserindo tabela..."
+
+#: src/lyx_cb.C:2615
+msgid "Table inserted"
+msgstr "Tabela inserida"
+
+#: src/lyx_cb.C:2747
+msgid "Inserting figure..."
+msgstr "Inserindo figura..."
+
+#: src/lyx_cb.C:2753 src/lyx_cb.C:2804
+msgid "Figure inserted"
+msgstr "Figura inserida"
+
+#: src/lyx_cb.C:2837
+msgid "Screen options set"
+msgstr "Opções de tela configuradas"
+
+#: src/lyx_cb.C:2869
+msgid "Running configure..."
+msgstr "Executando configuração..."
+
+#: src/lyx_cb.C:2876
+msgid "Reloading configuration..."
+msgstr "Recarregando a configuração..."
+
+#: src/lyx_cb.C:2878
+msgid "The system has been reconfigured."
+msgstr "O sistema foi configurado."
+
+#: src/lyx_cb.C:2879
+msgid "You need to restart LyX to make use of any"
+msgstr "É necessário reinicializar o LyX para utilizar as funcionalidades"
+
+#: src/lyx_cb.C:2880
+msgid "updated document class specifications."
+msgstr "das especificações das classes de documentos atualizadas."
+
+#: src/lyx_gui_misc.C:147
+msgid "Alert"
+msgstr "Alerta"
+
+#: src/lyx_gui_misc.C:165
+msgid "Question"
+msgstr "Questão"
+
+#: src/lyx_main.C:346
+msgid ""
+"You don't have a personal LyX directory.\n"
+"It is needed to keep your own configuration.\n"
+"Should I try to set it up for you (recommended)?"
+msgstr ""
+"O usuário não tem um diretório pessoal Lyx.\n"
+"É necessário manter a sua própria configuração.\n"
+"Deseje que seja criado um (recomendado)?"
+
+#: src/lyx_main.C:357
+#, c-format
+msgid "LyX: Creating directory %s and running configure..."
+msgstr "LyX: criando diretório %s e executando configuração..."
+
+#: src/lyx_main.C:364
+#, c-format
+msgid "Failed. Will use %s instead."
+msgstr "Falha. Será utilizado %s."
+
+#: src/lyx_main.C:373
+msgid "LyX: Done!"
+msgstr "LyX: Feito!"
+
+#: src/lyx_main.C:386
+msgid "LyX Warning!"
+msgstr "Aviso LyX!"
+
+#: src/lyx_main.C:387
+msgid "Error while reading "
+msgstr "Erro durante a leitura"
+
+#: src/lyx_main.C:388
+msgid "Using built-in defaults."
+msgstr "Usando padrões pré definidos"
+
+#: src/lyx_sendfax_main.C:44
+msgid "Fax File: "
+msgstr "Arquivo de Fax:"
+
+#: src/lyxfr1.C:205 src/lyxfr1.C:256
+msgid "String not found!"
+msgstr "Expressão não encontrada!"
+
+#: src/lyxfr1.C:208
+msgid "1 string has been replaced."
+msgstr "Primeira expressão sendo substituída."
+
+#: src/lyxfr1.C:212
+msgid " strings have been replaced."
+msgstr " expressões foram substituídas"
+
+#: src/lyxfr1.C:252
+msgid "Found."
+msgstr "Encontradas"
+
+#: src/lyxfunc.C:310
+msgid "Unknown sequence:"
+msgstr "Seqüência desconhecida: "
+
+#: src/lyxfunc.C:418 src/lyxfunc.C:2224
+msgid "Unknown action"
+msgstr "Ação desconhecida"
+
+#: src/lyxfunc.C:422
+msgid "Command not allowed without any document open"
+msgstr "Comando não permitido sem que um documento esteja aberto"
+
+#: src/lyxfunc.C:482
+msgid "Document is read-only"
+msgstr "Documento tem permissões somente de leitura"
+
+#: src/lyxfunc.C:673 src/lyxfunc.C:684
+msgid "Unknown preview type: "
+msgstr "Tipo desconhecido de pré visualização"
+
+#: src/lyxfunc.C:745
+msgid "Unknown export type: "
+msgstr "Tipo de exportação desconhecido"
+
+#: src/lyxfunc.C:1066
+msgid "Layout "
+msgstr "Layout "
+
+#: src/lyxfunc.C:1067
+msgid " not known"
+msgstr " não conhecido"
+
+#: src/lyxfunc.C:1190
+msgid "No cross-reference to toggle"
+msgstr "Sem referências cruzadas para alternar "
+
+#: src/lyxfunc.C:1982
+msgid "This is only allowed in math mode!"
+msgstr "Esta ação somente é permitida em modo matemático!"
+
+#: src/lyxfunc.C:2134
+msgid "Unknown kind of footnote"
+msgstr "Tipo de nota de rodapé desconhecida"
+
+#: src/lyxfunc.C:2183
+msgid "Document is read only"
+msgstr "Documento tem permissões somente de leitura"
+
+#: src/lyxfunc.C:2274
+msgid ""
+"*.lyx|LyX Documents (*.lyx)\n"
+"*|All Files"
+msgstr ""
+"*.lyx|Documentos LyX (*.lyx)\n"
+"*|Todos os documentoss"
+
+#: src/lyxfunc.C:2276
+msgid "newfile"
+msgstr "novo arquivo"
+
+#: src/lyxfunc.C:2298
+msgid ""
+"Do you want to close that document now?\n"
+"('No' will just switch to the open version)"
+msgstr ""
+"Deseja fechar este documento?\n"
+"('Não' irá alternar para uma versão aberta do documento)"
+
+#: src/lyxfunc.C:2320
+msgid "File already exists:"
+msgstr "Arquivo já existe:"
+
+#: src/lyxfunc.C:2322
+msgid "Do you want to open the document?"
+msgstr "Deseja abrir o documento?"
+
+#: src/lyxfunc.C:2430
+msgid "Inserting document"
+msgstr "Inserindo o documento"
+
+#: src/lyxfunc.C:2436
+msgid "inserted."
+msgstr "inserido."
+
+#: src/lyxfunc.C:2438
+msgid "Could not insert document"
+msgstr "Não foi possível inserir o documento"
+
+#: src/lyxvc.C:160
+msgid "LyX VC: Initial description"
+msgstr "LyX VC: descrição inicial"
+
+#: src/lyxvc.C:174
+msgid "LyX VC: Log Message"
+msgstr "LyX VC: mensagem do histórico"
+
+#: src/lyxvc.C:197
+msgid ""
+"When reverting you will lose all changes made to the document since the last "
+"check-in."
+msgstr ""
+"Ao reverter serão perdidas todas as mudanças feitas no documento desde a "
+" última  gravação."
+
+#: src/lyxvc.C:199
+msgid "Do you still want to do it?"
+msgstr "Ainda deseja fazer isto?"
+
+#: src/lyxvc.C:270
+msgid "Sorry, can't do this while pictures are being rendered."
+msgstr "Desculpe, mas não é possível executar esta função quando imagens"
+"estão sendo executadas."
+
+#: src/lyxvc.C:272
+msgid "Please wait a few seconds for this to finish and try again."
+msgstr "Por favor aguarde alguns instantes e tente novamente."
+
+#: src/lyxvc.C:274
+msgid "(or kill runaway gs processes by hand and try again.)"
+msgstr "(ou finalize todos os processo gs manualmente e tente novamente.)"
+
+#: src/lyxvc.C:280
+msgid "Can't do this while the spellchecker is running."
+msgstr "Não é possível executar esta ação enquanto o "
+"verificador ortográfico está sendo executado."
+
+#: src/lyxvc.C:282
+msgid "Stop the spellchecker first."
+msgstr "Para o verificador ortográfico antes. "
+
+#: src/minibuffer.C:43
+msgid "Welcome to LyX!"
+msgstr "Bem-vindo ao LyX!"
+
+#: src/minibuffer.C:56
+msgid "Executing:"
+msgstr "Executando:"
+
+#: src/minibuffer.C:173
+msgid "* No document open *"
+msgstr "* Nenhum documento aberto *"
+
+#: src/paragraph.C:1603
+msgid "Senseless with this layout!"
+msgstr "Este layout não faz sentido!"
+
+#: src/pathstack.C:53 src/pathstack.C:81
+msgid "Error: Could not change to directory: "
+msgstr "Erro: não foi possível alterar para o diretório: "
+
+#: src/pathstack.C:72
+msgid "LyX Internal Error:"
+msgstr "Erro Interno do Lyx"
+
+#: src/pathstack.C:72
+msgid "Path Stack underflow."
+msgstr "Excesso na Pilha de Caminhos"
+
+#: src/spellchecker.C:449
+msgid "ispell problem"
+msgstr "problema no utilitário ispell"
+
+#: src/spellchecker.C:450
+msgid ""
+"The ispell-process has died for some reason. *One* possible reason\n"
+"could be that you do not have a dictionary file\n"
+"for the language of this document installed.\n"
+"Check /usr/lib/ispell or set another\n"
+"dictionary in the Spellchecker Options menu."
+msgstr ""
+"O processo ispell foi finalizado por alguma razão. Uma possibilidade\n"
+"pode ser a ausência de uma arquivo de dicionário\n"
+"para o idioma deste documento.\n"
+"Verifique /usr/lib/ispell ou configure\n"
+"o dicionário no menu Opções de Verificação Ortográfica."
+
+#: src/spellchecker.C:560
+msgid " words checked."
+msgstr " palavras verificadas."
+
+#: src/spellchecker.C:562
+msgid " word checked."
+msgstr " palavra verificada."
+
+#: src/spellchecker.C:565
+#, c-format
+msgid ""
+"Spellchecking completed!\n"
+"\n"
+"%s"
+msgstr ""
+"Verificação ortográfica completada!\n"
+"\n"
+"%s"
+
+#: src/spellchecker.C:567
+msgid "Ispell process"
+msgstr "Processo Ispell"
+
+#: src/spellchecker.C:572
+msgid ""
+"The ispell-process has died for some reason.\n"
+"Maybe it has been killed."
+msgstr ""
+"O processo ispell foi finalizado por alguma razão.\n"
+"Talvez tenha sido exterminado pelo usuário. "
+
+#: src/text.C:1883
+msgid "Multicolumns can only be horizontally."
+msgstr "Multicolunas pode ser usada somente horizontalmente"
+
+#: src/text.C:4022 src/text.C:4030 src/text.C:4047 src/text.C:4062
+#: src/text2.C:1788 src/text2.C:1798 src/text2.C:2004 src/text2.C:2014
+#: src/text2.C:2106 src/text2.C:2115
+msgid "Impossible operation"
+msgstr "Operação impossível"
+
+#: src/text.C:4023
+msgid "You can't insert a float in a float!"
+msgstr "Não é possível inserir um objeto flutuante em outro similar! "
+
+#: src/text.C:4031
+msgid "You can't insert a marginpar in a minipage!"
+msgstr "Não se pode inserir uma margem em uma mini página!"
+
+#: src/text.C:4047
+msgid "Cannot cut table."
+msgstr "Não é possível cortar a tabela."
+
+#: src/text.C:4063
+msgid "Float would include float!"
+msgstr "Um objeto flutuante não pode incluir outro!"
+
+#: src/text2.C:335
+msgid "Opened float"
+msgstr "Objeto flutuante não pode ser aberto"
+
+#: src/text2.C:338
+msgid "Closed float"
+msgstr "Objeto flutuante fechado"
+
+#: src/text2.C:377
+msgid "Nothing to do"
+msgstr "Nada a fazer"
+
+#: src/text2.C:1100
+msgid "Font style changed"
+msgstr "Estilo de fonte alterado"
+
+#: src/text2.C:1788 src/text2.C:2004
+msgid "Don't know what to do with half floats."
+msgstr "O programa não pode lidar com meio objetos flutuantes"
+
+#: src/text2.C:1798 src/text2.C:2014
+msgid "Don't know what to do with half tables."
+msgstr "O programa não pode lidar com meia tabela"
+
+#: src/text2.C:2107
+msgid "Can't paste float into float!"
+msgstr "Não é possível colar um objeto flutuante em outro!"
+
+#: src/text2.C:2116
+msgid "Table cell cannot include more than one paragraph!"
+msgstr "Célula de tabela não pode conter mais que um parágrafo!"
+
+#: src/figinset.h:49
+msgid "Opened figure"
+msgstr "Figura aberta"
+
+#: src/formula.h:69
+msgid "Math editor mode"
+msgstr "Modo de edição matemática"
+
+#: src/formulamacro.h:59
+msgid "Math macro editor mode"
+msgstr "Modo de edição de macros matemáticas"
+
+#: src/inseterror.h:52
+msgid "Opened error"
+msgstr "Erro de abertura"
+
+#: src/insetinfo.h:50
+msgid "Opened note"
+msgstr "Nota aberta"
+
+#: src/insetlabel.h:32
+msgid "&Jump back"
+msgstr "&Retornar"
+
+#: src/insetloa.h:34
+msgid "List of Algorithms"
+msgstr "Lista de Algoritmos"
+
+#: src/insetlof.h:33
+msgid "List of Figures"
+msgstr "Lista de Figuras"
+
+#: src/insetlot.h:33
+msgid "List of Tables"
+msgstr "Lista de Tabelas"
+
+#: src/insetparent.h:40
+msgid "Parent:"
+msgstr "Pai:"
+
+#: src/insetref.h:46
+msgid "&Jump to label"
+msgstr "&Ir para a etiqueta"
+
+#: src/insettoc.h:33
+msgid "Table of Contents"
+msgstr "Índice"
+
+#: src/lyxinset.h:104
+msgid "Opened inset"
+msgstr "Inserção Aberta"
+
+#: src/lyxlib.h:48
+msgid "unknown"
+msgstr "desconhecido"
+
