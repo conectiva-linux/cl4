@@ -1,0 +1,11 @@
+--- dhcpcd-0.70/if.c.rtup	Wed Dec 23 16:24:29 1998
++++ dhcpcd-0.70/if.c	Wed Dec 23 16:26:12 1998
+@@ -283,7 +283,7 @@
+ 			p->sin_addr.s_addr	= gwAddr;
+ 			rtent.rt_dev		= ifinfo->ifname;	/* interface name */
+ 			rtent.rt_metric		= 2;				/* metric (see route.h) */
+-			rtent.rt_flags		= RTF_GATEWAY;		/* dest. is a gateway */
++			rtent.rt_flags		= RTF_GATEWAY | RTF_UP;/* dest. is a gateway */
+ 			if ( ioctl(s, SIOCADDRT, &rtent) < 0 ) {
+ 				logSysExit("ioctl SIOCADDRT (setDefRoute)");
+ 			}

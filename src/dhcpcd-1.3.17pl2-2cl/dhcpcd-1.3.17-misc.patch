@@ -1,0 +1,23 @@
+--- dhcpcd-1.3.17-pl2/Makefile.misc	Wed Jan 13 21:12:17 1999
++++ dhcpcd-1.3.17-pl2/Makefile	Mon Apr 19 14:44:41 1999
+@@ -25,19 +25,7 @@
+ 
+ ifeq ($(OSNAME),Linux)
+ CC = gcc
+-CFLAGS = -O2 $(ADDS) -fomit-frame-pointer -Wall $(DEFS)
+-ifeq ($(ARCH),i386)
+-CFLAGS+= -malign-loops=2 -malign-jumps=2 -malign-functions=2
+-endif
+-ifeq ($(ARCH),i486)
+-CFLAGS+= -malign-loops=2 -malign-jumps=2 -malign-functions=2
+-endif
+-ifeq ($(ARCH),i586)
+-CFLAGS+= -malign-loops=2 -malign-jumps=2 -malign-functions=2
+-endif
+-ifeq ($(ARCH),i686)
+-CFLAGS+= -malign-loops=2 -malign-jumps=2 -malign-functions=2
+-endif
++CFLAGS = $(RPM_OPT_FLAGS) -Wall $(DEFS)
+ LDFLAGS = -s -O2 -static
+ INCLUDES = -I.
+ else
