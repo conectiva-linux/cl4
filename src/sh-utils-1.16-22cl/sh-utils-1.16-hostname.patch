@@ -1,0 +1,13 @@
+--- sh-utils-1.16/src/Makefile.in.hostname	Sun Jan 26 22:20:14 1997
++++ sh-utils-1.16/src/Makefile.in	Tue Mar 25 16:10:33 1997
+@@ -51,8 +51,9 @@
+ 
+ bin_SCRIPTS = false groups true @OPTIONAL_BIN_ZCRIPTS@
+ 
++# removed hostname
+ bin_PROGRAMS = basename date dirname echo env expr factor \
+-  hostname id logname pathchk printenv printf pwd seq sleep su tee test \
++  id logname pathchk printenv printf pwd seq sleep su tee test \
+   tty users who whoami yes @OPTIONAL_BIN_PROGS@
+ 
+ datadir = $(prefix)/@DATADIRNAME@

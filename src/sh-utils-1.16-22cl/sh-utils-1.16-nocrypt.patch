@@ -1,0 +1,159 @@
+--- sh-utils-1.16/src/Makefile.in.djb	Fri May  8 17:44:08 1998
++++ sh-utils-1.16/src/Makefile.in	Fri May  8 17:56:23 1998
+@@ -303,7 +303,7 @@
+ maintainer-clean-compile:
+ 
+ ansi2knr: ansi2knr.o
+-	$(LINK) ansi2knr.o $(LIBS)
++	$(LINK) ansi2knr.o
+ 
+ ansi2knr.o: $(CONFIG_HEADER)
+ 
+@@ -353,87 +353,87 @@
+ $(chroot_OBJECTS): ../config.h
+ 
+ chroot: $(chroot_OBJECTS) $(chroot_DEPENDENCIES)
+-	$(LINK) $(chroot_LDFLAGS) $(chroot_OBJECTS) $(chroot_LDADD) $(LIBS)
++	$(LINK) $(chroot_LDFLAGS) $(chroot_OBJECTS) $(chroot_LDADD)
+ $(nice_OBJECTS): ../config.h
+ 
+ nice: $(nice_OBJECTS) $(nice_DEPENDENCIES)
+-	$(LINK) $(nice_LDFLAGS) $(nice_OBJECTS) $(nice_LDADD) $(LIBS)
++	$(LINK) $(nice_LDFLAGS) $(nice_OBJECTS) $(nice_LDADD)
+ $(stty_OBJECTS): ../config.h
+ 
+ stty: $(stty_OBJECTS) $(stty_DEPENDENCIES)
+-	$(LINK) $(stty_LDFLAGS) $(stty_OBJECTS) $(stty_LDADD) $(LIBS)
++	$(LINK) $(stty_LDFLAGS) $(stty_OBJECTS) $(stty_LDADD)
+ $(uname_OBJECTS): ../config.h
+ 
+ uname: $(uname_OBJECTS) $(uname_DEPENDENCIES)
+-	$(LINK) $(uname_LDFLAGS) $(uname_OBJECTS) $(uname_LDADD) $(LIBS)
++	$(LINK) $(uname_LDFLAGS) $(uname_OBJECTS) $(uname_LDADD)
+ $(uptime_OBJECTS): ../config.h
+ 
+ uptime: $(uptime_OBJECTS) $(uptime_DEPENDENCIES)
+-	$(LINK) $(uptime_LDFLAGS) $(uptime_OBJECTS) $(uptime_LDADD) $(LIBS)
++	$(LINK) $(uptime_LDFLAGS) $(uptime_OBJECTS) $(uptime_LDADD)
+ $(basename_OBJECTS): ../config.h
+ 
+ basename: $(basename_OBJECTS) $(basename_DEPENDENCIES)
+-	$(LINK) $(basename_LDFLAGS) $(basename_OBJECTS) $(basename_LDADD) $(LIBS)
++	$(LINK) $(basename_LDFLAGS) $(basename_OBJECTS) $(basename_LDADD)
+ $(date_OBJECTS): ../config.h
+ 
+ date: $(date_OBJECTS) $(date_DEPENDENCIES)
+-	$(LINK) $(date_LDFLAGS) $(date_OBJECTS) $(date_LDADD) $(LIBS)
++	$(LINK) $(date_LDFLAGS) $(date_OBJECTS) $(date_LDADD)
+ $(dirname_OBJECTS): ../config.h
+ 
+ dirname: $(dirname_OBJECTS) $(dirname_DEPENDENCIES)
+-	$(LINK) $(dirname_LDFLAGS) $(dirname_OBJECTS) $(dirname_LDADD) $(LIBS)
++	$(LINK) $(dirname_LDFLAGS) $(dirname_OBJECTS) $(dirname_LDADD)
+ $(echo_OBJECTS): ../config.h
+ 
+ echo: $(echo_OBJECTS) $(echo_DEPENDENCIES)
+-	$(LINK) $(echo_LDFLAGS) $(echo_OBJECTS) $(echo_LDADD) $(LIBS)
++	$(LINK) $(echo_LDFLAGS) $(echo_OBJECTS) $(echo_LDADD)
+ $(env_OBJECTS): ../config.h
+ 
+ env: $(env_OBJECTS) $(env_DEPENDENCIES)
+-	$(LINK) $(env_LDFLAGS) $(env_OBJECTS) $(env_LDADD) $(LIBS)
++	$(LINK) $(env_LDFLAGS) $(env_OBJECTS) $(env_LDADD)
+ $(expr_OBJECTS): ../config.h
+ 
+ expr: $(expr_OBJECTS) $(expr_DEPENDENCIES)
+-	$(LINK) $(expr_LDFLAGS) $(expr_OBJECTS) $(expr_LDADD) $(LIBS)
++	$(LINK) $(expr_LDFLAGS) $(expr_OBJECTS) $(expr_LDADD)
+ $(factor_OBJECTS): ../config.h
+ 
+ factor: $(factor_OBJECTS) $(factor_DEPENDENCIES)
+-	$(LINK) $(factor_LDFLAGS) $(factor_OBJECTS) $(factor_LDADD) $(LIBS)
++	$(LINK) $(factor_LDFLAGS) $(factor_OBJECTS) $(factor_LDADD)
+ $(hostname_OBJECTS): ../config.h
+ 
+ hostname: $(hostname_OBJECTS) $(hostname_DEPENDENCIES)
+-	$(LINK) $(hostname_LDFLAGS) $(hostname_OBJECTS) $(hostname_LDADD) $(LIBS)
++	$(LINK) $(hostname_LDFLAGS) $(hostname_OBJECTS) $(hostname_LDADD)
+ $(id_OBJECTS): ../config.h
+ 
+ id: $(id_OBJECTS) $(id_DEPENDENCIES)
+-	$(LINK) $(id_LDFLAGS) $(id_OBJECTS) $(id_LDADD) $(LIBS)
++	$(LINK) $(id_LDFLAGS) $(id_OBJECTS) $(id_LDADD)
+ $(logname_OBJECTS): ../config.h
+ 
+ logname: $(logname_OBJECTS) $(logname_DEPENDENCIES)
+-	$(LINK) $(logname_LDFLAGS) $(logname_OBJECTS) $(logname_LDADD) $(LIBS)
++	$(LINK) $(logname_LDFLAGS) $(logname_OBJECTS) $(logname_LDADD)
+ $(pathchk_OBJECTS): ../config.h
+ 
+ pathchk: $(pathchk_OBJECTS) $(pathchk_DEPENDENCIES)
+-	$(LINK) $(pathchk_LDFLAGS) $(pathchk_OBJECTS) $(pathchk_LDADD) $(LIBS)
++	$(LINK) $(pathchk_LDFLAGS) $(pathchk_OBJECTS) $(pathchk_LDADD)
+ $(printenv_OBJECTS): ../config.h
+ 
+ printenv: $(printenv_OBJECTS) $(printenv_DEPENDENCIES)
+-	$(LINK) $(printenv_LDFLAGS) $(printenv_OBJECTS) $(printenv_LDADD) $(LIBS)
++	$(LINK) $(printenv_LDFLAGS) $(printenv_OBJECTS) $(printenv_LDADD)
+ $(printf_OBJECTS): ../config.h
+ 
+ printf: $(printf_OBJECTS) $(printf_DEPENDENCIES)
+-	$(LINK) $(printf_LDFLAGS) $(printf_OBJECTS) $(printf_LDADD) $(LIBS)
++	$(LINK) $(printf_LDFLAGS) $(printf_OBJECTS) $(printf_LDADD)
+ $(pwd_OBJECTS): ../config.h
+ 
+ pwd: $(pwd_OBJECTS) $(pwd_DEPENDENCIES)
+-	$(LINK) $(pwd_LDFLAGS) $(pwd_OBJECTS) $(pwd_LDADD) $(LIBS)
++	$(LINK) $(pwd_LDFLAGS) $(pwd_OBJECTS) $(pwd_LDADD)
+ $(seq_OBJECTS): ../config.h
+ 
+ seq: $(seq_OBJECTS) $(seq_DEPENDENCIES)
+-	$(LINK) $(seq_LDFLAGS) $(seq_OBJECTS) $(seq_LDADD) $(LIBS)
++	$(LINK) $(seq_LDFLAGS) $(seq_OBJECTS) $(seq_LDADD)
+ $(sleep_OBJECTS): ../config.h
+ 
+ sleep: $(sleep_OBJECTS) $(sleep_DEPENDENCIES)
+-	$(LINK) $(sleep_LDFLAGS) $(sleep_OBJECTS) $(sleep_LDADD) $(LIBS)
++	$(LINK) $(sleep_LDFLAGS) $(sleep_OBJECTS) $(sleep_LDADD)
+ $(su_OBJECTS): ../config.h
+ 
+ su: $(su_OBJECTS) $(su_DEPENDENCIES)
+@@ -441,31 +441,31 @@
+ $(tee_OBJECTS): ../config.h
+ 
+ tee: $(tee_OBJECTS) $(tee_DEPENDENCIES)
+-	$(LINK) $(tee_LDFLAGS) $(tee_OBJECTS) $(tee_LDADD) $(LIBS)
++	$(LINK) $(tee_LDFLAGS) $(tee_OBJECTS) $(tee_LDADD)
+ $(test_OBJECTS): ../config.h
+ 
+ test: $(test_OBJECTS) $(test_DEPENDENCIES)
+-	$(LINK) $(test_LDFLAGS) $(test_OBJECTS) $(test_LDADD) $(LIBS)
++	$(LINK) $(test_LDFLAGS) $(test_OBJECTS) $(test_LDADD)
+ $(tty_OBJECTS): ../config.h
+ 
+ tty: $(tty_OBJECTS) $(tty_DEPENDENCIES)
+-	$(LINK) $(tty_LDFLAGS) $(tty_OBJECTS) $(tty_LDADD) $(LIBS)
++	$(LINK) $(tty_LDFLAGS) $(tty_OBJECTS) $(tty_LDADD)
+ $(users_OBJECTS): ../config.h
+ 
+ users: $(users_OBJECTS) $(users_DEPENDENCIES)
+-	$(LINK) $(users_LDFLAGS) $(users_OBJECTS) $(users_LDADD) $(LIBS)
++	$(LINK) $(users_LDFLAGS) $(users_OBJECTS) $(users_LDADD)
+ $(who_OBJECTS): ../config.h
+ 
+ who: $(who_OBJECTS) $(who_DEPENDENCIES)
+-	$(LINK) $(who_LDFLAGS) $(who_OBJECTS) $(who_LDADD) $(LIBS)
++	$(LINK) $(who_LDFLAGS) $(who_OBJECTS) $(who_LDADD)
+ $(whoami_OBJECTS): ../config.h
+ 
+ whoami: $(whoami_OBJECTS) $(whoami_DEPENDENCIES)
+-	$(LINK) $(whoami_LDFLAGS) $(whoami_OBJECTS) $(whoami_LDADD) $(LIBS)
++	$(LINK) $(whoami_LDFLAGS) $(whoami_OBJECTS) $(whoami_LDADD)
+ $(yes_OBJECTS): ../config.h
+ 
+ yes: $(yes_OBJECTS) $(yes_DEPENDENCIES)
+-	$(LINK) $(yes_LDFLAGS) $(yes_OBJECTS) $(yes_LDADD) $(LIBS)
++	$(LINK) $(yes_LDFLAGS) $(yes_OBJECTS) $(yes_LDADD)
+ 
+ install-binSCRIPTS: $(bin_SCRIPTS)
+ 	$(NORMAL_INSTALL)

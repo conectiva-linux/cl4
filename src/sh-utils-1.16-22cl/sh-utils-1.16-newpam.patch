@@ -1,0 +1,110 @@
+--- sh-utils-1.16/src/su.c.newpam	Thu Oct  2 02:43:05 1997
++++ sh-utils-1.16/src/su.c	Thu Oct  2 02:45:28 1997
+@@ -87,6 +87,7 @@
+ #include <grp.h>
+ #ifdef USE_PAM
+ #include <security/pam_appl.h>
++#include <security/pam_misc.h>
+ #include <signal.h>
+ #include <sys/wait.h>
+ #endif
+@@ -352,78 +353,6 @@
+ 	  free(reply);
+ }
+ 
+-int misc_conv(int num_msg, const struct pam_message **msgm,
+-		     struct pam_response **response, void *appdata_ptr)
+-{
+-     int count=0,replies=0,space=0;
+-     struct pam_response *reply=NULL;
+-     char *string=NULL;
+-
+-     for (count=0; count < num_msg; ++count) {
+-	  switch (msgm[count]->msg_style) {
+-	  case PAM_PROMPT_ECHO_OFF:
+-	       string = read_string(CONV_ECHO_OFF,msgm[count]->msg);
+-	       if (string == NULL) {
+-		    drop_reply(reply,replies);
+-		    return (PAM_CONV_ERR);
+-	       }
+-	       break;
+-	  case PAM_PROMPT_ECHO_ON:
+-	       string = read_string(CONV_ECHO_ON,msgm[count]->msg);
+-	       if (string == NULL) {
+-		    drop_reply(reply,replies);
+-		    return (PAM_CONV_ERR);
+-	       }
+-	       break;
+-	  case PAM_ERROR_MSG:
+-	       fprintf(stderr,"%s\n",msgm[count]->msg);
+-	       break;
+-	  case PAM_TEXT_INFO:
+-	       fprintf(stderr,"%s\n",msgm[count]->msg);
+-	       break;
+-	  default:
+-	       fprintf(stderr, "erroneous conversation (%d)\n"
+-		       ,msgm[count]->msg_style);
+-	       drop_reply(reply,replies);
+-	       return (PAM_CONV_ERR);
+-	  }
+-
+-	  if (string) {     /* must add to reply array */
+-	       struct pam_response *ptmp;
+-
+-	       /* do we need a larger reply array ? */
+-
+-	       if (space <= replies) {
+-		    space += REPLY_CHUNK;
+-		    ptmp = (struct pam_response *)
+-			 realloc(reply, space*sizeof(struct pam_response));
+-		    if (ptmp == NULL) {
+-			 drop_reply(reply,replies);
+-			 return PAM_CONV_ERR;        /* ran out of memory */
+-		    }
+-		    reply = ptmp;                       /* enlarged array */
+-	       }
+-
+-	       /* add string to list of responses */
+-
+-	       reply[replies].resp_retcode = 0;
+-	       reply[replies++].resp = string;
+-	       string = NULL;
+-	  }
+-     }
+-
+-     /* do we need to bother with a response? */
+-     if (reply) {
+-
+-	  /* note, this pam_response structure (array) will be
+-	   * free()'d by the module */
+-
+-	  *response = reply;
+-     }
+-     
+-     return PAM_SUCCESS;
+-}
+-
+ static pam_handle_t *pamh = NULL;
+ static int retval;
+ static struct pam_conv conv = {
+@@ -459,7 +388,7 @@
+   retval = pam_authenticate(pamh, 0);
+   PAM_BAIL_P;
+   retval = pam_acct_mgmt(pamh, 0);
+-  if (retval == PAM_AUTHTOKEN_REQD) {
++  if (retval == PAM_NEW_AUTHTOK_REQD) {
+     /* password has expired.  Offer option to change it. */
+     retval = pam_chauthtok(pamh, PAM_CHANGE_EXPIRED_AUTHTOK);
+     PAM_BAIL_P;
+@@ -548,9 +477,9 @@
+   endgrent ();
+ #endif
+ #ifdef USE_PAM
+-  retval = pam_setcred(pamh, PAM_CRED_ESTABLISH);
++  retval = pam_setcred(pamh, PAM_ESTABLISH_CRED);
+   if (retval != PAM_SUCCESS)
+-    error (1, 0, pam_strerror(retval));
++    error (1, 0, pam_strerror(pamh, retval));
+ #endif /* USE_PAM */
+   if (setgid (pw->pw_gid))
+     error (1, errno, _("cannot set group id"));

@@ -1,0 +1,10 @@
+--- sh-utils-1.16/aclocal.m4.ewt	Sun Jan 26 14:59:43 1997
++++ sh-utils-1.16/aclocal.m4	Wed Apr  2 11:15:19 1997
+@@ -233,6 +233,7 @@
+   for (time_t_max = 1; 0 < time_t_max; time_t_max *= 2)
+     continue;
+   time_t_max--;
++  time_t_max = 0xFFFFFFFF;		/* HACK */
+   delta = time_t_max / 997; /* a suitable prime number */
+   for (i = 0; i < N_STRINGS; i++)
+     {

@@ -1,0 +1,27 @@
+--- sh-utils-1.16/src/who.c.mem	Sat Jun 27 16:12:01 1998
++++ sh-utils-1.16/src/who.c	Sat Jun 27 16:14:47 1998
+@@ -99,6 +99,7 @@
+ int gethostname ();
+ char *ttyname ();
+ char *xmalloc ();
++char *xrealloc ();
+ 
+ /* The name this program was run with. */
+ char *program_name;
+@@ -532,11 +533,13 @@
+   n_read = 0;
+   utmp_contents = (STRUCT_UTMP *) xmalloc(UTMP_READ_INCR*sizeof(STRUCT_UTMP));
+   while ((uptr=getutent())) {
++    if (NULL == utmp_contents)
++      break;  /* we do not have more memory here */
+     memcpy(&utmp_contents[n_read], uptr, sizeof(STRUCT_UTMP));
+     n_read++;
+-    if ( n_read % UTMP_READ_INCR )
+-      xrealloc(utmp_contents,((n_read / UTMP_READ_INCR)+1)*
+-	       UTMP_READ_INCR*sizeof(STRUCT_UTMP));
++    if (0 == ( n_read % UTMP_READ_INCR ))
++      utmp_contents = (STRUCT_UTMP *) xrealloc(utmp_contents, 
++		     (n_read + UTMP_READ_INCR) * sizeof(STRUCT_UTMP));
+   }
+  
+   endutent();

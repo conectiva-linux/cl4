@@ -1,0 +1,56 @@
+--- sh-utils-1.16/src/who.c.getutent	Sun Jan 26 13:56:31 1997
++++ sh-utils-1.16/src/who.c	Mon Apr 14 14:45:58 1997
+@@ -519,35 +519,28 @@
+ /* Read the utmp file FILENAME into UTMP_CONTENTS and return the
+    number of entries it contains. */
+ 
++#define UTMP_READ_INCR 128
++
+ static int
+ read_utmp (char *filename)
+ {
+-  FILE *utmp;
+-  struct stat file_stats;
+-  size_t n_read;
+-  size_t size;
+-
+-  utmp = fopen (filename, "r");
+-  if (utmp == NULL)
+-    error (1, errno, "%s", filename);
+-
+-  fstat (fileno (utmp), &file_stats);
+-  size = file_stats.st_size;
+-  if (size > 0)
+-    utmp_contents = (STRUCT_UTMP *) xmalloc (size);
+-  else
+-    {
+-      fclose (utmp);
+-      return 0;
+-    }
+-
+-  /* Use < instead of != in case the utmp just grew.  */
+-  n_read = fread (utmp_contents, 1, size, utmp);
+-  if (ferror (utmp) || fclose (utmp) == EOF
+-      || n_read < size)
+-    error (1, errno, "%s", filename);
++  int n_read;
++  STRUCT_UTMP *uptr;
+ 
+-  return size / sizeof (STRUCT_UTMP);
++  utmpname(filename);
++  setutent();
++  n_read = 0;
++  utmp_contents = (STRUCT_UTMP *) xmalloc(UTMP_READ_INCR*sizeof(STRUCT_UTMP));
++  while ((uptr=getutent())) {
++    memcpy(&utmp_contents[n_read], uptr, sizeof(STRUCT_UTMP));
++    n_read++;
++    if ( n_read % UTMP_READ_INCR )
++      xrealloc(utmp_contents,((n_read / UTMP_READ_INCR)+1)*
++	       UTMP_READ_INCR*sizeof(STRUCT_UTMP));
++  }
++ 
++  endutent();
++  return n_read;
+ }
+ 
+ /* Display a list of who is on the system, according to utmp file FILENAME. */
