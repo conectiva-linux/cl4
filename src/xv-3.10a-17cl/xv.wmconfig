@@ -1,0 +1,4 @@
+xv name "xv"
+xv description "XV: Utilitário para visualização e conversão de imagens"
+xv exec "xv &"
+xv group "Gráficos"
