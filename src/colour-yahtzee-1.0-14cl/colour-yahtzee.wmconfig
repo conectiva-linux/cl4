@@ -1,0 +1,4 @@
+colour-yahtzee name "Yahtzee"
+colour-yahtzee description "Jogo Yahtzee Modo Texto"
+colour-yahtzee group Jogos/Vídeo
+colour-yahtzee exec "xterm -e colour-yahtzee &"

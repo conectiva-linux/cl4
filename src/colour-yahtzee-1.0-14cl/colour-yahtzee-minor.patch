@@ -1,0 +1,11 @@
+--- yahtzee/main.c.orig	Sun Oct 29 00:59:58 1995
++++ yahtzee/main.c	Wed Nov  1 22:14:50 1995
+@@ -4,7 +4,7 @@
+ #include <sys/stat.h>
+ #include <errno.h>
+ #include <signal.h>
+-#include <ncurses/ncurses.h>
++#include <ncurses/curses.h>
+ #include <stdarg.h>
+ #include "yahtzee.h"
+ 
