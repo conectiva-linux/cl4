@@ -1,0 +1,100 @@
+--- f2c/src/f2c.1t.redhat	Sun May 12 23:37:02 1996
++++ f2c/src/f2c.1t	Wed Oct 29 22:35:15 1997
+@@ -334,11 +334,8 @@
+ .F /usr/include/f2c.h
+ header file
+ .TP
+-.F /usr/lib/libF77.a
+-intrinsic function library
+-.TP
+-.F /usr/lib/libI77.a
+-Fortran I/O library
++.F /usr/lib/libf2c.a
++f2c function library
+ .TP
+ .F /lib/libc.a
+ C library, see section 3
+--- f2c/src/makefile.redhat	Thu Jul 24 17:00:57 1997
++++ f2c/src/makefile	Wed Oct 29 22:35:15 1997
+@@ -1,9 +1,9 @@
+ #	Makefile for f2c, a Fortran 77 to C converter
+ 
+ .SUFFIXES: .c .o
+-g = -g
+-CC = cc
+-CFLAGS = $g
++
++CC = gcc
++CFLAGS = $(RPM_OPT_FLAGS)
+ SHELL = /bin/sh
+ YACC = yacc
+ YFLAGS =
+--- f2c/libf2c/Makefile.redhat	Wed Oct 29 22:35:15 1997
++++ f2c/libf2c/Makefile	Wed Oct 29 22:48:42 1997
+@@ -10,15 +10,19 @@
+ #	-DNON_UNIX_STDIO
+ # to the CLFAGS = line below.
+ .SUFFIXES: .c .o
+-CC = cc
++
++CC = gcc
+ SHELL = /bin/sh
+-CFLAGS = -O
++CFLAGS = $(RPM_OPT_FLAGS) -DNON_UNIX_STDIO
++SHARED = libf2c.so.0.22
+ 
+ # compile, then strip unnecessary symbols
+ .c.o:
+ 	$(CC) -c -DSkip_f2c_Undefs $(CFLAGS) $*.c
+-	ld -r -x -o $*.xxx $*.o
+-	mv $*.xxx $*.o
++
++PIC/%.o : %.c
++	$(CC) -c $(CFLAGS) $(CPPFLAGS) -fPIC -o $@ $<
++
+ ## Under Solaris (and other systems that do not understand ld -x),
+ ## omit -x in the ld line above.
+ ## If your system does not have the ld command, comment out
+@@ -59,12 +63,21 @@
+ # For INTEGER*8 support (which requires system-dependent adjustments to
+ # f2c.h), add $(QINT) to the libf2c.a dependency list below...
+ 
+-all: f2c.h signal1.h libf2c.a
++all: f2c.h signal1.h libf2c.a $(SHARED)
+ 
+ libf2c.a: $(MISC) $(POW) $(CX) $(DCX) $(REAL) $(DBL) $(INT) \
+ 	$(HALF) $(CMP) $(EFL) $(CHAR) $(I77) $(TIME)
+-	ar r libf2c.a $?
+-	-ranlib libf2c.a
++	ar r $@ $?
++	-ranlib $@
++
++SHAREDOBJ = $(patsubst %.o,PIC/%.o,$(MISC) $(POW) $(CX) $(DCX) \
++		$(REAL) $(DBL) $(INT) $(HALF) $(CMP) $(EFL) $(CHAR) $(I77) $(TIME))
++
++$(SHARED): picdir $(SHAREDOBJ)
++	$(CC) -shared -Wl,-soname,libf2c.so.0 -o $@ PIC/*.o -lm -lc
++
++picdir:
++	mkdir -p PIC
+ 
+ ### If your system lacks ranlib, you don't need it; see README.
+ 
+@@ -86,6 +99,7 @@
+ signal1.h: signal1.h0
+ 	cp signal1.h0 signal1.h
+ 
++
+ # If your system lacks onexit() and you are not using an
+ # ANSI C compiler, then you should uncomment the following
+ # two lines (for compiling main.o):
+@@ -101,7 +115,8 @@
+ 	-ranlib $(LIBDIR)/libf2c.a
+ 
+ clean:
+-	rm -f libf2c.a *.o
++	rm -f libf2c.a *.o $(SHARED)
++	rm -rf PIC
+ 
+ backspace.o:	fio.h
+ close.o:	fio.h
