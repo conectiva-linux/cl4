@@ -1,0 +1,37 @@
+--- kpilot-3.1/kpilot/Makefile.am.rh	Fri Dec 18 01:49:29 1998
++++ kpilot-3.1/kpilot/Makefile.am	Mon Feb  8 16:58:14 1999
+@@ -89,7 +89,7 @@
+ 	$(INSTALL_DATA) kpilprc.xpm $(kde_icondir)
+ 	$(mkinstalldirs) $(kde_minidir)
+ 	$(INSTALL_DATA) mini-kpilot.xpm $(kde_minidir)/kpilot.xpm
+-	grep kpilot $(MAGIC) 2>&1 >/dev/null || { cat kpilot.magic >> $(MAGIC); }
++#	grep kpilot $(MAGIC) 2>&1 >/dev/null || { cat kpilot.magic >> $(MAGIC); }
+ 	$(mkinstalldirs) $(kde_mimedir)/palmpilot
+ 	$(INSTALL_DATA) application.kdelnk $(kde_mimedir)/palmpilot
+ 	$(INSTALL_DATA) data.kdelnk $(kde_mimedir)/palmpilot
+@@ -107,9 +107,9 @@
+ 	-rm -f $(kde_icondir)/kpilprc.xpm
+ 	-rm -f $(kde_minidir)/kpilot.xpm
+ 	-rm -rf $(kde-mimedir)/palmpilot
+-	-sed -e'/start kpilot/,/stop kpilot/d' $(MAGIC)>$(MAGIC).new
+-	-cp $(MAGIC).new $(MAGIC)
+-	-rm -f $(MAGIC).new
++#	-sed -e'/start kpilot/,/stop kpilot/d' $(MAGIC)>$(MAGIC).new
++#	-cp $(MAGIC).new $(MAGIC)
++#	-rm -f $(MAGIC).new
+ 
+ # add a dependency for every moc file to be full portable
+ # I've added a key binding to emacs for this. 
+--- kpilot-3.1/acinclude.m4.in.rh	Mon Feb  8 17:04:39 1999
++++ kpilot-3.1/acinclude.m4.in	Mon Feb  8 17:05:30 1999
+@@ -1666,7 +1666,9 @@
+     AC_LANG_CPLUSPLUS
+     ac_save_ldflags=$LDFLAGS
+     LDFLAGS="$LDFLAGS -lpicc -lpisock"
+-    AC_TRY_LINK([#include <pi-file.h>],[],
++    AC_TRY_LINK([
++		#include <time.h>
++		#include <pi-file.h>],[],
+ 	ac_cv_have_pilotlink="yes",ac_cv_have_pilotlink="no")
+     AC_MSG_RESULT($ac_cv_have_pilotlink)
+     if test "$ac_cv_have_pilotlink" = "no"; then
