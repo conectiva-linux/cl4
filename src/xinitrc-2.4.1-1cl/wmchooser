@@ -1,0 +1,34 @@
+#!/bin/bash
+# wmchooser - escolher Window Manager padrão para o usuário,
+# escrevendo em ~/.wm_style
+#
+# Fri Feb 26 1999 Eliphas Levy Theodoro <eliphas@conectiva.com.br>
+# Primeira e tomara que única versão.
+
+VERSION="0.1"
+echo "Qual o window manager que você deseja tornar padrão ?" > /tmp/txtTEMP$$
+echo  >> /tmp/txtTEMP$$ 
+
+whiptail --title "Window Manager" --menu "`cat /tmp/txtTEMP$$`" 12 70 5 \
+WindowMaker "= `rpm -q WindowMaker --qf %{version} 2>/dev/null||echo Não instalado`" \
+AfterStep "= `rpm -q AfterStep --qf %{version} 2>/dev/null||echo Não instalado`" \
+KDE "= `rpm -q kdebase --qf %{version} 2>/dev/null||echo Não instalado`" \
+icewm "= `rpm -q icewm --qf %{version} 2>/dev/null||echo Não instalado`" \
+fvwm95 "= `rpm -q fvwm95 --qf %{version} 2>/dev/null||echo Não instalado`" \
+2> /tmp/rspTEMP$$
+
+RESPOSTA="`cat /tmp/rspTEMP$$`"
+rm -f /tmp/rspTEMP$$
+
+if [ -z $RESPOSTA ];then
+	echo ""
+	echo "Você selecionou cancelar. A configuração não será gravada."
+	exit 1
+else
+	echo $RESPOSTA > ~/.wm_style
+	echo ""
+	echo "A configuração foi gravada como $RESPOSTA."
+	exit 0
+fi
+
+

@@ -1,0 +1,72 @@
+#!/bin/bash
+# Conectiva Linux
+
+# these files are left sitting around by TheNextLevel.
+rm -f $HOME/Xrootenv.0
+rm -f /tmp/fvwmrc* 2>/dev/null
+
+# First thing - check the user preferences
+if [ -f $HOME/.wm_style ] ; then
+    WMSTYLE=`cat $HOME/.wm_style`
+    case "$WMSTYLE" in 
+	Afterstep | AfterStep)
+	    exec /usr/X11R6/bin/RunWM --AfterStep
+	    ;;
+	WindowMaker | Windowmaker | WMaker |  wmaker)
+	    exec /usr/X11R6/bin/RunWM --WindowMaker
+	    ;;
+	Fvwm95 | fvwm95)
+	    exec /usr/X11R6/bin/RunWM --Fvwm95
+	    ;;
+	Mwm | MWM | Lesstif)
+	    exec /usr/X11R6/bin/RunWM --FvwmMWM
+	    ;;
+	icewm | IceWm | IceWM)
+	    exec /usr/X11R6/bin/RunWM --icewm
+	    ;;
+	Kde | kde | KDE)
+		if [ -f /usr/bin/startkde ]; then
+			exec /usr/bin/startkde
+		elif [ -f /opt/kde/bin/startkde ]; then
+			exec /opt/kde/bin/startkde
+		fi
+		;;
+	gnome | Gnome | GNOME)
+		if [ -f /usr/bin/gnome-session ]; then
+			exec /usr/bin/gnome-session
+		fi
+		;;
+    esac
+fi
+
+# check to see if the _system_ has a preferred desktop
+PREFERRED=
+if [ -f /etc/sysconfig/desktop ]; then
+    if [ -n "`grep -i GNOME /etc/sysconfig/desktop`" ]; then
+	PREFERRED=gnome-session
+    elif [ -n "`grep -i KDE /etc/sysconfig/desktop`" ]; then
+	PREFERRED=startkde
+    fi
+fi
+
+if [ -n "$PREFERRED" ] && \
+	which $PREFERRED >/dev/null 2>&1; then
+    PREFERRED=`which $PREFERRED`
+    exec $PREFERRED
+fi
+
+# Default: WindowMaker
+/usr/X11R6/bin/RunWM --WindowMaker || {
+    # gosh, neither fvwm95 nor fvwm2 is available;
+    # let's try regular fvwm (AnotherLevel doesn't work with fvwm1).
+    if [ -n "$(type -path fvwm)" ]; then
+	# if this works, we stop here
+	exec fvwm
+    fi
+
+    # wow, fvwm isn't here either ... 
+    # use twm as a last resort.
+    xterm &
+    exec twm
+}
+

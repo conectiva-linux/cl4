@@ -1,0 +1,243 @@
+#!/bin/bash
+#
+# RunWM - this is a script used to launch window managers
+#
+#
+
+WM_CHOICE=
+KNOW_WM="no"
+
+if [ -n "$1" ] ; then
+    case "$1" in
+    --afterstep | --AfterStep | \
+    --windowmaker | --wmaker | --WindowMaker | \
+    --fvwm95 | --Fvwm95 | \
+    --fvwmMWM | --fvwmmwm | \
+    --MWM | --Mwm | --mwm )
+	KNOW_WM="yes"
+	WM_CHOICE=$1
+	shift
+	;;
+    --help)
+	echo "Usage: $0 [window_manager] where window_manager can be"
+	echo "  --AfterStep     start Afterstep"
+	echo "  --WindowMaker   start WindowMaker"
+	echo "  --Fvwm95        start Fvwm2 with '95 interface"
+	echo "  --FvwmMWM       start Fvwm2 with MWM interface"
+	echo
+	exit 0
+	;;
+    *)
+	KNOW_WM="no"
+	WM_CHOICE=
+	;;
+    esac
+fi
+
+# Now, some braindead window managers don't know how to pass arguments to another
+# wm when doing a Restart... (fvwm2 is one of them)
+
+if [ -z "$WM_CHOICE" ] ; then
+    #try to see if we are called funny names...
+    case "$0" in 
+	*RunWM.Fvwm95)
+	    WM_CHOICE="--Fvwm95"
+	    KNOW_WM="yes"
+	    ;;
+	*RunWM.MWM)
+	    WM_CHOICE="--FvwmMWM"
+	    KNOW_WM="yes"
+	    ;;
+	*RunWM.AfterStep)
+	    WM_CHOICE="--AfterStep"
+	    KNOW_WM="yes"
+	    ;;
+	*RunWM.WindowMaker)
+	    WM_CHOICE="--WindowMaker"
+	    KNOW_WM="yes"
+	    ;;
+    esac
+fi
+
+if [ "$KNOW_WM" = "no" ] ; then
+    if [ -f $HOME/.wm_style ] ; then
+	WM_CHOICE="--$(cat $HOME/.wm_style)"
+    else
+	WM_CHOICE="--Fvwm95"
+    fi
+fi
+
+############### FUNCTIONS FOR WINDOW MANAGERS ############################
+#
+###
+#
+
+function Start_Fvwm95 () {
+    local RCFILE
+    local FVWMOPTIONS
+    local FVWMVER
+    # first, find an M4-enabled config file (such as 
+    # the one from AnotherLevel) for fvwm2 or fvwm95.
+    RCFILE=""
+    for tryfile in "$HOME/.fvwm2rc.m4" \
+		   "/etc/X11/AnotherLevel/fvwm2rc.m4"; do
+	if [ -f "$tryfile" ]; then
+	    RCFILE="$tryfile"
+	    break
+	fi
+    done
+
+    # if it really exists, use it; if not, fvwm2 or fvwm95 will
+    # automagically look for a config file in the regular places.
+    if [ -n "$RCFILE" ]; then
+	FVWMOPTIONS="-cmd 'FvwmM4 -debug $RCFILE'"
+    else
+	FVWMOPTIONS=""
+    fi
+
+    # TheNextLevel is supposed to work with both fvwm95 and fvwm2
+    for FVWMVER in 2 95 95-2; do
+	if [ -n "$(type -path fvwm${FVWMVER})" ]; then
+	    env > "$HOME"/Xrootenv.0
+	    # if this works, we stop here
+	    eval "exec fvwm${FVWMVER} ${FVWMOPTIONS}" > "$HOME"/.FVWM${FVWMVER}-errors 2>&1
+	fi
+    done
+    cat >&2 <<EOF
+ WARNING: You selected Fvwm2 as your window manager, but your installation
+ does not appear to be functional. The executable /usr/X11R6/bin/fvwm2 was 
+ not found on your system.
+EOF
+    echo "RESUMING with TWM..." >&2
+    xterm &
+    eval "exec twm" > $HOME/.TWM-errors 2>&1
+}
+
+#
+###
+#
+
+function Start_AfterStep () {
+# we have to start up afterstep
+  if [ -x /usr/X11R6/bin/afterstep ] ; then
+    mkdir -p $HOME/GNUstep/Library/AfterStep
+    wmconfig --output=afterstep --directories  2>/dev/null
+    env > "$HOME"/Xrootenv.0
+    # if this works, we stop here
+    eval "exec /usr/X11R6/bin/afterstep" > "$HOME"/.AfterStep-errors 2>&1
+  else
+    cat <<EOF
+ WARNING: You selected AfterStep as your window manager, but your installation
+ of AfterStep does not appear to be functional. Either /usr/X11R6/bin/afterstep
+ was not found or /usr/share/afterstep directory is incomplete.
+EOF
+  fi
+    echo "RESUMING with Fvwm2 (95 look)" >&2
+    Start_Fvwm95
+}
+
+#
+###
+#
+
+function Start_WindowMaker () {
+  if [ -x /usr/X11R6/bin/wmaker -a -d /usr/share/WindowMaker ] ; then
+    local WMGLIBALDIR
+    local GSDIR
+    WMGLOBALDIR="/usr/share/WindowMaker"
+    GSDIR=$HOME/GNUstep
+    [ -d $GSDIR/Defaults ] || {
+	mkdir -p $GSDIR/Defaults
+	install -m 644 $WMGLOBALDIR/Defaults/* $GSDIR/Defaults
+    }
+    [ -d $GSDIR/Library/WindowMaker ] || {
+	mkdir -p $GSDIR/Library/WindowMaker
+	mkdir -p $GSDIR/Library/WindowMaker/Styles
+	mkdir -p $GSDIR/Library/WindowMaker/Themes
+	mkdir -p $GSDIR/Library/WindowMaker/Backgrounds
+	mkdir -p $GSDIR/Library/WindowMaker/IconSets
+	mkdir -p $GSDIR/Library/WindowMaker/Pixmaps
+	mkdir -p $GSDIR/Library/WindowMaker/Sounds
+	install -m 644 $WMGLOBALDIR/menu* $WMGLOBALDIR/plmenu \
+	    $WMGLOBALDIR/wmmacros $WMGLOBALDIR/README \
+	    $GSDIR/Library/WindowMaker
+	install -m 755 $WMGLOBALDIR/autostart.sh \
+	    $GSDIR/Library/WindowMaker/autostart
+    }
+    [ -d $GSDIR/.AppInfo ] || mkdir -p $GSDIR/.AppInfo
+    [ -d $GSDIR/Library/Icons ] || mkdir -p $GSDIR/Library/Icons
+    env > "$HOME"/Xrootenv.0
+    eval "exec /usr/X11R6/bin/wmaker" > "$HOME"/.WindowMaker-errors 2>&1
+  else
+    cat <<EOF
+ WARNING: You selected WindowMaker as your window manager, but your
+ installation of WindowMaker does not appear to be functional. Either
+ /usr/X11R6/bin/wmaker was not found or /usr/share/WindowMaker directory
+ is missing.
+EOF
+  fi
+    echo "RESUMING with Fvwm2 (95 look)" >&2
+    Start_Fvwm95
+}
+
+#
+###
+#
+
+# there is not really any difference between this and the previous one
+# but we stay prepared... :-)
+function Start_MWM () {
+    Start_Fvwm95 $*
+}
+
+##############################################################################
+
+################### THE REAL WORK IS DNE HERE ################################
+case "$WM_CHOICE" in
+    --afterstep | --AfterStep)
+	echo "AfterStep" > $HOME/.wm_style
+	Start_AfterStep
+	exit 0;
+	;;
+    --windowmaker | --wmaker | --WindowMaker)
+	echo "WindowMaker" > $HOME/.wm_style
+	Start_WindowMaker
+	exit 0;
+	;;
+    --fvwm95 | --Fvwm95)
+	echo "Fvwm95" > $HOME/.wm_style
+	Start_Fvwm95
+	exit 0
+	;;
+    --MWM | --Mwm | --mwm | \
+    --FvwmMWM | --fvwmmwm)
+	echo "MWM" > $HOME/.wm_style
+	Start_MWM
+	exit 0;
+	;;
+    *)
+	echo "This window manager ($WM_CHOICE) is unknown to me."
+	$0 --help
+	exit -1
+	;;
+esac
+
+if [ "$KNOWN_WM" = "yes" ] ; then
+cat <<EOF
+
+    The window manager you have requested ($WM_CHOICE) could not be started.
+EOF
+else
+cat <<EOF
+
+    The default window manager ($WM_CHOICE) could not be started. You have
+    selected this window manager in your $HOME/.wm_style file or it was
+    selected as the default window manager by the system administrator.
+EOF
+fi
+cat <<EOF
+    Check your settings and try again.
+EOF
+
+exit -1;
+################# This is it #########################

@@ -1,0 +1,80 @@
+#!/bin/bash
+# (c) 1999 Red Hat Software, Inc.
+
+# check to see if the user has a preferred desktop
+PREFERRED=
+if [ -f /etc/sysconfig/desktop ]; then
+    if [ -n "`grep -i GNOME /etc/sysconfig/desktop`" ]; then
+	PREFERRED=gnome-session
+    elif [ -n "`grep -i KDE /etc/sysconfig/desktop`" ]; then
+	PREFERRED=startkde
+    elif [ -n "`grep -i AnotherLevel /etc/sysconfig/desktop`" ]; then
+	PREFERRED=AnotherLevel
+    fi
+fi
+
+if [ -n "$PREFERRED" -a "$PREFERRED" != "AnotherLevel" ] && \
+	which $PREFERRED >/dev/null 2>&1; then
+    PREFERRED=`which $PREFERRED`
+    exec $PREFERRED
+fi
+
+# now if we can reach here, either they want AnotherLevel or there was
+# no desktop file present and the PREFERRED variable is not set.
+
+if [ -z "$PREFERRED" ]; then
+ 
+    GSESSION=gnome-session
+    STARTKDE=startkde
+ 
+    # by default, we run GNOME.
+    if which $GSESSION >/dev/null 2>&1; then
+	exec `which $GSESSION`
+    fi
+
+    # if GNOME isn't installed, try KDE.
+    if which $STARTKDE >/dev/null 2>&1; then
+	exec `which $STARTKDE`
+    fi
+fi
+
+# Last, try AnotherLevel
+
+# these files are left sitting around by TheNextLevel.
+rm -f $HOME/Xrootenv.0
+rm -f /tmp/fvwmrc* 2>/dev/null
+
+# First thing - check the user preferences
+if [ -f $HOME/.wm_style ] ; then
+    WMSTYLE=`cat $HOME/.wm_style`
+    case "$WMSTYLE" in 
+	Afterstep | AfterStep)
+	exec /usr/X11R6/bin/RunWM --AfterStep
+	;;
+	WindowMaker | Windowmaker | WMaker |  wmaker)
+	exec /usr/X11R6/bin/RunWM --WindowMaker
+	;;
+	Fvwm95 | fvwm95)
+	exec /usr/X11R6/bin/RunWM --Fvwm95
+	;;
+	Mwm | MWM | Lesstif)
+	exec /usr/X11R6/bin/RunWM --FvwmMWM
+	;;
+    esac
+fi
+
+# Argh! Nothing good is isntalled. Fall back to fvwm2 (win95-style) or twm
+/usr/X11R6/bin/RunWM --Fvwm95 || {
+    # gosh, neither fvwm95 nor fvwm2 is available; 
+    # fall back to failsafe settings
+    xclock -geometry 100x100-5+5 &
+    xterm -geometry 80x50-50+150 &
+    if [ -f /usr/bin/netscape -a -f /usr/doc/HTML/index.html ]; then
+	netscape /usr/doc/HTML/index.html &
+    fi
+    if [ -f /usr/X11R6/bin/fvwm ]; then
+	exec fvwm
+    else
+	exec twm
+    fi
+}

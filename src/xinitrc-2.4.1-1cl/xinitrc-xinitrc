@@ -1,0 +1,73 @@
+#!/bin/sh
+# Conectiva Linux
+
+userresources=$HOME/.Xresources
+usermodmap=$HOME/.Xmodmap
+sysresources=/usr/X11R6/lib/X11/xinit/Xresources
+sysmodmap=/usr/X11R6/lib/X11/xinit/Xmodmap
+oldsysresources=/usr/X11R6/lib/X11/xinit/.Xresources
+oldsysmodmap=/usr/X11R6/lib/X11/xinit/.Xmodmap
+
+# merge in defaults and keymaps
+if [ -f $oldsysresources ]; then
+    xrdb -merge $oldsysresources
+fi
+if [ -f $oldsysmodmap ]; then
+    xmodmap $oldsysmodmap
+fi
+
+if [ -f $sysresources ]; then
+    xrdb -merge $sysresources
+fi
+if [ -f $sysmodmap ]; then
+    xmodmap $sysmodmap
+fi
+
+if [ -f $userresources ]; then
+    xrdb -merge $userresources
+fi
+if [ -f $usermodmap ]; then
+    xmodmap $usermodmap
+fi
+
+if [ -z "$BROWSER" ] ; then
+	# we need to find a browser on this system
+	BROWSER=`which netscape`
+	if [ -z "$BROWSER" ] || [ ! -e "$BROWSER" ] ; then
+	# not found yet
+		BROWSER=
+	fi
+fi
+if [ -z "$BROWSER" ] ; then
+	# we need to find a browser on this system
+	BROWSER=`which lynx`
+	if [ -z "$BROWSER" ] || [ ! -e "$BROWSER" ] ; then
+	# not found yet
+		BROWSER=
+	else
+		BROWSER="xterm -font 9x15 -e lynx"
+	fi
+fi
+export BROWSER
+
+# The user may have their own clients they want to run.  If they don't,
+# fall back to system defaults.
+
+if [ -f $HOME/.Xclients ]; then
+    exec $HOME/.Xclients
+elif [ -f /etc/X11/xinit/Xclients ]; then
+    exec /etc/X11/xinit/Xclients
+else
+       # failsafe settings.  Although we should never get here
+       # (we provide fallbacks in Xclients as well) it can't hurt.
+       xclock -geometry 100x100-5+5 &
+       xterm -geometry 80x50-50+150 &
+       if [ -f /usr/bin/netscape -a -f /usr/doc/HTML/index.html ]; then
+               netscape /usr/doc/HTML/index.html &
+       fi
+       if [ -f /usr/X11R6/bin/fvwm ]; then
+               exec fvwm
+       else
+               exec twm
+       fi
+fi
