@@ -1,0 +1,53 @@
+# Configuração do ProFTPD
+# 
+
+ServerName			"ProFTPD - Instalação Default"
+ServerType			inetd
+DefaultServer			on
+ScoreboardPath			/var/run
+DeferWelcome			on
+ServerAdmin			root@localhost
+ServerName			"Servidor FTP"
+SyslogFacility			AUTH
+
+# Umask 022 é um bom padrão para prevenir que novos diretórios e
+# arquivos sejam graváveis pelo grupo ou outros usuários
+Umask				022
+
+# Usuário e grupo para o servidor
+User				nobody
+Group				nobody
+
+<Directory /*>
+  AllowOverwrite		no
+</Directory>
+
+# Configuração básica para ftp anônimo, sem diretório para recepção
+# de arquivos
+<Anonymous ~ftp>
+  User				ftp
+  Group				ftp
+  DirFakeUser			on
+  DirFakeGroup			on
+
+  # ftp = anonymous
+  UserAlias			anonymous ftp
+
+  # número máximo de logins anônimos
+  MaxClients			10 "Número máximo de clientes, tente mais tarde."
+
+  # No máximo duas conexões por cliente
+  MaxClientsPerHost		2 "Você já está com muitas conexões simultâneas."
+
+  # welcome.msg mostrado na conexão e .message mostrado para cada
+  # diretório acessado.
+  DisplayLogin			welcome.msg
+  DisplayFirstChdir		.message
+  AccessGrantMsg		"Acesso anônimo aceito para %u."
+
+  # Limite gravação no chroot anônimo
+  <Limit WRITE>
+    DenyAll
+  </Limit>
+
+</Anonymous>
