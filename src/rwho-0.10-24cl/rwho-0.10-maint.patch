@@ -1,0 +1,9 @@
+--- netkit-rwho-0.10/README.maint	Fri Apr  9 14:12:33 1999
++++ netkit-rwho-0.10/README	Fri Apr  9 14:13:12 1999
+@@ -64,5 +64,5 @@
+ 	are including fixes. :-)
+ 
+ 
+-David A. Holland	dholland@hcs.harvard.edu
++David A. Holland	netbug@ftp.uk.linux.org
+ 								8-Mar-1997

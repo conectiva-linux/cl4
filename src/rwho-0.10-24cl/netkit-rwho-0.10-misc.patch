@@ -1,0 +1,20 @@
+--- netkit-rwho-0.10/MCONFIG.ewt	Tue Jul 15 12:23:22 1997
++++ netkit-rwho-0.10/MCONFIG	Tue Jul 15 12:24:39 1997
+@@ -33,7 +33,7 @@
+ WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS) $(RPM_OPT_FLAGS) -D_GNU_SOURCE=1
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -46,7 +46,7 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ 
+ 
