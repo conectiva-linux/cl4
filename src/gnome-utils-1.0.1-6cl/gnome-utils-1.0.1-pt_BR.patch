@@ -1,0 +1,12 @@
+diff -uNr gnome-utils-1.0.1/configure.in gnome-utils-1.0.1-pt_BR/configure.in
+--- gnome-utils-1.0.1/configure.in	Mon Mar  1 18:55:07 1999
++++ gnome-utils-1.0.1-pt_BR/configure.in	Fri Jun 25 14:44:12 1999
+@@ -54,7 +54,7 @@
+ 
+ GNOME_CHECK_GUILE
+ 
+-ALL_LINGUAS="de es fi fr hu it ko cs no ga pt sv ja ru"
++ALL_LINGUAS="de es fi fr hu it ko cs no ga pt pt_BR sv ja ru"
+ AM_GNOME_GETTEXT
+ 
+ dnl gsu

@@ -1,0 +1,231 @@
+--- ./gcalc/gcalc.desktop~	Wed Feb 17 16:23:52 1999
++++ ./gcalc/gcalc.desktop	Tue Jun 29 23:35:24 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Simple Calculator
++Name[pt_BR]=Calculadora Simples
+ Name[cs]=Kalkulaèka
+ Name[da]=Enkel lommeregner
+ Name[de]=Taschenrechner
+@@ -15,6 +16,7 @@
+ Name[sk]=Kalkulaèka
+ Name[sv]=Kalkylator
+ Comment=Simple Calculator
++Comment[pt_BR]=Calculadora Simples
+ Comment[da]=Enkel lommeregner
+ Comment[es]=Calculadora simple
+ Comment[fr]=Calculatrice Simple
+--- ./ghex/ghex.desktop~	Mon Mar  1 15:44:55 1999
++++ ./ghex/ghex.desktop	Tue Jun 29 23:35:41 1999
+@@ -16,6 +16,7 @@
+ Name[sk]=Hex editor
+ Name[sv]=Binärfilseditor
+ Comment=Gnome Hexadecimal Editor
++Comment[pt_BR]=Editor Hexadecimal Gnome
+ Comment[cs]=Jednoduchý hexadecimální editor
+ Comment[da]=Binærfileditor for Gnome
+ Comment[de]=Ein Editor für binäre Dateien
+--- ./gsearchtool/gsearchtool.desktop~	Mon Mar  1 15:44:55 1999
++++ ./gsearchtool/gsearchtool.desktop	Tue Jun 29 23:36:00 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=GNOME Search Tool
++Name[pt_BR]=Ferramenta de Busca GNOME
+ Name[da]=Gnome søgeværktøj
+ Name[es]=Búsqueda de ficheros
+ Name[fr]=Recherche de Fichiers
+@@ -9,6 +10,7 @@
+ Name[pt]=Procura de Ficheiros
+ Name[sv]=Sökverktyg
+ Comment=GNOME Search Tool
++Comment[pt_BR]=Ferramenta de Busca GNOME
+ Comment[da]=Søgeværktøj til Gnome
+ Comment[es]=Búsqueda de ficheros de GNOME
+ Comment[fr]=Recherche de fichiers GNOME
+--- ./gdiskfree/gdiskfree.desktop~	Wed Feb 24 18:10:15 1999
++++ ./gdiskfree/gdiskfree.desktop	Tue Jun 29 23:36:18 1999
+@@ -1,6 +1,7 @@
+ [Desktop Entry]
+ Name=GNOME DiskFree
+ Comment=Show free space on mounted file systems using dials.
++Comment[pt_BR]=Mostra o espaço livre em um sistema de arquivos montado.
+ Comment[de]=Zeigt freien Platz auf einhängten Dateisystemen mit Rundinstrumenten.
+ Exec=gdiskfree
+ Terminal=0
+--- ./gstripchart/gstripchart.desktop~	Mon Mar  1 15:44:55 1999
++++ ./gstripchart/gstripchart.desktop	Tue Jun 29 23:36:33 1999
+@@ -8,6 +8,7 @@
+ Name[no]=
+ Name[sv]=Grafritare
+ Comment=Stripchart Plotter
++Comment[pt_BR]=Stripchart Plotter
+ Comment[da]=Plotting af systemvariabler
+ Comment[es]=Muestra gráficos de estadísticas sobre datos personales
+ Comment[fr]=Affiche des graphiques avec des statistiques sur des données personnelles
+--- ./gtt/gtt.desktop~	Mon Mar  1 15:44:55 1999
++++ ./gtt/gtt.desktop	Tue Jun 29 23:36:51 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Time tracking tool
++Name[pt_BR]=Ferramenta de acompanhamento de tempo
+ Name[da]=Tidtager
+ Name[de]=Stoppuhr
+ Name[es]=Conteo del tiempo
+@@ -10,6 +11,7 @@
+ Name[pt]=Gestor de projectos
+ Name[sv]=Tidtagarur
+ Comment=Time Tracker tool
++Comment[pt_BR]=Ferramenta de acompanhamento de tempo
+ Comment[da]=Tidstager til projekter
+ Comment[de]=Projektorientierte Stoppuhr
+ Comment[es]=Herramienta de conteo del tiempo
+--- ./cromagnon/Cromagnon.desktop~	Mon Mar  1 15:44:55 1999
++++ ./cromagnon/Cromagnon.desktop	Tue Jun 29 23:37:09 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Personal cron manager
++Name[pt_BR]=Agenda pessoal de execução de programas
+ Name[da]=Crontab editor
+ Name[de]=Persönlicher Ereignismanager
+ Name[es]=Manejador de cron personal
+@@ -10,6 +11,7 @@
+ Name[pt]=Cromagnon
+ Name[sv]=Crontab edior
+ Comment=Personal crontab manager
++Comment[pt_BR]=Gerenciador de agendamento de execução de programas.
+ Comment[da]=Personlig contab editor
+ Comment[de]=Bearbeiten der persönlichen Ereignistabelle
+ Comment[es]=Manejador de crontab personal
+--- ./mini-utils/gshutdown/gshutdown.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gshutdown/gshutdown.desktop	Tue Jun 29 23:37:36 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Shut Down or Reboot
++Name[pt_BR]=Desligar ou Reiniciar
+ Name[da]=Luk ned eller genstart
+ Name[es]=Apagar o Reiniciar
+ Name[fr]=Eteindre ou Redémarrer
+@@ -9,6 +10,7 @@
+ Name[pt]=Desligar ou Reiniciar
+ Name[sv]=Stäng av eller starta om
+ Comment=Turn off or reset the computer
++Comment[pt_BR]=Desliga ou reinicia o computador
+ Comment[no]=Luk ned eller start maskinen på ny
+ Comment[es]=Apaga o reinicia la computadora
+ Comment[fr]=Eteindre ou Redémarrer la machine
+--- ./mini-utils/guname/guname.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/guname/guname.desktop	Tue Jun 29 23:37:57 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=System Info...
++Name[pt_BR]=Informações do Sistema...
+ Name[da]=Systeminfo
+ Name[es]=Información del Sistema...
+ Name[fr]=Informations Système...
+@@ -10,6 +11,7 @@
+ Name[ru]=éÎÆÏÒÍÁÃÉÑ Ï óÉÓÔÅÍÅ...
+ Name[sv]=Systeminformation...
+ Comment=Technical information about this computer
++Comment[pt_BR]=Informações técnicas sobre este computador
+ Comment[da]=Teknisk information om denne computer
+ Comment[es]=Información técnica sobre esta computadora 
+ Comment[fr]=Informations Système à propos de cet ordinateur
+--- ./mini-utils/gw/gw.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gw/gw.desktop	Tue Jun 29 23:38:20 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=User Listing
++Name[pt_BR]=Lista de Usuários
+ Name[da]=Brugerliste
+ Name[es]=Lista de utilizadores
+ Name[fr]=Liste des Utilisateurs
+@@ -9,6 +10,7 @@
+ Name[pt]=Lista de utilizadores
+ Name[sv]=Användarlista
+ Comment=View users on the system
++Comment[pt_BR]=Visualiza os usuários do sistema
+ Comment[da]=Liste over brugere som er logget på
+ Comment[es]=Ver la lista de utilizadores conectados al sistema
+ Comment[fr]=Voir la liste des utilisateurs connectés
+--- ./mini-utils/gnome-run/gnome-run.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gnome-run/gnome-run.desktop	Tue Jun 29 23:38:47 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Run program...
++Name[pt_BR]=Executar Programa...
+ Name[da]=Kør...
+ Name[es]=Ejecutar...
+ Name[fr]=Exécuter...
+@@ -10,6 +11,7 @@
+ Name[pt]=Executar...
+ Name[sv]=Kör...
+ Comment=Prompts the user for a program to run
++Comment[pt_BR]=Solicita ao usuário um programa a ser executado
+ Comment[da]=Kør program
+ Comment[es]=Pide al utilizador el nombre de un programa a ejecutar
+ Comment[fr]=Demander à l'utilisateur un nom de programme a lancer
+--- ./mini-utils/gless/gless.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gless/gless.desktop	Tue Jun 29 23:39:06 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Text File Viewer
++Name[pt_BR]=Visualizador de Arquivos Texto
+ Name[da]=Tekstfilvisning
+ Name[es]=gless
+ Name[fr]=Visualisation de fichiers textes
+@@ -9,6 +10,7 @@
+ Name[no]=Tekstfilvisning
+ Name[sv]=Textfilsvisare
+ Comment=Page files as with `more' and `less'
++Comment[pt_BR]=Pagina arquivos com os utilitários ore' e ess'
+ Comment[da]=Viser filer som med `more' og `less'
+ Comment[es]=Visor de ficheros texto similar a los clásicos `more' y `less'
+ Comment[fr]=Visualisation de fichiers textes
+--- ./mini-utils/gpenguin/gpenguin.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gpenguin/gpenguin.desktop	Tue Jun 29 23:39:46 1999
+@@ -1,9 +1,11 @@
+ [Desktop Entry]
+ Name=GNOME Penguin
++Name[pt_BR]=Pinguim GNOME
+ Name[de]=GNOME-Pinguin
+ Name[fr]=Pingouin GNOME
+ Name[hu]=GNOME pingvin
+ Comment=Let a cute pinguin chase your pointer
++Comment[pt_BR]=Deixe um bonito pingüim perseguir o mouse.
+ Comment[de]=Schickt Ihrem Mauszeiger einen Pinguin hinterher
+ Comment[hu]=Egy egeredet kergetõ pingvin
+ Exec=gpenguin
+--- ./mini-utils/gfontsel/gfontsel.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gfontsel/gfontsel.desktop	Tue Jun 29 23:40:08 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Font Selector...
++Name[pt_BR]=Seletor de Fontes...
+ Name[da]=Skrifttypevælger...
+ Name[es]=Selector de fuentes...
+ Name[fr]=Selecteur de polices...
+@@ -9,6 +10,7 @@
+ Name[no]=Valg av skrifttype...
+ Name[sv]=Typsnittsväljare...
+ Comment=Select a font for pasting
++Comment[pt_BR]=Seleciona uma fonte para colar
+ Comment[da]=Vælg en skrifttype
+ Comment[es]=Selecciona una fuente para aplicarla al texto
+ Comment[fr]=Selectionne une police de caractères pour l'appliquer au texte
+--- ./mini-utils/gcolorsel/gcolorsel.desktop~	Mon Mar  1 15:44:56 1999
++++ ./mini-utils/gcolorsel/gcolorsel.desktop	Tue Jun 29 23:40:30 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Color Browser...
++Name[pt_BR]=Navegador Colorido...
+ Name[da]=Farvevisning...
+ Name[es]=Paleta...
+ Name[fr]=Palette...
+@@ -9,6 +10,7 @@
+ Name[pt]=Paleta...
+ Name[sv]=Färgvisaren...
+ Comment=Browse available X11 colors.
++Comment[pt_BR]=Navegador gráfico à cores
+ Comment[da]=Visualisering af systemfarverne i X11
+ Comment[es]=Visualiza los colores disponibles en el servidor X11
+ Comment[fr]=Visualise les couleurs disponibles sur le serveur X11

@@ -1,0 +1,32 @@
+diff -uNr gnome-utils-1.0.1.old/mini-utils/guname/info.c gnome-utils-1.0.1/mini-utils/guname/info.c
+--- gnome-utils-1.0.1.old/mini-utils/guname/info.c	Thu Jan  7 15:44:04 1999
++++ gnome-utils-1.0.1/mini-utils/guname/info.c	Tue May 25 18:02:44 1999
+@@ -28,6 +28,7 @@
+ 
+ #define DEBIAN_STRING "Debian GNU/Linux"
+ #define REDHAT_STRING "Red Hat Linux"
++#define CONECTIVA_STRING "Conectiva Linux"
+ 
+ /************************************
+   Globals
+@@ -143,6 +144,20 @@
+     if (f) { 
+       fscanf(f, "%8s", buf);
+       info[si_distribution_version] = g_strdup(buf);
++      fclose(f);
++    }
++  } else if (g_file_exists("/etc/versão-conectiva")) {
++    FILE *f;
++    gchar buf[80];
++
++    info[si_distribution] = g_strdup(CONECTIVA_STRING);
++    f = fopen("/etc/versão-conectiva", "r");
++    if (f) {
++      fgets(buf, 79, f);
++      if (strrchr(buf, ' '))
++        info[si_distribution_version] = g_strdup(strrchr(buf, ' ')+1);
++      else
++        info[si_distribution_version] = g_strdup(CONECTIVA_STRING);
+       fclose(f);
+     }
+   } else if (g_file_exists("/etc/redhat-release")) {
