@@ -1,0 +1,11 @@
+--- ImageMagick-4.1.0/PerlMagick/Makefile.PL.in.libpath	Mon Sep 14 01:48:37 1998
++++ ImageMagick-4.1.0/PerlMagick/Makefile.PL.in	Mon Sep 14 01:49:37 1998
+@@ -4,7 +4,7 @@
+ WriteMakefile(
+     'NAME'	=> 'Image::Magick',
+     'VERSION_FROM' => 'Magick.pm', # finds $VERSION
+-    'LIBS'	=> ['@LDFLAGS@ @MAGICKLIB@ @X11STUBSLIB@ @LIBS@'],
++    'LIBS'	=> ['@LDFLAGS@ -L@top_srcdir@/magick/.libs @MAGICKLIB@ @X11STUBSLIB@ @LIBS@'],
+     'DEFINE'	=> '',     # e.g., '-DHAVE_SOMETHING' 
+     'INC'	=> '-I@top_srcdir@/magick @CPPFLAGS@',
+ );

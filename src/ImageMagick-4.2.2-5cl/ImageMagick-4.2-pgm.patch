@@ -1,0 +1,13 @@
+--- ImageMagick-4.2.2/magick/encode.c.orig	Mon Apr  5 12:35:26 1999
++++ ImageMagick-4.2.2/magick/encode.c	Mon Apr  5 12:35:32 1999
+@@ -7695,7 +7695,9 @@
+         /*
+           Convert image to a PGM image.
+         */
+-        (void) fprintf(image->file,"%d\n",MaxRGB);
++	/* HACK HACK - notting 19990405 */
++        /* (void) fprintf(image->file,"%d\n",MaxRGB); */
++        (void) fprintf(image->file,"%d\n",MaxRawValue);
+         for (i=0; i < (int) image->packets; i++)
+         {
+           index=DownScale(Intensity(*p));
