@@ -1,0 +1,233 @@
+diff -uNr fte-0.49.13/man/cfte.1 fte-0.49.13-conectiva/man/cfte.1
+--- fte-0.49.13/man/cfte.1	Wed Dec 31 21:00:00 1969
++++ fte-0.49.13-conectiva/man/cfte.1	Mon Jun 14 15:45:46 1999
+@@ -0,0 +1,53 @@
++.TH CFTE 1 
++.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
++.\" other parms are allowed: see man(7), man(1)
++.SH NAME
++cfte \- Compiles fte config files
++.SH SYNOPSIS
++.B cfte
++.I "sourcefile [destfile]"
++.SH "DESCRIPTION"
++This manual page documents briefly the
++.BR Cfte
++
++This manual page was written for the Debian GNU/Linux distribution
++(but may be used by others), because the original program does not
++have a manual page.
++Instead, it has documentation in html format; see below.
++.PP
++.B cfte
++compiles the .fterc binary for
++.B fte
++from human readable sources. Examples of these source can be found at 
++/usr/doc/fte/examples/config.
++
++.SH EXAMPLES
++.TP
++.B cfte /usr/doc/fte/examples/config/main.fte 
++compiles the example config tree to fte-new.cnf
++.TP
++.B cfte main.fte ~/.fterc
++compiles the main.fte (in current directory) to 
++~/.fterc
++
++.SH FILES
++.TP
++.I ~/.fterc
++Default Configuration file. Includes All keybinding and menus.
++compiled with
++.B cfte
++from config files in /usr/doc/fte/exampes/config/main.fte.
++There is a sample .fterc in /usr/doc/fte/examples/sample.fterc
++.TP
++.I *.fte
++Configuration sources. The syntax of these files is explained 
++in 
++.B "/usr/doc/fte/fte.html"
++
++.SH "SEE ALSO"
++.IR "/usr/doc/fte/fte.html,"
++.BR xfte (1),
++.BR vfte (1)
++.SH AUTHOR
++This manual page was written by Riku Voipio <riku.voipio@iki.fi>,
++for the Debian GNU/Linux system.
+diff -uNr fte-0.49.13/man/fte.1 fte-0.49.13-conectiva/man/fte.1
+--- fte-0.49.13/man/fte.1	Wed Dec 31 21:00:00 1969
++++ fte-0.49.13-conectiva/man/fte.1	Mon Jun 14 15:45:46 1999
+@@ -0,0 +1,94 @@
++.TH FTE 1 
++.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
++.\" other parms are allowed: see man(7), man(1)
++.SH NAME
++fte \- Text editor
++.SH SYNOPSIS
++.B xfte
++.I "[[options] files ...],"
++.B vfte 
++.I "[[options] files ...]"
++.SH "DESCRIPTION"
++This manual page documents briefly the
++.BR fte
++
++This manual page was written for the Debian GNU/Linux distribution
++(but may be used by others), because the original program does not
++have a manual page.
++Instead, it has documentation in html format; see below.
++.PP
++.B fte
++is a powerful editor which closely resembles Borlands programming
++editors for ms\-dos, but is far more flexible and configurable.
++
++.SH OPTIONS
++fte uses a command line syntax, which is a little different from
++most Debian Gnu/Linux apps.
++.TP
++.B \-h \-? \--help
++Help on command line options.
++.TP
++.B \-! 
++Ignore any external configuration file and use internal configuration.
++.TP
++.B \-c[<file>]
++Use specified configuration file (compiled). Plain \-c does the same as
++\-!.
++.TP
++.B \-l<line>[,<column>]
++Go to line (and column) in next file on command line.
++.TP
++.B \-m[<MODE>]
++Set mode for next files to <MODE>. If just plain /-m, 
++then use default mode.
++.TP
++.B \-d[<.dsk>]
++Load/save desktop from file <.dsk>. If no argument, disable
++desktop load/save.
++.TP
++.B \-H[<.his>]
++Load/save history from file <.his>. If no argument, disable
++history load/save.
++.TP
++.B \-T<tags>
++Load tags file 'tags'.
++.TP
++.B \-t<tag>
++Lookup tag 'tag' and display file containing it.
++.TP
++.B \-\-
++The rest of the arguments are not options, but filenames.
++.TP
++.B \-+
++The next argument is not an option even if starting with a '-'.
++Useful when loading files that begin with a -.
++
++.SH EXAMPLES
++.TP
++.B xfte \-mBIN usr/X11R6/bin/xfte
++load /usr/bin/vfte in BIN mode
++.TP
++.B xfte \-#100,30 win.c
++go to (100,30) in win.c
++.TP
++.B xfte window.cpp
++load file window.cpp
++.TP
++.B xfte \-\- \-1 \-2 \-3 \-4 \-5 \-6
++load files \-1, \-2, \-3, \-4, \-5, \-6
++.SH FILES
++.TP
++.I ~/.fterc
++Default Configuration file. Includes All keybinding and menus.
++compiled with
++.B cfte
++from config files in /usr/doc/fte/exampes/config/main.fte.
++There is a sample .fterc in /usr/doc/fte/examples/sample.fterc
++.SH "SEE ALSO"
++.IR "/usr/doc/fte/fte.html,"
++.IR "/usr/doc/fte/ui_fte.html,"
++.IR "/usr/doc/fte/kb_ref.html,"
++.BR cfte (1)
++.SH AUTHOR
++This manual page was written by Riku Voipio <riku.voipio@iki.fi>,
++for the Debian GNU/Linux system.
+diff -uNr fte-0.49.13/scripts/fte fte-0.49.13-conectiva/scripts/fte
+--- fte-0.49.13/scripts/fte	Wed Dec 31 21:00:00 1969
++++ fte-0.49.13-conectiva/scripts/fte	Mon Jun 14 15:45:46 1999
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++if [ -n "$DISPLAY" ]; then
++       exec /usr/X11R6/bin/xfte "$@"
++else
++       exec /usr/bin/sfte "$@"
++fi
++
+diff -uNr fte-0.49.13/src/c_hilit.h fte-0.49.13-conectiva/src/c_hilit.h
+--- fte-0.49.13/src/c_hilit.h	Sun May 16 11:42:24 1999
++++ fte-0.49.13-conectiva/src/c_hilit.h	Mon Jun 14 15:45:46 1999
+@@ -128,9 +128,9 @@
+     int TabSize = BFI(BF, BFI_TabSize); \
+     int ExpandTabs = BFI(BF, BFI_ExpandTabs);
+ 
+-//#define HILIT_VARS2()
+-//    int len1 = len;
+-//    char *last = p + len1 - 1;
++/* #define HILIT_VARS2()
++    int len1 = len;
++    char *last = p + len1 - 1; */
+ 
+ #define IF_TAB() \
+     if (*p == '\t' && ExpandTabs) { \
+diff -uNr fte-0.49.13/src/con_linux.cpp fte-0.49.13-conectiva/src/con_linux.cpp
+--- fte-0.49.13/src/con_linux.cpp	Sun May 16 11:44:52 1999
++++ fte-0.49.13-conectiva/src/con_linux.cpp	Mon Jun 14 15:45:46 1999
+@@ -9,7 +9,7 @@
+ 
+ // If you're searching for portability it is not here ;-)
+ 
+-#define USE_GPM     //uncomment here to use GPM
++// #define USE_GPM     //uncomment here to use GPM
+ #define USE_SCRNMAP // use USER translation table instead of direct mapping
+       // The translation table is assumed to be invertible (more or less).
+       // How do we get other translation tables from kernel, the USER one
+diff -uNr fte-0.49.13/src/fte-unix.mak fte-0.49.13-conectiva/src/fte-unix.mak
+--- fte-0.49.13/src/fte-unix.mak	Sun May 16 11:44:52 1999
++++ fte-0.49.13-conectiva/src/fte-unix.mak	Mon Jun 14 15:53:29 1999
+@@ -5,8 +5,8 @@
+ 
+ #  vfte - for Linux console directly (with limitations, see con_linux.cpp)
+ 
+-#TARGETS = xfte vfte sfte
+-TARGETS = xfte
++TARGETS = xfte vfte sfte
++#TARGETS = xfte
+ 
+ PRIMARY = xfte
+ 
+@@ -131,7 +131,8 @@
+ include objs.inc
+ 
+ XLIBS    = -lX11 $(SOCKETLIB)
+-VLIBS    = -lgpm -lncurses
++#VLIBS    = -lgpm -lncurses
++VLIBS    = -lncurses
+ # -ltermcap outdated by ncurses
+ SLIBS    = -lslang
+ QLIBS    = -lqt
+diff -uNr fte-0.49.13/src/ftever.h fte-0.49.13-conectiva/src/ftever.h
+--- fte-0.49.13/src/ftever.h	Sun May 16 11:42:25 1999
++++ fte-0.49.13-conectiva/src/ftever.h	Mon Jun 14 15:51:51 1999
+@@ -4,8 +4,8 @@
+ #define PROG_FTE   "fte"
+ #define PROG_CFTE  "cfte"
+ #define PROGRAM    PROG_FTE
+-#define VERSION    "0.49.10"
+-#define VERNUM     0x00490400UL
++#define VERSION    "0.49.13"
++#define VERNUM     0x00491300UL
+ #define COPYRIGHT  "Copyright (c) 1994-1998 Marko Macek"
+ 
+ #endif
