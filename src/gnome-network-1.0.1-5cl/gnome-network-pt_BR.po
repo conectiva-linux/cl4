@@ -1,0 +1,683 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-network\n"
+"POT-Creation-Date: 1999-03-01 18:09-0500\n"
+"PO-Revision-Date: 1999-03-31 16:47-0800\n"
+"Last-Translator: Ivan Passos <ivan@cyclades.com\n"
+"MIME-Version: 1.0\n"
+"Language-Team: Brazilan Portuguese\n"
+"Content-Transfer-Encoding: base64\n"
+"Content-Type: text/plain\n"
+
+#: Revisão
+msgid ""
+msgstr "Revisão: Sandro Henrique <sandro@conectiva.com.br>\n" 
+
+#: gnometalk/talk.c:144
+msgid "GNOME Talk"
+msgstr "GNOME Talk"
+
+#: gnometalk/talk.c:147
+msgid "The GNOME talk program."
+msgstr "Programa GNOME de conversação (talk)."
+
+#: gnometalk/talk.c:153
+msgid "_Terminate"
+msgstr "_Terminar"
+
+#: gnometalk/talk.c:153
+msgid "Terminates this talk session"
+msgstr "Termina esta sessão de conversação."
+
+#: gnometalk/talk.c:159
+msgid "_About"
+msgstr "_Sobre"
+
+#: gnometalk/talk.c:159
+msgid "Info about this program"
+msgstr "Informações sobre este programa"
+
+#: gnometalk/talk.c:165
+msgid "_Talk"
+msgstr "_Conversar"
+
+#: gnometalk/talk.c:166
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: gnometalk/talk.c:183
+msgid "Talking to "
+msgstr "Conversando com "
+
+#: gnometalk/talk.c:186 gnometalk/talk.c:190
+msgid "Talk"
+msgstr "Conversar"
+
+#: gnometalk/names.c:82 gnometalk/names.c:97
+msgid "Talk to"
+msgstr "Conversar com"
+
+#: gnometalk/names.c:107
+msgid "Specify TTY"
+msgstr "Especificar TTY"
+
+#: gnometalk/names.c:151
+msgid "Failed to find the address for this host"
+msgstr "Falha na procura do endereço desta máquina"
+
+#: gnometalk/names.c:161
+msgid "Failed to find the address for the remote host"
+msgstr "Falha na procura do endereço da máquina remota"
+
+#: gnometalk/protocol.c:101
+msgid "Talk progress"
+msgstr "Progresso da conversação"
+
+#: gnometalk/protocol.c:129
+msgid "Error"
+msgstr "Erro"
+
+#: gnometalk/protocol.c:148 gnometalk/protocol.c:173
+msgid "could not create socket"
+msgstr "não foi possível criar conexão"
+
+#: gnometalk/protocol.c:151
+msgid "init_control_socket: could not bind()"
+msgstr "init_control_socket: não foi possível fazer o bind()"
+
+#: gnometalk/protocol.c:156 gnometalk/protocol.c:181
+msgid "getsockname() failed"
+msgstr "falha em getsockname()"
+
+#: gnometalk/protocol.c:176
+msgid "could not bind ()"
+msgstr "não foi possível fazer o bind()"
+
+#: gnometalk/protocol.c:204
+msgid "Error sending"
+msgstr "Erro ao enviar"
+
+#: gnometalk/protocol.c:223
+msgid "Error when reading from talk daemon"
+msgstr "Erro ao ler do serviço de conversação"
+
+#: gnometalk/protocol.c:245
+msgid "Error trying to listen for caller"
+msgstr "Erro tentando escutar o sistema remoto"
+
+#: gnometalk/protocol.c:251
+msgid "Trying to connect to your party's talk daemon"
+msgstr "Tentando conectar ao parceiro de conversação"
+
+#: gnometalk/protocol.c:272 gnometalk/protocol.c:277
+msgid "Lost connection"
+msgstr "Conexão perdida"
+
+#: gnometalk/protocol.c:294
+msgid "Unable to connect with your party"
+msgstr "Não foi possível conectar com o parceiro"
+
+#: gnometalk/protocol.c:300 gnometalk/protocol.c:374
+msgid "Waiting for your party to respond"
+msgstr "Aguardando resposta do parceiro"
+
+#: gnometalk/protocol.c:337
+msgid "response uses an invalid network address"
+msgstr "resposta utiliza um endereço de rede inválido"
+
+#: gnometalk/protocol.c:382
+#, c-format
+msgid "CANCEL CALLBACK:Answer:%d\n"
+msgstr "CANCELAR LIGAÇÃO DE VOLTA: Resposta:%d\n"
+
+#. NOT_HERE
+#: gnometalk/protocol.c:444
+msgid "Your party is not logged on"
+msgstr "Seu parceiro não está conectado ao sistema"
+
+#. FAILED
+#: gnometalk/protocol.c:447
+msgid "Target machine is too confused to talk to us"
+msgstr "Máquina remota está muito confusa para conversar conosco"
+
+#. MACHINE_UNKNOWN
+#: gnometalk/protocol.c:450
+msgid "Target machine does not recognize us"
+msgstr "Máquina remota não nos reconhece"
+
+#. PERMISSION_REFUSED
+#: gnometalk/protocol.c:453
+msgid "Your party is refusing messages"
+msgstr "Seu parceiro está recusando mensagens"
+
+#. UNKNOWN_REQUEST
+#: gnometalk/protocol.c:456
+msgid "Target machine can not handle remote talk"
+msgstr "Máquina remota não suporta conversações remotas"
+
+#. BADVERSION
+#: gnometalk/protocol.c:459
+msgid "Target machine indicates protocol mismatch"
+msgstr "Máquina remota indica erro de protocolo"
+
+#. BADADDR
+#: gnometalk/protocol.c:462
+msgid "Target machine indicates protocol botch (addr)"
+msgstr "Máquina remota indica protocolo malfeito (addr)"
+
+#. BADCTLADDR
+#: gnometalk/protocol.c:465
+msgid "Target machine indicates protocol botch (ctl_addr)"
+msgstr "Máquina remota indica protocolo malfeito (ctl_addr)"
+
+#: sync/copy.c:59
+msgid "Error while writing to remote file"
+msgstr "Erro ao escrever em arquivo remoto"
+
+#: sync/copy.c:61
+msgid "Error while writing to local file"
+msgstr "Erro ao escrever em arquivo local"
+
+#: sync/copy.c:77
+msgid "Error while writing to database file"
+msgstr "Erro ao escrever em arquivo da base de dados"
+
+#: sync/copy.c:100
+msgid "Copying from local to remote"
+msgstr "Copiando de local para remoto"
+
+#: sync/copy.c:101
+msgid "Copying from remote to local"
+msgstr "Copiando de remoto para local"
+
+#: sync/copy.c:111
+msgid "Couldn't open file for writing: "
+msgstr "Não foi possível abrir arquivo para escrita: "
+
+#: sync/db.c:60 sync/sync.c:451 sync/sync.c:491
+msgid "Error while reading database file"
+msgstr "Erro ao ler arquivo da base de dados"
+
+#. FIXME: better text.
+#: sync/errors.c:78
+msgid "Initial entry"
+msgstr "Entrada inicial"
+
+#: sync/main.c:59
+msgid "_Synchronize"
+msgstr "_Sincronizar"
+
+#: sync/main.c:70
+msgid "New entry..."
+msgstr "Nova entrada..."
+
+#: gnome-ppp/account-window.c:837 gnome-ppp/account-window.c:1187
+#: gnome-ppp/account-window.c:1271 gnome-ppp/account-window.c:1421
+#: sync/main.c:73 sync/main.c:194 sync/main.c:203 sync/main.c:267
+msgid "Remove"
+msgstr "Remover"
+
+#: sync/main.c:75 sync/main.c:268
+msgid "Retry"
+msgstr "Tentar novamente"
+
+#: sync/main.c:83
+msgid "About..."
+msgstr "Sobre..."
+
+#: sync/main.c:92
+msgid "Synchronize"
+msgstr "Sincronizar"
+
+#: sync/main.c:121 sync/main.c:287
+msgid "Gnome Synchronize"
+msgstr "Gnome Synchronize"
+
+#: sync/main.c:124
+msgid "The GNOME file synchronization program."
+msgstr "Programa GNOME de sincronização de arquivos."
+
+#: sync/main.c:222
+msgid "Local"
+msgstr "Local"
+
+#: sync/main.c:223
+msgid "Remote"
+msgstr "Remoto"
+
+#: sync/main.c:224
+msgid "Status"
+msgstr "Status"
+
+#: sync/main.c:330
+msgid "Immediately synchronize with remote"
+msgstr "Sincronizar com máquina remota imediatamente"
+
+#: sync/new.c:54 sync/sync.c:426
+msgid "Error while synchronizing database file"
+msgstr "Erro ao sincronizar arquivo da base de dados"
+
+#: sync/new.c:85
+msgid "Browse..."
+msgstr "Procurar..."
+
+#: sync/new.c:100
+msgid "New entry"
+msgstr "Nova entrada"
+
+#: sync/new.c:115
+msgid "Local name:"
+msgstr "Nome local:"
+
+#: sync/new.c:121
+msgid "Remote name:"
+msgstr "Nome remoto:"
+
+#: sync/sync.c:89
+msgid "Both files modified since last synchronization"
+msgstr "Ambos arquivos foram modificados desde a última sincronização"
+
+#: sync/sync.c:238
+msgid "Error while reading local file"
+msgstr "Erro ao ler arquivo local"
+
+#: sync/sync.c:240
+msgid "Error while reading remote file"
+msgstr "Erro ao ler arquivo remoto"
+
+#: sync/sync.c:372
+msgid "Couldn't open remote file for reading"
+msgstr "Não foi possível abrir arquivo remoto para leitura."
+
+#: sync/sync.c:381
+msgid "Couldn't open local file for reading"
+msgstr "Não foi possível abrir arquivo local para leitura."
+
+#: sync/sync.c:393
+msgid "Both local and remote files are missing"
+msgstr "Ambos os arquivos (local e remoto) não foram localizados "
+
+#: sync/sync.c:400
+msgid "Synchronizing..."
+msgstr "Sincronizando..."
+
+#: gnome-ppp/account-window.c:119
+msgid "Recieve"
+msgstr "Receber"
+
+#: gnome-ppp/account-window.c:119
+msgid "Enter search string"
+msgstr "Inserir mensagem de procura"
+
+#: gnome-ppp/account-window.c:120
+msgid "Send"
+msgstr "Enviar"
+
+#: gnome-ppp/account-window.c:120
+msgid "Enter transmission string"
+msgstr "Digite mensagem de transmissão"
+
+#: gnome-ppp/account-window.c:121
+msgid "Send User Name"
+msgstr "Enviar Nome do Usuário"
+
+#: gnome-ppp/account-window.c:121
+msgid "Username taken from Authentication"
+msgstr "Nome do usuário obtido da Autenticação"
+
+#: gnome-ppp/account-window.c:122
+msgid "Send User Password"
+msgstr "Enviar Senha do Usuário"
+
+#: gnome-ppp/account-window.c:122
+msgid "Password taken from Authentication"
+msgstr "Senha obtida da Autenticação"
+
+#: gnome-ppp/account-window.c:123
+msgid "Dynamic User Input"
+msgstr "Entrada Dinâmica de Usuário"
+
+#: gnome-ppp/account-window.c:123
+msgid "Prompt for hidden input, enter mnenonic"
+msgstr "Pedido de entrada oculta, digite mnemônico"
+
+#: gnome-ppp/account-window.c:215
+msgid "This account is in use and cannot be modified."
+msgstr "Esta conta está em uso e não pode ser modificada."
+
+#: gnome-ppp/account-window.c:222
+msgid "open_account_window(): account=NULL with clone flag"
+msgstr "open_account_window(): account=NULL com sinal de cópia"
+
+#: gnome-ppp/account-window.c:248
+msgid "open_account_window(): calling arguments invalid"
+msgstr "open_account_window(): argumentos de chamada inválidos"
+
+#: gnome-ppp/account-window.c:289
+msgid "Dial"
+msgstr "Discar"
+
+#: gnome-ppp/account-window.c:295
+msgid "Authentication"
+msgstr "Autenticação"
+
+#. dns server entry
+#: gnome-ppp/account-window.c:301 gnome-ppp/account-window.c:1154
+msgid "IP Address"
+msgstr "Endereço IP"
+
+#: gnome-ppp/account-window.c:307
+msgid "DNS"
+msgstr "DNS"
+
+#: gnome-ppp/account-window.c:313
+msgid "Script"
+msgstr "Roteiro"
+
+#: gnome-ppp/account-window.c:319
+msgid "PPP"
+msgstr "PPP"
+
+#: gnome-ppp/account-window.c:682
+msgid "Account Name"
+msgstr "Nome do Usuário"
+
+#. redial spin button
+#: gnome-ppp/account-window.c:694
+msgid "Redial Maximum"
+msgstr "Máximo número de discagens"
+
+#. modem device
+#: gnome-ppp/account-window.c:716
+msgid "Modem Device"
+msgstr "Dispositivo de modem"
+
+#. modem speed
+#: gnome-ppp/account-window.c:742
+msgid "Connection Speed"
+msgstr "Velocidade da conexão"
+
+#. modem init
+#: gnome-ppp/account-window.c:768
+msgid "Modem Initialization"
+msgstr "Inicialização do Modem"
+
+#. phone number frame
+#: gnome-ppp/account-window.c:790
+msgid "Phone Numbers"
+msgstr "Números de Telefone"
+
+#. Phone number
+#: gnome-ppp/account-window.c:802
+msgid "#"
+msgstr "#"
+
+#. add/remove buttons
+#: gnome-ppp/account-window.c:823 gnome-ppp/account-window.c:1173
+#: gnome-ppp/account-window.c:1257 gnome-ppp/account-window.c:1395
+msgid "Add"
+msgstr "Adicionar"
+
+#: gnome-ppp/account-window.c:889
+msgid "PAP/CHAP"
+msgstr "PAP/CHAP"
+
+#: gnome-ppp/account-window.c:901
+msgid "User Name"
+msgstr "Nome do Usuário"
+
+#: gnome-ppp/account-window.c:921
+msgid "Remote Name"
+msgstr "Nome Remoto"
+
+#. password
+#: gnome-ppp/account-window.c:942
+msgid "Hidden Password"
+msgstr "Senha Oculta"
+
+#: gnome-ppp/account-window.c:954
+msgid "Password"
+msgstr "Senha"
+
+#. local ip address
+#: gnome-ppp/account-window.c:992
+msgid "Local IP Address"
+msgstr "Endereço IP Local"
+
+#: gnome-ppp/account-window.c:1003 gnome-ppp/account-window.c:1048
+#: gnome-ppp/account-window.c:1093
+msgid "Dynamic"
+msgstr "Dinâmico"
+
+#: gnome-ppp/account-window.c:1017 gnome-ppp/account-window.c:1062
+#: gnome-ppp/account-window.c:1107
+msgid "Static"
+msgstr "Estático"
+
+#. netmask
+#: gnome-ppp/account-window.c:1037
+msgid "Netmask"
+msgstr "Máscara de Rede"
+
+#. remote ip address
+#: gnome-ppp/account-window.c:1082
+msgid "Remote IP Address"
+msgstr "Endereço IP Remoto"
+
+#. dns server list
+#: gnome-ppp/account-window.c:1141
+msgid "DNS Servers"
+msgstr "Servidores de DNS"
+
+#. search domains list
+#: gnome-ppp/account-window.c:1226
+msgid "Search Domains"
+msgstr "Domínios de Procura"
+
+#: gnome-ppp/account-window.c:1237
+msgid "Domain Name"
+msgstr "Nome do Domínio"
+
+#: gnome-ppp/account-window.c:1319
+msgid "Action"
+msgstr "Ação"
+
+#: gnome-ppp/account-window.c:1320
+msgid "Text"
+msgstr "Texto"
+
+#. script list
+#: gnome-ppp/account-window.c:1328
+msgid "Login Script"
+msgstr "Roteiro de Autenticação"
+
+#: gnome-ppp/account-window.c:1408
+msgid "Insert"
+msgstr "Inserir"
+
+#: gnome-ppp/account-window.c:1482
+msgid "Add Default Route"
+msgstr "Adicionar Rota Padrão"
+
+#: gnome-ppp/account-window.c:1498
+msgid "Lock Dialout Device"
+msgstr "Travar Dispositivo de Discagem"
+
+#. mtu, mru spin buttons
+#: gnome-ppp/account-window.c:1513
+msgid "Maximum Transmission Unit"
+msgstr "Unidade Máxima de Transmissão (MTU)"
+
+#: gnome-ppp/account-window.c:1535
+msgid "Maximum Recieve Unit"
+msgstr "Unidade Máxima de Recepção (MRU)"
+
+#: gnome-ppp/account-window.c:1556
+msgid "Run Program After Connect"
+msgstr "Executar Programa Após Conectar"
+
+#: gnome-ppp/account-window.c:1568
+msgid "Run Program After Disconnect"
+msgstr "Executar Programa Após Desconectar"
+
+#: gnome-ppp/account-window.c:2054
+msgid "**PASSWORD**"
+msgstr "**SENHA**"
+
+#: gnome-ppp/account-window.c:2058
+msgid "script_type_cb(): optionmenu data bad"
+msgstr "script_type_cb(): dados da opção de menu inválidos"
+
+#: gnome-ppp/dial-window.c:123
+msgid "New Dialer"
+msgstr "Novo Discador"
+
+#: gnome-ppp/dial-window.c:133
+msgid "_Debug Terminal"
+msgstr "Terminal de _Depuração"
+
+#: gnome-ppp/dial-window.c:140
+msgid "New..."
+msgstr "Novo..."
+
+#: gnome-ppp/dial-window.c:141
+msgid "Duplicate..."
+msgstr "Duplicar..."
+
+#: gnome-ppp/dial-window.c:142
+msgid "Edit..."
+msgstr "Editar..."
+
+#: gnome-ppp/dial-window.c:143
+msgid "Delete..."
+msgstr "Apagar..."
+
+#: gnome-ppp/dial-window.c:161
+msgid "_Account"
+msgstr "_Conta"
+
+#. set up the main application
+#: gnome-ppp/dial-window.c:194
+msgid "gnome-ppp"
+msgstr "gnome-ppp"
+
+#: gnome-ppp/dial-window.c:312
+msgid "refresh_dial_app(): gtk_clist_append failed."
+msgstr "refresh_dial_app(): gtk_clist_append falhou."
+
+#: gnome-ppp/dial-window.c:337 gnome-ppp/dial-window.c:354
+msgid "Connect"
+msgstr "Conectar"
+
+#: gnome-ppp/dial-window.c:342
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: gnome-ppp/dial-window.c:347
+msgid "Disconnect"
+msgstr "Desconectar"
+
+#: gnome-ppp/dial-window.c:368
+msgid "You must disconnect before closing."
+msgstr "É necessário desconectar antes de fechar."
+
+#: gnome-ppp/dial-window.c:411
+msgid "connect_button_cb(): no selected account"
+msgstr "connect_button_cb(): nenhuma conta está selecionada"
+
+#: gnome-ppp/dial-window.c:430
+msgid "This account is in use."
+msgstr "Esta conta está em uso."
+
+#: gnome-ppp/dial-window.c:665
+msgid "The account is in use and cannot be removed."
+msgstr "A conta está em uso e não pode ser removida."
+
+#: gnome-ppp/libgnome_ppp/connect.c:224
+msgid "You don't have permission to execute pppd."
+msgstr "Você não tem permissão para executar o pppd."
+
+#: gnome-ppp/libgnome_ppp/connect.c:227
+msgid "The modem is in use by another program."
+msgstr "O modem está em uso por um outro programa."
+
+#: gnome-ppp/libgnome_ppp/connect.c:230
+msgid "Running pppd."
+msgstr "Executando pppd."
+
+#: gnome-ppp/libgnome_ppp/connect.c:233
+msgid "Closing connection."
+msgstr "Fechando a conexão."
+
+#: gnome-ppp/libgnome_ppp/connect.c:236
+msgid "The pppd program failed to run gnome-ppp-chat."
+msgstr "O programa pppd falhou ao tentar executar o gnome-ppp-chat."
+
+#: gnome-ppp/libgnome_ppp/connect.c:239
+msgid "The modem could not be hung up."
+msgstr "Não foi possível desconectar o modem."
+
+#: gnome-ppp/libgnome_ppp/connect.c:242
+msgid "Initalizing modem."
+msgstr "Inicializando o modem."
+
+#: gnome-ppp/libgnome_ppp/connect.c:245
+msgid "Your modem is not responding to initalization."
+msgstr "O modem não está respondendo à inicialização."
+
+#: gnome-ppp/libgnome_ppp/connect.c:248
+msgid "No answer after maximum number of re-dial attempts."
+msgstr "Não houve resposta após o número máximo de tentativas de discagem."
+
+#: gnome-ppp/libgnome_ppp/connect.c:251
+msgid "No phone numbers specified for this account."
+msgstr "Nenhum número de telefone foi especificado para esta conta."
+
+#: gnome-ppp/libgnome_ppp/connect.c:254
+msgid "Dialing."
+msgstr "Discando."
+
+#: gnome-ppp/libgnome_ppp/connect.c:257
+msgid "No dialtone."
+msgstr "Sem tom de discagem."
+
+#: gnome-ppp/libgnome_ppp/connect.c:260
+msgid "Number Busy."
+msgstr "Número ocupado."
+
+#: gnome-ppp/libgnome_ppp/connect.c:263
+msgid "Connected."
+msgstr "Conectado."
+
+#: gnome-ppp/libgnome_ppp/connect.c:266
+msgid "The modem lost connection with remote host."
+msgstr "O modem perdeu a conexão com a máquina remota."
+
+#: gnome-ppp/libgnome_ppp/connect.c:269
+msgid "Running Script."
+msgstr "Executando Roteiro."
+
+#: gnome-ppp/libgnome_ppp/connect.c:272
+msgid "Script Complete."
+msgstr "Roteiro Completado."
+
+#: gnome-ppp/libgnome_ppp/connect.c:275
+msgid "PPP connection established."
+msgstr "Conexão PPP estabelecida."
+
+#: gnome-ppp/libgnome_ppp/connect.c:278
+msgid "Failed to establish a PPP connection."
+msgstr "Falha ao tentar estabelecer conexão PPP."
+
+#: gnome-ppp/libgnome_ppp/connect.c:281
+msgid "The pppd daemon died unexpectedly."
+msgstr "O servidor pppd terminou inesperadamente."
+
+#: gnome-ppp/libgnome_ppp/connect.c:312
+msgid ""
+"\r\n"
+"---NEW CONNECTION---\r\n"
+msgstr ""
+"\r\n"
+"---NOVA CONEXÃO---\r\n"
+

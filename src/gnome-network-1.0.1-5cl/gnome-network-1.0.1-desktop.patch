@@ -1,0 +1,41 @@
+diff -ur gnome-network-1.0.1.old/gmailman/gmailman.desktop gnome-network-1.0.1/gmailman/gmailman.desktop
+--- gnome-network-1.0.1.old/gmailman/gmailman.desktop	Sat Feb 27 20:57:49 1999
++++ gnome-network-1.0.1/gmailman/gmailman.desktop	Thu Jul  1 14:30:17 1999
+@@ -11,6 +11,7 @@
+ Comment[ko]=±×³ð ¸ÞÀÏ¸µ ¸®½ºÆ® °¡ÀÔ °ü¸®ÀÚ
+ Comment[no]=Holder styr på maillinglistene
+ Comment[pt]=Gestor GNOME de subscrições a "mailing lists"
++Comment[pt_BR]=Gerenciador GNOME de inscrições em listas de discussão
+ Exec=gmailman
+ Terminal=0
+ Type=Application
+diff -ur gnome-network-1.0.1.old/gnome-ppp/gnome-ppp.desktop gnome-network-1.0.1/gnome-ppp/gnome-ppp.desktop
+--- gnome-network-1.0.1.old/gnome-ppp/gnome-ppp.desktop	Sat Feb 27 20:57:49 1999
++++ gnome-network-1.0.1/gnome-ppp/gnome-ppp.desktop	Thu Jul  1 14:29:50 1999
+@@ -6,6 +6,7 @@
+ Name[ko]=PPP °É±â
+ Name[no]=PPP-oppringingsverktøy
+ Name[pt]=Utilitário para efectuar ligações PPP
++Name[pt_BR]=Utilitário para efetuar ligações PPP
+ Comment=GNOME PPP dialup utility
+ Comment[de]=Verwaltung von PPP Verbindungen
+ Comment[es]=Utilería para conectarse a través de PPP
+@@ -13,6 +14,7 @@
+ Comment[ko]=±×³ð PPP ÀüÈ­°É±â ÇÁ·Î±×·¥
+ Comment[no]=Verktøy for oppretting av PPP-forbindelser
+ Comment[pt]=Utilitário GNOME para efectuar ligações PPP
++Comment[pt_BR]=Utilitário GNOME para efetuar ligações PPP
+ Exec=gnome-ppp
+ Icon=gnome-networktool.png
+ Terminal=0
+diff -ur gnome-network-1.0.1.old/sync/gnome-sync.desktop gnome-network-1.0.1/sync/gnome-sync.desktop
+--- gnome-network-1.0.1.old/sync/gnome-sync.desktop	Sat Feb 27 20:57:50 1999
++++ gnome-network-1.0.1/sync/gnome-sync.desktop	Thu Jul  1 14:29:27 1999
+@@ -10,6 +10,7 @@
+ Comment[fr]=Application de synchronisation du bureau
+ Comment[ko]=µ¥½ºÅ©Å¾ µ¿±âÈ­ ÇÁ·Î±×·¥
+ Comment[pt]=Aplicação de sincronização de ficheiros
++Comment[pt_BR]=Aplicação de sincronização de arquivos
+ Commenr[no]=Applikasjon for synkronisering av skrivebordet
+ Exec=gnome-sync
+ Terminal=0
