@@ -1,0 +1,48 @@
+--- libtool-1.3.2/config.guess.arm	Mon Jun 14 13:48:18 1999
++++ libtool-1.3.2/config.guess	Mon Jun 14 13:50:02 1999
+@@ -618,12 +618,12 @@
+ 	echo `echo ${UNAME_MACHINE}|sed -e 's,[-/].*$,,'`-unknown-gnu`echo ${UNAME_RELEASE}|sed -e 's,/.*$,,'`
+ 	exit 0 ;;
+     *:Linux:*:*)
+-	# uname on the ARM produces all sorts of strangeness, and we need to
+-	# filter it out.
+-	case "$UNAME_MACHINE" in
+-	  armv*)		      UNAME_MACHINE=$UNAME_MACHINE ;;
+-	  arm* | sa110*)	      UNAME_MACHINE="arm" ;;
+-	esac
++#	# uname on the ARM produces all sorts of strangeness, and we need to
++#	# filter it out.
++#	case "$UNAME_MACHINE" in
++#	  armv*)		      UNAME_MACHINE=$UNAME_MACHINE ;;
++#	  arm* | sa110*)	      UNAME_MACHINE="arm" ;;
++#	esac
+ 
+ 	# The BFD linker knows what the default object file format is, so
+ 	# first see if it will tell us. cd to the root directory to prevent
+@@ -641,6 +641,7 @@
+ 	  sparclinux) echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+ 	  armlinux)   echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+ 	  m68klinux)  echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
++	  elf32arm)   echo "${UNAME_MACHINE}-unknown-linux-gnu"     ; exit 0 ;;
+ 	  elf32ppc)
+ 		# Determine Lib Version
+ 		cat >$dummy.c <<EOF
+--- libtool-1.3.2/config.sub.arm	Mon Jun 14 13:46:27 1999
++++ libtool-1.3.2/config.sub	Mon Jun 14 13:48:07 1999
+@@ -172,7 +172,7 @@
+ 		| mips64orion | mips64orionel | mipstx39 | mipstx39el \
+ 		| mips64vr4300 | mips64vr4300el | mips64vr4100 | mips64vr4100el \
+ 		| mips64vr5000 | miprs64vr5000el \
+-		| sparc | sparclet | sparclite | sparc64 | sparcv9 | v850 | c4x \
++		| armv[34][lb] | sparc | sparclet | sparclite | sparc64 | sparcv9 | v850 | c4x \
+ 		| thumb | d10v)
+ 		basic_machine=$basic_machine-unknown
+ 		;;
+@@ -205,6 +205,7 @@
+ 	      | mips64el-* | mips64orion-* | mips64orionel-* \
+ 	      | mips64vr4100-* | mips64vr4100el-* | mips64vr4300-* | mips64vr4300el-* \
+ 	      | mipstx39-* | mipstx39el-* \
++	      | armv[34][lb]-* \
+ 	      | f301-* | armv*-* | t3e-* \
+ 	      | m88110-* | m680[01234]0-* | m683?2-* | m68360-* | z8k-* | d10v-* \
+ 	      | thumb-* | v850-* | d30v-* | tic30-* | c30-* )
