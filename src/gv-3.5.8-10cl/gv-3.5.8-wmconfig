@@ -1,0 +1,5 @@
+gv name "Ghostview"
+gv icon "ghostview.bmp"
+gv mini-icon "mini-gv.xpm"
+gv exec "gv &"
+gv group "Gráficos/Visualizadores"
