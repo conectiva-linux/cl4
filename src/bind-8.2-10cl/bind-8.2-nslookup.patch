@@ -1,0 +1,158 @@
+From kasal@matsrv.math.cas.cz  Sat May  1 08:49:39 1999
+Return-Path: <kasal@matsrv.math.cas.cz>
+Received: from mail.redhat.com (mail.redhat.com [199.183.24.239])
+	by developer.redhat.com (8.8.7/8.8.7) with ESMTP id IAA07737
+	for <bugzilla@developer.redhat.com>; Sat, 1 May 1999 08:49:39 -0400
+Received: from lacrosse.redhat.com (root@lacrosse.redhat.com [207.175.42.154])
+	by mail.redhat.com (8.8.7/8.8.7) with ESMTP id IAA20602
+	for <bugzilla@developer.redhat.com>; Sat, 1 May 1999 08:49:38 -0400
+Received: from mail.redhat.com (mail.redhat.com [199.183.24.239])
+	by lacrosse.redhat.com (8.8.7/8.8.7) with ESMTP id IAA17739
+	for <bugzilla@lacrosse.redhat.com>; Sat, 1 May 1999 08:49:38 -0400
+Received: from matsrv.math.cas.cz (kasal@math-gw.math.cas.cz [147.231.89.66])
+	by mail.redhat.com (8.8.7/8.8.7) with ESMTP id IAA20596
+	for <bugzilla@redhat.com>; Sat, 1 May 1999 08:49:37 -0400
+Received: (from kasal@localhost)
+	by matsrv.math.cas.cz (8.8.8/8.8.8) id OAA22490;
+	Sat, 1 May 1999 14:49:30 +0200
+From: Stepan Kasal <kasal@matsrv.math.cas.cz>
+Message-Id: <199905011249.OAA22490@matsrv.math.cas.cz>
+Subject: BUG ID #2463
+To: bugzilla@redhat.com
+Date: Sat, 1 May 1999 14:49:30 +0200 (CEST)
+In-Reply-To: <199905011113.HAA05621@developer.redhat.com> from "bugzilla@redhat.com" at May 1, 99 07:13:31 am
+Content-Type: text
+
+Bug#: 2463
+Hi,
+  some comments:
+1st chunk: numAnswers was incremented twise while numRecords was always zero.
+2nd chunk: we've to reset those static variables so that subsequent calls to
+  "ls -d" give the same result as the first one.
+the other chunks:
+  a) matchStrings was called with bad order of parameters for view and finger commands
+  b) the hack with calling system("grep %s|...") was good for bind-4 but doesn't work
+     with bind-8.  I wrote a more subtle one involving sed.
+     [I _don't_ suggest bind-utils should depend on sed because plenty of people
+      use some of the utils without actually using nslookup view.]
+The patch for bind.spec is attached.
+I'll send the patch to bind maintainers too.
+						Bye,  Stepan Kasal
+
+--- bind-8.2/src/bin/nslookup/list.c.view	Tue Nov  3 20:44:36 1998
++++ bind-8.2/src/bin/nslookup/list.c	Sat May  1 14:01:08 1999
+@@ -434,7 +434,7 @@
+ 					break;
+ 				}
+ 				strcpy(name_ctx, name);
+-				numAnswers++;
++				numRecords++;
+ 				fputs(buf, filePtr);
+ 				fputc('\n', filePtr);
+ 			}
+@@ -445,6 +445,10 @@
+ 				else if (strcasecmp(soaname[0],
+ 						    soaname[1]) == 0) {
+ 					soacnt = 2;
++					/* This means we're finished.
++					 * But we've to reset origin and
++					 * name_ctx now !  */
++					origin[0] = name_ctx[0] ='\0';
+ 				}
+ 			}
+ 		}
+@@ -511,9 +515,10 @@
+     char file[PATH_MAX];
+     char command[PATH_MAX];
+     int i, j;
++    char soafile[PATH_MAX];
+ 
+     /* sscanf(string, " view %s", file); */
+-    i = matchString(string, " view ");
++    i = matchString(" view ", string);
+     if (i > 0) {
+ 	    j = pickString(string + i, file, sizeof file);
+ 	    if (j == 0) {
+@@ -521,8 +526,29 @@
+ 		return ;
+ 	    }
+     }
+-    
+-    (void)sprintf(command, "grep \"^ \" %s | sort | %s", file, pager);
++
++    if ( !mktemp(strcpy(soafile,"/var/tmp/nslookup_tmpXXXXXX"))) {
++	fprintf(stderr, "*** cannot create temp file\n");
++	return ;
++	}
++    (void)sprintf(command, "sed '\
++/^$/,${
++/@/,$d
++}
++/^[^	]/{
++h
++s/^\\([^	]*	*\\).*/\\1/
++x
++}
++1,/^$/{
++w %s
++d
++}
++/^	/{
++G
++s/^	*//
++s/^\\(.*\\)\\n\\(.*\\)$/\\2\\1/
++}' %s | sort | (cat %s -; rm %s) | %s", soafile, file, soafile, soafile, pager);
+     system(command);
+ }
+ 
+@@ -567,7 +593,7 @@
+ 
+ 	/* simulate: sscanf("finger %s") ; */
+ 
+-	i = matchString(string, " finger ");
++	i = matchString(" finger ", string);
+ 	if (i > 0) {
+ 		i = pickString(string + i, name, sizeof name);
+ 		if (i > 0) {
+#--- bind.spec.orig	Wed Mar 31 17:53:38 1999
+#+++ bind.spec	Sat May  1 14:09:02 1999
+#@@ -1,7 +1,7 @@
+# Summary: An Internet name server.
+# Name: bind
+# Version: 8.2
+#-Release: 6
+#+Release: 6.1
+# Copyright: distributable
+# Group: System Environment/Daemons
+# Source0: ftp://ftp.isc.org/isc/bind/src/%{version}/bind-%{version}-src.tar.gz
+#@@ -14,6 +14,7 @@
+# Patch2: bind-8.1.2-fds.patch
+# Patch3: bind-8.2-glibc21.patch
+# Patch4: bind-8.2-host.patch
+#+Patch5: bind-8.2-nslookup.patch
+# Patch99: patch1
+# Buildroot: /var/tmp/bind-root
+# Prereq: /sbin/chkconfig
+#@@ -68,6 +69,7 @@
+# %patch2 -p1 -b .fds
+# %patch3 -p1 -b .glibc21
+# %patch4 -p1 -b .host
+#+%patch5 -p1 -b .view
+# %patch99 -p0 -b .patch1
+# rm -f compat/include/sys/cdefs.h
+# 
+#@@ -159,6 +161,13 @@
+# /usr/lib/bind
+# 
+# %changelog
+#+* Sat May  1 1999 Stepan Kasal <kasal@math.cas.cz>
+#+- nslookup patched:
+#+  to count numRecords properly
+#+  to fix subsequent calls to ls -d
+#+  to parse "view" and "finger" commands properly
+#+  the view hack updated for bind-8 (using sed)
+#+
+# * Wed Mar 31 1999 Bill Nottingham <notting@redhat.com>
+# - add ISC patch
+# - add quick hack to make host not crash
+#

@@ -1,0 +1,37 @@
+Index: src/bin/named/db_glue.c
+===================================================================
+RCS file: /proj/cvs/isc/bind/src/bin/named/db_glue.c,v
+retrieving revision 8.34
+diff -u -r8.34 db_glue.c
+--- src/bin/named/db_glue.c	1999/03/11 06:20:45	8.34
++++ src/bin/named/db_glue.c	1999/03/17 00:41:41
+@@ -602,8 +602,8 @@
+ 	unsigned int		hval;
+ } **lame_hash = NULL;
+ 
+-int lame_hash_size = 0;
+-int lame_hash_cnt = 0;
++static int lame_hash_size = 0;
++static int lame_hash_cnt = 0;
+ 
+ void
+ db_lame_add(char *zone, char *server, time_t when) {
+@@ -628,7 +628,7 @@
+ 			if (newsize == 0)
+ 				newsize = lame_hash_size * 2 + 1;
+ 		}
+-		new = memget(newsize * sizeof *this);
++		new = memget(newsize * sizeof this);
+ 		if (new == NULL)
+ 			return;
+ 		memset(new, 0, newsize * sizeof this);
+@@ -641,7 +641,8 @@
+ 				new[hval%newsize] = last;
+ 			}
+ 		}
+-		memput(lame_hash, lame_hash_size * sizeof this);
++		if (lame_hash != NULL)
++			memput(lame_hash, lame_hash_size * sizeof this);
+ 		lame_hash = new;
+ 		lame_hash_size = newsize;
+ 	}

@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# named           This script manager named (server DNS BIND).
+#
+# chkconfig: 345 55 45
+# description: named (BIND) is a Domain Name Server (DNS) \
+# that is used to resolve host names to IP addresses.
+# description(pt_BR): named (BIND) é um servidor de nomes (DNS) \
+# que é usado para resolver nomes de máquinas para seus respectivos IPs.
+# probe: true
+
+
+. /etc/rc.d/init.d/functions
+
+. /etc/sysconfig/network
+
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -f /usr/sbin/named ] || exit 0
+
+[ -f /etc/named.conf ] || exit 0
+
+case "$1" in
+  start)
+        gprintf "Starting %s: " "named"
+        daemon named
+        echo
+        touch /var/lock/subsys/named
+        ;;
+  stop)
+        gprintf "Stopping %s: " "named"
+        killproc named
+        rm -f /var/lock/subsys/named
+        ;;
+  status)
+	/usr/sbin/ndc status
+	exit $?
+	;;
+  restart)
+	/usr/sbin/ndc restart
+	exit $?
+	;;
+  reload)
+	/usr/sbin/ndc reload
+	exit $?
+	;; 
+  probe)
+	# named knows how to reload intelligently; we don't want linuxconf
+	# to offer to restart every time
+	/usr/sbin/ndc reload >/dev/null 2>&1 || echo start
+	exit 0
+	;;
+  *)
+        gprintf "Usage: %s {start|stop|status|reload|restart}\n" "named"
+        exit 1
+esac
+
+exit 0
