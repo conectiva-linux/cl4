@@ -1,0 +1,12 @@
+--- libg++-2.7.2/libg++/gperf/src/key-list.h.ewt	Mon Nov  3 21:02:02 1997
++++ libg++-2.7.2/libg++/gperf/src/key-list.h	Mon Nov  3 21:03:44 1997
+@@ -52,6 +52,9 @@
+   int         total_keys;                            /* Total number of keys, counting duplicates. */
+   static int  determined[ALPHA_SIZE];                /* Used in function reorder, below. */
+   static int  get_occurrence (List_Node *ptr);
++#ifdef strcspn
++#undef strcspn
++#endif
+   static int  strcspn (const char *s, const char *reject);
+   static int  already_determined (List_Node *ptr);
+   static void set_determined (List_Node *ptr);
