@@ -1,0 +1,48 @@
+--- Python-1.5/Doc/keywords.py.local	Mon Apr 13 15:34:43 1998
++++ Python-1.5/Doc/keywords.py	Mon Apr 13 15:35:15 1998
+@@ -1,4 +1,4 @@
+-#! /usr/local/bin/python
++#! /usr/bin/python
+ 
+ # This Python program sorts and reformats the table of keywords in ref2.tex
+ 
+--- Python-1.5/Doc/texi2html.py.local	Mon Apr 13 15:35:04 1998
++++ Python-1.5/Doc/texi2html.py	Mon Apr 13 15:35:18 1998
+@@ -1,4 +1,4 @@
+-#! /usr/local/bin/python
++#! /usr/bin/python
+ 
+ # Convert GNU texinfo files into HTML, one file per node.
+ # Based on Texinfo 2.14.
+--- Python-1.5/Demo/zlib/minigzip.py.local	Mon Apr 13 15:37:15 1998
++++ Python-1.5/Demo/zlib/minigzip.py	Mon Apr 13 15:37:26 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/python
++#!/usr/bin/python
+ # Demo program for zlib; it compresses or decompresses files, but *doesn't*
+ # delete the original.  This doesn't support all of gzip's options.
+ 
+--- Python-1.5/Demo/zlib/zlibdemo.py.local	Mon Apr 13 15:37:19 1998
++++ Python-1.5/Demo/zlib/zlibdemo.py	Mon Apr 13 15:37:29 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/python
++#!/usr/bin/python
+ 
+ import zlib, sys
+ if len(sys.argv)>1: filename=sys.argv[1]
+--- Python-1.5/Lib/test/test_re.py.local	Mon Apr 13 15:38:23 1998
++++ Python-1.5/Lib/test/test_re.py	Mon Apr 13 15:38:29 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/python
++#!/usr/bin/python
+ # -*- mode: python -*-
+ # test_re.py,v 1.14 1997/12/30 17:32:33 guido Exp
+ 
+--- Python-1.5/Lib/cgi.py.local	Mon Apr 13 15:37:55 1998
++++ Python-1.5/Lib/cgi.py	Mon Apr 13 15:38:06 1998
+@@ -1,4 +1,4 @@
+-#! /usr/local/bin/python
++#! /usr/bin/python
+ 
+ """Support module for CGI (Common Gateway Interface) scripts.
+ 

@@ -1,0 +1,145 @@
+--- Python-1.5.1/Modules/Setup.in.config	Fri Apr 10 16:44:11 1998
++++ Python-1.5.1/Modules/Setup.in	Thu Feb 11 15:02:22 1999
+@@ -107,7 +107,7 @@
+ # modules are to be built as shared libraries (see above for more
+ # detail):
+ 
+-#*shared*
++*shared*
+ 
+ # GNU readline.  Unlike previous Python incarnations, GNU readline is
+ # now incorporated in an optional module, configured in the Setup file
+@@ -117,7 +117,7 @@
+ # it, depending on your system -- see the GNU readline instructions.
+ # It's okay for this to be a shared library, too.
+ 
+-#readline readline.c -lreadline -ltermcap
++readline readline.c -lreadline -lncurses
+ 
+ 
+ # Modules that should always be present (non UNIX dependent):
+@@ -146,15 +146,15 @@
+ 
+ # The crypt module is now disabled by default because it breaks builds
+ # on many systems (where -lcrypt is needed), e.g. Linux (I believe).
+-#crypt cryptmodule.c # -lcrypt	# crypt(3); needs -lcrypt on some systems
++crypt cryptmodule.c -lcrypt	# crypt(3); needs -lcrypt on some systems
+ 
+ 
+ # Some more UNIX dependent modules -- off by default, since these
+ # are not supported by all UNIX systems:
+ 
+-#nis nismodule.c 	# Sun yellow pages -- not everywhere
+-#termios termios.c	# Steen Lumholt's termios module
+-#resource resource.c	# Jeremy Hylton's rlimit interface
++nis nismodule.c 	# Sun yellow pages -- not everywhere
++termios termios.c	# Steen Lumholt's termios module
++resource resource.c	# Jeremy Hylton's rlimit interface
+ 
+ 
+ # Multimedia modules -- off by default.
+@@ -206,7 +206,7 @@
+ # ftp://gatekeeper.dec.com/.b/usenet/comp.sources.misc/volume40/fgmp/part01.Z
+ 
+ #GMP=/ufs/guido/src/gmp
+-#mpz mpzmodule.c -I$(GMP) $(GMP)/libgmp.a
++mpz mpzmodule.c -lgmp
+ 
+ 
+ # SGI IRIX specific modules -- off by default.
+@@ -248,7 +248,7 @@
+ 
+ # George Neville-Neil's timing module:
+ 
+-#timing timingmodule.c
++timing timingmodule.c
+ 
+ 
+ # The _tkinter module.
+@@ -266,15 +266,15 @@
+ # every system.
+ 
+ # *** Always uncomment this (leave the leading underscore in!):
+-# _tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
++_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
+ # *** Uncomment and edit to reflect where your X11 header files are:
+-#	-I/usr/X11R6/include \
++	-I/usr/X11R6/include \
+ # *** Or uncomment this for Solaris:
+ #	-I/usr/openwin/include \
+ # *** Uncomment and edit to reflect where your Tcl/Tk headers are:
+ #	-I/usr/local/include \
+ # *** Uncomment and edit for Tix extension only:
+-#	-DWITH_TIX -ltix4.1.8.0 \
++	-DWITH_TIX -ltix4.1.8.0 \
+ # *** Uncomment and edit for BLT extension only:
+ #	-DWITH_BLT -I/usr/local/blt/blt8.0-unoff/include -lBLT8.0 \
+ # *** Uncomment and edit for PIL (TkImaging) extension only:
+@@ -284,9 +284,9 @@
+ # *** Uncomment and edit to reflect where your Tcl/Tk libraries are:
+ #	-L/usr/local/lib \
+ # *** Uncomment and edit to reflect your Tcl/Tk versions:
+-#	-ltk8.0 -ltcl8.0 \
++	-ltk8.0 -ltcl8.0 \
+ # *** Uncomment and edit to reflect where your X11 libraries are:
+-#	-L/usr/X11R6/lib \
++	-L/usr/X11R6/lib \
+ # *** Or uncomment this for Solaris:
+ #	-L/usr/openwin/lib \
+ # *** Uncomment these for TOGL extension only:
+@@ -294,12 +294,12 @@
+ # *** Uncomment for AIX:
+ #	-lld \
+ # *** Always uncomment this; X11 libraries to link with:
+-#	-lX11
++	-lX11
+ 
+ # Lance Ellinghaus's modules:
+ 
+ rotor rotormodule.c		# enigma-inspired encryption
+-#syslog syslogmodule.c		# syslog daemon interface
++syslog syslogmodule.c		# syslog daemon interface
+ 
+ 
+ # Lance's curses module.  This requires the System V version of
+@@ -307,7 +307,7 @@
+ # -lncurses instead of -lcurses; on SunOS 4.1.3, insert -I/usr/5include
+ # -L/usr/5lib before -lcurses).
+ 
+-#curses cursesmodule.c -lcurses -ltermcap
++curses cursesmodule.c -I/usr/include/ncurses -lncurses
+ 
+ 
+ 
+@@ -333,11 +333,11 @@
+ 
+ # The standard Unix dbm module:
+ 
+-#dbm dbmmodule.c 	# dbm(3) may require -lndbm or similar
++dbm dbmmodule.c -I/usr/include/db1 -ldb1	# dbm(3) may require -lndbm or similar
+ 
+ # Anthony Baxter's gdbm module.  GNU dbm(3) will require -lgdbm:
+ 
+-#gdbm gdbmmodule.c -I/usr/local/include -L/usr/local/lib -lgdbm
++gdbm gdbmmodule.c -I/usr/local/include -L/usr/local/lib -lgdbm
+ 
+ 
+ # Berkeley DB interface.
+@@ -353,7 +353,7 @@
+ 
+ #DB=/depot/sundry/src/berkeley-db/db.1.85
+ #DBPORT=$(DB)/PORT/irix.5.3
+-#bsddb bsddbmodule.c -I$(DBPORT)/include -I$(DBPORT) $(DBPORT)/libdb.a
++bsddb bsddbmodule.c -ldb -I/usr/include/db1 -ldb1
+ 
+ 
+ 
+@@ -391,7 +391,7 @@
+ # Andrew Kuchling's zlib module.
+ # This require zlib 1.0.4 (or later).  See http://quest.jpl.nasa.gov/zlib/
+ # See http://www.cdrom.com/pub/infozip/zlib/
+-#zlib zlibmodule.c -I$(prefix)/include -L$(exec_prefix)/lib -lz
++zlib zlibmodule.c -lz
+ 
+ 
+ # Example -- included for reference only:

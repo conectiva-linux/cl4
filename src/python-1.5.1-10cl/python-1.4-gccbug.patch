@@ -1,0 +1,22 @@
+--- Python-1.4/Modules/selectmodule.c.ewt	Wed Dec 18 16:21:52 1996
++++ Python-1.4/Modules/selectmodule.c	Wed Dec 18 16:22:32 1996
+@@ -150,7 +150,6 @@
+     object *self;
+     object *args;
+ {
+-    pylist rfd2obj[FD_SETSIZE + 3], wfd2obj[FD_SETSIZE + 3], efd2obj[FD_SETSIZE + 3];
+     object *ifdlist, *ofdlist, *efdlist;
+     object *ret, *tout;
+     fd_set ifdset, ofdset, efdset;
+@@ -159,7 +158,11 @@
+     int seconds;
+     int imax, omax, emax, max;
+     int n;
++    pylist * rfd2obj, * wfd2obj, * efd2obj;
+ 
++    rfd2obj = alloca(sizeof(pylist) * (FD_SETSIZE + 3));
++    wfd2obj = alloca(sizeof(pylist) * (FD_SETSIZE + 3));
++    efd2obj = alloca(sizeof(pylist) * (FD_SETSIZE + 3));
+ 
+     /* Get args. Looks funny because of optional timeout argument */
+     if ( getargs(args, "(OOOO)", &ifdlist, &ofdlist, &efdlist, &tout) ) {
