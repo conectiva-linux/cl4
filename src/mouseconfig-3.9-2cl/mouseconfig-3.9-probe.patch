@@ -1,0 +1,100 @@
+diff -Nur mouseconfig-3.9/mouseconfig.c mouseconfig-3.9.cnc/mouseconfig.c
+--- mouseconfig-3.9/mouseconfig.c	Tue Apr 13 15:01:52 1999
++++ mouseconfig-3.9.cnc/mouseconfig.c	Fri Jun 18 20:40:16 1999
+@@ -64,6 +64,8 @@
+   { N_("Generic Mouse (PS/2)"), "genericps/2", 2, "ps/2", "PS/2", "psaux" },
+   { N_("Generic 3 Button Mouse (PS/2)"), "generic3ps/2", 3, "ps/2",
+     "PS/2", "psaux" },
++  { N_("Genius 3 Button EasyMouse (serial)"), "geniusez3", 3, "Microsoft",
++    "Microsoft", "ttyS" },
+   { N_("Genius NetMouse (serial)"), "geniusnm", 5, "ms3",
+     "IntelliMouse", "ttyS" },
+   { N_("Genius NetMouse (PS/2)"), "geniusnmps/2", 5, "netmouse",
+@@ -79,7 +81,7 @@
+   { N_("Logitech CC Series (serial)"), "logitechcc", 3, "logim", 
+     "MouseMan", "ttyS" },
+   { N_("Logitech Bus Mouse"), "logibm", 3, "Busmouse", "BusMouse", "logibm" },
+-  { N_("Logitech MouseMan/FirstMouse (serial)"), "logimman", 3, "MouseMan",
++  { N_("Logitech MouseMan/FirstMouse (serial)"), "logimman", 2, "MouseMan",
+     "MouseMan", "ttyS" },
+   { N_("Logitech MouseMan/FirstMouse (ps/2)"), "logimmanps/2", 3, "ps/2",
+     "PS/2", "psaux" },
+@@ -368,43 +370,48 @@
+       if (!pnp_probe_com( &t, *try )) {
+ 	/* is it a mouse? */
+ 	class = devprobe_match(t, "CLASS");
+-	if (class) {
++	if (class) 
+ 	  if (!strcmp(class,"MOUSE")) {
+ 	    /* found a plug 'n' play mouse
+ 	     * set found now, because we might not know what it is. */
+ 	    found = 1;
+ 	    free(class);
++          }
+ 	    
+-	    /* who made it */
+-	    mfg = devprobe_match(t, "MFG");
+-	    if (!mfg)
+-	      mfg = devprobe_match(t, "MANUFACTURER");
++	/* who made it */
++	mfg = devprobe_match(t, "MFG");
++	if (!mfg)
++	  mfg = devprobe_match(t, "MANUFACTURER");
+ 	    
+-	    if (mfg) {
+-	      model = devprobe_match(t, "MODEL");
+-	      if (model) {
+-		if (!strcmp(mfg,"MSH") && !strcmp(model,"0001")) {
+-		  for (i = 0; i < NUM_MICE; i++)
+-		    if (!strcasecmp(mouseTypes[i].shortName, "msintelli"))
+-		      break;
+-		  good_probe = 1;
+-		} /* microsoft intellimouse */
+-		if (!strcmp(mfg,"LGI") && (!strncmp(model,"80",2))) {
+-		  for (i = 0; i < NUM_MICE; i++)
+-		    if (!strcasecmp(mouseTypes[i].shortName, "logimman"))
+-		      break;
+-		  good_probe = 1;
+-		} /* logitech three button */
+-		if (!strcmp(mfg,"KYE") && !strcmp(model,"0003")) {
+-		  for (i = 0; i < NUM_MICE; i++)
+-		    if (!strcasecmp(mouseTypes[i].shortName, "geniusnm"))
+-		      break;
+-		  good_probe = 1;
+-		} /* Genius / KYE NetMouse */
+-		free(model);
+-		free(mfg);
+-	      }
+-	    }
++	if (mfg) {
++	  model = devprobe_match(t, "MODEL");
++	  if (model) {
++	    if (!strcmp(mfg,"MSH") && !strcmp(model,"0001")) {
++	      for (i = 0; i < NUM_MICE; i++)
++		if (!strcasecmp(mouseTypes[i].shortName, "msintelli"))
++		  break;
++		found = good_probe = 1;
++	    } /* microsoft intellimouse */
++	    if (!strcmp(mfg,"LGI") && (!strncmp(model,"80",2))) {
++	      for (i = 0; i < NUM_MICE; i++)
++		if (!strcasecmp(mouseTypes[i].shortName, "logimman"))
++		  break;
++		found = good_probe = 1;
++	    } /* logitech three button */
++	    if (!strcmp(mfg,"KYE") && !strcmp(model,"0003")) {
++	      for (i = 0; i < NUM_MICE; i++)
++		if (!strcasecmp(mouseTypes[i].shortName, "geniusnm"))
++		  break;
++		found = good_probe = 1;
++	    } /* Genius / KYE NetMouse */
++	    if (!strcmp(mfg,"KYE") && !strcmp(model,"0001")) {
++	      for (i = 0; i < NUM_MICE; i++)
++		if (!strcasecmp(mouseTypes[i].shortName, "geniusez3"))
++		  break;
++		found = good_probe = 1;
++	    } /* Genius EasyMouse */
++	    free(model);
++	    free(mfg);
+ 	  }
+ 	}
+       } else {

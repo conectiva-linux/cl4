@@ -1,0 +1,11 @@
+--- mouseconfig-3.9/mouseconfig.c.orig	Sat Jun 19 21:17:58 1999
++++ mouseconfig-3.9/mouseconfig.c	Sat Jun 19 21:20:11 1999
+@@ -823,7 +823,7 @@
+ 	} else if (status > 0) {
+ 	  newtWinMessage(_("Probing Result"), _("Ok"),
+ 			 _("Probing found a %s mouse on port %s."),
+-			 mouseTypes[mouse].name,
++			 _(mouseTypes[mouse].name),
+ 			 probedDevice ? probedDevice : "psaux");
+ 	} else {
+ 	  newtWinMessage(_("Probing Failed"), _("Ok"),
