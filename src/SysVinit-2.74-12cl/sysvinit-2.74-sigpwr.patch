@@ -1,0 +1,38 @@
+--- sysvinit-2.74/src/init.c.sigpwr	Wed Jul  8 17:29:52 1998
++++ sysvinit-2.74/src/init.c	Wed Jul  8 17:31:37 1998
+@@ -1996,6 +1996,7 @@
+   CHILD *ch;
+   char c;
+ 
++#if defined(SIGPWR)
+   if (ISMEMBER(got_signals, SIGPWR)) {
+ #if DEBUG
+ 	log(L_VB, "got SIGPWR");
+@@ -2012,6 +2013,7 @@
+ 	}
+ 	DELSET(got_signals, SIGPWR);
+   }
++#endif	/* def SIGPWR */
+ 
+   if (ISMEMBER(got_signals, SIGINT)) {
+ #if DEBUG
+@@ -2152,7 +2154,9 @@
+   SETSIG(sa, SIGHUP,   signal_handler);
+   SETSIG(sa, SIGINT,   signal_handler);
+   SETSIG(sa, SIGCHLD,  chld_handler);
++#if defined(SIGPWR)
+   SETSIG(sa, SIGPWR,   signal_handler);
++#endif	/* def SIGPWR */
+   SETSIG(sa, SIGWINCH, signal_handler);
+   SETSIG(sa, SIGUSR1,  signal_handler);
+   SETSIG(sa, SIGSTOP,  stop_handler);
+@@ -2168,7 +2172,9 @@
+   siginterrupt (SIGALRM,  1);
+   siginterrupt (SIGHUP,   1);
+   siginterrupt (SIGINT,   1);
++#if defined(SIGPWR)
+   siginterrupt (SIGPWR,   1);
++#endif	/* def SIGPWR */
+   siginterrupt (SIGUSR1,  1);
+   siginterrupt (SIGWINCH, 1);
+ 

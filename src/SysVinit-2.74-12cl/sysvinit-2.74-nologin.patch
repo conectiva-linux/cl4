@@ -1,0 +1,10 @@
+--- sysvinit-2.74/src/shutdown.c.nologin	Wed Jul  8 17:21:14 1998
++++ sysvinit-2.74/src/shutdown.c	Wed Jul  8 17:22:01 1998
+@@ -253,6 +253,7 @@
+   args[argp]   = (char *)NULL;
+ 
+   unlink(SDPID);
++  unlink(NOLOGIN);
+ 
+   /* Now execute init to change runlevel. */
+   execv(INIT, args);

@@ -1,0 +1,10 @@
+--- sysvinit-2.74/src/init.c.old	Thu Jul  9 20:40:02 1998
++++ sysvinit-2.74/src/init.c	Thu Jul  9 20:49:58 1998
+@@ -1050,6 +1050,7 @@
+ 	if (rlevel && strlen(rlevel) > 11)
+ 			strcpy(err, "rlevel field too long (max 11 characters)");
+ 	if (process && strlen(process) > 127) strcpy(err, "process field too long");
++	if (action && strlen(action) > 32) strcpy(err, "action field too long");
+ 	if (err[0] != 0) {
+ 		log(L_VB, "%s[%d]: %s", INITTAB, lineNo, err);
+ #if DEBUG
