@@ -1,0 +1,13 @@
+--- bash-1.14.7/jobs.c.djb	Fri Nov  7 16:29:11 1997
++++ bash-1.14.7/jobs.c	Fri Nov  7 16:29:23 1997
+@@ -2029,7 +2029,9 @@
+ 
+   do
+     {
+-      flag = WUNTRACED;
++      flag = (job_control && subshell_environment == 0)
++               ? WUNTRACED
++	       : 0;
+       if (sigchld || s)
+ 	flag |= WNOHANG;
+       pid = WAITPID (-1, &status, flag);

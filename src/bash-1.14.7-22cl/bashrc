@@ -1,0 +1,22 @@
+# /etc/bashrc
+
+# Funções e aliases para todo o sistema
+# Configurações do ambiente devem ser feitas no arquivo /etc/profile
+
+# Por alguma razão desconhecida o bash se recusa a herdar
+# a variável PS1 em algumas circunstâncias.
+# Colocando o PS1 aqui garante que ela seja carregada sempre.
+PS1="[\u@\h \W]\\$ "
+
+alias which="type -path"
+alias l="ls -laF --color=tty"
+alias ls="ls --color=tty"
+alias m="minicom -s -con -L"
+alias minicom="minicom -s -con -L"
+alias tm="tail -f /var/log/messages"
+alias tmm="tail -f /var/log/maillog"
+alias tms="tail -f /var/log/secure"
+alias cds="cd /etc/rc.d/init.d && ls"
+alias   fd="mount /dev/fd0 /mnt/floppy; cd /mnt/floppy && ls"
+alias  ufd="cd /mnt && umount floppy && ls"
+alias ldir="mount /mnt/floppy && l /mnt/floppy && umount /mnt/floppy"

@@ -1,0 +1,92 @@
+--- bash-1.14.7/builtins/cd.def.secfix	Tue Apr  5 09:57:28 1994
++++ bash-1.14.7/builtins/cd.def	Tue Sep  8 17:59:39 1998
+@@ -219,7 +219,11 @@
+   if (verbatim_pwd)
+     {
+       char *buffer = xmalloc (MAXPATHLEN);
+-      directory = getwd (buffer);
++      directory = getcwd (buffer, MAXPATHLEN);
++      if (directory == NULL && errno == ERANGE) {
++	/* our buffer is too small */
++	directory = ".";
++      }
+ 
+       if (!directory)
+ 	{
+--- bash-1.14.7/builtins/common.c.secfix	Mon Jan 30 13:02:37 1995
++++ bash-1.14.7/builtins/common.c	Tue Sep  8 18:00:59 1998
+@@ -44,6 +44,8 @@
+ #  include "../bashhist.h"
+ #endif
+ 
++#include <errno.h>
++
+ extern int no_symbolic_links, interactive, interactive_shell;
+ extern int indirection_level, startup_state;
+ extern int last_command_exit_value;
+@@ -423,7 +425,12 @@
+       char *directory;
+ 
+       the_current_working_directory = xmalloc (MAXPATHLEN);
+-      directory = getwd (the_current_working_directory);
++      directory = getcwd (the_current_working_directory, MAXPATHLEN);
++      if (directory == NULL && errno == ERANGE) {
++	  /* buffer to small, try to deal with it */
++	  directory = ".";
++      }
++      
+       if (!directory)
+ 	{
+ 	  if (for_whom && *for_whom)
+--- bash-1.14.7/parse.y.secfix	Sun Sep  6 02:55:03 1998
++++ bash-1.14.7/parse.y	Tue Sep  8 17:59:06 1998
+@@ -26,7 +26,8 @@
+ #include "shell.h"
+ #include "flags.h"
+ #include "input.h"
+-
++#include <errno.h>
++    
+ #if defined (READLINE)
+ #  include <readline/readline.h>
+ #endif /* READLINE */
+@@ -2717,19 +2718,32 @@
+ 	      {
+ 		/* Use the value of PWD because it is much more effecient. */
+ #define EFFICIENT
++		char t_string[MAXPATHLEN], *t_string_ret = NULL;
+ #ifdef EFFICIENT
+-		char *polite_directory_format (), t_string[MAXPATHLEN];
++		char *polite_directory_format ();
+ 
+ 		temp = get_string_value ("PWD");
+ 
+-		if (!temp)
+-		  getwd (t_string);
+-		else
+-		  strcpy (t_string, temp);
++		if (!temp) {
++		    t_string_ret = getcwd (t_string, MAXPATHLEN);
++		} else {
++		    if (strlen(temp) >= MAXPATHLEN) {
++			strcpy(t_string, ".");
++		    } else {
++			strncpy (t_string, temp, MAXPATHLEN); /* a little too much */
++		    }
++		    t_string_ret = t_string;
++		}
+ #else
+-		getwd (t_string);
++		t_string_ret = getcwd (t_string, MAXPATHLEN);
+ #endif	/* EFFICIENT */
+-
++		if (t_string_ret == NULL && errno == ERANGE) {
++		    /* that is a waay too long path */
++		    strcpy(t_string, ".");
++		} else {
++		    strncpy(t_string, t_string_ret, sizeof(t_string));
++		}
++		
+ 		if (c == 'W')
+ 		  {
+ 		    char *dir = (char *)strrchr (t_string, '/');

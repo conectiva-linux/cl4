@@ -1,0 +1,36 @@
+diff -urN bash-1.14.7.orig/machines.h bash-1.14.7/machines.h
+--- bash-1.14.7.orig/machines.h	Mon Dec 18 11:13:22 1995
++++ bash-1.14.7/machines.h	Fri Oct 10 14:16:47 1997
+@@ -508,7 +578,7 @@
+    * Place /bsd43/bin in your PATH before /bin.
+    * Use `$(CC) -E' instead of `/lib/cpp' in Makefile.
+ */
+-#if defined (mips) && ((!defined (M_MACHINE) && !defined (__nonstopux)) || defined (RiscOS))
++#if defined (mips) && ((!defined (M_MACHINE) && !defined (__linux__) && !defined (__nonstopux)) || defined (RiscOS))
+ 
+ #  if defined (MIPSEB)
+ #    define M_MACHINE "MIPSEB"
+@@ -1007,6 +1077,23 @@
+ #  undef HAVE_SETLINEBUF
+ #  define HAVE_STRCASECMP
+ #endif  /* mc68000 && __linux__ */
++
++#if defined (__linux__) && (defined (__mips__) || defined (mips))
++#  define M_MACHINE "mips"
++#  define M_OS "Linux"
++#  SYSDEP_CFLAGS -DHAVE_BCOPY -DHAVE_GETPW_DECLS -DHAVE_GETHOSTNAME
++#  define REQUIRED_LIBRARIES
++#  define HAVE_GETGROUPS
++#  define HAVE_STRERROR
++#  define VOID_SIGHANDLER
++#  define HAVE_SYS_SIGLIST
++#  define HAVE_VFPRINTF
++#  define HAVE_VARARGS_H
++#  define HAVE_FIXED_INCLUDES
++#  undef USE_GNU_MALLOC
++#  undef HAVE_SETLINEBUF
++#  define HAVE_STRCASECMP
++#endif
+ 
+ /* **************************************************************** */
+ /*                                                                  */

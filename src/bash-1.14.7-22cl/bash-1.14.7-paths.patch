@@ -1,0 +1,26 @@
+--- bash-1.14.7/config.h.marc	Tue Sep  3 10:01:21 1996
++++ bash-1.14.7/config.h	Tue Sep  3 10:02:50 1996
+@@ -90,12 +90,12 @@
+ 
+ /* The default value of the PATH variable. */
+ #define DEFAULT_PATH_VALUE \
+-  "/usr/gnu/bin:/usr/local/bin:/usr/ucb:/bin:/usr/bin:."
++  "/usr/local/bin:/bin:/usr/bin"
+ 
+ /* The value for PATH when invoking `command -p'.  This is only used when
+    the Posix.2 confstr () function, or CS_PATH define are not present. */
+ #define STANDARD_UTILS_PATH \
+-  "/bin:/usr/bin:/usr/ucb:/usr/sbin:/sbin:/etc:/usr/etc:/usr/lib"
++  "/bin:/usr/bin:/usr/sbin:/sbin"
+ 
+ /* Put system-specific default mail directories here. */
+ #if defined (__bsdi__) || defined (__FreeBSD__) || defined (__NetBSD__)
+@@ -106,7 +106,7 @@
+ #if defined (USG)
+ #  define DEFAULT_MAIL_PATH "/usr/mail/"
+ #else
+-#  define DEFAULT_MAIL_PATH "/usr/spool/mail/"
++#  define DEFAULT_MAIL_PATH "/var/spool/mail/"
+ #endif
+ #endif
+ 

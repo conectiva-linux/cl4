@@ -1,0 +1,31 @@
+--- machines.h-	Mon Dec 18 19:13:22 1995
++++ machines.h	Fri May 24 02:27:42 1996
+@@ -114,6 +114,28 @@
+ #  define HAVE_STRCASECMP
+ #endif /* sparc && __bsdi__ */
+ 
++/* Linux/SPARC */
++#if defined (sparc) && defined (__linux__)
++#    define M_MACHINE "sparc"
++#    define M_OS "Linux"
++#    define SYSDEP_CFLAGS -DHAVE_GETDTABLESIZE -DHAVE_BCOPY \
++			  -DHAVE_GETPW_DECLS -DHAVE_GETHOSTNAME
++#    define REQUIRED_LIBRARIES
++#    define HAVE_GETGROUPS
++#    define HAVE_STRERROR
++#    define VOID_SIGHANDLER
++#    define HAVE_SYS_SIGLIST
++#    define HAVE_VFPRINTF
++#    define HAVE_VARARGS_H
++#    define SEARCH_LIB_NEEDS_SPACE
++#    if defined (__GNUC__)
++#      define HAVE_FIXED_INCLUDES
++#    endif /* __GNUC__ */
++#    undef USE_GNU_MALLOC
++#    undef HAVE_SETLINEBUF
++#    undef HAVE_GETWD
++#endif /* sparc && __linux__ */
++
+ #if defined (sun) && !defined (M_MACHINE)
+ /* We aren't currently using GNU Malloc on Suns because of a bug in Sun's
+    YP which bites us when Sun free ()'s an already free ()'ed address.

@@ -1,0 +1,11 @@
+--- bash-1.14.7/parse.y.marc	Tue Sep  3 10:58:40 1996
++++ bash-1.14.7/parse.y	Tue Sep  3 10:58:58 1996
+@@ -801,7 +801,7 @@
+ 
+ #if defined (READLINE)
+ char *current_readline_prompt = (char *)NULL;
+-char *current_readline_line = (char *)NULL;
++unsigned char *current_readline_line = (unsigned char *)NULL;
+ int current_readline_line_index = 0;
+ 
+ static int

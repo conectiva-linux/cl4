@@ -1,0 +1,11 @@
+--- bash-1.14.7/bashhist.c.hist	Wed Oct  7 11:13:34 1998
++++ bash-1.14.7/bashhist.c	Wed Oct  7 11:13:36 1998
+@@ -161,7 +161,7 @@
+ 	  /* If the file doesn't exist, then create it. */
+ 	  if (stat (hf, &buf) == -1)
+ 	    {
+-	      int file = open (hf, O_CREAT | O_TRUNC | O_WRONLY, 0666);
++	      int file = open (hf, O_CREAT | O_TRUNC | O_WRONLY, 0600);
+ 	      if (file != -1)
+ 		close (file);
+ 	    }

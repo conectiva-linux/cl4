@@ -1,0 +1,11 @@
+--- bash-1.14.7/lib/readline/rldefs.h.rhfix	Thu Aug 27 15:47:21 1998
++++ bash-1.14.7/lib/readline/rldefs.h	Thu Aug 27 15:50:34 1998
+@@ -156,7 +156,7 @@
+ /* This is needed to include support for TIOCGWINSZ and window resizing. */
+ #if defined (OSF1) || defined (BSD386) || defined (NetBSD) || \
+     defined (__BSD_4_4__) || defined (FreeBSD) || defined (_386BSD) || \
+-    defined (AIX)
++    defined (AIX) || defined(Linux)
+ #  define GWINSZ_IN_SYS_IOCTL
+ #endif
+ 
