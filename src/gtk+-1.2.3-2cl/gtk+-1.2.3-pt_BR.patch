@@ -1,0 +1,12 @@
+diff -uNr gtk+-1.2.3/configure.in gtk+-1.2.3-pt_BR/configure.in
+--- gtk+-1.2.3/configure.in	Tue May 11 00:32:08 1999
++++ gtk+-1.2.3-pt_BR/configure.in	Wed Jun 16 16:34:31 1999
+@@ -164,7 +164,7 @@
+ AC_SUBST(REBUILD)
+ 
+ # i18n stuff
+-ALL_LINGUAS="ca cs de es fi fr hr hu it ja ko nl no pl pt ru sl sk sv wa zh_TW.Big5"
++ALL_LINGUAS="ca cs de es fi fr hr hu it ja ko nl no pl pt pt_BR ru sl sk sv wa zh_TW.Big5"
+ AM_GTK_GNU_GETTEXT
+ LIBS="$LIBS $INTLLIBS"
+ 
