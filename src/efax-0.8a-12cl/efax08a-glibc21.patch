@@ -1,0 +1,21 @@
+--- efax08a/efaxmsg.c.egcs	Sun Jul 28 00:08:54 1996
++++ efax08a/efaxmsg.c	Fri Dec 18 15:49:35 1998
+@@ -81,7 +81,7 @@
+ int msg ( char *fmt, ... ) 
+ { 
+   static int init=0 ;
+-  static FILE *logfile [ NLOG ] = { stderr, stdout } ;
++  static FILE *logfile [ NLOG ];
+   static char msgbuf [ NLOG ] [ MAXMSGBUF ] ;
+   static time_t logtime [ NLOG ] = { 0, 0 } ;
+   static int atcol1 [ NLOG ] = { 1, 1 } ;
+@@ -93,6 +93,9 @@
+   
+   va_list ap ;
+   va_start ( ap, fmt ) ;
++
++  logfile[0] = stderr;
++  logfile[1] = stdout;
+ 
+   if ( ! init ) {
+     for ( i=0 ; i<NLOG ; i++ )

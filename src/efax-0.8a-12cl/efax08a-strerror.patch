@@ -1,0 +1,13 @@
+--- efax08a/efaxmsg.h.ewt	Tue Nov 26 11:03:47 1996
++++ efax08a/efaxmsg.h	Tue Nov 26 11:03:57 1996
+@@ -25,7 +25,10 @@
+ extern char *nxtoptarg ;
+ 
+ extern int sys_nerr;
++
++#ifdef NO_STRERROR
+ extern char *sys_errlist[];
++#endif
+ 
+ int nextopt( int argc, char **argv, char *args ) ;
+ 

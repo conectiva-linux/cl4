@@ -1,0 +1,32 @@
+diff -ru efax08a.old/efax.c efax08a/efax.c
+--- efax08a.old/efax.c  Tue Sep 17 05:30:43 1996
++++ efax08a/efax.c      Mon Dec  7 10:06:57 1998
+@@ -1970,6 +1970,7 @@
+   char fnamepat [ PATH_MAX ] ;
+ 
+   argv0 = argv[0] ;
++  memset((void *)lkfile, 0, sizeof(lkfile));  /* random effects on sparc linux */
+   msg ( "I " Version " " Copyright ) ;
+   argv0 = efaxbasename ( argv0 ) ;
+   msg ( "A compiled "__DATE__ " " __TIME__ ) ;
+diff -ru efax08a.old/efaxos.c efax08a/efaxos.c
+--- efax08a.old/efaxos.c        Sat Jun 29 21:45:25 1996
++++ efax08a/efaxos.c    Mon Dec  7 10:44:10 1998
+@@ -448,7 +448,7 @@
+ { 
+   int err = 0 ;
+   char **p = lkfiles ;
+-  while ( *p && ! err ) 
++  while ( *p && **p && ! err ) 
+     if ( ( err = ttlock ( *p++, log ) ) == 3 ) err = 0 ; 
+   return err ; 
+ }
+@@ -461,7 +461,7 @@
+ { 
+   int err = 0, i ;
+   char **p = lkfiles ;
+-  while ( *p ) 
++  while ( *p && **p ) 
+     if ( ( i = ttunlock ( *p++ ) ) != 0 ) err = i ; 
+   return err ; 
+ }
