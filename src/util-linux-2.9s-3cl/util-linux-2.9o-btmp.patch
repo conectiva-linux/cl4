@@ -1,0 +1,73 @@
+--- util-linux-2.9o/login-utils/login.c.btmp	Thu Mar 25 21:18:29 1999
++++ util-linux-2.9o/login-utils/login.c	Thu Mar 25 21:34:53 1999
+@@ -271,6 +271,41 @@
+     return 0;
+ }
+ 
++#if USE_PAM
++#define	_PATH_BTMP	"/var/log/btmp"
++static void logbtmp(const char *line, const char *username, const char *hostname)
++{
++	struct utmp ut;
++
++	memset(&ut, 0, sizeof(ut));
++
++	strncpy(ut.ut_user, username, sizeof(ut.ut_user));
++
++	strncpy(ut.ut_id, line + 3, sizeof(ut.ut_id));
++	strncpy(ut.ut_line, line, sizeof(ut.ut_line));
++	ut.ut_line[sizeof(ut.ut_line)-1] = 0;
++
++#if defined(_HAVE_UT_TV)
++	gettimeofday(&ut.ut_tv, NULL);
++#else
++	time(&t) ;
++	ut.ut_time = t;		/* ut_time is not always a time_t */
++#endif
++
++	ut.ut_type = LOGIN_PROCESS;	/* XXX doesn't matter */
++	ut.ut_pid = getpid();
++	if (hostname) {
++	    strncpy(ut.ut_host, hostname, sizeof(ut.ut_host));
++	    ut.ut_host[sizeof(ut.ut_host)-1] = 0;
++	    if (hostaddress.h_addr_list)
++	      memcpy(&ut.ut_addr, hostaddress.h_addr_list[0],
++		     sizeof(ut.ut_addr));
++	}
++	
++	updwtmp(_PATH_BTMP, &ut);
++}
++#endif	/* USE_PAM */
++
+ 
+ int
+ main(int argc, char **argv)
+@@ -516,7 +551,8 @@
+ 	       (retcode == PAM_AUTHINFO_UNAVAIL))) {
+ 	    pam_get_item(pamh, PAM_USER, (const void **) &username);
+ 	    syslog(LOG_NOTICE,_("FAILED LOGIN %d FROM %s FOR %s, %s"),
+-	    failcount, hostname, username, pam_strerror(pamh, retcode));
++		failcount, hostname, username, pam_strerror(pamh, retcode));
++	    logbtmp(ttyn + 5, username, hostname);
+ 	    fprintf(stderr,_("Login incorrect\n\n"));
+ 	    pam_set_item(pamh,PAM_USER,NULL);
+ 	    retcode = pam_authenticate(pamh, 0);
+@@ -525,13 +561,16 @@
+ 	if (retcode != PAM_SUCCESS) {
+ 	    pam_get_item(pamh, PAM_USER, (const void **) &username);
+ 
+-	    if (retcode == PAM_MAXTRIES) 
++	    if (retcode == PAM_MAXTRIES) {
+ 		syslog(LOG_NOTICE,_("TOO MANY LOGIN TRIES (%d) FROM %s FOR "
+ 			"%s, %s"), failcount, hostname, username,
+ 			 pam_strerror(pamh, retcode));
+-	    else
++		logbtmp(ttyn + 5, username, hostname);
++	    } else {
+ 		syslog(LOG_NOTICE,_("FAILED LOGIN SESSION FROM %s FOR %s, %s"),
+ 			hostname, username, pam_strerror(pamh, retcode));
++		logbtmp(ttyn + 5, username, hostname);
++	    }
+ 
+ 	    fprintf(stderr,_("\nLogin incorrect\n"));
+ 	    pam_end(pamh, retcode);

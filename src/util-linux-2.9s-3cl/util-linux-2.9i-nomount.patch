@@ -1,0 +1,10 @@
+--- util-linux-2.9i/Makefile.msw	Wed Mar 24 01:26:22 1999
++++ util-linux-2.9i/Makefile	Wed Mar 24 01:26:33 1999
+@@ -15,7 +15,6 @@
+ 	games \
+ 	login-utils \
+ 	misc-utils \
+-	mount \
+ 	fdisk \
+ 	sys-utils \
+ 	text-utils

@@ -1,0 +1,20 @@
+--- util-linux-2.8/misc-utils/Makefile.nochkdupexe	Thu Jun 11 16:26:47 1998
++++ util-linux-2.8/misc-utils/Makefile	Thu Jun 18 17:59:05 1998
+@@ -9,7 +9,7 @@
+ 
+ # Where to put man pages?
+ 
+-MAN1= 		cal.1 chkdupexe.1 ddate.1 kill.1 \
++MAN1= 		cal.1 ddate.1 kill.1 \
+ 		logger.1 look.1 mcookie.1 namei.1 script.1 \
+ 		setterm.1 tsort.1 whereis.1 write.1
+ 
+@@ -18,7 +18,7 @@
+ 
+ BIN=            kill
+ 
+-USRBIN=		cal chkdupexe ddate logger look mcookie \
++USRBIN=		cal ddate logger look mcookie \
+ 		namei script setterm tsort whereis write
+ 
+ ifeq "$(HAVE_CLEAR)" "no"

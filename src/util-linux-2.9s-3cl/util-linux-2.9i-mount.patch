@@ -1,0 +1,53 @@
+diff: util-linux-2.8/mount/README: No such file or directory
+--- util-linux-2.8/mount/nfsmount.c.mount	Fri Jun 19 12:24:25 1998
++++ util-linux-2.8/mount/nfsmount.c	Fri Jun 19 12:25:17 1998
+@@ -26,6 +26,13 @@
+  * nfsmount.c,v 1.1.1.1 1993/11/18 08:40:51 jrs Exp
+  */
+ 
++#include <linux/posix_types.h>
++#include <asm/posix_types.h>
++#undef __FD_CLR
++#undef __FD_SET
++#undef __FD_ISSET
++#undef __FD_ZERO
++
+ #include <unistd.h>
+ #include <stdio.h>
+ #include <string.h>
+--- util-linux-2.8/mount/mk_loop_h.mount	Fri Jun 19 12:26:02 1998
++++ util-linux-2.8/mount/mk_loop_h	Fri Jun 19 12:25:17 1998
+@@ -11,6 +11,10 @@
+ # If it exists, we use it.  Otherwise we guess that __kernel_dev_t
+ # is an unsigned short (which is true on i386, but false on alpha).
+ 
++if [ -f /usr/include/linux/posix_types.h ]; then
++   echo '#include <linux/posix_types.h>' >> loop.h
++fi
++
+ if [ -f /usr/include/asm/posix_types.h ]; then
+    echo '#include <asm/posix_types.h>' >> loop.h
+    echo '#define dev_t __kernel_dev_t' >> loop.h
+--- util-linux-2.8/MCONFIG.mount	Fri Jun 19 12:20:13 1998
++++ util-linux-2.8/MCONFIG	Fri Jun 19 12:22:21 1998
+@@ -83,8 +83,8 @@
+ # If HAVE_MOUNT is set to "yes", then mount won't be installed, since many
+ # folks grab mount independenty of util-linux
+ # When util-linux is released it always contains the very latest mount.
+-#HAVE_MOUNT=no
+-HAVE_MOUNT=yes
++HAVE_MOUNT=no
++#HAVE_MOUNT=yes
+ 
+ CC=		gcc
+ 
+--- util-linux-2.9i/Makefile.msw	Wed Mar 24 01:26:22 1999
++++ util-linux-2.9i/Makefile	Wed Mar 24 01:26:33 1999
+@@ -15,7 +15,6 @@
+ 	games \
+ 	login-utils \
+ 	misc-utils \
+-	mount \
+ 	fdisk \
+ 	sys-utils \
+ 	text-utils

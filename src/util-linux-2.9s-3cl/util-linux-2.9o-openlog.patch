@@ -1,0 +1,33 @@
+--- util-linux-2.9o/login-utils/login.c~	Sat Apr 10 02:34:00 1999
++++ util-linux-2.9o/login-utils/login.c	Sat Apr 10 02:37:38 1999
+@@ -492,8 +492,6 @@
+     else
+       tty = ttyn;
+     
+-    openlog("login", LOG_ODELAY, LOG_AUTHPRIV);
+-
+ #if 0
+     /* other than iso-8859-1 */
+     printf("\033(K");
+@@ -600,8 +598,12 @@
+     retcode = pam_open_session(pamh, 0);
+     PAM_FAIL_CHECK;
+ 
++    openlog("login", LOG_ODELAY, LOG_AUTHPRIV);
++
+ #else /* ! USE_PAM */
+ 
++    openlog("login", LOG_ODELAY, LOG_AUTHPRIV);
++
+     for (cnt = 0;; ask = 1) {
+ #  ifndef __linux__
+ 	ioctlval = 0;
+@@ -1125,6 +1127,8 @@
+ #endif
+     signal(SIGINT, SIG_DFL);
+     
++    openlog("login", LOG_ODELAY, LOG_AUTHPRIV);
++
+     /* discard permissions last so can't get killed and drop core */
+     if(setuid(pwd->pw_uid) < 0 && pwd->pw_uid) {
+ 	syslog(LOG_ALERT, _("setuid() failed"));

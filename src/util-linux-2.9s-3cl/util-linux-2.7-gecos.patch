@@ -1,0 +1,25 @@
+--- util-linux-2.7/login-utils/chfn.c~	Sun Dec 21 23:42:13 1997
++++ util-linux-2.7/login-utils/chfn.c	Mon Dec 22 00:00:59 1997
+@@ -83,6 +83,9 @@
+ 
+ #define memzero(ptr, size) memset((char *) ptr, 0, size)
+ 
++/* we do not accept gecos field sizes lengther than MAX_FIELD_SIZE */
++#define MAX_FIELD_SIZE		64
++
+ int main (argc, argv)
+     int argc;
+     char *argv[];
+@@ -393,6 +397,12 @@
+ {
+     int i, c;
+ 
++    if (strlen(gecos) > MAX_FIELD_SIZE) {
++	if (msg != NULL)
++	    printf("%s: ", msg);
++	printf("field is too long.\n");
++	return -1;
++    }
+     for (i = 0; i < strlen (gecos); i++) {
+ 	c = gecos[i];
+ 	if (c == ',' || c == ':' || c == '=' || c == '"' || c == '\n') {

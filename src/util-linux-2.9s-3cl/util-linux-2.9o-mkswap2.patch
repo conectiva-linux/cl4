@@ -1,0 +1,62 @@
+
+Some changes to recent 2.3.4-pre kernels pointed out this bug.
+The mkswap tool on sparc64 would set the wrong bits in the swappage
+bitmap in the signature for version 0 swap partitions (the issue is
+that on big endian it matters what size the unit of words is for
+bitmaps).
+
+This is deadly, and if users report bugs where their UltraSparc's spit
+out messages such as "attempt to read past end of device" or similar,
+and the device number printed out turns out to be one of their swap
+devices, this is indeed the bug they are seeing.
+
+This is against the current 6.0 util-linux SRPM and builds just fine.
+
+Please put out an errata for this at next convenience, thanks a lot.
+
+--- util-linux-2.9o/disk-utils/mkswap.c.sparc64	Fri May 28 19:58:25 1999
++++ util-linux-2.9o/disk-utils/mkswap.c	Fri May 28 19:56:41 1999
+@@ -144,6 +144,20 @@
+ {
+ 	unsigned int r, m;
+ 
++#if defined(__sparc__)
++	if(pagesize == 8192) {
++		unsigned long long *bitmap = (unsigned long long *) addr;
++		unsigned long long bitnum = (unsigned long long) nr;
++		unsigned long long rl, ml;
++
++		bitmap += bitnum / (8 * sizeof(long long));
++		rl = *bitmap;
++		ml = 1ULL << (bitnum &
++			      (8ULL * (unsigned long long)sizeof(long long) - 1ULL));
++		*bitmap = rl | ml;
++		return;
++	}
++#endif
+ 	addr += nr / (8 * sizeof(int));
+ 	r = *addr;
+ 	m = 1 << (nr & (8 * sizeof(int) - 1));
+@@ -153,6 +167,21 @@
+ static int bit_test_and_clear (unsigned int *addr, unsigned int nr)
+ {
+ 	unsigned int r, m;
++
++#if defined(__sparc__)
++	if(pagesize == 8192) {
++		unsigned long long *bitmap = (unsigned long long *) addr;
++		unsigned long long bitnum = (unsigned long long) nr;
++		unsigned long long rl, ml;
++
++		bitmap += bitnum / (8 * sizeof(long long));
++		rl = *bitmap;
++		ml = 1ULL << (bitnum &
++			      (8ULL * (unsigned long long)sizeof(long long) - 1ULL));
++		*bitmap = rl & ~ml;
++		return ((rl & ml) != 0ULL);
++	}
++#endif
+ 
+ 	addr += nr / (8 * sizeof(int));
+ 	r = *addr;
+
