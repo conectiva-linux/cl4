@@ -1,0 +1,48 @@
+--- pinfocom-3.0/Makefile.orig	Wed Oct 21 13:15:52 1992
++++ pinfocom-3.0/Makefile	Thu Aug 29 15:11:43 1996
+@@ -30,19 +30,19 @@
+ PROGRAM = $(PRODUCT)
+ 
+ ROOTDIR = /usr/local
+-BINDIR  = $(ROOTDIR)/bin
+-MANDIR  = $(ROOTDIR)/man/man1
++BINDIR  = /usr/games
++MANDIR  = /usr/man/man1
+ 
+ #CC=cc		# Hopefully make sets this to something sane...
+ 
+ LD=$(CC)
+ 
+-CDEBUG=-O
++CDEBUG=$(RPM_OPT_FLAGS)
+ 
+ O       = o
+ 
+ CP      = cp
+-INSTALL = install -c -o bin -g bin
++INSTALL = install -c -o 0 -g 0
+ #INSTALL = $(CP)
+ 
+ 
+@@ -185,18 +185,18 @@
+ 
+ TERMTYPE=termcap
+ 
+-TERMFLAGS=-DUSE_TERMCAP -DUSE_TERMIO
++TERMFLAGS=-DUSE_TERMCAP -DUSE_TERMIOS
+ 
+ # If using the readline library, uncomment this line:
+ 
+-#TERMOBJS=readline.$O
++TERMOBJS=readline.$O
+ 
+ # Fill in libraries needed for terminal support: common ones are
+ # -ltermcap or -lcurses; if you're using the GNU readline library also
+ # specify -lreadline and, if necessary, a -L option to point to the
+ # GNU readline library directory.
+ 
+-TERMLIBS=-ltermcap
++TERMLIBS=-lreadline -ltermcap
+ 
+ #----------------------------------------------------------------------
+ #
