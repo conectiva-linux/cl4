@@ -1,0 +1,20 @@
+--- Mesa-3.0/Make-config.orig	Wed Jul  1 08:17:10 1998
++++ Mesa-3.0/Make-config	Tue Aug  4 19:29:38 1998
+@@ -472,7 +472,7 @@
+ 	"GLU_LIB = libMesaGLU.a" \
+ 	"GLUT_LIB = libglut.a" \
+ 	"CC = gcc" \
+-	"CFLAGS = -O2 -funroll-loops -ansi -pedantic -ffast-math -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DUSE_X86_ASM -I/usr/X11R6/include" \
++	"CFLAGS = ${RPM_OPT_FLAGS} -funroll-loops -ansi -pedantic -ffast-math -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DUSE_X86_ASM -I/usr/X11R6/include" \
+ 	"MAKELIB = ../mklib.ar-ruv" \
+ 	"XLIBS = -L/usr/X11/lib -L/usr/X11R6/lib -lX11 -lXext -lXmu -lXt -lXi -lSM -lICE" \
+ 	"ASM_SOURCES = asm-386.S"
+@@ -483,7 +483,7 @@
+ 	"GLU_LIB = libMesaGLU.so" \
+ 	"GLUT_LIB = libglut.so" \
+ 	"CC = gcc" \
+-	"CFLAGS = -O3 -ansi -pedantic -fPIC -ffast-math -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DUSE_X86_ASM -I/usr/X11R6/include" \
++	"CFLAGS = ${RPM_OPT_FLAGS} -ansi -pedantic -fPIC -ffast-math -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DUSE_X86_ASM -I/usr/X11R6/include" \
+ 	"MAKELIB = ../mklib.linux" \
+ 	"XLIBS = -L/usr/X11/lib -L/usr/X11R6/lib -lX11 -lXext -lXmu -lXt -lXi -lSM -lICE" \
+ 	"ASM_SOURCES = asm-386.S"
