@@ -1,0 +1,461 @@
+This updates netkit-ntalk-0.11 to the current repository version. That
+is, it subsumes the patch I sent earlier, plus a couple of other minor
+fixes.
+
+It also includes the fixes for handling otalk packets. gb reports
+ytalk works with this. This does not mean ytalk shouldn't also be
+fixed. :-)
+
+Index: ChangeLog
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/ChangeLog,v
+retrieving revision 1.10
+retrieving revision 1.12
+diff -u -3 -r1.10 -r1.12
+--- ChangeLog	1998/12/09 16:54:09	1.10
++++ ChangeLog	1999/06/20 00:06:08	1.12
+@@ -1,3 +1,9 @@
++19-Jun-1999:
++	Fix small glitch in talkd man page.
++	Preliminary version of code in repairs.c to handle otalk 
++	  packets (at least of the kind ytalk emits). It seems 
++	  current ytalk versions will hork without this.
++
+ 9-Dec-1998:
+ 	We don't need to check for BSD signal semantics now; updated
+ 	  MCONFIG and regenerated configure script.
+Index: talkd/print.c
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/talkd/print.c,v
+retrieving revision 1.7
+retrieving revision 1.9
+diff -u -3 -r1.7 -r1.9
+--- talkd/print.c	1998/11/27 07:58:47	1.7
++++ talkd/print.c	1999/06/19 23:58:12	1.9
+@@ -35,7 +35,7 @@
+  * From: @(#)print.c	5.8 (Berkeley) 2/26/91
+  */
+ char print_rcsid[] = 
+-  "$Id: print.c,v 1.7 1998/11/27 07:58:47 dholland Exp $";
++  "$Id: print.c,v 1.9 1999/06/19 23:58:12 dholland Exp $";
+ 
+ /* debug print routines */
+ 
+@@ -51,6 +51,7 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <paths.h>
++#include <errno.h>
+ #include "prot_talkd.h"
+ #include "proto.h"
+ 
+@@ -145,7 +146,7 @@
+ 	tt[sizeof(tt)-1]=0;
+ 	
+ 	snprintf(buf, sizeof(buf), 
+-		 "%s: %s: id %lu, l_user %s, r_user %s, r_tty %s\n",
++		 "%s: %s: id %u, l_user %s, r_user %s, r_tty %s\n",
+ 		 cp, tp, mp->id_num, lu, ru, tt);
+ 	write(logfd, buf, strlen(buf));
+ }
+@@ -185,12 +186,12 @@
+ 	size_t i;
+ 	char tmp[4], buf[128];
+ 	if (!badpackets) return;
+-	snprintf(buf, sizeof(buf), "From: %s [%lu]", 
++	snprintf(buf, sizeof(buf), "From: %s [%u]", 
+ 		 inet_ntoa(from->sin_addr), from->sin_addr.s_addr);
+ 	write(packfd, buf, strlen(buf));
+ 	for (i=0; i<len; i++) {
+ 	    if (i%24 == 0) write(packfd, "\n    ", 5);
+-	    snprintf(tmp, sizeof(tmp), "%02x ", pack[i]);
++	    snprintf(tmp, sizeof(tmp), "%02x ", (unsigned char)pack[i]);
+ 	    write(packfd, tmp, strlen(tmp));
+ 	}
+ 	write(packfd, "\n", 1);
+Index: talkd/proto.h
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/talkd/proto.h,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -u -3 -r1.4 -r1.5
+--- talkd/proto.h	1998/11/27 07:58:47	1.4
++++ talkd/proto.h	1999/06/19 23:58:12	1.5
+@@ -1,3 +1,8 @@
++/* quirks for repairs.c */
++
++#define QUIRK_NONE   0
++#define QUIRK_OTALK  1
++
+ struct sockaddr_in;
+ 
+ extern char ourhostname[];
+@@ -16,7 +21,8 @@
+ 
+ /* repairs.c */
+ u_int32_t byte_swap32(u_int32_t);
+-int rationalize_packet(char *buf, size_t len, struct sockaddr_in *);
++int rationalize_packet(char *buf, size_t len, size_t maxlen, 
++		       struct sockaddr_in *);
+ size_t irrationalize_reply(char *buf, size_t maxbuf, int quirk);
+ 
+ /* other */
+Index: talkd/repairs.c
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/talkd/repairs.c,v
+retrieving revision 1.2
+retrieving revision 1.4
+diff -u -3 -r1.2 -r1.4
+--- talkd/repairs.c	1998/11/27 07:58:47	1.2
++++ talkd/repairs.c	1999/06/20 00:46:57	1.4
+@@ -28,7 +28,7 @@
+  */
+ 
+ char repairs_rcsid[] = 
+-  "$Id: repairs.c,v 1.2 1998/11/27 07:58:47 dholland Exp $";
++  "$Id: repairs.c,v 1.4 1999/06/20 00:46:57 dholland Exp $";
+ 
+ /*
+  * Most, but not quite all, of the voodoo for detecting and handling
+@@ -41,46 +41,233 @@
+  */
+ 
+ #include <sys/types.h>
++#include <netinet/in.h>
++#include <syslog.h>
+ #include "prot_talkd.h"
+ #include "proto.h"
+ 
+-
+ u_int32_t
+ byte_swap32(u_int32_t k)
+ {
+ 	return (k<<24) | ((k&0xff00) << 8) | ((k>>8) & 0xff00)  | (k>>24);
+ }
+ 
+-#if 0
+ static u_int16_t
+ byte_swap16(u_int16_t k)
+ {
+ 	return (k<<8) | (k>>8);
++}
++
++/***************************************************/
++
++/* 
++ * probe for strings that are meaningful in talkd packets.
++ * rejects all control characters and delete. newlines and tabs have
++ * no business in tty names or usernames.
++ */
++static int probe_string(const char *buf, size_t len) {
++    size_t i;
++    int ch;
++    for (i=0; i<len; i++) {
++	if (buf[i]==0) return 0;  /* success */
++	ch = (unsigned char) buf[i];
++	if ((ch&127) < 32 || (ch&127)==127) return -1;
++    }
++    return -1; /* no null-terminator, assume it's not a string */
+ }
+-#endif
+ 
+ /*
++ * Check if an address from a talk packet matches the actual sender
++ * address. If it doesn't, it's a good bet it's not the right packet format.
++ * Allow assorted endianness though.
++ * In an ideal world we'd save the endianness info for use elsewhere instead
++ * of reprobing it, but oh well.
++ */
++static int probe_addr(struct talk_addr *ta, struct sockaddr_in *sn) {
++    u_int16_t family = sn->sin_family;
++    u_int16_t xfamily = byte_swap16(family);
++    u_int16_t port = sn->sin_port;
++    u_int16_t xport = byte_swap16(port);
++    u_int32_t addr = sn->sin_addr.s_addr;
++    u_int32_t xaddr = byte_swap32(addr);
++
++    if (ta->ta_family != family && ta->ta_family != xfamily) return -1;
++    if (ta->ta_port != port && ta->ta_port != xport) return -1;
++    if (ta->ta_addr != addr && ta->ta_addr != xaddr) return -1;
++    return 0;
++}
++
++/***************************************************/
++
++/*
++ * warning warning: in some cases this packet may need compiler
++ * pragmas to force the compiler to not pad it. shouldn't with
++ * gcc though.
++ */
++
++#define OTALK_PACKET_SIZE 76
++
++#define OLD_NAME_SIZE   9
++struct otalk_packet {
++	char type;
++	char l_name[OLD_NAME_SIZE];
++	char r_name[OLD_NAME_SIZE];
++	char filler;
++	u_int32_t id_num;
++	u_int32_t pid;
++	char r_tty[TTY_SIZE];
++	struct talk_addr addr;
++	struct talk_addr ctl_addr;
++};
++
++struct otalk_reply {
++	char type;
++	char answer;
++	u_int16_t filler;
++	u_int32_t id_num;
++	struct talk_addr addr;
++};
++
++/* additional types */
++#define OLD_DELETE_INVITE  4
++#define OLD_AUTO_LOOK_UP   5
++#define OLD_AUTO_DELETE    6
++
++static int probe_otalk_packet(char *buf, size_t len, size_t maxlen, 
++			      struct sockaddr_in *sn)
++{
++	struct otalk_packet otp;
++	CTL_MSG m;
++
++	debug("Probing for QUIRK_OTALK\n");
++
++	if (sizeof(otp)!=OTALK_PACKET_SIZE) {
++		syslog(LOG_ERR, "QUIRK_OTALK: struct otalk_packet padding "
++		       "is wrong\n");
++		return -1;
++	}
++
++	if (len!=sizeof(otp)) {
++		debug("QUIRK_OTALK: wrong size\n");
++		return -1;
++	}
++	
++	memcpy(&otp, buf, len);
++	if (probe_string(otp.l_name, sizeof(otp.l_name))) {
++		debug("QUIRK_OTALK: l_name not a string\n");
++		return -1;
++	}
++	if (probe_string(otp.r_name, sizeof(otp.r_name))) {
++		debug("QUIRK_OTALK: r_name not a string\n");
++		return -1;
++	}
++	if (probe_string(otp.r_tty, sizeof(otp.r_tty))) {
++		debug("QUIRK_OTALK: r_tty not a string\n");
++		return -1;
++	}
++	if (probe_addr(&otp.ctl_addr, sn)) {
++		debug("QUIRK_OTALK: addresses do not match\n");
++		return -1;
++	}
++
++	switch (otp.type) {
++	    case LEAVE_INVITE:
++	    case LOOK_UP:
++	    case DELETE:
++	    case ANNOUNCE:
++		break;
++	    /* I'm not sure these will work. */
++            case OLD_DELETE_INVITE: otp.type = DELETE; break;
++	    case OLD_AUTO_LOOK_UP: otp.type = LOOK_UP; break;
++	    case OLD_AUTO_DELETE: otp.type = DELETE; break;
++	    default: 
++		debug("QUIRK_OTALK: invalid type field\n");
++		return -1;
++	}
++
++	if (OLD_NAME_SIZE >= NAME_SIZE) {
++		syslog(LOG_ERR, "QUIRK_OTALK: OLD_NAME_SIZE >= NAME_SIZE\n");
++		syslog(LOG_ERR, "QUIRK_OTALK: fix repairs.c and recompile\n");
++		return -1;
++	}
++	if (maxlen < sizeof(CTL_MSG)) {
++		syslog(LOG_ERR, "QUIRK_OTALK: maxlen too small; enlarge "
++		       "inbuf[] in talkd.c and recompile\n");
++		return -1;
++	}
++
++	m.vers = TALK_VERSION;
++	m.type = otp.type;
++	m.answer = 0;
++	m.pad = 0;
++	m.id_num = otp.id_num;
++	m.addr = otp.addr;
++	m.ctl_addr = otp.ctl_addr;
++	m.pid = otp.pid;
++	memcpy(m.l_name, otp.l_name, OLD_NAME_SIZE);
++	m.l_name[OLD_NAME_SIZE] = 0;
++	memcpy(m.r_name, otp.r_name, OLD_NAME_SIZE);
++	m.r_name[OLD_NAME_SIZE] = 0;
++	memcpy(m.r_tty, otp.r_tty, TTY_SIZE);
++	m.r_tty[TTY_SIZE-1] = 0;
++	memcpy(buf, &m, sizeof(m));
++	return 0;
++}
++
++static size_t do_otalk_reply(char *buf, size_t maxlen) {
++	struct otalk_reply or;
++	CTL_RESPONSE *r = (CTL_RESPONSE *)buf;
++	if (sizeof(or) > maxlen) {
++		syslog(LOG_ERR, "QUIRK_OTALK: reply: maxlen too small; "
++		       "enlarge buf[] in send_packet and recompile\n");
++		return sizeof(CTL_RESPONSE);
++	}
++	
++	/* 
++	 * If we changed the type above, this might break. Should we encode
++	 * it in the quirk code?
++	 */
++	or.type = r->type;
++	or.answer = r->answer;
++	or.filler = 0;
++	or.id_num = r->id_num;
++	or.addr = r->addr;
++	memcpy(buf, &or, sizeof(or));
++	return sizeof(or);
++}
++
++/***************************************************/
++
++
++/*
+  * Return 0 if the packet's normal, -1 if we can't figure it out,
+  * otherwise a quirk code from the quirk list.
+  *
+  * For now, we don't support any quirks. Need more data.
+  */
+ int
+-rationalize_packet(char *buf, size_t len, struct sockaddr_in *sn)
++rationalize_packet(char *buf, size_t len, size_t mlen, struct sockaddr_in *sn)
+ {
+-	(void)buf;
+-	(void)sn;
+ 	if (len == sizeof(CTL_MSG)) {
+ 		return 0;
+ 	}
++
++	debug("Malformed packet (length %u)\n", len);
++
++	if (probe_otalk_packet(buf, len, mlen, sn)==0) {
++		debug("Using QUIRK_OTALK\n");
++		return QUIRK_OTALK;
++	}
+ 	return -1;
+ }
+ 
+ size_t
+ irrationalize_reply(char *buf, size_t maxlen, int quirk)
+ {
+-	(void)buf;
+-	(void)maxlen;
+-	(void)quirk;
+-	return sizeof(CTL_RESPONSE);
++        switch (quirk) {
++	    case QUIRK_NONE: return sizeof(CTL_RESPONSE);
++	    case QUIRK_OTALK: return do_otalk_reply(buf, maxlen);
++        }
++	/* ? */
++	return 0;
+ }
+Index: talkd/talkd.8
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/talkd/talkd.8,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -u -3 -r1.2 -r1.3
+--- talkd/talkd.8	1998/11/27 07:59:52	1.2
++++ talkd/talkd.8	1999/06/19 21:00:49	1.3
+@@ -30,7 +30,7 @@
+ .\" SUCH DAMAGE.
+ .\"
+ .\"     from: @(#)talkd.8	6.5 (Berkeley) 3/16/91
+-.\"	$Id: talkd.8,v 1.2 1998/11/27 07:59:52 dholland Exp $
++.\"	$Id: talkd.8,v 1.3 1999/06/19 21:00:49 dholland Exp $
+ .\"
+ .Dd March 16, 1991
+ .Dt TALKD 8
+@@ -70,11 +70,11 @@
+ .Sh OPTIONS
+ .Op Fl d
+ Debug mode; writes copious logging and debugging information to 
+-.Pa /var/adm/talkd.log .
++.Pa /var/log/talkd.log .
+ .Pp
+ .Op Fl p
+ Packet logging mode; writes copies of malformed packets to
+-.Pa /var/adm/talkd.packets .
++.Pa /var/log/talkd.packets .
+ This is useful for debugging interoperability problems.
+ .Sh SEE ALSO
+ .Xr talk 1 ,
+Index: talkd/talkd.c
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-ntalk/talkd/talkd.c,v
+retrieving revision 1.8
+retrieving revision 1.10
+diff -u -3 -r1.8 -r1.10
+--- talkd/talkd.c	1998/11/27 11:40:46	1.8
++++ talkd/talkd.c	1999/06/19 23:58:12	1.10
+@@ -39,7 +39,7 @@
+  * From: @(#)talkd.c	5.8 (Berkeley) 2/26/91
+  */
+ char talkd_rcsid[] = 
+-  "$Id: talkd.c,v 1.8 1998/11/27 11:40:46 dholland Exp $";
++  "$Id: talkd.c,v 1.10 1999/06/19 23:58:12 dholland Exp $";
+ 
+ /*
+  * talkd - internet talk daemon
+@@ -67,6 +67,9 @@
+ #define TIMEOUT 30
+ #define MAXIDLE 120
+ 
++#if !defined(MAXHOSTNAMELEN)
++#define	MAXHOSTNAMELEN	64
++#endif
+ char ourhostname[MAXHOSTNAMELEN];
+ 
+ static time_t lastmsgtime;
+@@ -231,27 +234,24 @@
+ 	}
+ 
+ 	/*
+-	 * Make sure we know what we're getting into.
+-	 * Note that since mp.vers is the first byte of the packet,
+-	 * it would be *very hard* for anything the quirk table can
+-	 * manage to alter it.
+-	 */
+-	if (mp->vers!=TALK_VERSION) {
+-		syslog(LOG_WARNING, "%s (%s): bad protocol version %d", 
+-		       theirhost, theirip, mp->vers);
+-		send_reject_packet(mp, &sn, BADVERSION, 0);
+-		return;
+-	}
+-
+-	/*
+ 	 * Try to straighten out bad packets.
+ 	 */
+-	quirk = rationalize_packet(inbuf, cc, &sn);
++	quirk = rationalize_packet(inbuf, cc, sizeof(inbuf), &sn);
+ 	if (quirk<0) {
+ 		print_broken_packet(inbuf, cc, &sn);
+ 		syslog(LOG_WARNING, "%s (%s): unintelligible packet", 
+ 		       theirhost, theirip);
+ 		send_reject_packet(mp, &sn, UNKNOWN_REQUEST, 0);
++		return;
++	}
++
++	/*
++	 * Make sure we know what we're getting into.
++	 */
++	if (mp->vers!=TALK_VERSION) {
++		syslog(LOG_WARNING, "%s (%s): bad protocol version %d", 
++		       theirhost, theirip, mp->vers);
++		send_reject_packet(mp, &sn, BADVERSION, 0);
+ 		return;
+ 	}
+ 
+
