@@ -1,0 +1,13 @@
+--- portslave-1.16-orig/src/getty.c	Tue Jan 13 08:33:03 1998
++++ portslave-1.16/src/getty.c	Tue Feb 10 12:23:03 1998
+@@ -473,8 +473,8 @@
+ 	get_line(0, "", 1, buf, 128);
+ 	if (strncasecmp(buf, "ATD", 3) == 0) {
+ 		sleep(3);
+-		printf("CONNECT 57600\r\n");
+-		strcpy(conn_info, "57600/DIRECT");
++		printf("CONNECT 115200\r\n");
++		strcpy(conn_info, "115200/DIRECT");
+ 		fflush(stdout);
+ 		break;
+ 	}

@@ -1,0 +1,53 @@
+diff -uNr portslave-1.16-orig/src/main.c portslave-1.16/src/main.c
+--- portslave-1.16-orig/src/main.c	Wed Nov 12 09:03:54 1997
++++ portslave-1.16/src/main.c	Tue Feb 10 12:28:44 1998
+@@ -177,10 +177,13 @@
+ 		nsyslog(LOG_INFO, "PPP frames detected - switching to PPP mode");
+ 		break;
+ 	case P_SLIP:
+-	case P_CSLIP:
+ 		nsyslog(LOG_INFO, "%s/SLIP session (%s)", ai.login,
+ 			dotted(ai.address));
+ 		break;
++	case P_CSLIP:
++		nsyslog(LOG_INFO, "%s/CSLIP session (%s)", ai.login,
++			dotted(ai.address));
++		break;
+ 	case P_PPP:
+ 		nsyslog(LOG_INFO, "%s/PPP session (%s)", ai.login,
+ 			dotted(ai.address));
+@@ -200,12 +203,14 @@
+   if (ai.proto == P_CSLIP)   title(argv, "-CSLIP", thisport);
+ 
+   /*
+-   *	Print a portmaster compatible SLIP/PPP banner.
++   *	Print a trumpet winsock compatible SLIP/PPP banner.
++   *    HACK/FIXME: better use server.cfg to handle the format to be used here
+    */
+   if (strchr("PCS", ai.proto)) {
+-	printf("%s session from (%s) ",
+-		ai.proto == 'P' ? "PPP" : "SLIP", dotted(mainconf.ipno));
+-	printf("to %s beginning....\n", dotted(ai.address));
++	printf( "Starting %s for %s\r\nYour IP address is %s , ",
++		ai.proto == P_PPP ? "ppp" : "auto slip",
++		ai.login, dotted(ai.address));
++	printf( "the server is %s \r\n\r\n",  dotted(mainconf.ipno));
+ 	printed = 1;
+   }
+ 
+diff -uNr portslave-1.16-orig/src/slip.c portslave-1.16/src/slip.c
+--- portslave-1.16-orig/src/slip.c	Thu Nov 13 06:59:06 1997
++++ portslave-1.16/src/slip.c	Tue Feb 10 12:31:25 1998
+@@ -203,9 +203,10 @@
+   }
+ 
+   /*
+-   *	Now set to either SLIP or CSLIP.
++   *    We're very lazy here. instead of seting SLIP or CSLIP
++   *    let the server decide which one use through autodetection
+    */
+-  mode = (ai->proto == P_SLIP ? SL_MODE_SLIP : SL_MODE_CSLIP);
++  mode = (SL_OPT_ADAPTIVE);
+   (void) ioctl(0, SIOCSIFENCAP, &mode);
+ 
+   /*

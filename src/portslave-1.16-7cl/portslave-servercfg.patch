@@ -1,0 +1,64 @@
+--- portslave-1.16-orig/src/server.cfg	Tue Feb 10 12:42:52 1998
++++ portslave-1.16/src/server.cfg	Mon Feb 16 09:10:49 1998
+@@ -20,11 +20,11 @@
+ #
+ # Where to find the rlogin binary that accepts the "-i" flag.
+ #
+-conf.rlogin	/usr/local/portslave/bin/rlogin
++conf.rlogin	/usr/local/portslave/rlogin
+ #
+ # Where to find our patched pppd that has radius linked in.
+ #
+-conf.pppd	/usr/local/portslave/bin/pppd
++conf.pppd	/usr/local/portslave/pppd
+ #
+ # Where to find telnet. This can just be the system telnet.
+ #
+@@ -40,15 +40,15 @@
+ # field is an integer between 0 and 7 and sets the syslog facility to
+ # local0-local7.
+ #
+-conf.syslog	logger.someisp.com
+-conf.facility	6
++#conf.syslog	logger.someisp.com
++#conf.facility	6
+ #
+ # Stripnames - if you set this to "1", leading "P", "S", "C", "L" or "!"
+ # characters and trailing ".slip", ".cslip" and ".ppp" strings will be
+ # stripped from the username before it is recorded in the system
+ # utmp and wtmp files (if sysutmp or syswtmp are turned on ofcourse)
+ #
+-conf.stripnames	0
++conf.stripnames	1
+ #
+ # Directory where your scripts that set up IP filtering (typically using
+ # ipfwadmin) are stored. To invoke them, just add the RADIUS-attribute
+@@ -92,8 +92,8 @@
+ #
+ # Default protocol and host. This is for rlogin sessions.
+ #
+-all.protocol	rlogin
+-all.host	shellhost.someisp.com
++all.protocol	ppp
++#all.host	shellhost.someisp.com
+ #
+ # Default IP stuff. If you end the "ipno" with a "+", the portnumber will
+ # be added to the IP number. The IP number of a port is used when the RADIUS
+@@ -143,6 +143,8 @@
+ #
+ # Use this to initialize the modem.
+ #
++# for USR modems with 10 minute idle hangup I use
++# all.initchat "" \d\dATZ OK\r\n-ATZ-OK\r\n ATS0=0Q0&D2&C1S19=10 OK\r\n
+ all.initchat	"" \d\dATZ OK\r\n-ATZ-OK\r\n
+ #
+ # You can use either waitfor or aa.
+@@ -153,6 +155,8 @@
+ # The @ sign matches (.*)[\r\n] in regexp code, the match is logged
+ # to Radius as Connection-Info.
+ #
++# To prevent reverse billed phone calls I use
++# all.answer "" ATH1,,H0,,A CONNECT@
+ all.answer	"" ATA CONNECT@
+ #
+ # Auto answer - if you set this to "1", the system will just wait for

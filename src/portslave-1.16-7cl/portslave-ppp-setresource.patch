@@ -1,0 +1,84 @@
+This is a patch from Jon Lewis <jlewis@fdt.net> taken from
+the LINUX-RADIUS List at majordomo@lists.iphil.net
+
+On Mon, 2 Feb 1998, miguel a.l. paraz wrote:
+
+> We're being hit now by pppd's locking up and eating CPU ... you mentioned
+> you had a patch that alarm's for that, can we try it out and include it in
+> the RPM ... if it's safe, that is.
+
+I've been using the setresourcelimit stuff for probably a year or so with
+no obvious problems.  The extra alarm hack is a more recent addition.
+
+--- portslave-1.15-orig/ppp-2.2.0f-radius/pppd/main.c	Thu Nov 14 09:41:52 1996
++++ portslave-1.15/ppp-2.2.0f-radius/pppd/main.c	Tue Feb 10 11:08:38 1998
+@@ -31,6 +31,7 @@
+ #include <netdb.h>
+ #include <utmp.h>
+ #include <pwd.h>
++#include <unistd.h>
+ #include <sys/param.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
+@@ -119,6 +120,7 @@
+ void close_fd __P((void));
+ void die __P((int));
+ void novm __P((char *));
++void setresourcelimit __P((int, int));
+ 
+ #ifdef IPX_CHANGE
+ void remote_sys_options __P((void));
+@@ -181,6 +183,11 @@
+     struct timeval timo;
+     sigset_t mask;
+ 
++   setresourcelimit(RLIMIT_RSS,1024*1024*2);
++   setresourcelimit(RLIMIT_DATA,1024*1024);
++   setresourcelimit(RLIMIT_STACK,1024*256);
++   setresourcelimit(RLIMIT_CPU,120);
++
+     p = ttyname(0);
+     if (p)
+ 	strcpy(devnam, p);
+@@ -344,10 +351,13 @@
+ 	 * the non-blocking I/O bit.
+ 	 */
+ 	nonblock = (connector || !modem)? O_NONBLOCK: 0;
++	/* hack to stop mysterious hangs on open when not nonblock */
++	alarm(40);
+ 	if ((fd = open(devnam, nonblock | O_RDWR, 0)) < 0) {
+ 	    syslog(LOG_ERR, "Failed to open %s: %m", devnam);
+ 	    die(1);
+ 	}
++	alarm(0);
+ 	if ((initfdflags = fcntl(fd, F_GETFL)) == -1) {
+ 	    syslog(LOG_ERR, "Couldn't get device fd flags: %m");
+ 	    die(1);
+@@ -1115,4 +1125,27 @@
+ {
+     syslog(LOG_ERR, "Virtual memory exhausted allocating %s\n", msg);
+     die(1);
++}
++
++/*
++ * setresourcelimit - set the requested resource limit.  Complain to 
++ *                     syslog on errors.
++ */
++void
++setresourcelimit(resource,value)
++        int resource,value;
++{
++        struct rlimit rl;
++
++        if (getrlimit(resource, &rl) < 0) {
++                syslog(LOG_ALERT, "cant getrlimit(%d) %m", resource);
++                return;
++        }
++        rl.rlim_cur = value;
++        rl.rlim_max = value;
++        if (setrlimit(resource, &rl) < 0) {
++                syslog(LOG_ALERT, "cant setrlimit(%d) %d %m", resource, value);
++                return;
++        }
++
+ }

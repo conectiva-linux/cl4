@@ -1,0 +1,147 @@
+diff -uNr portslave-1.16-orig/src/auth.h portslave-1.16/src/auth.h
+--- portslave-1.16-orig/src/auth.h	Thu Jan 22 08:03:23 1998
++++ portslave-1.16/src/auth.h	Tue Feb 10 12:06:47 1998
+@@ -49,6 +49,7 @@
+   int porttype;
+   int sent_bytes;
+   int recv_bytes;
++  char filterid[32];
+ };
+ 
+ int rad_client(int port, struct auth *ai, int ppp);
+diff -uNr portslave-1.16-orig/src/radclient.c portslave-1.16/src/radclient.c
+--- portslave-1.16-orig/src/radclient.c	Mon Nov 24 12:49:55 1997
++++ portslave-1.16/src/radclient.c	Tue Feb 10 12:14:17 1998
+@@ -752,6 +752,7 @@
+ #endif
+ 	ret = (reply->code == PW_AUTHENTICATION_ACK) ? 0 : -1;
+ 	ai->message[0] = 0;
++	ai->filterid[0] = 0;
+ 	oldproto = ai->proto;
+ 	ai->proto = 0;
+ 
+@@ -842,6 +843,13 @@
+ 				else if (ai->proto == 0)
+ 					ai->proto = P_SLIP;
+ 				break;
++			case PW_FILTER_ID:
++				len = a_len;
++				if (len >= sizeof(ai->filterid))
++					len = sizeof(ai->filterid) - 1;
++				strncpy(ai->filterid, a_val, len); 
++				ai->filterid[len] = 0;
++				break;
+ 			case PW_REPLY_MESSAGE:
+ 				len = a_len;
+ 				if (len >= sizeof(ai->message))
+@@ -888,6 +896,11 @@
+ 	 */
+ 	update_utmp(port, ai, islogin);
+ 
++	/*
++	 *	HACK/FIXME: this also should not be here, but anyways :-)
++	 */
++	use_filter(ai,islogin);
++
+         /*
+          *      First, build the request.
+          */
+@@ -921,6 +934,49 @@
+ #if 0 /* XXX - Debug */
+ 	nsyslog(LOG_DEBUG, "Got a reply, code %d, length %d", reply->code, ntohs(reply->length));
+ #endif
++
++	return 0;
++}
++
++/*
++ * Invoke the filter script defined by "Framed-Filter-Id".
++ */
++int use_filter(struct auth *ai, int islogin)
++{
++	char *cmdpath,*address,*localip,*netmask;
++	char cmd[256];
++
++	if (!ai->filterid[0]) return 0; /* Only when attribute is given */
++
++	if (islogin) nsyslog(LOG_INFO, "Using filter: %s.",ai->filterid);
++
++	if ((cmdpath = (char *) malloc(strlen(mainconf.filterdir)+
++	  strlen(ai->filterid)+2)) == NULL) {
++		nsyslog(LOG_ERR, "use_filter: Out of memory\n");
++		return -1;
++	}
++	strcpy(cmdpath,mainconf.filterdir);
++
++	/* Add trailing slash */
++	if (cmdpath[strlen(cmdpath)-1] != '/') strcat(cmdpath,"/");
++
++	strcat(cmdpath,ai->filterid);
++
++	/*
++ 	 * Call using this format:
++ 	 *   name-of-script <islogin ? "start" : "stop"> <remote ip> <local ip>
++ 	 *                  <remote netmask>
++ 	 */
++	address = strdup(dotted(ai->address));
++	localip = strdup(dotted(ai->localip));
++	netmask = strdup(dotted(ai->netmask));
++	snprintf(cmd,256,"%s %s %s %s %s > /dev/null 2>&1",cmdpath,
++		islogin ? "start" : "stop", address,localip,netmask);
++
++	system(cmd);
++	free(address);
++	free(localip);
++	free(netmask);
+ 
+ 	return 0;
+ }
+diff -uNr portslave-1.16-orig/src/rwconf.c portslave-1.16/src/rwconf.c
+--- portslave-1.16-orig/src/rwconf.c	Thu Jan 22 08:04:34 1998
++++ portslave-1.16/src/rwconf.c	Tue Feb 10 12:15:29 1998
+@@ -93,6 +93,7 @@
+   { "syslog",		C_HOST,	NULL,	offsetof(struct main_cfg, syslog)	},
+   { "facility",		C_INT,	NULL,	offsetof(struct main_cfg, facility)	},
+   { "stripnames",	C_INT,	NULL,	offsetof(struct main_cfg, stripnames)	},
++  { "filterdir",	C_STR,	NULL,	offsetof(struct main_cfg, filterdir)	},
+   { NULL,									},
+ };
+ 
+diff -uNr portslave-1.16-orig/src/rwconf.h portslave-1.16/src/rwconf.h
+--- portslave-1.16-orig/src/rwconf.h	Thu Jan 22 08:03:43 1998
++++ portslave-1.16/src/rwconf.h	Tue Feb 10 12:15:49 1998
+@@ -24,6 +24,7 @@
+   unsigned int syslog;
+   int facility;
+   int stripnames;
++  char *filterdir;
+ };
+ EXTERN struct main_cfg mainconf;
+ 
+diff -uNr portslave-1.16-orig/src/server.cfg portslave-1.16/src/server.cfg
+--- portslave-1.16-orig/src/server.cfg	Thu Jan 22 08:13:27 1998
++++ portslave-1.16/src/server.cfg	Tue Feb 10 12:16:47 1998
+@@ -49,6 +49,12 @@
+ # utmp and wtmp files (if sysutmp or syswtmp are turned on ofcourse)
+ #
+ conf.stripnames	0
++#
++# Directory where your scripts that set up IP filtering (typically using
++# ipfwadmin) are stored. To invoke them, just add the RADIUS-attribute
++# Framed-Filter-Id = "foo" to your profile, where foo is the name of script.
++#
++conf.filterdir	/usr/local/portslave/filters
+ 
+ 
+ ##
+diff -uNr portslave-1.16-orig/src/server.h portslave-1.16/src/server.h
+--- portslave-1.16-orig/src/server.h	Tue Jan 13 08:33:30 1998
++++ portslave-1.16/src/server.h	Tue Feb 10 12:17:14 1998
+@@ -33,6 +33,7 @@
+ char *percent(int port, struct auth *ai, char *in);
+ int do_slip(int port, struct auth *ai);
+ int update_utmp(int port, struct auth *ai, int islogin);
++int use_filter(struct auth *ai, int islogin);
+ 
+ #define nsyslog syslog
+ 

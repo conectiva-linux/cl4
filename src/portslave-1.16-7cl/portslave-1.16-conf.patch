@@ -1,0 +1,21 @@
+diff -uNr portslave-1.16/src/server.cfg portslave-1.16.acme/src/server.cfg
+--- portslave-1.16/src/server.cfg	Fri May 15 10:52:27 1998
++++ portslave-1.16.acme/src/server.cfg	Fri May 15 10:53:23 1998
+@@ -189,7 +189,7 @@
+ all.autoppp	proxyarp modem asyncmap 0 %i: \
+ 		noipx noccp login auth +pap -chap \
+ 		mtu %t mru %t \
+-		uselib /usr/local/portslave/lib/libpsr.so
++		uselib /usr/local/portslave/libpsr.so
+ #
+ # PPP options - used if we have already authenticated a user
+ #		and service type is PPP.
+@@ -197,7 +197,7 @@
+ all.pppopt	proxyarp modem asyncmap 0 %i:%j \
+ 		noipx noccp \
+ 		mtu %t mru %t netmask %m idle-disconnect %I \
+-		uselib /usr/local/portslave/lib/libpsr.so
++		uselib /usr/local/portslave/libpsr.so
+ 
+ ##
+ ## Tty names are s0...s63. For every port we need to define a tty port, and
