@@ -1,0 +1,11 @@
+--- faces/filters/ikon2xbm.fixed	Mon Oct 16 21:09:53 1995
++++ faces/filters/ikon2xbm	Mon Oct 16 21:10:03 1995
+@@ -26,7 +26,7 @@
+ \2\
+ \3/' > $tmp
+ 
+-dim=`wc -l < $tmp | awk '{ print 4 * sqrt }'`
++dim=`wc -l < $tmp | awk '{ print 4 * sqrt($1) }'`
+ 
+ pr -l1 -t -8 -s, < $tmp |
+ (cat << EOF

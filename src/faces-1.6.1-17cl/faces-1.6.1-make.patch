@@ -1,0 +1,101 @@
+--- faces/compface/Makefile.make	Wed Oct 23 22:28:06 1991
++++ faces/compface/Makefile	Mon Mar 22 12:30:29 1999
+@@ -22,9 +22,9 @@
+ # BINDIR, LIBDIR, and MANDIR are expected to be overridden by the
+ # calling Makefile
+ 
+-BINDIR		= /usr/local/bin
+-LIBDIR		= /usr/local/lib
+-MANDIR		= /usr/manl
++BINDIR		= /usr/bin
++LIBDIR		= /usr/lib
++MANDIR		= /usr/man
+ 
+ NAME		= compface
+ UNNAME		= uncompface
+@@ -42,7 +42,7 @@
+ 
+ CC		= cc
+ CDEFS		= $(SYSV)
+-CCOMP		= -g
++CCOMP		= $(RPM_OPT_FLAGS)
+ CFLAGS		= $(CDEFS) $(CCOMP)
+ 
+ all:		$(NAME) $(UNNAME)
+--- faces/filters/Makefile.make	Wed Oct 23 22:26:14 1991
++++ faces/filters/Makefile	Mon Mar 22 12:30:29 1999
+@@ -16,7 +16,7 @@
+ # Makefile
+ 
+ #--------------------------------------------------------------------------
+-BINDIR		= /usr/local/bin
++BINDIR		= /usr/bin
+ #--------------------------------------------------------------------------
+ #  Not all machines have the index() string library function. If you
+ #  don't have this function then you should uncomment the NOINDEX
+@@ -34,7 +34,7 @@
+ 
+ CC		= cc
+ CDEFS		= $(NOINDEX) $(SYSV)
+-CCOMP		= -g
++CCOMP		= $(RPM_OPT_FLAGS)
+ CFLAGS		= $(CCOMP) $(CDEFS)
+ 
+ all:		$(BINARIES)
+@@ -55,9 +55,9 @@
+ 		rm -f *.o $(BINARIES)
+ 
+ install:	$(BINARIES)
+-		install -s -m 751 icon2ikon $(BINDIR)
+-		install -s -m 751 ikon2icon $(BINDIR)
+-		install -s -m 751 rs2icon $(BINDIR)
++		install -s -m 755 icon2ikon $(BINDIR)
++		install -s -m 755 ikon2icon $(BINDIR)
++		install -s -m 755 rs2icon $(BINDIR)
+ 		install -c -m 755 fs2ikon $(BINDIR)
+ 		install -c -m 755 fs2xbm $(BINDIR)
+ 		install -c -m 755 ikon2xbm $(BINDIR)
+--- faces/Makefile.dist.make	Sun Nov 24 18:55:28 1991
++++ faces/Makefile.dist	Mon Mar 22 12:30:39 1999
+@@ -77,7 +77,7 @@
+ #  be uncommented and set appropriately. Note that the value must be
+ #  a single directory name, not a colon separated list of paths.
+ #               
+-FACEDIR           = /usr/local/faces
++FACEDIR           = /usr/lib/faces
+ CFACEDIR	= -DFACEDIR=\"$(FACEDIR)\"
+ #------------------------------------------------------------------------
+ #  It is possible to determine what type of monitoring faces does at
+@@ -259,7 +259,8 @@
+ #  two lines should be uncommented, and set appropriately.
+ #
+ #X11INCDIR         = -I$(OPENWINHOME)/include
+-#X11LIBDIR         = -L$(OPENWINHOME)/lib
++X11INCDIR         = -I/usr/X11R6/include
++X11LIBDIR         = -L/usr/X11R6/lib
+ #------------------------------------------------------------------------
+ #  If you are compiling the XView version, then the following two lines
+ #  should be uncommented, and set appropriately.
+@@ -272,10 +273,10 @@
+ #  Default locations where faces files will be installed.
+ #  You might wish to alter these values.
+ #
+-BINDIR		= /usr/local/bin
+-LIBDIR		= /usr/local/lib
++BINDIR		= /usr/bin
++LIBDIR		= /usr/lib
+ MANDIR		= /usr/man
+-MANSECT		= l
++MANSECT		= 1
+ 
+ #
+ #  Options for submakes
+@@ -302,7 +303,7 @@
+ 		  $(SELTYPE) $(SGIDEF) $(SPOOLDIR) $(SPOOLFILE) $(SYSV) \
+ 		  $(TTEXT) $(TOPIX) $(UPDATE) $(USE_BZERO) $(USE_GETWD) \
+ 		  $(X11R3) $(X11INCDIR) $(XVIEWINCDIR) $(DEBUG)
+-CCOMP		= -O
++CCOMP		= $(RPM_OPT_FLAGS)
+ CFLAGS		= $(CCOMP) $(CDEFS)
+ #
+ #=======================================================================
