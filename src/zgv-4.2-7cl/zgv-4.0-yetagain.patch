@@ -1,0 +1,38 @@
+diff -Nur zgv-4.2.orig/rcfile.c zgv-4.2/rcfile.c
+--- zgv-4.2.orig/rcfile.c	Fri Feb 19 16:23:44 1999
++++ zgv-4.2/rcfile.c	Fri Feb 19 16:25:27 1999
+@@ -569,7 +569,8 @@
+   switch(getopt(argc,argv,"Aa:bcFfghijJ:klM:m:no:P:pr:stTwyz"))
+     {
+     case 'A': cfg.allfiles=!cfg.allfiles; break;
+-    case 'a':	/* alternative command */
++/*    				// option disabled for security reasons
++	   case 'a':	// alternative command 
+       strncpy(cfg.cmd,optarg,sizeof(cfg.cmd)) [sizeof(cfg.cmd) -1] = '\0';
+       if(strstr(cfg.cmd,"%s")==NULL)
+         {
+@@ -577,6 +578,7 @@
+         exit(1);
+         }
+       break;
++*/
+     case 'b':	/* blockcursor */
+       cfg.blockcursor=!cfg.blockcursor; break;
+     case 'c':	/* centre */
+@@ -658,6 +660,7 @@
+           fprintf(stderr,"'zgv -h' for details.\n");
+           break;
+         case 'a':
++          fprintf(stderr,"NOTE: The -a flag is currently disabled for security reasons\n");
+           fprintf(stderr,"The -a (alternative view) option takes the command");
+           fprintf(stderr," to run as an argument,\n");
+           fprintf(stderr,"  e.g.  zgv -a \"djpeg -grey %%s | pgmtopbm |");
+@@ -696,6 +699,8 @@
+         [dirname | filename1 [... filenameN]]
+ 
+ 	-a	alternative command (see man page for details)
++	NOTE: This flag is currently disabled for security reasons
++
+ 	-b	blockcursor toggle, gives outline cursor not tacky 3d effect
+ 	-c	centre toggle, whether to centre pictures on the screen
+ 	        (defaults to on, so using `-c' will turn it off)

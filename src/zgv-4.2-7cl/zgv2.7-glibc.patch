@@ -1,0 +1,10 @@
+--- zgv2.7-src/zgv.c.ewt	Fri Aug 22 13:23:02 1997
++++ zgv2.7-src/zgv.c	Fri Aug 22 13:23:09 1997
+@@ -20,6 +20,7 @@
+  */
+ 
+ 
++#include <errno.h>
+ #include <stdio.h>
+ #include <dirent.h>
+ #include <unistd.h>

@@ -1,0 +1,15 @@
+--- zgv-3.0-src/Makefile.ewt	Mon Apr 20 20:10:29 1998
++++ zgv-3.0-src/Makefile	Mon Apr 20 20:15:53 1998
+@@ -68,8 +68,10 @@
+ 	$(CC) $(CFLAGS) -o bdf2h bdf2h.o
+ 
+ install : all
+-	install -m 4511 -o root -s zgv $(BINDIR)
+-	install -m 444 zgv.1 $(MANDIR)
++	mkdir -p $(PREFIX)/$(BINDIR)
++	mkdir -p $(PREFIX)/$(MANDIR)
++	install -m 4511 -o root -s zgv $(PREFIX)/$(BINDIR)
++	install -m 444 zgv.1 $(PREFIX)/$(MANDIR)
+ 
+ clean :
+ 	$(RM) *.o *~ zgv munglogo zgvlogo.h bdf2h fontbmps.h

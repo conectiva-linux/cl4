@@ -1,0 +1,509 @@
+diff -Nur zgv-4.2.orig/3deffects.c zgv-4.2/3deffects.c
+--- zgv-4.2.orig/3deffects.c	Sun Aug  2 11:45:47 1998
++++ zgv-4.2/3deffects.c	Fri Dec 11 07:41:08 1998
+@@ -12,6 +12,7 @@
+ #include <unistd.h>
+ #include <vga.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include "3deffects.h"
+ #include "font.h"
+ #include "readnbkey.h"
+@@ -188,7 +189,7 @@
+ return(0);
+ }
+ 
+-int inputbox(int ttyfd,char *message,int replytype,int lite,int dark,int txt, int maxlength,char *input)
++int inputbox(int ttyfd,char *message,int replytype,int lite,int dark,int txt, int maxlength,char *input, int inputsize)
+ {
+ int i,f,x1,y1,x2,y2,wide,high,key;
+ void *buf;
+@@ -257,7 +258,7 @@
+     for(f=y1;f<=y2;f++)
+       vga_drawscansegment(buf+(f-y1)*(wide+1),x1,f,wide+1);
+     free(buf);
+-    strcpy(input,tmp);
++    strncpy(input,tmp,inputsize) [inputsize-1] = '\0';
+     return(key==RK_ENTER);
+ 
+ return(0);
+diff -Nur zgv-4.2.orig/3deffects.h zgv-4.2/3deffects.h
+--- zgv-4.2.orig/3deffects.h	Sun Aug  2 11:44:11 1998
++++ zgv-4.2/3deffects.h	Fri Dec 11 07:41:08 1998
+@@ -24,5 +24,5 @@
+ 
+ extern int inputbox(int ttyfd,char *message,int replytype,
+                   int lite,int dark,int txt,
+-		  int maxlength, char *input);
++		  int maxlength, char *input, int inputsize);
+ 
+diff -Nur zgv-4.2.orig/bdf2h.c zgv-4.2/bdf2h.c
+--- zgv-4.2.orig/bdf2h.c	Mon Mar 16 10:30:18 1998
++++ zgv-4.2/bdf2h.c	Fri Dec 11 07:41:08 1998
+@@ -37,7 +37,7 @@
+ int ofstbl[128];
+ char fontdesc[256]="unnamed";
+ 
+-if(argc==2) strcpy(fontdesc,argv[1]);
++if(argc==2) strncpy(fontdesc,argv[1],sizeof(fontdesc)) [sizeof(fontdesc) -1] = '\0';
+ 
+ /* we explicitly specify `signed' because it needs to be.
+  * I guess it doesn't matter 'cos it'll always be compiled on
+diff -Nur zgv-4.2.orig/gifeng.c zgv-4.2/gifeng.c
+--- zgv-4.2.orig/gifeng.c	Tue Oct 13 11:15:17 1998
++++ zgv-4.2/gifeng.c	Fri Dec 11 07:41:08 1998
+@@ -138,7 +138,8 @@
+   ginfo->width=images[0]->width;
+   ginfo->height=images[0]->height;
+   gifhed.wide_lo=0; 
+-  strcpy(ginfo->type,gifhed.sig+3);
++  strncpy(ginfo->type,gifhed.sig+3,sizeof(ginfo->type)) [sizeof(ginfo->type)-1] = '\0';
++
+   ginfo->bpp=(images[0]->misc&0x07)+1;
+   ginfo->numcols=lnumcols ? lnumcols : gnumcols ;
+ 
+@@ -165,7 +166,8 @@
+   ginfo->width=swidth;
+   ginfo->height=sheight*imagecount;
+   gifhed.wide_lo=0; 
+-  strcpy(ginfo->type,gifhed.sig+3);
++  strncpy(ginfo->type,gifhed.sig+3,sizeof(ginfo->type)) [sizeof(ginfo->type)-1] = '\0';
++
+   ginfo->bpp=(gifhed.misc&0x07)+1;
+   ginfo->numcols=256/*1<<ginfo->bpp*/;
+   if((*theimageptr=(byte *)malloc(ginfo->width*ginfo->height))==NULL)
+diff -Nur zgv-4.2.orig/rcfile.c zgv-4.2/rcfile.c
+--- zgv-4.2.orig/rcfile.c	Mon Nov  2 17:17:14 1998
++++ zgv-4.2/rcfile.c	Fri Dec 11 07:41:08 1998
+@@ -123,13 +123,13 @@
+ void getconfig()
+ {
+ FILE *in;
+-char cfgfile[1024];
++char cfgfile[1024] = "";
+ int gotrcfile;
+ 
+ defaultcfg();
+ 
+ gotrcfile=0;
+-strcpy(cfgfile,getenv("HOME"));
++strncpy(cfgfile,getenv("HOME"),sizeof(cfgfile) -8);
+ strcat(cfgfile,"/.zgvrc");
+ 
+ if((in=fopen(cfgfile,"r"))!=NULL)
+@@ -570,7 +570,7 @@
+     {
+     case 'A': cfg.allfiles=!cfg.allfiles; break;
+     case 'a':	/* alternative command */
+-      strcpy(cfg.cmd,optarg);
++      strncpy(cfg.cmd,optarg,sizeof(cfg.cmd)) [sizeof(cfg.cmd) -1] = '\0';
+       if(strstr(cfg.cmd,"%s")==NULL)
+         {
+         fprintf(stderr,"Need '%%s' filename placeholder in command string.\n");
+@@ -609,7 +609,7 @@
+       int vidnum;
+       
+       strcpy(buf,"dummytoken ");
+-      strcat(buf,optarg);
++      strncat(buf,optarg,strlen(buf));
+       if(getmodenumber(buf,&vidnum)==-1)
+         {
+         fprintf(stderr,"Mode '%s' not found.\n",optarg);
+diff -Nur zgv-4.2.orig/readjpeg.c zgv-4.2/readjpeg.c
+--- zgv-4.2.orig/readjpeg.c	Mon Mar 16 10:30:19 1998
++++ zgv-4.2/readjpeg.c	Fri Dec 11 07:41:08 1998
+@@ -51,7 +51,7 @@
+ char buf[256];
+ 
+ strcpy(buf,"Error reading JPEG - ");
+-strcat(buf,msgtext);
++strncat(buf,msgtext,sizeof(buf) - strlen(buf));
+ if(cfg.onefile_progress)
+   fprintf(stderr,buf);
+ else
+diff -Nur zgv-4.2.orig/readpng.c zgv-4.2/readpng.c
+--- zgv-4.2.orig/readpng.c	Sat Sep 26 13:35:44 1998
++++ zgv-4.2/readpng.c	Fri Dec 11 07:41:08 1998
+@@ -60,7 +60,7 @@
+ char buf[256];
+ 
+ strcpy(buf,"Error reading PNG - ");
+-strcat(buf,message);
++strncat(buf,message,sizeof(buf) - strlen(buf));
+ if(cfg.onefile_progress)
+   fprintf(stderr,buf);
+ else
+diff -Nur zgv-4.2.orig/zgv.c zgv-4.2/zgv.c
+--- zgv-4.2.orig/zgv.c	Mon Nov  2 17:00:34 1998
++++ zgv-4.2/zgv.c	Fri Dec 11 07:41:08 1998
+@@ -635,11 +635,11 @@
+       };
+     case 'e':{ /* rename current image */
+            char tmp[256];
+-           inputbox(zgv_ttyfd,"Enter new name:",0,idx_light,idx_dark,idx_black,255,tmp);
++           inputbox(zgv_ttyfd,"Enter new name:",0,idx_light,idx_dark,idx_black,255,tmp,sizeof(tmp));
+            if((strchr(tmp,'/')==NULL)&&(strlen(tmp)>1)){
+               rename(gifdir[curent].name,tmp);
+-              strcpy(gifdir[curent].name,tmp);
+-              qsort(&(gifdir[1]),gifdirsiz,sizeof(struct GDIR),(void *)gcompare);
++            strncpy(gifdir[curent].name,tmp,sizeof(gifdir[curent].name)) [sizeof			(gifdir[curent].name) -1 ] = '\0';
++qsort(&(gifdir[1]),gifdirsiz,sizeof(struct GDIR),(void *)gcompare);
+               redrawall(curent,startfrom);
+               }
+            else msgbox(zgv_ttyfd,"Illegal name.",MSGBOXTYPE_OK, idx_light,idx_dark,idx_black);
+@@ -765,7 +765,7 @@
+             targetdir[i]='\0';
+          } else {
+             strcat(targetdir,"/");
+-            strcat(targetdir,gifdir[curent].name);
++            strncat(targetdir,gifdir[curent].name,sizeof(targetdir));
+          };
+       showtargetdir();
+       };
+@@ -774,19 +774,23 @@
+            char tmp[512], tmp2[512], tmp3[512];
+            struct stat dir_s; 
+ 
+-           inputbox(zgv_ttyfd,"Enter target directory:",0,idx_light,idx_dark,idx_black,255,tmp);
+-           if(tmp[0]!='/'){getcwd(tmp2,256);sprintf(tmp3,"%s/%s",tmp2,tmp);strcpy(tmp,tmp3); };
++           inputbox(zgv_ttyfd,"Enter target directory:",0,idx_light,idx_dark,idx_black,255,tmp,sizeof(tmp));
++           if(tmp[0]!='/'){getcwd(tmp2,256);snprintf(tmp3,sizeof(tmp3),"%s/%s",tmp2,tmp);
++       strncpy(tmp,tmp3,sizeof(tmp)) [sizeof(tmp) -1 ] = '\0'; };
+            if((stat(tmp,&dir_s))&&(errno==ENOENT)){
+-              sprintf(tmp2,"%s does not exist. Create?",tmp);
++              snprintf(tmp2,sizeof(tmp2),"%s does not exist. Create?",tmp);
+               if(msgbox(zgv_ttyfd,tmp2,MSGBOXTYPE_YESNO,idx_light,idx_dark,idx_black)){
+                  if(rmkdir(tmp)){
+-                    sprintf(tmp2,"Cannot create %s",tmp);
++                    snprintf(tmp2,sizeof(tmp2),"Cannot create %s",tmp);
+                     msgbox(zgv_ttyfd,tmp2,MSGBOXTYPE_OK,idx_light,idx_dark,idx_black);
+                     };                
+                  };
+               } else
+-           if(S_ISDIR(dir_s.st_mode)){strcpy(targetdir,tmp);} else
+-              { sprintf(tmp2,"%s is not a directory.",tmp);
++           if(S_ISDIR(dir_s.st_mode)){
++                   strncpy(targetdir,tmp,sizeof(targetdir)) [sizeof(targetdir)-1] = '\0';}
++           else
++              { snprintf(tmp2,sizeof(tmp2),"%s is not a directory.",tmp);
++
+                 msgbox(zgv_ttyfd,tmp2,MSGBOXTYPE_OK,idx_light,idx_dark,idx_black);
+               };
+            if((strlen(targetdir)>1)&&(targetdir[strlen(targetdir)-1]!='/'))
+@@ -831,15 +835,16 @@
+            char tmp[512], tmp2[512], tmp3[512];
+            struct stat dir_s; 
+ 
+-           inputbox(zgv_ttyfd,"Change to directory?",0,idx_light,idx_dark,idx_black,256,tmp);
+-           if(tmp[0]!='/'){getcwd(tmp2,256);sprintf(tmp3,"%s/%s",tmp2,tmp);strcpy(tmp,tmp3); };
++           inputbox(zgv_ttyfd,"Change to directory?",0,idx_light,idx_dark,idx_black,256,tmp,sizeof(tmp));
++           if(tmp[0]!='/'){getcwd(tmp2,256);snprintf(tmp3,sizeof(tmp3),"%s/%s",tmp2,tmp);
++	strncpy(tmp,tmp3,sizeof(tmp)) [sizeof(tmp) -1] = '\0'; };
+            if((stat(tmp,&dir_s))&&(errno==ENOENT)){
+-              sprintf(tmp2,"%s does not exist",tmp);
++              snprintf(tmp2,sizeof(tmp2),"%s does not exist",tmp);
+               msgbox(zgv_ttyfd,tmp2,MSGBOXTYPE_OK,idx_light,idx_dark,idx_black);
+               break;
+               } else 
+            if(S_ISDIR(dir_s.st_mode))chdir(tmp); else
+-              { sprintf(tmp2,"%s is not a directory.",tmp);
++              { snprintf(tmp2,sizeof(tmp2),"%s is not a directory.",tmp);
+                 msgbox(zgv_ttyfd,tmp2,MSGBOXTYPE_OK,idx_light,idx_dark,idx_black);
+                 break;
+               };
+@@ -957,16 +962,16 @@
+       
+       getcwd(tmp,MAXPATHLEN);
+       strcat(tmp,"/");
+-      strcat(tmp,gifdir[curent].name);
+-      sprintf(ttmp," %9li, ",gifdir[curent].size);
+-      strcat(tmp,ttmp);
++      strncat(tmp,gifdir[curent].name,sizeof(tmp) - strlen(tmp));
++      snprintf(ttmp,sizeof(ttmp)," %9li, ",gifdir[curent].size);
++      strncat(tmp,ttmp,sizeof(tmp) - strlen(tmp));
+       if(gifdir[curent].width!=-1){
+-         sprintf(ttmp,"%ix%i, ",gifdir[curent].width,gifdir[curent].height);
+-         strcat(tmp,ttmp);
+-      };
++         snprintf(ttmp,sizeof(ttmp),"%ix%i, ",gifdir[curent].width,gifdir[curent].height);
++            strncat(tmp,ttmp,sizeof(tmp) - strlen(tmp));
++		};
+       mctime(ttmp,gifdir[curent].ctime);
+-      strcat(tmp,ttmp);
+-      msgbox(zgv_ttyfd,tmp,MSGBOXTYPE_OK,
++      strncat(tmp,ttmp,sizeof(tmp) - strlen(tmp));
++	  msgbox(zgv_ttyfd,tmp,MSGBOXTYPE_OK,
+          	idx_light,idx_dark,idx_black);
+       break;
+       }    
+@@ -1065,9 +1070,9 @@
+   char *ptr,sav;
+   ptr=strstr(cfg.cmd,"%s");	/* we know it's there - see rcfile.c */
+   sav=*ptr; *ptr=0;
+-  strcpy(buf,cfg.cmd);
+-  strcat(buf,gifdir[curent].name);
+-  strcat(buf,ptr+2);
++  strncpy(buf,cfg.cmd,sizeof(buf)) [sizeof(buf) -1 ] = '\0';
++  strncat(buf,gifdir[curent].name,sizeof(buf) - strlen(buf));
++  strncat(buf,ptr+2,sizeof(buf) - strlen(buf));
+   *ptr=sav;
+   screenoff();
+   system(buf);
+@@ -1297,7 +1302,7 @@
+   for(i=yofs+43;i<yofs+61;i++)vga_drawscansegment(buf,39,i,562);
+   set_max_text_width(560);
+   if(targetdir[0]!='\0'){
+-    sprintf(ctmp,"Target directory: %s",targetdir);
++    snprintf(ctmp,sizeof(ctmp),"Target directory: %s",targetdir);
+     drawtext3d(40,yofs+43,4,ctmp,1, idx_light,idx_dark,idx_black);
+     };
+ }
+@@ -1314,7 +1319,7 @@
+ void mctime(char *buf, time_t time)
+ { struct tm *bt;
+   bt=localtime(&time);
+-  sprintf(buf,"%.2d:%.2d %i-%.2d-%i",bt->tm_hour,bt->tm_min,bt->tm_mday,bt->tm_mon,bt->tm_year);
++  snprintf(buf,sizeof(buf),"%.2d:%.2d %i-%.2d-%i",bt->tm_hour,bt->tm_min,bt->tm_mday,bt->tm_mon,bt->tm_year);
+ };
+ 
+ 
+@@ -1331,9 +1336,9 @@
+ if(drawdirmsg)
+   {
+   if(updating_index)
+-    sprintf(ctmp,"Updating index of %s",cdir);
++    snprintf(ctmp,sizeof(ctmp),"Updating index of %s",cdir);
+   else
+-    sprintf(ctmp,"Directory of %s",cdir);
++    snprintf(ctmp,sizeof(ctmp),"Directory of %s",cdir);
+   
+   set_max_text_width(560);
+   if(unshow)
+@@ -1341,7 +1346,7 @@
+   else
+     drawtext3d(40,yofs+25,4,ctmp,1, idx_light,idx_dark,idx_black);
+   if(targetdir[0]!='\0'){
+-    sprintf(ctmp,"Target directory: %s",targetdir);
++    snprintf(ctmp,sizeof(ctmp),"Target directory: %s",targetdir);
+     if(unshow)
+       undrawtext3d(40,yofs+43,4,ctmp);
+     else
+@@ -1369,7 +1374,7 @@
+     xvpics_dir_exists=1;
+   else
+     {
+-    sprintf(ctmp2,"%s/.xvpics/",homedir);
++    snprintf(ctmp2,sizeof(ctmp2),"%s/.xvpics/",homedir);
+     ptr=ctmp2+strlen(ctmp2);
+     getcwd(ptr,sizeof(ctmp2)-strlen(ctmp2)-1);
+     /* convert /foo/bar/baz to _foo_bar_baz */
+@@ -1396,7 +1401,7 @@
+   if(left_just&cfg.xvpic_index){
+      int i,j;
+      
+-     sprintf(ctmp,"%li",gifdir[f].size);
++     snprintf(ctmp,sizeof(ctmp),"%li",gifdir[f].size);
+      j=(strlen(ctmp)-1)%3+1;
+      strncpy(ctmp2,ctmp,j);
+      for(i=j;i<strlen(ctmp);i+=3){
+@@ -1406,8 +1411,8 @@
+      };
+      ctmp2[j]='\0';
+      if((gifdir[f].width>0)&&!gifdir[f].isdir){
+-        sprintf(ctmp,", %ix%i",gifdir[f].width,gifdir[f].height);
+-        strcat(ctmp2,ctmp);   
++        snprintf(ctmp,sizeof(ctmp),", %ix%i",gifdir[f].width,gifdir[f].height);
++        strncat(ctmp2,ctmp,sizeof(ctmp2) - strlen(ctmp2));   
+      };
+ /*     set_max_text_width(BARWIDTH-92); */
+      vgadrawtext(xpos+92,ypos+28+gdfofs,gdfsiz,ctmp2);
+@@ -1440,10 +1445,10 @@
+          * in a xvpics subdir. So look for the thumbnail here! :-)
+          */
+         if(strstr(cdir,"/.xvpics")!=NULL)
+-          strcpy(ctmp,gifdir[f].name);
+-        else
+-          sprintf(ctmp ,".xvpics/%s",gifdir[f].name);
+-        sprintf(ctmp2,"%s/.xvpics/",homedir);
++        strncpy(ctmp,gifdir[f].name,sizeof(ctmp)) [sizeof(ctmp) -1 ] = '\0';
++		else
++        snprintf(ctmp ,sizeof(ctmp),".xvpics/%s",gifdir[f].name);
++        snprintf(ctmp2,sizeof(ctmp2),"%s/.xvpics/",homedir);
+         ptr=ctmp2+strlen(ctmp2);
+         getcwd(ptr,sizeof(ctmp2)-strlen(ctmp2)-1);
+         /* convert /foo/bar/baz to _foo_bar_baz */
+@@ -1908,7 +1913,7 @@
+ 
+ if(cfg.nodelprompt==0)
+   {
+-  sprintf(buf,"Really delete %s?",filename);
++  snprintf(buf,sizeof(buf),"Really delete %s?",filename);
+   retn=msgbox(zgv_ttyfd,buf,MSGBOXTYPE_YESNO, idx_light,idx_dark,idx_black);
+   }
+ 
+@@ -1919,7 +1924,7 @@
+     				idx_light,idx_dark,idx_black);
+   else
+     { int i;
+-    sprintf(buf,".xvpics/%s",filename);
++    snprintf(buf,sizeof(buf),".xvpics/%s",filename);
+     for(i=*num;i<gifdirsiz;i++)gifdir[i]=gifdir[i+1];
+     gifdirsiz--;
+     (*num)--;
+@@ -1957,22 +1962,22 @@
+ 
+ if(cfg.nodelprompt==0)
+   {
+-  sprintf(buf,"Really copy %s to %s?",filename,targetdir);
++  snprintf(buf,sizeof(buf),"Really copy %s to %s?",filename,targetdir);
+   retn=msgbox(zgv_ttyfd,buf,MSGBOXTYPE_YESNO, idx_light,idx_dark,idx_black);
+   }
+ 
+ if(retn==1 || cfg.nodelprompt)
+   { 
+-    sprintf(destination,"%s/%s",targetdir,filename);
++    snprintf(destination,sizeof(destination),"%s/%s",targetdir,filename);
+     if(cp(filename,destination)!=0){
+        msgbox(zgv_ttyfd,"Unable to create file!",MSGBOXTYPE_OK,
+     				idx_light,idx_dark,idx_black);
+        return -2;
+     };
+-    sprintf(buf,".xvpics/%s",filename);
+-    sprintf(destination,"%s/.xvpics",targetdir);
++    snprintf(buf,sizeof(buf),".xvpics/%s",filename);
++    snprintf(destination,sizeof(destination),"%s/.xvpics",targetdir);
+     mkdir(destination,0777);
+-    sprintf(destination,"%s/.xvpics/%s",targetdir,filename);
++    snprintf(destination,sizeof(destination),"%s/.xvpics/%s",targetdir,filename);
+     cp(buf,destination);		/* don't care if it fails */
+     return 0;
+   }
+@@ -1987,7 +1992,7 @@
+      cfg.nodelprompt=1;
+      if(cfg.nodelprompt==0)
+      {
+-      	sprintf(buf,"Really move %s to %s?",filename,targetdir);
++      	snprintf(buf,sizeof(buf),"Really move %s to %s?",filename,targetdir);
+         retn=msgbox(zgv_ttyfd,buf,MSGBOXTYPE_YESNO, idx_light,idx_dark,idx_black);
+      };
+      j=retn;
+@@ -2017,7 +2022,7 @@
+   if(sofar!=total)
+     {
+     vga_setcolor(idx_black);
+-    sprintf(tmp,"Reading - %2d%%",done);
++    snprintf(tmp,sizeof(tmp),"Reading - %2d%%",done);
+     vgadrawtext(xv332_how_far_xpos+(BARWIDTH-70)/2,
+                 xv332_how_far_ypos+GDFYBIT+39-4,2,tmp);
+     }
+@@ -2164,7 +2169,7 @@
+       for(f=3;f>pos;f--)
+         strcpy(files[f],files[f-1]);
+     
+-    strcpy(files[pos],anentry->d_name);
++    strncpy(files[pos],anentry->d_name,sizeof(files[pos])) [sizeof(files[pos]) -1] = '\0';
+     }
+   }
+ closedir(dirfile);
+@@ -2197,7 +2202,7 @@
+   if(vga_oktowrite())
+     {
+     vga_setcolor(idx_black);
+-    sprintf(tmpstr,"Image %d/4...",f+1);
++    snprintf(tmpstr,sizeof(tmpstr),"Image %d/4...",f+1);
+     clear_xvpic(xv332_how_far_xpos,xv332_how_far_ypos);
+     vgadrawtext(xv332_how_far_xpos+(BARWIDTH-62)/2,
+                 xv332_how_far_ypos+GDFYBIT+39-4,2,tmpstr);
+@@ -2205,7 +2210,7 @@
+   vga_unlockvc();
+   
+   tmp=((cfg.jpegindexstyle==3)?0:1);
+-  sprintf(tmpstr,"%s/%s",filename,files[f]);
++  snprintf(tmpstr,sizeof(tmpstr),"%s/%s",filename,files[f]);
+   if((tmp=readpicture(tmpstr,NULL,0,tmp))!=_PIC_OK)
+     if(f==0)
+       {
+@@ -2285,7 +2290,7 @@
+  * this also sets altdirbuf, so we don't have to work out the dir's
+  * name all the time. :-)
+  */
+-sprintf(altdirbuf,"%s/.xvpics/",homedir);
++snprintf(altdirbuf,sizeof(altdirbuf),"%s/.xvpics/",homedir);
+ ptr=altdirbuf+strlen(altdirbuf);
+ getcwd(ptr,sizeof(altdirbuf)-strlen(altdirbuf)-1);
+ while((ptr=strchr(ptr,'/'))!=NULL) *ptr++='_';
+@@ -2316,7 +2321,7 @@
+   	gifdir[f].name[0]!='.')
+     {
+     /* test for normal .xvpics/wibble */
+-    sprintf(buf,".xvpics/%s",gifdir[f].name);
++    snprintf(buf,sizeof(buf),".xvpics/%s",gifdir[f].name);
+     r1=stat(buf,&xvpic);
+     
+     /* and for ~/.xvpics/foo_bar_baz/wibble if needed */
+@@ -2324,8 +2329,8 @@
+       r2=-1;
+     else
+       {
+-      strcpy(buf2,altdirbuf);
+-      strcat(buf2,"/"); strcat(buf2,gifdir[f].name);
++      strncpy(buf2,altdirbuf,sizeof(buf2) - strlen(gifdir[f].name) -1) [sizeof(buf)-1] = '\0';
++      strcat(buf2,"/"); strncat(buf2,gifdir[f].name,sizeof(buf2) - strlen(buf2));
+       r2=stat(buf2,&xvpic2);
+       }
+     
+@@ -2348,7 +2353,7 @@
+         {
+         usehomedir:
+         /* couldn't create ./.xvpics, try ~/.xvpics */
+-        sprintf(buf,"%s/.xvpics",homedir);
++        snprintf(buf,sizeof(buf),"%s/.xvpics",homedir);
+         if(mkdir(buf,0777)==-1 && errno!=EEXIST && errno!=EACCES)
+           {
+           wait_for_foreground();
+@@ -2367,7 +2372,8 @@
+           }
+         
+         /* make sure filename for xvpic is in buf */
+-        strcpy(buf,altdirbuf); strcat(buf,"/"); strcat(buf,gifdir[f].name);
++        strncpy(buf,altdirbuf,sizeof(buf) - strlen(gifdir[f].name) -1) [sizeof(buf) -1] = '\0'; 
++		strcat(buf,"/"); strncat(buf,gifdir[f].name,sizeof(buf) - strlen(buf));
+         }
+       
+       if((do_dirs_instead&1))
+@@ -2482,7 +2488,7 @@
+  * own it. If so, the user's probably `genuine'.
+  * (NB: the kernel now does this, but there's no harm repeating it.)
+  */
+-sprintf(vt_filename,"/dev/tty%d",original_vt);
++snprintf(vt_filename,sizeof(vt_filename),"/dev/tty%d",original_vt);
+ stat(vt_filename,&sbuf);
+ if(getuid()!=sbuf.st_uid)
+   {
+@@ -2502,7 +2508,7 @@
+ if(fork()) exit(0);
+ 
+ zgv_vt=num;
+-sprintf(vt_filename,"/dev/tty%d",num);
++snprintf(vt_filename,sizeof(vt_filename),"/dev/tty%d",num);
+ 
+ setsid();
+ 
+@@ -2688,7 +2694,7 @@
+   if(tmp->child==NULL)
+   {
+      tmp->child=malloc(sizeof(struct DIRTREE));
+-     strcpy(tmp->child->name,path);
++     strncpy(tmp->child->name,path,sizeof(tmp->child->name)) [sizeof(tmp->child->name) -1] = '\0';
+      tmp->child->sib=tmp->child->child=NULL;
+      tmp->child->gifdir=NULL;
+      tmp->child->gifdirsize=0;
+@@ -2699,7 +2705,7 @@
+      if(strcmp(path,tmp->name))
+      {
+          tmp->sib=malloc(sizeof(struct DIRTREE));
+-         strcpy(tmp->sib->name,path);
++         strncpy(tmp->sib->name,path,sizeof(tmp->sib->name)) [sizeof(tmp->sib->name) -1] = '\0';
+          tmp->sib->sib=tmp->sib->child=NULL;
+          tmp->sib->gifdir=NULL;
+          tmp->sib->gifdirsize=0;
