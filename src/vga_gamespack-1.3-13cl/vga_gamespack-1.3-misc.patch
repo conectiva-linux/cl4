@@ -1,0 +1,28 @@
+--- vga_gamespack/Makefile.orig	Sat Feb 18 06:28:04 1995
++++ vga_gamespack/Makefile	Tue Dec 12 14:03:47 1995
+@@ -9,7 +9,7 @@
+ 
+ # Installation directories
+ BINDIR=		/usr/games
+-LIBDIR=		/usr/games/lib
++LIBDIR=		/usr/lib/games
+ 
+ # Binary name prefix (to avoid clashes with other programs)
+ PREFIX=		vga_
+@@ -22,7 +22,7 @@
+ 
+ # These may be changed, if desired
+ CC=		gcc
+-CCOPTS=		-O2 -m486
++CCOPTS=		$(RPM_OPT_FLAGS)
+ 
+ # ------------------------------------------------------------------- #
+ 
+@@ -44,6 +44,7 @@
+ 	install -o root -m 4711 -s $(CONNECT) $(BINDIR)
+ 	install -o root -m 4711 -s $(OTHELLO) $(BINDIR)
+ 	install -o root -m 4711 -s $(MINES) $(BINDIR)
++	install -d -m 755 $(LIBDIR)
+ 	install -m 444 Vga16font8x16 $(LIBDIR)
+ 
+ 

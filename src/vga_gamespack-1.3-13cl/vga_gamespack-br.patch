@@ -1,0 +1,32 @@
+--- vga_gamespack/Makefile.br	Tue Aug 18 18:18:08 1998
++++ vga_gamespack/Makefile	Tue Aug 18 18:19:07 1998
+@@ -8,8 +8,8 @@
+ # ------------------------------------------------------------------- #
+ 
+ # Installation directories
+-BINDIR=		/usr/games
+-LIBDIR=		/usr/lib/games
++BINDIR=		$(INSTROOT)/usr/games
++LIBDIR=		$(INSTROOT)/usr/lib/games
+ 
+ # Binary name prefix (to avoid clashes with other programs)
+ PREFIX=		vga_
+@@ -40,13 +40,17 @@
+ 
+ all:	$(CONNECT) $(OTHELLO) $(MINES)
+ 
+-install: $(CONNECT) $(OTHELLO) $(MINES) Vga16font8x16
++install: $(BINDIR) $(LIBDIR) \
++	$(CONNECT) $(OTHELLO) $(MINES) Vga16font8x16
+ 	install -o root -m 4711 -s $(CONNECT) $(BINDIR)
+ 	install -o root -m 4711 -s $(OTHELLO) $(BINDIR)
+ 	install -o root -m 4711 -s $(MINES) $(BINDIR)
+ 	install -d -m 755 $(LIBDIR)
+ 	install -m 444 Vga16font8x16 $(LIBDIR)
+ 
++
++$(BINDIR) $(LIBDIR):
++	mkdir -p $@
+ 
+ $(CONNECT):	$(CONNECTOBJ)
+ 	$(CC) -o $(CONNECT) $(CONNECTOBJ) -lvga
