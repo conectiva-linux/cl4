@@ -1,0 +1,12 @@
+diff -Nur openssl-0.9.3.orig/config openssl-0.9.3/config
+--- openssl-0.9.3.orig/config	Tue May 25 18:08:48 1999
++++ openssl-0.9.3/config	Tue May 25 18:09:07 1999
+@@ -103,7 +103,7 @@
+ 	;;
+ 
+     Linux:[2-9].*)
+-	echo "${MACHINE}-whatever-linux2"; exit 0
++	echo "${MACHINE}-conectiva-linux2"; exit 0
+ 	;;
+ 
+     Linux:1.*)
