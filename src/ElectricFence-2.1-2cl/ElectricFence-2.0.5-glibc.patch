@@ -1,0 +1,11 @@
+--- ElectricFence-2.0.5/page.c.ewt	Thu Jul 10 13:45:55 1997
++++ ElectricFence-2.0.5/page.c	Thu Jul 10 13:46:12 1997
+@@ -29,7 +29,7 @@
+ 
+ static caddr_t	startAddr = (caddr_t) 0;
+ 
+-#if ( !defined(sgi) && !defined(_AIX) )
++#if ( !defined(sgi) && !defined(_AIX) && !defined(__linux__))
+ extern int	sys_nerr;
+ extern char *	sys_errlist[];
+ #endif
