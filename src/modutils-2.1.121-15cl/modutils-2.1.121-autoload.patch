@@ -1,0 +1,92 @@
+--- modutils-2.1.121/depmod/conf_file.c.autoload	Mon Sep 14 14:54:17 1998
++++ modutils-2.1.121/depmod/conf_file.c	Tue Nov 17 16:34:49 1998
+@@ -108,14 +108,19 @@
+ }
+ 
+ static void
+-add_option (char *module, char *args)
++add_option (char *module, char *args, int may_unload)
+ {
+   struct mod_option *new_opt;
+   new_opt = (struct mod_option *) xmalloc (sizeof (struct mod_option));
+   new_opt->next = mod_options;
+   new_opt->module = xstrdup (module);
+-  new_opt->args = xstrdup (args);
++  new_opt->may_unload = may_unload;
+   mod_options = new_opt;
++
++  if (args)
++      new_opt->args = xstrdup (args);
++  else
++      new_opt->args = NULL;
+ }
+ 
+ static struct action
+@@ -411,7 +416,25 @@
+ 	    }
+ 	  *cp = '\0';
+ 
+-	  add_option (tmp, cp + 1);
++	  if (!strcmp(tmp, "-k")) 
++	    {
++	      tmp = cp + 1;
++	      cp = strchr (tmp, ' ');
++	
++	      if (cp)
++		{
++		  *cp = '\0';
++		  add_option (tmp, cp + 1, 0);
++		}
++	      else
++		{
++		  add_option (tmp, NULL, 0);
++		}
++	    }
++	  else
++	    {
++	      add_option (tmp, cp + 1, 1);
++	    }
+ 	}
+       else if (!strcmp (tmp, "alias"))
+ 	{
+--- modutils-2.1.121/depmod/conf_file.h.autoload	Mon Sep 14 14:54:18 1998
++++ modutils-2.1.121/depmod/conf_file.h	Tue Nov 17 16:34:49 1998
+@@ -47,6 +47,7 @@
+  */
+ extern struct mod_option
+   {
++    int may_unload;
+     struct mod_option *next;
+     char *module;		/* the module this options will be appended */
+     char *args;			/* the options to pass to insmod when loading this module */
+--- modutils-2.1.121/depmod/modprobe.c.autoload	Mon Sep 14 14:54:30 1998
++++ modutils-2.1.121/depmod/modprobe.c	Tue Nov 17 16:54:30 1998
+@@ -316,6 +316,19 @@
+   return NULL;
+ }
+ 
++int
++may_unload(char *mod)
++{
++  char *modname = strip_o (mod);
++  struct mod_option *opts;
++
++  for (opts = mod_options; opts; opts = opts->next)
++    if (!strcmp (opts->module, modname))
++      return opts->may_unload;
++
++  return 1;
++}
++
+ /*
+  * Try to load a module and the sub-modules it needs.
+  */
+@@ -380,7 +393,7 @@
+   load_cmd = (char *) xmalloc (cmd_len);
+ 
+   strcpy (load_cmd, "/sbin/insmod -L ");
+-  if (flag_by_kerneld)
++  if (flag_by_kerneld && may_unload(mod))
+     strcat (load_cmd, "-k ");
+   if (log)
+     strcat (load_cmd, "-s ");

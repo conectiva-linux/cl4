@@ -1,0 +1,62 @@
+--- modutils-2.1.121/depmod/conf_file.c.pcmcia	Mon Mar 15 12:19:42 1999
++++ modutils-2.1.121/depmod/conf_file.c	Mon Mar 15 12:21:47 1999
+@@ -69,6 +69,7 @@
+   "sound",
+   "fc4",
+   "video",
++  "pcmcia",
+   "misc",
+   NULL				/* marks the end of the list! */
+ };
+--- modutils-2.1.121/insmod/insmod.c.pcmcia	Mon Mar 15 12:28:56 1999
++++ modutils-2.1.121/insmod/insmod.c	Mon Mar 15 12:27:35 1999
+@@ -103,6 +104,7 @@
+     "/lib/modules/%s/sound:"
+     "/lib/modules/%s/fc4:"
+     "/lib/modules/%s/video:"
++    "/lib/modules/%s/pcmcia:"
+     "/lib/modules/%s/misc:"
+     "/lib/modules/default/fs:"
+     "/lib/modules/default/net:"
+@@ -114,6 +116,7 @@
+     "/lib/modules/default/sound:"
+     "/lib/modules/default/fc4:"
+     "/lib/modules/default/video:"
++    "/lib/modules/default/pcmcia:"
+     "/lib/modules/default/misc:"
+     "/lib/modules/fs:"
+     "/lib/modules/net:"
+@@ -125,6 +128,7 @@
+     "/lib/modules/sound:"
+     "/lib/modules/fc4:"
+     "/lib/modules/video:"
++    "/lib/modules/pcmcia:"
+     "/lib/modules/misc";
+ 
+   char *path, *p, *filename;
+--- modutils-2.1.121/insmod/modinfo.c.pcmcia	Mon Mar 15 12:29:35 1999
++++ modutils-2.1.121/insmod/modinfo.c	Mon Mar 15 12:28:21 1999
+@@ -66,6 +67,7 @@
+     "/lib/modules/%s/sound:"
+     "/lib/modules/%s/fc4:"
+     "/lib/modules/%s/video:"
++    "/lib/modules/%s/pcmcia:"
+     "/lib/modules/%s/misc:"
+     "/lib/modules/default/fs:"
+     "/lib/modules/default/net:"
+@@ -77,6 +79,7 @@
+     "/lib/modules/default/sound:"
+     "/lib/modules/default/fc4:"
+     "/lib/modules/default/video:"
++    "/lib/modules/default/pcmcia:"
+     "/lib/modules/default/misc:"
+     "/lib/modules/fs:"
+     "/lib/modules/net:"
+@@ -88,6 +91,7 @@
+     "/lib/modules/sound:"
+     "/lib/modules/fc4:"
+     "/lib/modules/video:"
++    "/lib/modules/pcmcia:"
+     "/lib/modules/misc";
+ 
+   char *path, *p, *filename;

@@ -1,0 +1,51 @@
+--- modutils-2.1.85/insmod/Makefile.in.dyn	Fri Feb  6 04:26:26 1998
++++ modutils-2.1.85/insmod/Makefile.in	Tue Apr  7 22:41:44 1998
+@@ -6,7 +6,7 @@
+ 
+ #----------------------------------------------------------------------
+ 
+-all: insmod rmmod lsmod ksyms modinfo
++all: insmod rmmod lsmod ksyms modinfo insmod.static rmmod.static
+ 
+ ifeq ($(COMBINE_INSMOD_RMMOD),y)
+ 
+@@ -14,6 +14,12 @@
+ 	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^
+ rmmod: insmod
+ 	ln -sf $^ $@
++
++insmod.static: main.o insmod.o rmmod.o logger.o ../obj/libobj.a ../util/libutil.a
++	$(CC) $(LDFLAGS) -static $(CFLAGS) -o $@ $^
++rmmod.static: insmod.static
++	ln -sf $^ $@
++
+ insmod.o: insmod.c
+ 	$(CC) $(CFLAGS) $(DEFS) -Dmain=insmod_main -c -o $@ $<
+ rmmod.o: rmmod.c
+@@ -26,6 +32,11 @@
+ rmmod: rmmod.o logger.o ../util/libutil.a
+ 	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^
+ 
++insmod.static: insmod.o logger.o ../obj/libobj.a ../util/libutil.a
++	$(CC) $(LDFLAGS) -static $(CFLAGS) -o $@ $^
++rmmod.static: rmmod.o logger.o ../util/libutil.a
++	$(CC) $(LDFLAGS) -static $(CFLAGS) -o $@ $^
++
+ endif
+ 
+ lsmod: lsmod.o logger.o ../util/libutil.a
+@@ -44,10 +55,14 @@
+ install-insmod-rmmod:
+ 	$(INSTALL) insmod $(sbindir)
+ 	ln -sf insmod $(sbindir)/rmmod
++	$(INSTALL) insmod.static $(sbindir)
++	ln -sf insmod.static $(sbindir)/rmmod.static
+ else
+ install-insmod-rmmod:
+ 	$(INSTALL) insmod $(sbindir)
+ 	$(INSTALL) rmmod $(sbindir)
++	$(INSTALL) insmod.static $(sbindir)
++	$(INSTALL) rmmod.static $(sbindir)
+ endif
+ 	
+ install install-bin: all install-insmod-rmmod

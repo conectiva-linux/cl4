@@ -1,0 +1,12 @@
+--- modutils-2.1.121/depmod/alias.h~	Mon Apr 19 17:01:40 1999
++++ modutils-2.1.121/depmod/alias.h	Mon Apr 19 17:09:22 1999
+@@ -95,6 +95,9 @@
+   {(void *) 0, "plip1", "plip"},
+   {(void *) 0, "ppp0", "ppp"},
+   {(void *) 0, "ppp1", "ppp"},
++  {(void *) 0, "ppp-compress-21", "bsd_comp"},
++  {(void *) 0, "ppp-compress-24", "ppp_deflate"},
++  {(void *) 0, "ppp-compress-26", "ppp_deflate"},
+   {(void *) 0, "scsi_hostadapter", "off"},		/* if not in config file */
+   {(void *) 0, "slip0", "slip"},
+   {(void *) 0, "slip1", "slip"},

@@ -1,0 +1,148 @@
+--- modutils-2.1.121/depmod/conf_file.c.preferred	Mon Mar 15 12:19:21 1999
++++ modutils-2.1.121/depmod/conf_file.c	Mon Mar 15 12:21:47 1999
+@@ -254,6 +255,7 @@
+   char *end;
+   int line = 0;			/* current line of the configuration file */
+   char linebuf [8192];
++  int preferred_first = 0;
+ 
+   /*
+    * Initialize the list of predefined aliases.
+@@ -269,7 +271,12 @@
+   /*
+    * Create the full name of the output file.
+    */
+-  if (kernel_ver)
++  if (!access("/lib/modules/preferred/modules.dep", R_OK))
++    {
++      depfile_tmp = xstrdup("/lib/modules/preferred/modules.dep");
++      preferred_first = 1;
++    }
++  else if (kernel_ver)
+     {
+       depfile_tmp = (char *) xmalloc (strlen ("/lib/modules//modules.dep") +
+ 				      strlen (kernel_ver) + 1);
+@@ -306,6 +313,9 @@
+   add_set (def_set);
+ 
+   free (def_set);
++
++  if (preferred_first)
++      add_set("/lib/modules/preferred");
+ 
+   /*
+    * Add the default types to the just created global list.
+--- modutils-2.1.121/insmod/insmod.c.preferred	Mon Sep 14 14:55:17 1998
++++ modutils-2.1.121/insmod/insmod.c	Mon Mar 15 12:26:17 1999
+@@ -82,6 +82,17 @@
+   static const char default_path[] =
+     ".:"
+     "/linux/modules:"
++    "/lib/modules/preferred/fs:"
++    "/lib/modules/preferred/net:"
++    "/lib/modules/preferred/scsi:"
++    "/lib/modules/preferred/block:"
++    "/lib/modules/preferred/cdrom:"
++    "/lib/modules/preferred/ipv4:"
++    "/lib/modules/preferred/ipv6:"
++    "/lib/modules/preferred/sound:"
++    "/lib/modules/preferred/fc4:"
++    "/lib/modules/preferred/video:"
++    "/lib/modules/preferred/misc:"
+     "/lib/modules/%s/fs:"
+     "/lib/modules/%s/net:"
+     "/lib/modules/%s/scsi:"
+--- modutils-2.1.121/insmod/modinfo.c.preferred	Mon Mar 15 12:23:49 1999
++++ modutils-2.1.121/insmod/modinfo.c	Mon Mar 15 12:24:41 1999
+@@ -45,6 +45,17 @@
+   static const char default_path[] =
+     ".:"
+     "/linux/modules:"
++    "/lib/modules/preferred/fs:"
++    "/lib/modules/preferred/net:"
++    "/lib/modules/preferred/scsi:"
++    "/lib/modules/preferred/block:"
++    "/lib/modules/preferred/cdrom:"
++    "/lib/modules/preferred/ipv4:"
++    "/lib/modules/preferred/ipv6:"
++    "/lib/modules/preferred/sound:"
++    "/lib/modules/preferred/fc4:"
++    "/lib/modules/preferred/video:"
++    "/lib/modules/preferred/misc:"
+     "/lib/modules/%s/fs:"
+     "/lib/modules/%s/net:"
+     "/lib/modules/%s/scsi:"
+--- modutils-2.1.121/man/depmod.1.preferred	Mon Sep 14 14:55:59 1998
++++ modutils-2.1.121/man/depmod.1	Mon Mar 15 12:19:21 1999
+@@ -201,32 +206,50 @@
+   depfile=/lib/modules/`uname -r`/modules.dep
+   path[boot]=/lib/modules
+ 
+-  path[fs]=/lib/modules/`uname -r`
+-  path[misc]=/lib/modules/`uname -r`
+-  path[net]=/lib/modules/`uname -r`
+-  path[scsi]=/lib/modules/`uname -r`
+-  path[cdrom]=/lib/modules/`uname -r`
+-  path[ipv4]=/lib/modules/`uname -r`
+-  path[ipv6]=/lib/modules/`uname -r`
++  path[sound]=/lib/modules/preferred
++  path[ipv6]=/lib/modules/preferred
++  path[ipv4]=/lib/modules/preferred
++  path[cdrom]=/lib/modules/preferred
++  path[block]=/lib/modules/preferred
++  path[scsi]=/lib/modules/preferred
++  path[net]=/lib/modules/preferred
++  path[misc]=/lib/modules/preferred
++  path[fs]=/lib/modules/preferred
++
+   path[sound]=/lib/modules/`uname -r`
++  path[ipv6]=/lib/modules/`uname -r`
++  path[ipv4]=/lib/modules/`uname -r`
++  path[cdrom]=/lib/modules/`uname -r`
++  path[block]=/lib/modules/`uname -r`
++  path[scsi]=/lib/modules/`uname -r`
++  path[net]=/lib/modules/`uname -r`
++  path[misc]=/lib/modules/`uname -r`
++  path[fs]=/lib/modules/`uname -r`
+ 
+-  path[fs]=/lib/modules/default
+-  path[misc]=/lib/modules/default
+-  path[net]=/lib/modules/default
+-  path[scsi]=/lib/modules/default
+-  path[cdrom]=/lib/modules/default
+-  path[ipv4]=/lib/modules/default
+-  path[ipv6]=/lib/modules/default
+   path[sound]=/lib/modules/default
++  path[ipv6]=/lib/modules/default
++  path[ipv4]=/lib/modules/default
++  path[cdrom]=/lib/modules/default
++  path[block]=/lib/modules/default
++  path[scsi]=/lib/modules/default
++  path[net]=/lib/modules/default
++  path[misc]=/lib/modules/default
++  path[fs]=/lib/modules/default
+ 
+-  path[fs]=/lib/modules
+-  path[misc]=/lib/modules
+-  path[net]=/lib/modules
+-  path[scsi]=/lib/modules
+-  path[cdrom]=/lib/modules
+-  path[ipv4]=/lib/modules
+-  path[ipv6]=/lib/modules
+   path[sound]=/lib/modules
++  path[ipv6]=/lib/modules
++  path[ipv4]=/lib/modules
++  path[cdrom]=/lib/modules
++  path[block]=/lib/modules
++  path[scsi]=/lib/modules
++  path[net]=/lib/modules
++  path[misc]=/lib/modules
++  path[fs]=/lib/modules
++.PP
++Note: The /lib/modules/preferred default entries are added to the modprobe
++search path only if the /lib/modules/preferred path exists. This path
++is a Red Hat extension to modprobe that was intended to be used only when
++running Red Hat compiled 2.0 kernels.
+ .PP
+ All "option" lines specify the default options that are needed for
+ a module, as in:

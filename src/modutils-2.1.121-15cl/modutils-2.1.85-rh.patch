@@ -1,0 +1,11 @@
+--- modutils-2.1.85/util/sys_cm.c.rh	Fri Feb  6 04:27:43 1998
++++ modutils-2.1.85/util/sys_cm.c	Tue Jul 28 22:53:43 1998
+@@ -34,7 +34,7 @@
+ 
+ /*======================================================================*/
+ 
+-#if defined(__i386__) || defined(__m68k__)
++#if defined(__i386__) || defined(__m68k__) || defined(__sparc__)
+ 
+ #define __NR__create_module  __NR_create_module
+ static inline _syscall2(long, _create_module, const char *, name, size_t, size)

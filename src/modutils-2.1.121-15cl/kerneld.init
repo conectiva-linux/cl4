@@ -1,0 +1,49 @@
+#! /bin/sh
+#
+# chkconfig: - 01 98
+# description: The kerneld daemon automatically loads kernel modules \
+#              as the system needs them on 2.0 kernels, and performs \
+#              auto-unloading of unused modules on 2.0 and 2.2 kernels. \
+#              Run this service on a 2.2 kernel if you want automatic
+#              unloading of unused modules; if you are running a 2.0 \
+#              kernel, it will be automatically started by initscripts.
+# processname: kerneld
+# config: /etc/conf.modules autoreload
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+    [ -f /var/lock/subsys/kerneld ] && exit 0
+
+	echo -n "Starting kerneld services: "
+	daemon kerneld
+
+	echo
+	touch /var/lock/subsys/kerneld
+	;;
+  stop)
+	echo -n "Stopping kerneld services: "
+	killproc kerneld
+
+	echo
+	rm -f /var/lock/subsys/kerneld
+	;;
+  status)
+	status kerneld
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  reload)
+	killall -HUP kerneld
+	;;
+  *)
+	echo "Usage: kerneld {start|stop|status|restart}"
+	exit 1
+esac
+
+exit 0

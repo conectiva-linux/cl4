@@ -1,0 +1,11 @@
+--- modutils-2.1.121/depmod/alias.h~	Mon Sep 14 14:54:09 1998
++++ modutils-2.1.121/depmod/alias.h	Mon Apr  5 16:32:50 1999
+@@ -78,6 +78,8 @@
+   {(void *) 0, "iso9660", "isofs"},
+   {(void *) 0, "md-personality-1", "linear"},
+   {(void *) 0, "md-personality-2", "raid0"},
++  {(void *) 0, "md-personality-3", "raid1"},
++  {(void *) 0, "md-personality-4", "raid5"},
+   {(void *) 0, "net-pf-1", "unix"},			/* PF_UNIX      1  Unix domain sockets */
+   {(void *) 0, "net-pf-2", "ipv4"},			/* PF_INET      2  Internet IP Protocol */
+   {(void *) 0, "net-pf-3", "off"},			/* PF_AX25      3  Amateur Radio AX.25 */

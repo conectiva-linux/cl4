@@ -1,0 +1,93 @@
+Jakub Jelinek
+(jj@ultra.linux.cz)
+Prague, CZ
+========================================================================
+--- modutils-2.1.121/depmod/depmod.c.jj	Mon Sep 14 20:54:20 1998
++++ modutils-2.1.121/depmod/depmod.c	Mon Nov 23 18:57:14 1998
+@@ -26,6 +26,7 @@
+ #include <unistd.h>
+ #include <getopt.h>
+ #include <errno.h>
++#include <sys/utsname.h>
+ #include <elf.h>
+ #include ELF_MACHINE_H
+ 
+@@ -322,6 +323,18 @@ main (int argc, char *argv[])
+   int flag_stdmode = 0;
+ 
+   int opt_tag;
++
++#ifdef ARCH_sparc
++  {
++     struct utsname u;
++
++     if (!uname (&u) && !strcmp (u.machine, "sparc64"))
++       {
++         execv ("/sbin/depmod64", argv);
++         return 1;
++       }
++  }
++#endif
+ 
+   if (argc == 1)
+     {
+--- modutils-2.1.121/insmod/insmod.c.jj	Mon Sep 14 20:55:17 1998
++++ modutils-2.1.121/insmod/insmod.c	Mon Nov 23 18:58:33 1998
+@@ -1382,6 +1382,25 @@ main(int argc, char **argv)
+   int exit_status = 1;
+ 
+   error_file = "insmod";
++  
++#ifdef ARCH_sparc
++  {
++    struct utsname u;
++
++    if (!uname (&u) && !strcmp (u.machine, "sparc64"))
++      {
++	char *p = strrchr(argv[0], '/');
++
++	p = p ? p+1 : argv[0];
++
++	if (strcmp(p, "insmod.static") == 0)
++	  execv ("/sbin/insmod64.static", argv);
++
++	execv ("/sbin/insmod64", argv);
++	return 1;
++      }
++  }
++#endif
+ 
+   /* Process the command line.  */
+ 
+--- modutils-2.1.121/insmod/main.c.jj	Mon Sep 14 20:55:25 1998
++++ modutils-2.1.121/insmod/main.c	Mon Nov 23 18:57:14 1998
+@@ -34,7 +34,7 @@ main(int argc, char **argv)
+   char *p = strrchr(argv[0], '/');
+   p = p ? p+1 : argv[0];
+ 
+-  if (strcmp(p, "insmod") == 0)
++  if (strcmp(p, "insmod") == 0 || strcmp(p, "insmod.static") == 0)
+     return insmod_main(argc, argv);
+   else if (strcmp(p, "rmmod") == 0)
+     return rmmod_main(argc, argv);
+--- modutils-2.1.121/insmod/modinfo.c.jj	Mon Sep 14 20:55:28 1998
++++ modutils-2.1.121/insmod/modinfo.c	Mon Nov 23 18:57:14 1998
+@@ -424,6 +424,18 @@ int main(int argc, char *argv[])
+   };
+   int do_parameters = 0, opt;
+   char *fmtstr = NULL;
++  
++#ifdef ARCH_sparc
++  {
++     struct utsname u;
++
++     if (!uname (&u) && !strcmp (u.machine, "sparc64"))
++       {
++         execv ("/sbin/modinfo64", argv);
++         return 1;
++       }
++  }
++#endif
+ 
+   while ((opt = getopt_long(argc, argv, "adq:pVh",
+ 			    &long_opts[0], NULL)) != EOF)

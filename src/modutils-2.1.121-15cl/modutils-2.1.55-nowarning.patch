@@ -1,0 +1,13 @@
+--- modutils-2.1.55/depmod/misc.c.msf	Fri Nov  7 17:42:52 1997
++++ modutils-2.1.55/depmod/misc.c	Fri Nov  7 17:43:13 1997
+@@ -94,8 +94,8 @@
+    * OK: Now first read all of the file into a dynamically allocated buffer.
+    */
+   buf = (char *) xmalloc ((unsigned) (statb.st_size + 2));
+-  if (!fread (buf, sizeof (char), statb.st_size + 1, fp))
+-      lprintf ("warning: file %s is empty!\n", file);
++  if (!fread (buf, sizeof (char), statb.st_size + 1, fp));
++    /* lprintf ("warning: file %s is empty!\n", file); */
+   buf[statb.st_size] = '\0';	/* be sure to NULL-terminate */
+   fclose (fp);
+ 

@@ -1,0 +1,305 @@
+--- modutils-2.1.121/depmod/depmod.c.systemmap	Mon Sep 14 14:54:20 1998
++++ modutils-2.1.121/depmod/depmod.c	Tue Nov 17 17:02:58 1998
+@@ -27,6 +27,8 @@
+ #include <getopt.h>
+ #include <errno.h>
+ #include <elf.h>
++#include <sys/stat.h>
++#include <fcntl.h>
+ #include ELF_MACHINE_H
+ 
+ #include "util.h"
+@@ -38,6 +40,7 @@
+ int max_objs = 0;
+ struct obj_file **objs;
+ char **names;
++int ignore_symbol_versions = 0;
+ 
+ /*======================================================================*/
+ 
+@@ -54,6 +57,52 @@
+ /*======================================================================*/
+ 
+ static void
++read_sysmap_syms (const char * fn)
++{
++  int fd;
++  char * buf, * start, * chptr;
++  char ch;
++  struct stat sb;
++  struct new_module_symbol *s;
++  char symbol[200];
++
++  fd = open(fn, O_RDONLY);
++  if (fd < 0)
++    {
++      error("failed to open %s: %s", fn, strerror(errno));
++      return;
++    }
++
++  fstat(fd, &sb);
++  buf = alloca(sb.st_size + 2);
++  if (read(fd, buf, sb.st_size) != sb.st_size)
++    {
++      error("failed to read %s: %s", fn, strerror(errno));
++      close(fd);
++      return;
++    }
++  close(fd);
++  if (buf[sb.st_size - 1] != '\n') 
++      buf[sb.st_size++] = '\n';
++  buf[sb.st_size++] = '\0';
++  
++  for (nksyms = 0, start = buf; start; 
++	start = strchr(start + 1, '\n'), nksyms++) ;
++  s = ksyms = xmalloc(nksyms * sizeof(*ksyms));
++
++  nksyms = 0, start = buf;
++  while (*start)
++    {
++      chptr = strchr(start, '\n');
++      *chptr = '\0';
++      sscanf(start, "%lx %c %s", &s->value, &ch, symbol);
++      s->name = (unsigned long)strdup(symbol);
++      start = chptr + 1;
++      s++, nksyms++;
++    }
++}
++
++static void
+ new_read_kernel_syms (void)
+ {
+   struct new_module_symbol *syms, *s;
+@@ -133,6 +182,8 @@
+   char **deps;
+   int max_deps = 64;
+   int o;
++  char symbol[200];
++  char *chptr;
+ 
+   deps = (char **) xmalloc (max_deps * sizeof (char *));
+ 
+@@ -166,6 +217,15 @@
+ 		  || ELFW (ST_BIND) (sym->info) == STB_WEAK)
+ 		continue;
+ 
++	      strcpy(symbol, sym->name);
++	      if (ignore_symbol_versions)
++		{
++		  chptr = strrchr(symbol, '_');
++		  if (chptr && chptr[1] == 'R')
++		    *chptr = '\0';
++		}
++
++
+ 	      /*
+ 	       * Traverse all modules and search for one, where it may be
+ 	       * defined.
+@@ -176,7 +236,7 @@
+ 		  if (j == o)
+ 		    continue;
+ 
+-		  tmp = obj_find_symbol (objs[j], sym->name);
++		  tmp = obj_find_symbol (objs[j], symbol);
+ 		  if (tmp && tmp->secidx != SHN_UNDEF)
+ 		    break;
+ 		}
+@@ -186,7 +246,7 @@
+ 		    lprintf ("%s: unresolved symbol(s)"
+ 			     ,names[o]);
+ 		  if (flag_show_error)
+-		    lprintf ("\t%s", sym->name);
++		    lprintf ("\t%s", symbol);
+ 		  errs++;
+ 		  continue;
+ 		}
+@@ -252,7 +312,7 @@
+       return 1;
+     }
+ 
+-  file = obj_load (fp);
++  file = obj_load (fp, ignore_symbol_versions);
+   fclose (fp);
+ 
+   if (!file)
+@@ -308,6 +368,8 @@
+     "  -a, --all                  visit all modules\n"
+     "  -d, --debug                run in debug mode\n"
+     "  -e                         output unresolved symbols\n"
++    "  -i                         ignore symbol versions\n"
++    "  -m, --system-map <file>    use the symbols in <file>\n"
+     "  -s, --system-log           use the system log for error reporting\n"
+     "      --help                 display this help and exit\n"
+     "  -v, --verbose              run in verbose mode\n"
+@@ -320,8 +382,8 @@
+ {
+   int ret = 1;
+   int flag_stdmode = 0;
+-
+   int opt_tag;
++  char *sysmap_file = NULL;
+ 
+   if (argc == 1)
+     {
+@@ -329,14 +391,6 @@
+       return 1;
+     }
+ 
+-#ifndef NO_COMPAT
+-  flag_new_syscalls = !query_module (NULL, 0, NULL, 0, NULL);
+-  if (!flag_new_syscalls)
+-    old_read_kernel_syms ();
+-  else
+-#endif
+-    new_read_kernel_syms ();
+-
+   /*
+    * Yes we are using getopts!
+    */
+@@ -346,6 +400,8 @@
+       {
+ 	{"all", 0, 0, 'a'},
+ 	{"debug", 0, 0, 'd'},
++	{"ignore-versions", 1, 0, 'i'},
++	{"system-map", 1, 0, 'm'},
+ 	{"system-log", 0, 0, 's'},
+ 	{"verbose", 0, 0, 'v'},
+ 	{"version", 0, 0, 'V'},
+@@ -354,7 +410,7 @@
+       };
+       int opt_ind = 0;
+ 
+-      opt_tag = getopt_long (argc, argv, "adesvV", long_opts,
++      opt_tag = getopt_long (argc, argv, "adeim:svV", long_opts,
+ 			     &opt_ind);
+       if (opt_tag == -1)
+ 	break;
+@@ -373,6 +429,10 @@
+ 	  flag_show_error = 1;
+ 	  break;
+ 
++	case 'i':
++	  ignore_symbol_versions = 1;
++	  break;
++
+ 	case 's':
+ 	  setsyslog ("depmod");	/* use the syslog for reporting */
+ 	  break;
+@@ -387,6 +447,10 @@
+ 	  exit (opt_tag == 'h' ? 0 : 1);
+ 	  break;
+ 
++	case 'm':
++	  sysmap_file = optarg;
++	  break;
++
+ 	case 'V':
+ 	  puts ("depmod (Linux modutils) " MODUTILS_VERSION);
+ 	  if (argc != 2)
+@@ -396,6 +460,19 @@
+ 	default:
+ 	  abort ();
+ 	}
++    }
++
++  if (sysmap_file)
++    read_sysmap_syms (sysmap_file);
++  else 
++    {
++#ifndef NO_COMPAT
++      flag_new_syscalls = !query_module (NULL, 0, NULL, 0, NULL);
++      if (!flag_new_syscalls)
++	old_read_kernel_syms ();
++      else
++#endif
++        new_read_kernel_syms ();
+     }
+ 
+   /*
+--- modutils-2.1.121/include/obj.h.systemmap	Mon Sep 14 14:55:04 1998
++++ modutils-2.1.121/include/obj.h	Tue Nov 17 17:02:58 1998
+@@ -173,7 +173,7 @@
+ 
+ int obj_relocate (struct obj_file *f, ElfW(Addr) base);
+ 
+-struct obj_file *obj_load(FILE *f);
++struct obj_file *obj_load(FILE *f, int ignore_symbol_version);
+ 
+ int obj_create_image (struct obj_file *f, char *image);
+ 
+--- modutils-2.1.121/insmod/insmod.c.systemmap	Tue Nov 17 17:02:58 1998
++++ modutils-2.1.121/insmod/insmod.c	Tue Nov 17 17:05:10 1998
+@@ -1496,7 +1496,7 @@
+   if (dolock)
+     flock(fileno(fp), LOCK_EX);
+ 
+-  if ((f = obj_load(fp)) == NULL)
++  if ((f = obj_load(fp, 0)) == NULL)
+     goto out;
+ 
+   /* Version correspondence?  */
+--- modutils-2.1.121/insmod/modinfo.c.systemmap	Mon Sep 14 14:55:28 1998
++++ modutils-2.1.121/insmod/modinfo.c	Tue Nov 17 17:02:58 1998
+@@ -384,7 +384,7 @@
+       error("%s: %m", filename);
+       return -1;
+     }
+-  else if ((f = obj_load(fp)) == NULL)
++  else if ((f = obj_load(fp, 0)) == NULL)
+     return -1;
+   fclose(fp);
+ 
+--- modutils-2.1.121/man/depmod.1.systemmap	Mon Sep 14 14:55:59 1998
++++ modutils-2.1.121/man/depmod.1	Tue Nov 17 17:02:58 1998
+@@ -111,12 +111,17 @@
+ .Pp
+ Option
+ .B -e
+-output the list of unresolved symbol for each module, Normally depmod
++outputs the list of unresolved symbol for each module, Normally depmod
+ only output the list of unloadable modules.
+ .Pp
+ Option
+ .B -v
+-output the list of all processed modules.
++outputs the list of all processed modules. If the \fB\-i\fR option is
++specified, depmod does not report errors caused by mismatched symbol version.
++This can be usefull if a kernel is specified, or \fB\-m\fR is used. The
++\fB\-m\fR option must be followed by the path of a \fISystem.map\fR type
++file, which depmod then uses for symbol information instead of the
++currently running kernel.
+ .Pp
+ Modules may be located at different place in the filesystem,
+ but there will always be some need to override this,
+--- modutils-2.1.121/obj/obj_load.c.systemmap	Mon Sep 14 14:56:15 1998
++++ modutils-2.1.121/obj/obj_load.c	Tue Nov 17 17:02:58 1998
+@@ -30,7 +30,7 @@
+ /*======================================================================*/
+ 
+ struct obj_file *
+-obj_load (FILE *fp)
++obj_load (FILE *fp, int ignore_symbol_versions)
+ {
+   struct obj_file *f;
+   ElfW(Shdr) *section_headers;
+@@ -205,11 +205,19 @@
+ 	    /* Insert all symbols into the hash table.  */
+ 	    for (j = 1, ++sym; j < nsym; ++j, ++sym)
+ 	      {
+-		const char *name;
++		const char * name;
++		char * chptr;
++
+ 		if (sym->st_name)
+ 		  name = strtab+sym->st_name;
+ 		else
+ 		  name = f->sections[sym->st_shndx]->name;
++		if (ignore_symbol_versions)
++		  {
++		    name = strdup(name);
++		    chptr = strrchr(name, '_');
++		    if (chptr && chptr[1] == 'R') *chptr = '\0';
++		  }
+ 
+ 		obj_add_symbol(f, name, j, sym->st_info, sym->st_shndx,
+ 			       sym->st_value, sym->st_size);
