@@ -1,0 +1,251 @@
+diff -uNr rpm-3.0.2/Makefile.in rpm-3.0.2-conectiva/Makefile.in
+--- rpm-3.0.2/Makefile.in	Fri Jun 18 14:56:13 1999
++++ rpm-3.0.2-conectiva/Makefile.in	Sat Jun 26 16:24:12 1999
+@@ -794,21 +794,21 @@
+ 	@ln -s rpm/rpmrc $(DESTDIR)/$(libdir)/rpmrc
+ 	@rm -f $(DESTDIR)/$(libdir)/rpmpopt
+ 	@ln -s rpm/rpmpopt $(DESTDIR)/$(libdir)/rpmpopt
+-	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/BUILD
++	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/BUILD
+ 	@case "@build_cpu@" in \
+-	*86) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/i386 ;;\
+-	alpha*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/alpha ;;\
+-	sparc*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/sparc ;;\
+-	powerpc*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/ppc ;;\
++	*86) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/i386 ;;\
++	alpha*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/alpha ;;\
++	sparc*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/sparc ;;\
++	powerpc*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/ppc ;;\
+ 	esac
+ 	@case "@build_os@" in \
+-	mint) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/m68kmint ;;\
+-	*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/@build_cpu@ ;;\
++	mint) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/m68kmint ;;\
++	*) $(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/@build_cpu@ ;;\
+ 	esac
+-	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/RPMS/noarch
+-	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/SOURCES
+-	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/SPECS
+-	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/redhat/SRPMS
++	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/RPMS/noarch
++	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/SOURCES
++	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/SPECS
++	@$(mkinstalldirs) $(DESTDIR)/$(prefix)/src/rpm/SRPMS
+ 	@$(mkinstalldirs) $(DESTDIR)/var/tmp
+ 
+ .PHONY:                tar
+diff -uNr rpm-3.0.2/macros.in rpm-3.0.2-conectiva/macros.in
+--- rpm-3.0.2/macros.in	Fri May 14 15:59:43 1999
++++ rpm-3.0.2-conectiva/macros.in	Sat Jun 26 16:24:34 1999
+@@ -80,7 +80,7 @@
+ %_specdir		%{_topdir}/SPECS
+ %_srcrpmdir		%{_topdir}/SRPMS
+ %_tmppath		%{_var}/tmp
+-%_topdir		%{_usrsrc}/redhat
++%_topdir		%{_usrsrc}/rpm
+ #
+ #==============================================================================
+ # ---- Optional rpmrc macros.
+@@ -89,7 +89,7 @@
+ #	/usr/lib/rpm/rpmrc file.
+ #
+ #%buildroot
+-#%distribution
++%distribution Conectiva 4.0
+ #%_excludedocs
+ #%_ftpport
+ #%_ftpproxy
+@@ -104,7 +104,7 @@
+ #%_pgp_path
+ #%_provides
+ #%_timecheck
+-#%vendor
++%vendor Conectiva
+ 
+ #==============================================================================
+ # ---- per-platform macros.
+@@ -112,7 +112,7 @@
+ #	will be used if the per-platform macro file does not exist..
+ #
+ %_arch			@RPMCANONARCH@
+-%_vendor		@RPMCANONVENDOR@
++%_vendor		Conectiva
+ %_os			@RPMCANONOS@
+ %_target_platform	%{_target_cpu}-%{_vendor}-%{_target_os}
+ #
+diff -uNr rpm-3.0.2/rpm.spec rpm-3.0.2-conectiva/rpm.spec
+--- rpm-3.0.2/rpm.spec	Fri Jun 18 14:46:19 1999
++++ rpm-3.0.2-conectiva/rpm.spec	Sat Jun 26 16:25:28 1999
+@@ -1,15 +1,24 @@
+ Summary: The Red Hat package management system.
++Summary(pt_BR): Gerenciador de pacotes Red Hat
++Summary(es): Gestor de paquetes Red Hat
+ Name: rpm
+ %define version 3.0.2
+ Version: %{version}
+-Release: 0.9
++Release: 1cl
+ Group: System Environment/Base
+-Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-3.0.x/rpm-%{version}.tar.gz
++Group(pt_BR): Ambiente do Sistema/Base
++Group(es): Ambiente del Sistema/Base
++# was .gz
++Source0: ftp://ftp.rpm.org/pub/rpm/dist/rpm-3.0.x/rpm-%{version}.tar.bz2
++Source1: find-requires.conectiva
++Source700: rpm-man-pt_BR.tar
++Patch0: rpm-3.0.2-conectiva.patch
+ Copyright: GPL
+ Conflicts: patch < 2.5
+ %ifos linux
+ Prereq: gawk fileutils textutils sh-utils mktemp
+ %endif
++Requires: popt
+ BuildRoot: /var/tmp/rpm-%{version}-root
+ 
+ %description
+@@ -19,10 +28,27 @@
+ package consists of an archive of files along with information about
+ the package like its version, a description, etc.
+ 
++%description -l pt_BR
++RPM é um poderoso gerenciador de pacotes, que pode ser usado
++para construir, instalar, pesquisar, verificar, atualizar e
++desinstalar pacotes individuais de software. Um pacote consiste
++em uma armazenagem de arquivos, e informações sobre o pacote,
++incluindo nome, versão e descrição.
++
++%description -l es
++RPM es un poderoso administrador de paquetes, que puede ser usado
++para construir, instalar, pesquisar, verificar, actualizar y
++desinstalar paquetes individuales de software. Un paquete consiste
++en un almacenaje de archivos, y información sobre el paquete,
++incluyendo nombre, versión y descripción.
++
+ %package devel
+ Summary: Development files for applications which will manipulate RPM packages.
++Summary(pt_BR): Arquivos de inclusão e bibliotecas para programas de manipulação de pacotes rpm
++Summary(es): Archivos de inclusión y bibliotecas para programas de manipulación de paquetes rpm
+ Group: Development/Libraries
+-Requires: popt
++Group(pt_BR): Desenvolvimento/Bibliotecas
++Group(es): Desarrollo/Bibliotecas
+ 
+ %description devel
+ This package contains the RPM C library and header files.  These
+@@ -34,10 +60,25 @@
+ This package should be installed if you want to develop programs that
+ will manipulate RPM packages and databases.
+ 
++%description -l pt_BR devel
++O sistema de empacotamento RPM inclui uma biblioteca C que torna
++fácil a manipulação de pacotes e bases de dados RPM. Seu objetivo
++é facilitar a criação de gerenciadores gráficos de pacotes e outras
++ferramentas que precisem de conhecimento profundo de pacotes RPM.
++
++%description -l es devel
++El sistema de empaquetado RPM incluye una biblioteca C que vuelve
++fácil la manipulación de paquetes y bases de datos RPM. Su objetivo
++es facilitar la creación de administradores gráficos de paquetes
++y otras herramientas que necesiten un conocimiento profundo de
++paquetes RPM.
++
+ %prep
+ %setup -q
++%patch0 -p1
+ 
+ %build
++[ "$LINGUAS" ] && unset LINGUAS
+ CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
+ make
+ 
+@@ -45,12 +86,12 @@
+ rm -rf $RPM_BUILD_ROOT
+ mkdir -p $RPM_BUILD_ROOT/usr/lib
+ 
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/SOURCES
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/SPECS
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/SRPMS
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/BUILD
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/RPMS/${RPM_ARCH}
+-mkdir -p $RPM_BUILD_ROOT/usr/src/redhat/RPMS/noarch
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/SOURCES
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/SPECS
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/SRPMS
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/BUILD
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/RPMS/${RPM_ARCH}
++mkdir -p $RPM_BUILD_ROOT/usr/src/rpm/RPMS/noarch
+ 
+ make DESTDIR="$RPM_BUILD_ROOT" install
+ 
+@@ -60,6 +101,14 @@
+   strip ./usr/lib/rpm/rpmputtext ./usr/lib/rpm/rpmgettext
+ }
+ 
++cp -f $RPM_SOURCE_DIR/find-requires.conectiva \
++	$RPM_BUILD_ROOT/usr/lib/rpm/find-requires
++
++
++
++mkdir -p $RPM_BUILD_ROOT/usr/man/pt_BR/
++tar xvf $RPM_SOURCE_DIR/rpm-man-pt_BR.tar -C $RPM_BUILD_ROOT/usr/man/pt_BR/
++
+ %clean
+ rm -rf $RPM_BUILD_ROOT
+ 
+@@ -84,17 +133,37 @@
+ /usr/lib/rpm
+ #/usr/lib/rpmrc
+ #/usr/lib/rpmpopt
+-%dir /usr/src/redhat
+-%dir /usr/src/redhat/BUILD
+-%dir /usr/src/redhat/SPECS
+-%dir /usr/src/redhat/SOURCES
+-%dir /usr/src/redhat/SRPMS
+-%dir /usr/src/redhat/RPMS
+-/usr/src/redhat/RPMS/*
++%dir /usr/src/rpm
++%dir /usr/src/rpm/BUILD
++%dir /usr/src/rpm/SPECS
++%dir /usr/src/rpm/SOURCES
++%dir /usr/src/rpm/SRPMS
++%dir /usr/src/rpm/RPMS
++/usr/src/rpm/RPMS/*
+ /usr/share/locale/*/LC_MESSAGES/rpm.mo
++%attr(0644,root,root) /usr/man/pt_BR/man*/*
+ 
+ %files devel
+ %defattr(-,root,root)
+ /usr/include/rpm
+ /usr/lib/librpm.a
+ /usr/lib/librpmbuild.a
++
++%changelog
++* Sat Jun 26 1999 Rodrigo Parra Novo <rodarvus@conectiva.com>
++- Updated rpm to 3.0.2 (Snapshot version)
++- Ported conectiva patch to rpm 3.0.2
++
++* Thu Jun 10 1999 Rodrigo Parra Novo <rodarvus@conectiva.com>
++- Updated rpm to 3.0.1 (final)
++- Ajusted some rpm macros to work with conectiva
++- Added /usr/lib/librpmbuild.a to rpm-devel filelist
++
++* Thu May 20 1999 Conectiva <dist@conectiva.com>
++- Updated rpm to 3.0.1 (Snapshot version)
++- Compiled with glibc 2.1.x, egcs 1.1.x and kernel 2.2.x
++- traduções para pt_BR incluídas para Summary, %description e Group
++- use /usr/src/rpm, instead of /usr/src/redhat
++- Added pt_BR man pages
++- unset LINGUAS
++- use our own modified find-requires
+diff -uNr rpm-3.0.2/rpmrc.in rpm-3.0.2-conectiva/rpmrc.in
+--- rpm-3.0.2/rpmrc.in	Thu Jun 17 18:35:40 1999
++++ rpm-3.0.2-conectiva/rpmrc.in	Sat Jun 26 16:22:48 1999
+@@ -7,7 +7,7 @@
+ #############################################################
+ # Values for RPM_OPT_FLAGS for various platforms
+ 
+-optflags: i386 -O2 -m486 -fno-strength-reduce
++optflags: i386 -s -O2 -mpentium -fno-strength-reduce
+ optflags: alpha -O2
+ optflags: sparc -O2
+ optflags: sparc64 -O2

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# note this works for both a.out and ELF executables
+# it also auto-generates requirment lines for shell scripts
+# Changes:
+# - Arnaldo Carvalho de Melo <acme@conectiva.com.br>
+#   uses rpm -qf in scriptlist so that we can take 99,99% of the FILELIST
+#   tags from hdlist
+# - Rodrigo Parra Novo <rodarvus@conectiva.com.br>
+#   Ported find-requires to rpm 3.0.1
+
+ulimit -c 0
+
+filelist=`sed "s/['\"]/\\\&/g"`
+exelist=`echo $filelist | xargs -r file | fgrep executable | cut -d: -f1 `
+scriptlist=`echo $filelist | xargs -r file | egrep ":.* (commands|script) " | cut -d: -f1 `
+liblist=`echo $filelist | xargs -r file | grep "shared object" | cut -d : -f1 `
+
+for f in $exelist; do
+    if [ -x $f ]; then
+	ldd $f | awk '/=>/ { print $1 }'
+    fi
+done | sort -u | sed "s/['\"]/\\\&/g" | xargs -r -n 1 basename | sort -u
+
+for f in $liblist; do
+    ldd $f | awk '/=>/ { print $1 }'
+done | sort -u | sed "s/['\"]/\\\&/g" | xargs -r -n 1 basename | sort -u
+
+for f in $scriptlist; do
+    if [ -x $f ]; then
+        XELL=`head -1 $f | sed -e 's/^\#\![     ]*//' | cut -d" " -f1`
+        if ! rpm -qf --qf "%{NAME}\n" $XELL 2> /dev/null; then
+            echo $XELL
+        fi
+    fi
+done | sort -u
+
+for f in $liblist $exelist ; do
+    objdump -p $f | awk '
+	BEGIN { START=0; LIBNAME=""; }
+	/Version References:/ { START=1; }
+	/required from/ && (START==1) {
+	    sub(/:/, "", $3);
+	    LIBNAME=$3;
+	}
+	(START==1) && (LIBNAME!="") && ($4!="") { print LIBNAME "(" $4 ")"; }
+	/^$/ { START=0; }
+    '
+done
