@@ -1,0 +1,12 @@
+diff -uNr gnome-games-1.0.2/configure.in gnome-games-1.0.2-pt_BR/configure.in
+--- gnome-games-1.0.2/configure.in	Thu Mar 18 18:58:25 1999
++++ gnome-games-1.0.2-pt_BR/configure.in	Fri Jun 25 14:58:56 1999
+@@ -28,7 +28,7 @@
+ AC_CHECK_CURSES
+ AM_CONDITIONAL(HAS_CURSES, test "$has_curses" = true)
+ 
+-ALL_LINGUAS="cs da de es fi fr ga it ja ko no pt pl"
++ALL_LINGUAS="cs da de es fi fr ga it ja ko no pl pt pt_BR"
+ AM_GNOME_GETTEXT
+ 
+ AC_SUBST(CFLAGS)

@@ -1,0 +1,151 @@
+--- ./freecell/src/freecell.desktop~	Mon Feb 22 13:05:49 1999
++++ ./freecell/src/freecell.desktop	Tue Jun 29 23:27:18 1999
+@@ -9,6 +9,7 @@
+ Name[pt]=Freecell
+ Name[ru]=Фриселл
+ Comment=FreeCell Game
++Comment[pt_BR]=Jogo FreeCell
+ Comment[cs]=Nastavit vlastnosti
+ Comment[es]=Juego FreeCell
+ Comment[de]=Gnome Variante von FreeCell
+--- ./gnomine/gnomine.desktop~	Sun Feb 21 20:03:10 1999
++++ ./gnomine/gnomine.desktop	Tue Jun 29 23:27:51 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Gnome Mines
++Name[pt_BR]=Campo Minado Gnome
+ Name[cs]=Gnome miny
+ Name[da]=Gnome Mines
+ Name[de]=Gnome Mines
+@@ -15,6 +16,7 @@
+ Name[pt]=Minas Gnome
+ Name[ru]=Gnome Миноискатель
+ Comment=Gnome Mines game
++Comment[pt_BR]=Jogo campo minado Gnome
+ Comment[es]=Juego Gnome Minas
+ Comment[da]=Gnome Minestryger kopi
+ Comment[de]=╩Minesweeper╚ Klon
+--- ./same-gnome/same-gnome.desktop~	Sun Feb 21 20:03:24 1999
++++ ./same-gnome/same-gnome.desktop	Tue Jun 29 23:28:04 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Same Gnome
++Comment[pt_BR]=Programa SameGame Gnome
+ Name[de]=Same Gnome
+ Name[es]=Same Gnome
+ Name[fr]=Same Gnome
+--- ./mahjongg/mahjongg.desktop~	Sun Feb 21 20:03:18 1999
++++ ./mahjongg/mahjongg.desktop	Tue Jun 29 23:28:20 1999
+@@ -8,6 +8,7 @@
+ Name[pt]=Mahjongg
+ Name[ru]=Маджонг
+ Comment=Gnome Mahjongg program
++Comment[pt_BR]=Programa Mahjongg Gnome
+ Comment[de]=Gnome Mahjongg
+ Comment[es]=Juego de Mahjongg
+ Comment[fi]=Mahjongg peli
+--- ./gyahtzee/gtali.desktop~	Sun Feb 21 20:03:16 1999
++++ ./gyahtzee/gtali.desktop	Tue Jun 29 23:28:38 1999
+@@ -2,6 +2,7 @@
+ Name=GTali
+ Name[ru]=Гтали
+ Comment=Gnome Dice game
++Comment[pt_BR]=Jogo de Dados Gnome
+ Comment[ru]=Игра в кости для Gnome
+ Exec=gtali
+ Icon=gnome-gtali.png
+--- ./gnobots/gnobots.desktop~	Sun Feb 21 20:03:03 1999
++++ ./gnobots/gnobots.desktop	Tue Jun 29 23:28:53 1999
+@@ -8,6 +8,7 @@
+ Name[pt]=Gnobots
+ Name[ru]=Гноботс
+ Comment=Gnome Robots game
++Comment[pt_BR]=Jogo RobТs Gnome
+ Comment[de]=Gnome Robots game
+ Comment[es]=Trate de escapar a los robots que le asedian
+ Comment[fr]=Essayez d'Иchaper aux robots qui vous poursuivent
+--- ./gnobots2/gnobots2.desktop~	Sun Feb 21 20:03:05 1999
++++ ./gnobots2/gnobots2.desktop	Tue Jun 29 23:29:06 1999
+@@ -8,6 +8,7 @@
+ Name[pt]=GnobotsII
+ Name[ru]=Гноботс II
+ Comment=Gnome Robots game
++Comment[pt_BR]=Jogo RobТs Gnome
+ Comment[de]=Gnome Robots game
+ Comment[es]=Trate de escapar a los robots que le asedian
+ Comment[fr]=Essayez d'Иchaper aux robots qui vous poursuivent
+--- ./gnothello/iagno.desktop~	Sun Feb 21 20:03:13 1999
++++ ./gnothello/iagno.desktop	Tue Jun 29 23:29:20 1999
+@@ -9,6 +9,7 @@
+ Name[pt]=Iagno
+ Name[ru]=Ягно
+ Comment=Gnome Reversi game
++Comment[pt_BR]=Jogo Reversi Gnome
+ Comment[de]=Gnome Reversi Spiele
+ Comment[es]=Juego Gnome Reversi
+ Comment[fr]=Jeu GNOME Reversi
+--- ./gnotravex/gnotravex.desktop~	Sun Feb 21 20:03:14 1999
++++ ./gnotravex/gnotravex.desktop	Tue Jun 29 23:29:32 1999
+@@ -4,6 +4,7 @@
+ Name[fr]=Gnotravex
+ Name[ru]=Гнотравекс
+ Comment=Gnome Tetravex game
++Comment[pt_BR]=Jogo Tetravex Gnome
+ Comment[es]=Juego de reflexiСn clСnico de Tetravex
+ Comment[fr]=Jeu Tetravex GNOME
+ Comment[ru]=Игра Тетравекс для Gnome
+--- ./gnome-stones/gnome-stones.desktop~	Tue Mar  2 17:45:55 1999
++++ ./gnome-stones/gnome-stones.desktop	Tue Jun 29 23:29:53 1999
+@@ -1,10 +1,12 @@
+ [Desktop Entry]
+ Name=Gnome-Stones
++Name[pt_BR]=Gnome-Pedras
+ Name[fr]=Gnome-Stones
+ Name[no]=Gnome-steiner
+ Name[ru]=Gnome-камни
+ Name[de]=Gnome-Stones
+ Comment=Gnome Stones game
++Comment[pt_BR]=Jogo Pedras Gnome
+ Comment[es]=Juego Gnome Stones
+ Comment[fr]=Jeu Gnome Stones
+ Comment[no]=Gnome-steiner spill
+--- ./aisleriot/sol.desktop~	Wed Feb 24 01:36:40 1999
++++ ./aisleriot/sol.desktop	Tue Jun 29 23:30:09 1999
+@@ -8,6 +8,7 @@
+ Name[po]=AisleRiot
+ Name[po]=Айселериот
+ Comment=Card-based Solitaire suite.
++Comment[pt_BR]=SuМte de PaciЙncia baseada em cartas.
+ Comment[es]=Conjunto de juegos de cartas de tipo solitario
+ Comment[fr]=Ensemble de jeux de cartes du type solitaire
+ Comment[ru]=Коллекция пасьянсов
+--- ./gnometris/gnometris.desktop~	Sun Feb 21 20:03:08 1999
++++ ./gnometris/gnometris.desktop	Tue Jun 29 23:30:20 1999
+@@ -4,6 +4,7 @@
+ Name[fr]=Gnometris
+ Name[ru]=Гнометрис
+ Comment=Gnome Tetris Game
++Comment[pt_BR]=Jogo Tetris Gnome
+ Comment[es]=El juego de Tetris de Gnome
+ Comment[fr]=Le jeu Tetris de Gnome
+ Comment[ru]=Тетрис для Gnome
+--- ./metatris/metatris.desktop~	Sun Feb 21 20:03:20 1999
++++ ./metatris/metatris.desktop	Tue Jun 29 23:30:32 1999
+@@ -6,6 +6,7 @@
+ Name[pt]=Metatris
+ Name[ru]=Метатрис
+ Comment=Gnome's Metatris
++Comment[pt_BR]=Metatris Gnome
+ Comment[ru]=Игра Метатрис для Gnome
+ TryExec=metatris
+ Exec=metatris
+--- ./gnibbles/gnibbles.desktop~	Sun Feb 21 20:03:01 1999
++++ ./gnibbles/gnibbles.desktop	Tue Jun 29 23:30:44 1999
+@@ -8,6 +8,7 @@
+ Name[pt]=Gnibbles
+ Name[ru]=Гнибблес
+ Comment=Gnome Nibbles Game
++Comment[pt_BR]=Jogo Nibbles Gnome
+ Comment[de]=Gnome Nibbles Game
+ Comment[es]=Gnome Nibbles Game
+ Comment[fr]=Gnome Nibbles Game
