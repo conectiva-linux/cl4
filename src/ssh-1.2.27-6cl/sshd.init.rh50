@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# chkconfig: 345 55 45
+# description: The sshd is the server part of the secure shell protocol \
+#	       and allows ssh clients to connect to your host.
+# description(pt_BR): sshd (servidor shell seguro) é o servidor do pacote ssh.
+#	O ssh pode ser usado para login remoto, cópia de arquivos remotos,
+#	repasse de portas TCP, etc. Também oferece encriptação e autenticação
+#	fortes.
+
+. /etc/rc.d/init.d/functions
+
+case "$1" in
+  start)
+	gprintf "Starting %s: " "sshd"
+	if test -r /var/run/sshd.pid && kill -0 `cat /var/run/sshd.pid`
+	then 
+		gprintf "%s exists, %s already running.\n" \
+			"/var/run/sshd.pid" "sshd"
+	else /usr/sbin/sshd
+		echo sshd
+	fi
+	touch /var/lock/subsys/sshd
+	;;
+  stop)
+	gprintf "Stopping %s: " "sshd"
+	[ -f /var/run/sshd.pid ] || exit 0
+	kill -TERM `cat /var/run/sshd.pid`
+	rm -f /var/run/sshd.pid
+	rm -f /var/lock/subsys/sshd
+	echo "sshd"
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+	status sshd
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "sshd"
+	exit 1
+esac
+
+exit 0
+
