@@ -1,0 +1,32 @@
+--- vga_cardgames/Makefile.br	Tue Aug 18 18:01:30 1998
++++ vga_cardgames/Makefile	Tue Aug 18 18:04:15 1998
+@@ -8,8 +8,8 @@
+ # ------------------------------------------------------------------- #
+ 
+ # Installation directories
+-BINDIR=		/usr/games
+-LIBDIR=		/usr/lib/games
++BINDIR=		$(INSTROOT)/usr/games
++LIBDIR=		$(INSTROOT)/usr/lib/games
+ 
+ # Binary name prefix (to avoid clashes with other programs)
+ PREFIX=		vga_
+@@ -43,7 +43,8 @@
+ 
+ all:	$(OHHELL) $(SPIDER) $(KLONDIKE) $(SOLITAIRE)
+ 
+-install: $(OHHELL) $(SPIDER) $(KLONDIKE) $(SOLITAIRE) Cards56x80 Vga16font8x16
++install: $(BINDIR) $(LIBDIR) \
++	$(OHHELL) $(SPIDER) $(KLONDIKE) $(SOLITAIRE) Cards56x80 Vga16font8x16
+ 	install -o root -m 4711 -s $(OHHELL) $(BINDIR)
+ 	install -o root -m 4711 -s $(SPIDER) $(BINDIR)
+ 	install -o root -m 4711 -s $(KLONDIKE) $(BINDIR)
+@@ -51,6 +52,8 @@
+ 	install -m 444 Cards56x80 $(LIBDIR)
+ 	install -m 444 Vga16font8x16 $(LIBDIR)/Vga16font8x16.cards
+ 
++$(BINDIR) $(LIBDIR):
++	mkdir -p $@
+ 
+ $(OHHELL):	$(OHHELLOBJ)
+ 	$(CC) -o $(OHHELL) $(OHHELLOBJ) -lvga
