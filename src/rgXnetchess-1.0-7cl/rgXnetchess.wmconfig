@@ -1,0 +1,4 @@
+rgXnetchess name "Net Chess"
+rgXnetchess description "Net Chess"
+rgXnetchess group Games/Board
+rgXnetchess exec "chess"

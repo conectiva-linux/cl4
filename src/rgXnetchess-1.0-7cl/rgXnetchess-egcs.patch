@@ -1,0 +1,18 @@
+diff -Nur rgXnetchess.orig/chess.cc rgXnetchess/chess.cc
+--- rgXnetchess.orig/chess.cc	Thu Jun 10 15:11:42 1999
++++ rgXnetchess/chess.cc	Thu Jun 10 15:20:34 1999
+@@ -38,10 +38,12 @@
+ #define DRAWAGREED (OPDRAW|MYDRAW)
+ 
+ #define BROAD 64
+-int BREITE=BROAD,RAND=20,dboard[8][8][2];
++int BREITE=BROAD;
++int RAND=20;
++int dboard[8][8][2];
+ int mycolor,whiteside=0,server,drawstate=0,newgamepending;
+ char addr[200];
+-BITMAPTYPE BITMAPS=BITMAPS64;
++BITMAPTYPE BITMAPS;
+ uchar empty[800];
+ extern int board[8][8],specialmove,status,mcount;
+ extern const int BOARD[8][8];

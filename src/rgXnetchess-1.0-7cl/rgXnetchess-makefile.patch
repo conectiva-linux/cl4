@@ -1,0 +1,10 @@
+--- Makefile.orig	Mon Mar 22 19:14:52 1999
++++ Makefile	Mon Mar 22 19:15:04 1999
+@@ -1,6 +1,6 @@
+ LDFLAGS=-lqt 
+ TARGETNAME=chess
+-FLAGS=-O3 -I/usr/lib/qt/include -DENABLE_NLS
++FLAGS=-O3 -I/usr/include/qt/ -DENABLE_NLS
+ CFLAGS=$(FLAGS)
+ CXXFLAGS=$(FLAGS)
+ 
