@@ -1,0 +1,77 @@
+--- xscreensaver-2.34/driver/XScreenSaver.ad.in.noseguy	Tue Oct 13 22:05:22 1998
++++ xscreensaver-2.34/driver/XScreenSaver.ad.in	Tue Oct 13 22:06:37 1998
+@@ -96,7 +96,6 @@
+ 		hypercube -root						\n\
+ 		halo -root						\n\
+ 		maze -root						\n\
+-		noseguy -root						\n\
+ 		flame -root						\n\
+ 		lmorph -root						\n\
+ 		deco -root						\n\
+--- xscreensaver-2.34/driver/XScreenSaver_ad.h.noseguy	Tue Oct 13 22:05:29 1998
++++ xscreensaver-2.34/driver/XScreenSaver_ad.h	Tue Oct 13 22:06:52 1998
+@@ -43,7 +43,6 @@
+ 		hypercube -root						\\n\
+ 		halo -root						\\n\
+ 		maze -root						\\n\
+-		noseguy -root						\\n\
+ 		flame -root						\\n\
+ 		lmorph -root						\\n\
+ 		deco -root						\\n\
+--- xscreensaver-2.34/driver/xscreensaver.man.noseguy	Tue Oct 13 22:07:15 1998
++++ xscreensaver-2.34/driver/xscreensaver.man	Tue Oct 13 22:07:24 1998
+@@ -1149,7 +1149,6 @@
+ .BR morph3d (1),
+ .BR mountain (1),
+ .BR munch (1),
+-.BR noseguy (1),
+ .BR pedal (1),
+ .BR penrose (1),
+ .BR pipes (1),
+--- xscreensaver-2.34/hacks/Makefile.in.noseguy	Tue Oct 13 22:07:41 1998
++++ xscreensaver-2.34/hacks/Makefile.in	Tue Oct 13 22:08:49 1998
+@@ -73,7 +73,7 @@
+ 		  flame.c forest.c vines.c galaxy.c grav.c greynetic.c \
+ 		  halo.c helix.c hopalong.c hypercube.c ifs.c imsmap.c \
+ 		  julia.c kaleidescope.c laser.c lightning.c lisa.c lmorph.c \
+-		  maze.c moire.c noseguy.c pedal.c penrose.c pyro.c qix.c \
++		  maze.c moire.c pedal.c penrose.c pyro.c qix.c \
+ 		  rocks.c rorschach.c screenhack.c sierpinski.c slidescreen.c \
+ 		  slip.c sphere.c spiral.c strange.c swirl.c xlockmore.c \
+ 		  xroger-hack.c goop.c starfish.c munch.c fadeplot.c \
+@@ -87,7 +87,7 @@
+ 		  flame.o forest.o vines.o galaxy.o grav.o greynetic.o \
+ 		  halo.o helix.o hopalong.o hypercube.o ifs.o imsmap.o \
+ 		  julia.o kaleidescope.o laser.o lightning.o lisa.o lmorph.o \
+-		  maze.o moire.o noseguy.o pedal.o penrose.o pyro.o qix.o \
++		  maze.o moire.o pedal.o penrose.o pyro.o qix.o \
+ 		  rocks.o rorschach.o screenhack.o sierpinski.o slidescreen.o \
+ 		  slip.o sphere.o spiral.o strange.o swirl.o xlockmore.o \
+ 		  xroger-hack.o goop.o starfish.o munch.o fadeplot.o \
+@@ -99,7 +99,7 @@
+ EXES		= attraction blitspin bouboule braid bubbles decayscreen deco \
+ 		  drift flag flame forest vines galaxy grav greynetic halo \
+ 		  helix hopalong hypercube ifs imsmap julia kaleidescope \
+-		  laser lightning lisa lmorph maze moire noseguy pedal \
++		  laser lightning lisa lmorph maze moire  pedal \
+ 		  penrose pyro qix rocks rorschach sierpinski slidescreen \
+ 		  slip sphere spiral strange swirl xroger goop starfish munch \
+ 		  fadeplot rd-bomb coral mountain triangle lissie worm rotor \
+@@ -123,7 +123,7 @@
+ 		  greynetic.man halo.man helix.man hopalong.man hypercube.man \
+ 		  ifs.man imsmap.man julia.man kaleidescope.man laser.man \
+ 		  lightning.man lisa.man lmorph.man maze.man moire.man \
+-		  noseguy.man pedal.man penrose.man pyro.man qix.man \
++		  pedal.man penrose.man pyro.man qix.man \
+ 		  rocks.man rorschach.man sierpinski.man slidescreen.man \
+ 		  slip.man sphere.man spiral.man strange.man swirl.man \
+ 		  xroger.man goop.man starfish.man munch.man rd-bomb.man \
+@@ -135,8 +135,6 @@
+ 		  images/$(STAR).xpm \
+ 		  images/bubbles/$(STAR).pov \
+ 		  images/bubbles/$(STAR).xpm \
+-		  images/noseguy/$(STAR).xbm \
+-		  images/noseguy/$(STAR).xpm \
+ 		  images/jigsaw/$(STAR).xbm  \
+ 
+ VMSFILES	= compile_axp.com compile_decc.com link_axp.com link_decc.com \

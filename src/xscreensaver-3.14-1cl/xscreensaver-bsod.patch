@@ -1,0 +1,11 @@
+--- xscreensaver-3.09/driver/XScreenSaver.ad.in.bsod	Tue May  4 11:50:19 1999
++++ xscreensaver-3.09/driver/XScreenSaver.ad.in	Tue May  4 11:51:44 1999
+@@ -170,7 +170,7 @@
+ 		epicycle -root						\n\
+ 		interference -root					\n\
+ 		truchet -root -randomize				\n\
+-		bsod -root						\n\
++  -		bsod -root						\n\
+ 		crystal -root						\n\
+ 		discrete -root						\n\
+ 		kumppa -root						\n\
