@@ -1,0 +1,189 @@
+--- gs5.10/igcref.c.rth	Thu Dec 17 19:56:20 1998
++++ gs5.10/igcref.c	Mon Mar 15 14:11:09 1999
+@@ -548,16 +548,16 @@
+ 			 * each such unmarked packed ref we pass over,
+ 			 * we have to decrement the final relocation.
+ 			 */
+-			rputc((*rp & lp_mark ? '1' : '0'));
+-			if ( !(*rp & lp_mark) )
+-			  { if ( *rp != pt_tag(pt_integer) + packed_max_value )
+-			      { /* This is a stored relocation value. */
+-				rputc('\n');
+-				return print_reloc(prp, "ref",
+-				  (ref_packed *)
+-				    ((const char *)prp -
+-				     (*rp & packed_value_mask) + dec));
+-			      }
++		    rputc((*PACKED(rp) & lp_mark ? '1' : '0'));
++		    if (!(*PACKED(rp) & lp_mark)) {
++			if (*PACKED(rp) != pt_tag(pt_integer) + packed_max_value) {
++			    /* This is a stored relocation value. */
++			    rputc('\n');
++			    return print_reloc(prp, "ref",
++					       (ref_packed *)
++					       ((const char *)prp -
++						(*rp & packed_value_mask) + dec));
++			}
+ 			    /*
+ 			     * We know this is the first of an aligned block
+ 			     * of packed refs.  Skip over the entire block,
+@@ -627,7 +627,7 @@
+ 		{	if ( r_has_pmark(src) )
+ 			{	if_debug2('8', "  [8]packed ref 0x%lx copied to 0x%lx\n",
+ 					  (ulong)src, (ulong)dest);
+-				*dest++ = *src & ~lp_mark;
++				*dest++ = *PACKED(src) & ~lp_mark;
+ 			}
+ 			src++;
+ 		}
+--- gs5.10/interp.c.rth	Thu Dec 17 19:56:20 1998
++++ gs5.10/interp.c	Mon Mar 15 14:14:45 1999
+@@ -1293,8 +1293,7 @@
+ 	/* This also picks up some anomalous cases of non-packed arrays. */
+ 	default:
+ 	  {	uint index;
+-		switch ( *(const ushort *)iref >> r_packed_type_shift )
+-		{
++	        switch (*PACKED(iref) >> r_packed_type_shift) {
+ 		case pt_full_ref:
+ 		case pt_full_ref+1:
+ 			if ( iosp >= ostop )
+@@ -1307,7 +1306,7 @@
+ 			ref_assign_inline(iosp, iref);
+ 			next();
+ 		case pt_executable_operator:
+-			index = *(const ushort *)iref & packed_value_mask;
++			index = *PACKED(iref) & packed_value_mask;
+ 			if ( --ticks_left <= 0 )
+ 			  {	/* The following doesn't work, */
+ 				/* and I can't figure out why. */
+@@ -1385,11 +1384,11 @@
+ 			  return_with_stackoverflow_iref();
+ 			++iosp;
+ 			make_int(iosp,
+-				 (*(const short *)iref & packed_int_mask) +
++				 (*PACKED(iref) & packed_int_mask) +
+ 				 packed_min_intval);
+ 			next_short();
+ 		case pt_literal_name:
+-		  {	uint nidx = *(const ushort *)iref & packed_value_mask;
++		  {	uint nidx = *PACKED(iref) & packed_value_mask;
+ 			if ( iosp >= ostop )
+ 			  return_with_stackoverflow_iref();
+ 			++iosp;
+@@ -1398,7 +1397,7 @@
+ 		  }
+ 		case pt_executable_name:
+ 		  {	uint nidx =
+-			  (uint)*(const ushort *)iref & packed_value_mask;
++			  (uint) * PACKED(iref) & packed_value_mask;
+ 			pvalue = name_index_ptr_inline(int_nt, nidx)->pvalue;
+ 			if ( !pv_valid(pvalue) )
+ 			   {	uint htemp;
+--- gs5.10/ipacked.h.rth	Thu Dec 17 19:56:19 1998
++++ gs5.10/ipacked.h	Mon Mar 15 14:26:20 1999
+@@ -99,18 +99,42 @@
+ #define pt_min_exec_name 7
+ 	pt_executable_name = 7
+ } packed_type;
++
++/*
++ * Hackery on top of hackery.  
++ *
++ * I'll note in the beginning that this whole packed mechanism is not
++ * strictly conforming, so it's not surprising at all that it runs 
++ * into problems somewhere.
++ *
++ * This is used where its pref operand may be a ref_packed, not necessarily
++ * aligned as strictly as a full-size ref.  The DEC C compiler, and possibly
++ * others, may compile code assuming that pref is ref-aligned.  Therefore, we
++ * explicitly cast the pointer to a less-strictly-aligned type.  In order to
++ * convince the compiler, we have to do the cast before indexing into the
++ * structure.
++ */
++#ifdef __GNUC__
++ /* GCC looks through the cast as if it weren't there.  It turns out that 
++    copying the value to a properly declared variable is convincing.  Use
++    a bit of other GCC magic to make this transparent.  */
++#define PACKED(pref)    ({ const ushort *_T_ = (const ushort *)(pref); _T_; })
++#else
++#define PACKED(pref)    ((const ushort *)(pref))
++#endif
++
+ #define packed_per_ref (sizeof(ref) / sizeof(ref_packed))
+ #define align_packed_per_ref\
+   (arch_align_ref_mod / arch_align_short_mod)
+ #define pt_tag(pt) ((ref_packed)(pt) << r_packed_type_shift)
+ #define packed_value_mask ((1 << r_packed_value_bits) - 1)
+ #define packed_max_value packed_value_mask
+-#define r_is_packed(rp)  (*(const ref_packed *)(rp) >= pt_tag(pt_min_packed))
++#define r_is_packed(rp)  (*PACKED(rp) >= pt_tag(pt_min_packed))
+ /* Names */
+-#define r_packed_is_name(prp) (*(prp) >= pt_tag(pt_min_name))
+-#define r_packed_is_exec_name(prp) (*(prp) >= pt_tag(pt_min_exec_name))
++#define r_packed_is_name(prp) (*PACKED(prp) >= pt_tag(pt_min_name))
++#define r_packed_is_exec_name(prp) (*PACKED(prp) >= pt_tag(pt_min_exec_name))
+ #define packed_name_max_index packed_max_value
+-#define packed_name_index(prp) (*(prp) & packed_value_mask)
++#define packed_name_index(prp) (*PACKED(prp) & packed_value_mask)
+ /* Integers */
+ #define packed_min_intval (-(1 << (r_packed_value_bits - 1)))
+ #define packed_max_intval ((1 << (r_packed_value_bits - 1)) - 1)
+@@ -119,10 +143,10 @@
+ /* Packed ref marking */
+ #define lp_mark_shift 12
+ #define lp_mark (1 << lp_mark_shift)
+-#define r_has_pmark(rp) (*(rp) & lp_mark)
+-#define r_set_pmark(rp) (*(rp) |= lp_mark)
+-#define r_clear_pmark(rp) (*(rp) &= ~lp_mark)
+-#define r_store_pmark(rp,pm) (*(rp) = (*(rp) & ~lp_mark) | (pm))
++#define r_has_pmark(rp) (*PACKED(rp) & lp_mark)
++#define r_set_pmark(rp) (*PACKED(rp) |= lp_mark)
++#define r_clear_pmark(rp) (*PACKED(rp) &= ~lp_mark)
++#define r_store_pmark(rp,pm) (*PACKED(rp) = (*PACKED(rp) & ~lp_mark) | (pm))
+ 
+ /* Advance to the next element in a packed array. */
+ #define packed_next(prp)\
+--- gs5.10/iref.h.rth	Thu Dec 17 19:56:20 1998
++++ gs5.10/iref.h	Mon Mar 15 14:08:14 1999
+@@ -300,17 +300,11 @@
+   t_operator : r_type(rp))
+ #define r_type_xe_shift (r_type_shift - 2)
+ #define type_xe_(tas) ((tas) >> r_type_xe_shift)	/* internal use only */
+-/*
+- * The r_type_xe macro is used in (and only in) the main interpreter loop,
++/* The r_type_xe macro is used in (and only in) the main interpreter loop,
+  * where its rp operand may be a ref_packed, not necessarily aligned as
+- * strictly as a full-size ref.  The DEC C compiler, and possibly others,
+- * may compile code assuming that rp is ref-aligned.  Therefore, we
+- * explicitly cast the pointer to a less-strictly-aligned type.
+- * In order to convince the compiler, we have to do the cast before
+- * indexing into the structure.
+- */
++ * strictly as a full-size ref.  */
+ #define r_type_xe(rp)\
+-  type_xe_(((const ushort *)(rp))[offset_of(ref, tas.type_attrs) / sizeof(ushort)])
++  type_xe_(PACKED(rp)[offset_of(ref, tas.type_attrs) / sizeof(ushort)])
+ #define type_xe_value(t,xe) type_xe_(((t) << r_type_shift) + (xe))
+ #define r_type_attrs(rp) ((rp)->tas.type_attrs)	/* reading only */
+ #define r_has_attrs(rp,mask) !(~r_type_attrs(rp) & (mask))
+--- gs5.10/zmisc.c.rth	Thu Dec 17 19:56:20 1998
++++ gs5.10/zmisc.c	Mon Mar 15 14:27:53 1999
+@@ -81,7 +81,7 @@
+ 			r_dec_size(bsp, 1);
+ 			if ( r_is_packed(tp) )
+ 			 { /* Check for a packed executable name */
+-			   ushort elt = *(ushort *)tp;
++			   ushort elt =  *PACKED(tp);
+ 			   if ( r_packed_is_exec_name(&elt) )
+ 			    { ref nref;
+ 			      ref *pvalue;
+@@ -91,7 +91,7 @@
+ 				   r_is_ex_oper(pvalue)
+ 				 )
+ 				/* Note: can't undo this by restore! */
+-				*(ushort *)tp =
++				  *PACKED(tp) =
+ 				  pt_tag(pt_executable_operator) +
+ 				  op_index(pvalue);
+ 			    }
