@@ -1,0 +1,72 @@
+--- acm-4.7/V/lib/Makefile.in.orig	Tue Aug 29 16:15:06 1995
++++ acm-4.7/V/lib/Makefile.in	Tue Aug 29 16:15:20 1995
+@@ -112,7 +112,7 @@
+ 	  $(EXTRAOBJS) \
+ 	  $(LIBOBJS)
+ 
+-     CFLAGS = -O $(DEFINES) @DEFS@ $(STD_INCLUDES)
++     CFLAGS = $(RPM_OPT_FLAGS) $(DEFINES) @DEFS@ $(STD_INCLUDES)
+ 
+ all:	$(PROGRAMS)
+ 
+--- acm-4.7/objects/Makefile.in.orig	Fri Mar  4 16:35:02 1994
++++ acm-4.7/objects/Makefile.in	Tue Aug 29 16:06:28 1995
+@@ -11,7 +11,7 @@
+ INSTALL_DATA = @INSTALL_DATA@
+       TOPDIR = ..
+ 
+-ACM_OBJECT_LIBRARY = $(prefix)/games/acm/
++ACM_OBJECT_LIBRARY = $(prefix)/lib/games/acm/
+        SCENES = default-scene maui-scene kauai-scene oahu-scene
+       OBJECTS = inventory f16.obj f18.obj mig23.obj mig25.obj mig29.obj \
+ 		kc135.obj c172.obj aim9.obj tracer.obj tower.obj \
+--- acm-4.7/src/server.c.orig	Thu Sep 29 12:31:18 1994
++++ acm-4.7/src/server.c	Tue Aug 29 16:06:28 1995
+@@ -16,7 +16,7 @@
+  *  Foundation, Inc., 675 Mass Ave., Cambridge, MA 02139, USA.
+  */
+ 
+-#if defined(SVR4)
++#if defined(SVR4) && !defined(__linux__)
+ #include <sys/filio.h>
+ #endif
+ 
+--- acm-4.7/src/Makefile.in.orig	Fri Mar  4 16:35:07 1994
++++ acm-4.7/src/Makefile.in	Tue Aug 29 16:06:28 1995
+@@ -19,10 +19,10 @@
+   MAKEDEPEND = makedepend
+ 
+ 
+-ACM_OBJECT_LIBRARY = $(prefix)/games/acm/
++ACM_OBJECT_LIBRARY = $(prefix)/lib/games/acm/
+    PROGRAMS = acm acms
+     DEFINES = -DACM_LIBRARY=\"$(ACM_OBJECT_LIBRARY)\"
+-     CFLAGS = -O $(DEFINES) @DEFS@ $(STD_INCLUDES)
++     CFLAGS = $(RPM_OPT_FLAGS) $(DEFINES) @DEFS@ $(STD_INCLUDES)
+       SRCS1 = server.c pm.c gear.c flaps.c droneCalc.c init.c aim9m.c\
+ 		box.c \
+ 		m61a1.c weapon.c newPlayer.c newPlane.c inventory.c missile.c\
+@@ -76,9 +76,9 @@
+ 	rm -f TAGS
+ 
+ install: $(PROGRAMS) kill-acms
+-	$(INSTALL_PROGRAM) acm $(bindir)/acm
+-	$(INSTALL_PROGRAM) acms $(bindir)/acms
+-	$(INSTALL_PROGRAM) kill-acms $(bindir)/kill-acms
++	$(INSTALL_PROGRAM) -s acm $(bindir)/acm
++	$(INSTALL_PROGRAM) -s acms $(bindir)/acms
++	$(INSTALL_PROGRAM) -s kill-acms $(bindir)/kill-acms
+ 	$(INSTALL_DATA) $(srcdir)/acm.man \
+ 		$(prefix)/man/man$(manext)/acm.$(manext)
+ 
+--- acm-4.7/configure.orig	Tue Oct  4 12:06:03 1994
++++ acm-4.7/configure	Tue Aug 29 16:06:28 1995
+@@ -582,7 +582,7 @@
+ echo "#define" SVR4 "1" >> confdefs.h
+ DEFS="$DEFS -DSVR4=1"
+ }
+- LIBS="$LIBS -lelf"
++ LIBS="$LIBS"
+ 
+ fi
+ rm -f conftest*

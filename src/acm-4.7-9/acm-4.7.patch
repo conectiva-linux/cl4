@@ -1,0 +1,79 @@
+--- acm-4.7/V/lib/Vlib.h.orig	Thu Dec 24 12:15:37 1998
++++ acm-4.7/V/lib/Vlib.h	Thu Dec 24 12:21:53 1998
+@@ -25,12 +25,9 @@
+ #include <X11/Xlib.h>
+ #include <Alib.h>
+ #include <stdio.h>
+-#if HAVE_STDLIB_H
+ #include <stdlib.h>
+-#endif
+-#if !defined(__GNUC__)
+ #include <memory.h>
+-#endif
++#include <string.h>
+ 
+ typedef struct _vcolor {
+ 	char	*color_name;	/* text name */
+@@ -354,14 +351,5 @@
+ #define DEGtoRAD(a)	((a) * M_PI / 180.0)
+ #define RADtoDEG(a)	((a) * 180.0 / M_PI)
+ 
+-#ifndef SYSV
+-extern char *strdup();
+-#endif
+-
+-#if (defined(_AIX) && defined(_IBMR2)) && !(defined(__GNUC__) \
+-     && (__GNUC__ == 2 ))
+-/* For some reason, the RS/6000 AIX header files don't declare strdup. */
+-extern char *strdup(const char *);
+-#endif
+ 
+ #endif
+--- acm-4.7/src/manifest.h.orig	Tue Oct  4 11:35:52 1994
++++ acm-4.7/src/manifest.h	Thu Dec 24 12:14:41 1998
+@@ -25,30 +25,9 @@
+ #define NEEDS_COPYSIGN
+ #endif
+ 
+-#if defined(HAVE_UNISTD_H)
+ #include <unistd.h>
+-#endif
+-
+-#ifdef hpux
+-#define sigvec sigvector
+-#else
+-#ifdef SVR4
+-#define sigvec                sigaction
+-#define sv_handler    sa_handler
+-#define sv_mask               sa_mask
+-#define sv_flags      sa_flags
+-#define SV_INTERRUPT  SA_RESTART
+-#endif /* SVR4 */
+-#endif /* hpux */
+-
+-#if defined(HAVE_STDLIB_H)
+ #include <stdlib.h>
+-#else
+-#if defined(HAVE_MALLOC_H)
+ #include <malloc.h>
+-#endif
+-#endif
+-
+ /*
+  *   GENERAL VALUES
+  */
+--- acm-4.7/src/server.c.orig	Thu Dec 24 12:44:53 1998
++++ acm-4.7/src/server.c	Thu Dec 24 13:50:37 1998
+@@ -303,12 +303,7 @@
+ #endif
+ 
+ 	spipe.sv_handler = SIG_DFL;
+-#ifdef SVR4
+-	(void) sigemptyset(&sigset_mask);
+-	spipe.sv_mask = sigset_mask;
+-#else
+ 	spipe.sv_mask = 0;
+-#endif /* SVR4 */
+ 
+ #ifdef hpux
+ 	spipe.sv_flags = SV_BSDSIG;
