@@ -1,0 +1,4 @@
+x11amp name "X11amp"
+x11amp description "Mp3 player"
+x11amp exec "x11amp &"
+x11amp group "Utilities/Sound"
