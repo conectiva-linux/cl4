@@ -1,0 +1,26 @@
+Binary files cheops-0.59a.orig/cheops.o and cheops-0.59a/cheops.o differ
+Binary files cheops-0.59a.orig/network.o and cheops-0.59a/network.o differ
+diff -Nur cheops-0.59a.orig/snmp.c cheops-0.59a/snmp.c
+--- cheops-0.59a.orig/snmp.c	Tue Apr 13 15:59:15 1999
++++ cheops-0.59a/snmp.c	Tue Apr 13 16:00:15 1999
+@@ -556,8 +556,8 @@
+  * Add a variable with the requested name to the end of the list of
+  * variables for this pdu. (snmp-set.c)
+  */
+-void
+-snmp_add_var(
++void 
++snmp_add_var_(
+     struct snmp_pdu *pdu,
+     oid *name,
+     int name_length,
+@@ -672,7 +672,7 @@
+ 			strcpy(answers[x], "");
+ 		namelen = sizeof(name);
+ 		if (read_objid(objid[x], name, &namelen)) {
+-			snmp_add_var(pdu, name, namelen, type[x], values[x]);
++			snmp_add_var_(pdu, name, namelen, type[x], values[x]);
+ 		} else {
+ 			fprintf(stderr, "snmp warning: unknown identifier '%s'\n", objid[x]);
+ 			return NULL;
+Binary files cheops-0.59a.orig/snmp.o and cheops-0.59a/snmp.o differ
