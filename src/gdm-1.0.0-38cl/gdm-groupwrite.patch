@@ -1,0 +1,14 @@
+--- gdm-1.0.0/src/gdmmisc.c.msf	Sat Mar  6 23:09:51 1999
++++ gdm-1.0.0/src/gdmmisc.c	Sat Mar  6 23:10:21 1999
+@@ -112,9 +112,8 @@
+ 	return(FALSE);
+     };
+     
+-    /* Check if group or other have write permission */
+-    if( (statbuf.st_mode & S_IWGRP) == S_IWGRP ||
+-	(statbuf.st_mode & S_IWOTH) == S_IWOTH) {
++    /* Check if other has write permission */
++    if( (statbuf.st_mode & S_IWOTH) == S_IWOTH) {
+ 	syslog(LOG_WARNING, _("%s: %s is writable by group/other. Should be 755. Skipping."), caller, dir);
+ 	return(FALSE);
+     };

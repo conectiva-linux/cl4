@@ -1,0 +1,279 @@
+--- gdm-1.0.0/src/gdmgreeter.c.fixlangs	Mon Apr 19 14:00:08 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Mon Apr 19 14:13:56 1999
+@@ -119,6 +119,7 @@
+ GdkImlibImage *nofaceimg;
+ GnomeIconList *browser;
+ 
++#include "gdmlangs.h"
+ 
+ 
+ /* Normal program termination */
+@@ -354,6 +355,8 @@
+ {
+     gboolean savesess=FALSE, savelang=FALSE;
+     static gchar msg[1024];
++    gchar *curlangtemp;
++    struct LangEntry *p;
+ 
+ #if 0
+     /* msf - we never save session for user - they use desktop switcher */
+@@ -389,7 +392,7 @@
+     savesess=FALSE;
+ #endif
+ 
+-    if(strcmp(curlang, "Default") && strcasecmp(curlang, usrlang)) {
++    if(curlang && strcmp(curlang, "Default") && usrlang && strcasecmp(curlang, usrlang)) {
+ 
+ 	if(langmatch && langmod) {
+ 	    g_snprintf(msg, 1023, 
+@@ -415,10 +418,22 @@
+ 	    gdm_greeter_info(msg);
+ 	}
+     }
+-    else
++    else if (curlang && strcmp(curlang, "Default"))
+ 	savelang=TRUE;
+ 
+-    g_print("%c%s\n%d\n%s\n%d\n", 0x3, cursess, savesess, curlang, savelang);
++    /* convert back to abbrev lang form */
++    curlangtemp = NULL;
++    if (curlang) {
++      for (p=SupportedLangs; p->verbose; p++) {
++	if (!strcmp(p->verbose, curlang)) {
++	  curlangtemp = p->abbrev;
++	  break;
++	}
++      }
++    }
++
++    g_print("%c%s\n%d\n%s\n%d\n", 0x3, cursess, savesess, 
++	    (curlangtemp) ? curlangtemp : "Default", savelang);
+ }
+ 
+ 
+@@ -939,12 +954,16 @@
+     char curline[256];
+     char *ctmp, *ctmp1, *ctmp2;
+ 
+-    deflang=GdmDefaultLocale;
++    struct LangEntry *p;
++
++
++/*    deflang=GdmDefaultLocale; */
++    deflang = "Default";
+     
+     submenu = gtk_menu_new();
+     gtk_menu_item_set_submenu(GTK_MENU_ITEM(parent), submenu);
+ 
+-    langlist = fopen(GdmLocaleFile, "r");
++/*    langlist = fopen(GdmLocaleFile, "r"); */
+     
+ 
+     /* put 'Default' at top of list, this is either the user setting from */
+@@ -958,29 +977,21 @@
+     gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
+ 
+ 
++#if 0
+     /* add english next */
+     item = gtk_radio_menu_item_new_with_label(languages, "English");
+     languages = gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
+     gtk_widget_show(item);
++#endif
+     
+     gtk_container_add(GTK_CONTAINER(submenu), item);
+     gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
+ 
+     /* and the rest */
+-    while(fgets(curline, sizeof(curline), langlist)) {
+-	if(!isalpha(curline[0])) continue;
+-	
+-	ctmp1 = strchr(curline, ' ');
+-	ctmp2 = strchr(curline, '\t');
+-	ctmp = curline + strlen(curline) - 1;
+-	if(ctmp1 && (ctmp1 < ctmp))
+-	    ctmp = ctmp1;
+-	if(ctmp2 && (ctmp2 < ctmp))
+-	    ctmp = ctmp2;
+-	*ctmp = '\0';
+-	curline[0] = toupper(curline[0]);
+-	
+-	item = gtk_radio_menu_item_new_with_label(languages, curline);
++/*    while(fgets(curline, sizeof(curline), langlist)) { */
++
++    for (p=SupportedLangs; p->verbose; p++) {
++	item = gtk_radio_menu_item_new_with_label(languages, p->verbose);
+ 	languages = gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
+ 	gtk_widget_show(item);
+ 	
+@@ -988,7 +999,7 @@
+ 	gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
+     }
+     
+-    fclose(langlist);
++    /*    fclose(langlist); */
+ }
+ 
+ 
+@@ -997,6 +1008,8 @@
+ {
+     gboolean fileok;
+     gchar *dir=NULL, *cfg=NULL;
++    gchar *usrlangtemp;
++    struct LangEntry *p;
+ 
+     /* Check if ~user/.gnome/gdm passes sanity check */
+     dir=g_strconcat(user->homedir, "/.gnome", NULL);
+@@ -1010,9 +1023,23 @@
+ 	usrsess=gnome_config_get_string(cfg);
+ 	g_free(cfg);
+       */
++
+ 	cfg=g_strconcat("=", user->homedir, "/.gnome/gdm=/session/lang", NULL);
+-	usrlang=gnome_config_get_string(cfg);
++	usrlangtemp=gnome_config_get_string(cfg);
+ 	g_free(cfg);
++
++	/* we read in the abbreviated form for language, map back to */
++	/* verbose form                                              */
++	if (usrlangtemp) {
++	  for (p=SupportedLangs; p->verbose; p++) {
++	    if (!strcmp(p->abbrev, usrlangtemp)) {
++	      usrlang = g_strdup(p->verbose);
++	      break;
++	    }
++	  }
++	} else {
++	  usrlang = NULL;
++	}
+     }
+ 
+     sessmatch=FALSE;
+@@ -1027,11 +1054,14 @@
+     gtk_widget_set_sensitive (sessmenu, TRUE);
+ 
+     langmatch=FALSE;
+-    if (curlang)
++    if (curlang) {
+         curlang=gdm_greeter_language_lookup(curlang);
+-    else
+-        curlang=gdm_greeter_language_lookup(NULL);
+-
++    } else {
++        if (usrlang)
++	    curlang=gdm_greeter_language_lookup(usrlang);
++        else
++	    curlang=gdm_greeter_language_lookup(NULL);
++    }
+  
+     if(!usrlang)
+ 	usrlang=g_strdup(curlang);
+--- gdm-1.0.0/src/gdmslave.c.fixlangs	Mon Apr 19 14:00:08 1999
++++ gdm-1.0.0/src/gdmslave.c	Mon Apr 19 14:22:39 1999
+@@ -37,6 +37,7 @@
+ #include <errno.h>
+ 
+ #include "gdm.h"
++#include "gdmlangs.h"
+ 
+ #ifdef HAVE_PAM
+ #include <security/pam_appl.h>
+@@ -343,11 +344,12 @@
+     /* if root then use different PATH */
+     gdm_putenv(g_strconcat("PATH=", ((pwent->pw_uid) ? GdmDefaultPath : "/sbin:/usr/sbin:/bin:/usr/bin"), NULL));
+ 
++/*
+     if(!strcasecmp(lang, "english"))
+ 	putenv("LANG=C");
+     else
+ 	gdm_putenv(g_strconcat("LANG=", lang, NULL));
+-
++*/
+     /* If script fails reset X server and restart greeter */
+     if(gdm_exec_script(d, GdmPreSession) != EXIT_SUCCESS) 
+ 	gdm_remanage(_("gdm_slave_session_init: Execution of PreSession script returned > 0. Aborting."));
+@@ -392,6 +394,44 @@
+ 	}
+ 
+ 	g_free(cfgdir);
++
++	if(lang && !strcmp(lang, "Default")) {
++	  struct LangEntry *p;
++	  gboolean         match;
++	  
++	  cfgstr = g_strconcat("=", pwent->pw_dir, 
++			       "/.gnome/gdm=/session/lang", NULL);
++	  lang=gnome_config_get_string(cfgstr);
++
++	  /* see if its a recognized string */
++	  if (lang) {
++	    match=FALSE;
++	    for (p=SupportedLangs; p->verbose; p++)
++	      /* does abbrev match ? */
++	      if (!strcmp(p->abbrev, lang)) {
++		match=TRUE;
++		break;
++	      } else if (!strcmp(p->verbose, lang)) {
++		match=TRUE;
++		g_free(lang);
++		lang = g_strdup(p->abbrev);
++		savesess=TRUE;
++		break;
++	      }
++	    
++	    /* if unrecognized, just ignore their default */
++	    if (!match) {
++	      if (lang)
++		g_free(lang);
++	      lang=NULL;
++	    }
++	  }
++	}
++
++	g_free(cfgstr);
++
++        if (lang && *lang)
++	  gdm_putenv(g_strconcat("GDM_LANG=", lang, NULL));
+ 
+ 	if(savesess) {
+ 	    /* libgnome sets home to ~root, so we have to write the path ourselves */
+--- gdm-1.0.0/src/gdmlangs.h.fixlangs	Mon Apr 19 14:03:09 1999
++++ gdm-1.0.0/src/gdmlangs.h	Mon Apr 19 14:13:49 1999
+@@ -0,0 +1,37 @@
++#ifndef _GDM_LANGS_H
++#define _GDM_LANGS_H
++
++/* add list of languages we support */
++struct LangEntry {
++  char *verbose;
++  char *abbrev;
++};
++
++struct LangEntry SupportedLangs[] = {
++  { "English",    "C" },
++  { "Croatian",   "hr_HR"}, 
++  { "Czech",      "cs_CZ"},
++  { "Danish",     "da_DK"},
++  { "Dutch",      "nl_NL"},
++  { "Finnish",    "fi_FI"},
++  { "French",     "fr_FR"},
++  { "Gaelic",     "ga_IE"},
++  { "German",     "de_DE"},
++  { "Hungarian",  "hu_HU"},
++  { "Icelandic",  "is_IS"},
++  { "Italian",    "it_IT"},
++  { "Polish",     "pl_PL"},
++  { "Portuguese", "pt_PT"},
++  { "Romanian",   "ro_RO"},
++  { "Russian",    "ru_RU"},
++  { "Slovak",     "sk_SK"},
++  { "Slovenian",  "sl_SL"},
++  { "Spanish",    "es_ES"},
++  { "Swedish",    "sv_SE"},
++  { "Turkish",    "tr_TR"},
++  { NULL,        NULL }
++};
++
++
++
++#endif

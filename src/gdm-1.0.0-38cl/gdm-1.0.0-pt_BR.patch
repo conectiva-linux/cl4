@@ -1,0 +1,12 @@
+diff -uNr gdm-1.0.0/configure.in gdm-1.0.0-pt_BR/configure.in
+--- gdm-1.0.0/configure.in	Thu Feb 25 21:20:17 1999
++++ gdm-1.0.0-pt_BR/configure.in	Thu Jul  1 15:17:42 1999
+@@ -20,7 +20,7 @@
+ AC_SUBST(LDFLAGS)
+ 
+ dnl ## internationalization support
+-ALL_LINGUAS="es fr no"
++ALL_LINGUAS="es fr no pt_BR"
+ AM_GNOME_GETTEXT
+ 
+ dnl ## Autentication scheme

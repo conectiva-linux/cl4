@@ -1,0 +1,7 @@
+--- gdm-1.0.0/config/gdm.cnsl	Mon Mar 15 20:16:33 1999
++++ gdm-1.0.0/config/gdm	Mon Mar 15 20:16:43 1999
+@@ -5,3 +5,4 @@
+ password   required	/lib/security/pam_cracklib.so
+ password   required	/lib/security/pam_pwdb.so shadow nullok use_authtok
+ session    required	/lib/security/pam_pwdb.so
++session    optional	/lib/security/pam_console.so

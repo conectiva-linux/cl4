@@ -1,0 +1,36 @@
+--- gdm-1.0.0/src/gdmgreeter.c.notabcmpltion	Tue Apr  6 15:16:17 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Tue Apr  6 15:23:36 1999
+@@ -1219,17 +1219,21 @@
+ 	
+ 	if(!strlen(entry)) 
+ 	    entry=g_strdup("");
+-	
++
++#if 0	
+ 	result = g_completion_complete(cmpl, entry, &lmatch);
+ 	
+ 	/* Unambiguous match => Move to passwd field and enable
+ 	 * session selection 
+ 	 */
+ 	if(g_list_length(result) == 1) {
++#endif
+ 	    gtk_window_set_focus(GTK_WINDOW (greeter), passwdentry);
+ 	    /*	    gtk_widget_set_sensitive (sessmenu, TRUE); */
+ 	    /*      gtk_widget_set_sensitive (langmenu, TRUE); */
++#if 0
+ 	}
++#endif
+ 	
+ #if 0
+ 	/* msf - disable completion of username */
+@@ -1256,8 +1260,8 @@
+ 	    gnome_icon_list_thaw (browser);
+ 	}
+ 	
+-	for (i=0 ; i<g_list_length(result) ; i++) {
+-	    user=g_list_nth_data(result, i);
++	for (i=0 ; i<g_list_length(users) ; i++) {
++	    user=g_list_nth_data(users, i);
+ 	    
+ 	    if(!strcasecmp(gtk_entry_get_text(GTK_ENTRY(loginentry)), user->login)) {
+ 		

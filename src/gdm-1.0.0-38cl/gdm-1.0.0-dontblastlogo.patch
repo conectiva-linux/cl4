@@ -1,0 +1,70 @@
+--- gdm-1.0.0/src/gdmgreeter.c.dontblastlogo	Wed Apr 14 15:11:20 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Wed Apr 14 15:17:39 1999
+@@ -492,16 +492,27 @@
+ gdm_greeter_reboot_handler(GtkWidget *widget, gpointer data)
+ {
+     static GtkWidget *box=NULL;
++    gint reply;
+ 
+     gtk_widget_set_sensitive(gdmMain, FALSE);
+-    box=gnome_question_dialog_modal(_("Are you sure you want to reboot the machine?"),
+-				    GTK_SIGNAL_FUNC (gdm_greeter_reboot),
+-				    NULL);
++    box=gnome_message_box_new(_("Are you sure you want to reboot the machine?"),
++			      GNOME_MESSAGE_BOX_QUESTION,
++			      GNOME_STOCK_BUTTON_YES,
++			      GNOME_STOCK_BUTTON_NO,
++			      NULL);
++
+     gtk_window_position(GTK_WINDOW (box), GTK_WIN_POS_CENTER);
+ 
+-    /* wont be centered unless we force it to be remapped */
+-    gtk_widget_hide(box);
+-    gtk_widget_show(box);
++    reply=gnome_dialog_run(GNOME_DIALOG(box));
++
++    if (reply == 0) {
++	closelog();
++	g_print("%cR", 0x2);
++	gtk_main_quit();
++    }
++
++    gtk_widget_set_sensitive(gdmMain, TRUE);
++    gtk_window_set_focus(GTK_WINDOW(greeter), passwdentry);
+ 
+     return(TRUE);
+ }
+@@ -525,16 +536,27 @@
+ gdm_greeter_halt_handler(GtkWidget *widget, gpointer data)
+ {
+     static GtkWidget *box=NULL;
++    gint reply;
+ 
+     gtk_widget_set_sensitive (gdmMain, FALSE);
+-    box=gnome_question_dialog_modal(_("Are you sure you want to halt the machine?"),
+-				    GTK_SIGNAL_FUNC (gdm_greeter_halt), 
+-				    NULL);	
++    box=gnome_message_box_new(_("Are you sure you want to halt the machine?"),
++			      GNOME_MESSAGE_BOX_QUESTION,
++			      GNOME_STOCK_BUTTON_YES,
++			      GNOME_STOCK_BUTTON_NO,
++			      NULL);
++
+     gtk_window_position(GTK_WINDOW (box), GTK_WIN_POS_CENTER);
+ 
+-    /* wont be centered unless we force it to be remapped */
+-    gtk_widget_hide(box);
+-    gtk_widget_show(box);
++    reply=gnome_dialog_run(GNOME_DIALOG(box));
++
++    if (reply == 0) {
++	closelog();
++	g_print("%cH", 0x2);
++	gtk_main_quit();
++    }
++
++    gtk_widget_set_sensitive(gdmMain, TRUE);
++    gtk_window_set_focus(GTK_WINDOW(greeter), passwdentry);
+ 
+     return(TRUE);
+ }

@@ -1,0 +1,36 @@
+--- gdm-1.0.0/src/gdmgreeter.c.photofix	Thu Jun 10 16:51:54 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Thu Jun 10 16:52:34 1999
+@@ -982,10 +982,10 @@
+     item = gtk_radio_menu_item_new_with_label(languages, "English");
+     languages = gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
+     gtk_widget_show(item);
+-#endif
+     
+     gtk_container_add(GTK_CONTAINER(submenu), item);
+     gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
++#endif
+ 
+     /* and the rest */
+ /*    while(fgets(curline, sizeof(curline), langlist)) { */
+@@ -1595,10 +1595,11 @@
+ 	globimg=g_strconcat(GdmGlobalImageDir, "/", logname, NULL);
+ 
+ 	/* If user's picture passed sanity check/size cutoff value load it */
+-	if(fileok) 
++	if(fileok) {
+ 	    img=g_strconcat(homedir, "/.gnome/photo", NULL);
++	    g_free(globimg);
+ 	/* Check if sysadmin put a user photo in global image dir */
+-	else if (!access(globimg, R_OK)) {
++	} else if (!access(globimg, R_OK)) {
+ 	    img=globimg;
+ 	}
+ 
+@@ -1624,7 +1625,6 @@
+ 	else
+ 	    user->picture=nofaceimg;
+ 
+-	g_free(globimg);
+ 	g_free(img);
+     }
+ 

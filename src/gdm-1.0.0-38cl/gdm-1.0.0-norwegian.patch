@@ -1,0 +1,10 @@
+--- gdm-1.0.0/src/gdmlangs.h.norwegian	Thu Jun 10 16:44:12 1999
++++ gdm-1.0.0/src/gdmlangs.h	Thu Jun 10 16:44:35 1999
+@@ -20,6 +20,7 @@
+   { "Hungarian",  "hu_HU"},
+   { "Icelandic",  "is_IS"},
+   { "Italian",    "it_IT"},
++  { "Norwegian",  "no_NO"},
+   { "Polish",     "pl_PL"},
+   { "Portuguese", "pt_PT"},
+   { "Romanian",   "ro_RO"},

@@ -1,0 +1,134 @@
+--- gdm-1.0.0/config/Makefile.am.installdirs	Wed Feb 24 17:25:39 1999
++++ gdm-1.0.0/config/Makefile.am	Fri Feb 26 14:49:08 1999
+@@ -2,7 +2,7 @@
+ confdir = $(sysconfdir)/gdm
+ sessdir = $(sysconfdir)/gdm/Sessions
+ initdir = $(sysconfdir)/gdm/Init
+-authdir = $(prefix)/var/gdm
++authdir = $(localstatedir)/gdm
+ 
+ gdm.conf: gdm.conf.in Makefile
+ 	sed -e 's,\@datadir\@,$(datadir),g' \
+@@ -23,8 +23,7 @@
+ 	    < $(srcdir)/gnomerc.in > gnomerc.tmp \
+ 	    && mv -f gnomerc.tmp gnomerc
+ 
+-conf_SCRIPTS = gdm.conf
+-conf_SCRIPTS = gnomerc
++conf_SCRIPTS = gdm.conf gnomerc
+ sess_SCRIPTS = Gnome Xsession
+ init_SCRIPTS = Default
+ 
+@@ -50,17 +49,21 @@
+ 		chmod 755 $(initdir); \
+ 	fi
+ 	if test '!' -d $(authdir); then \
+-		$(mkinstalldirs) -p $(authdir); \
++		$(mkinstalldirs) $(authdir); \
+ 		chown gdm.gdm $(authdir); \
+ 		chmod 750 $(authdir); \
+ 	fi
+ 
+-	@system=`uname`; \
++	system=`uname`; \
+ 	if test -f /usr/include/security/pam_appl.h; then \
+-	   if test $$system = Linux && test '!' -f $(RPM_BUILD_ROOT)/etc/pam.d/gdm; then \
+-		$(INSTALL_DATA) gdm $(RPM_BUILD_ROOT)/etc/pam.d/gdm; \
++	  if test '!' -d $(sysconfdir)/pam.d; then \
++		$(mkinstalldirs) $(sysconfdir)/pam.d; \
++		chmod 755 $(sysconfdir)/pam.d; \
++	   fi; \
++	   if test $$system = Linux && test '!' -f $(sysconfdir)/pam.d/gdm; then \
++		$(INSTALL_DATA) gdm $(sysconfdir)/pam.d/gdm; \
+ 	   fi; \
+ 	   if test $$system = SunOS; then \
+-		echo "Please add PAM authentication for gdm in $(RPM_BUILD_ROOT)/etc/pam.conf!"; \
++		echo "Please add PAM authentication for gdm in $(sysconfdir)/pam.conf!"; \
+ 	   fi; \
+ 	fi
+--- gdm-1.0.0/config/Makefile.in.installdirs	Thu Feb 25 19:30:52 1999
++++ gdm-1.0.0/config/Makefile.in	Fri Feb 26 14:49:35 1999
+@@ -120,8 +120,9 @@
+ confdir = $(sysconfdir)/gdm
+ sessdir = $(sysconfdir)/gdm/Sessions
+ initdir = $(sysconfdir)/gdm/Init
+-authdir = $(prefix)/var/gdm
+-conf_SCRIPTS = gnomerc
++authdir = $(localstatedir)/gdm
++
++conf_SCRIPTS = gdm.conf gnomerc
+ sess_SCRIPTS = Gnome Xsession
+ init_SCRIPTS = Default
+ 
+@@ -142,9 +143,9 @@
+ all: all-redirect
+ .SUFFIXES:
+ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps config/Makefile
++	cd $(top_srcdir) && $(AUTOMAKE) --gnu config/Makefile
+ 
+-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
++Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+ 	cd $(top_builddir) \
+ 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+ 
+@@ -214,6 +215,11 @@
+ subdir = config
+ 
+ distdir: $(DISTFILES)
++	here=`cd $(top_builddir) && pwd`; \
++	top_distdir=`cd $(top_distdir) && pwd`; \
++	distdir=`cd $(distdir) && pwd`; \
++	cd $(top_srcdir) \
++	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu config/Makefile
+ 	@for file in $(DISTFILES); do \
+ 	  d=$(srcdir); \
+ 	  if test -d $$d/$$file; then \
+@@ -326,18 +332,22 @@
+ 		chmod 755 $(initdir); \
+ 	fi
+ 	if test '!' -d $(authdir); then \
+-		$(mkinstalldirs) -p $(authdir); \
++		$(mkinstalldirs) $(authdir); \
+ 		chown gdm.gdm $(authdir); \
+ 		chmod 750 $(authdir); \
+ 	fi
+ 
+-	@system=`uname`; \
++	system=`uname`; \
+ 	if test -f /usr/include/security/pam_appl.h; then \
+-	   if test $$system = Linux && test '!' -f $(RPM_BUILD_ROOT)/etc/pam.d/gdm; then \
+-		$(INSTALL_DATA) gdm $(RPM_BUILD_ROOT)/etc/pam.d/gdm; \
++	  if test '!' -d $(sysconfdir)/pam.d; then \
++		$(mkinstalldirs) $(sysconfdir)/pam.d; \
++		chmod 755 $(sysconfdir)/pam.d; \
++	   fi; \
++	   if test $$system = Linux && test '!' -f $(sysconfdir)/pam.d/gdm; then \
++		$(INSTALL_DATA) gdm $(sysconfdir)/pam.d/gdm; \
+ 	   fi; \
+ 	   if test $$system = SunOS; then \
+-		echo "Please add PAM authentication for gdm in $(RPM_BUILD_ROOT)/etc/pam.conf!"; \
++		echo "Please add PAM authentication for gdm in $(sysconfdir)/pam.conf!"; \
+ 	   fi; \
+ 	fi
+ 
+--- gdm-1.0.0/configure.in.installdirs	Thu Feb 25 19:20:17 1999
++++ gdm-1.0.0/configure.in	Fri Feb 26 14:06:01 1999
+@@ -101,5 +101,5 @@
+ intl/Makefile
+ stamp.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
+ 
+-AC_DEFINE_UNQUOTED(GDM_CONFIG_FILE, "${prefix}/etc/gdm/gdm.conf")
++AC_DEFINE_UNQUOTED(GDM_CONFIG_FILE, "${sysconfdir}/gdm/gdm.conf")
+ 
+--- gdm-1.0.0/configure.installdirs	Thu Feb 25 19:29:28 1999
++++ gdm-1.0.0/configure	Fri Feb 26 14:06:01 1999
+@@ -5469,7 +5469,7 @@
+ 
+ 
+ cat >> confdefs.h <<EOF
+-#define GDM_CONFIG_FILE "${prefix}/etc/gdm/gdm.conf"
++#define GDM_CONFIG_FILE "${sysconfdir}/gdm/gdm.conf"
+ EOF
+ 
+ 

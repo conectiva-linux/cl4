@@ -1,0 +1,17 @@
+--- gdm-1.0.0/src/gdm.c.noclosedisplay	Mon Apr 19 16:14:56 1999
++++ gdm-1.0.0/src/gdm.c	Mon Apr 19 16:41:22 1999
+@@ -91,11 +91,13 @@
+ {
+     if(d->type == DISPLAY_XDMCP) {
+ 
++      /* msf - this does bad things to the master gdm process if remote end died */
++#if 0
+ 	if(d->dsp) {
+ 	    gdm_debug(_("gdm_display_dispose: Closing display %s"), d->name);
+ 	    XCloseDisplay(d->dsp);
+ 	}
+-
++#endif
+ 	displays=g_slist_remove(displays, d);
+ 	sessions--;
+     }

@@ -1,0 +1,133 @@
+--- gdm-1.0.0/config/gdm.conf.in.rhconf	Thu Feb 25 19:20:21 1999
++++ gdm-1.0.0/config/gdm.conf.in	Tue Mar 16 18:08:15 1999
+@@ -1,12 +1,12 @@
+ [appearance]
+-Browser=1
+-Completion=1
+-Logo=1
++Browser=0
++Completion=0
++Logo=0
+ LogoImage=@pixmapdir@/gnome-logo-large.png
+ NoFaceImage=@pixmapdir@/nophoto.png
+ GlobalImageDir=@datadir@/faces/
+ Quiver=1
+-Iconify=1
++Iconify=0
+ IconFile=@pixmapdir@/gdm.xpm
+ Gtkrc=
+ 
+@@ -16,7 +16,7 @@
+ UserFileCutoffSize=65536
+ UserIconMaxWidth=128
+ UserIconMaxHeight=128
+-DefaultPath=@bindir@:/usr/local/bin:/usr/bin/X11:/usr/bin:/bin
++DefaultPath=@bindir@:/usr/local/bin:/usr/X11R6/bin:/bin
+ 
+ [messages]
+ Welcome=Welcome to %h
+@@ -37,7 +37,6 @@
+ 
+ [servers]
+ 0=/usr/bin/X11/X
+-#1=/usr/bin/X11/X
+ 
+ [xdmcp]
+ Enable=1
+--- gdm-1.0.0/config/Xsession.rhconf	Fri Sep  4 16:30:38 1998
++++ gdm-1.0.0/config/Xsession	Tue Mar 16 18:07:52 1999
+@@ -1,41 +1,67 @@
+ #!/bin/bash -login
+-# $XConsortium: Xsession /main/10 1995/12/18 18:21:28 gildea $
+-
+-case $# in
+-1)
+-	case $1 in
+-	failsafe)
+-		exec xterm -geometry 80x24-0-0
+-		;;
+-	esac
+-esac
++# (c) 1999 Red Hat Software, Inc.
+ 
+ # redirect errors to a file in user's home directory if we can
+ for errfile in "$HOME/.xsession-errors" "${TMPDIR-/tmp}/xses-$USER" "/tmp/xses-$USER"
+ do
+-	if ( cp /dev/null "$errfile" 2> /dev/null )
+-	then
+-		chmod 600 "$errfile"
+-		exec > "$errfile" 2>&1
+-		break
+-	fi
++    if ( cp /dev/null "$errfile" 2> /dev/null )
++    then
++	chmod 600 "$errfile"
++	exec > "$errfile" 2>&1
++	break
++    fi
+ done
+ 
+ # clean up after xbanner
+-freetemp
++if [ -f /usr/X11R6/bin/freetemp ]; then
++    freetemp
++fi
++
++userresources=$HOME/.Xresources 
++usermodmap=$HOME/.Xmodmap 
++sysresources=/usr/X11R6/lib/X11/xinit/.Xresources 
++sysmodmap=/usr/X11R6/lib/X11/xinit/.Xmodmap 
+ 
+-startup=$HOME/.xsession
+-resources=$HOME/.Xresources
++# merge in defaults and keymaps 
++if [ -f $sysresources ]; then 
++    xrdb -merge $sysresources 
++fi 
++ 
++if [ -f $sysmodmap ]; then 
++    xmodmap $sysmodmap 
++fi 
++ 
++if [ -f $userresources ]; then 
++    xrdb -merge $userresources 
++fi 
++ 
++if [ -f $usermodmap ]; then 
++    xmodmap $usermodmap 
++fi 
++
++# now, we see if xdm/gdm/kdm has asked for a specific environment
++case $# in
++1)
++    case $1 in
++    failsafe)
++	exec xterm -geometry 80x24-0-0
++	;;
++    gnome)
++	exec gnome-session
++	;;
++    kde)
++	exec startkde
++	;;
++    esac
++esac
+ 
+-if [ -x "$startup" ]; then
+-	exec "$startup"
++# otherwise, take default action
++if [ -x "$HOME/.xsession" ]; then
++    exec "$HOME/.xsession"
+ elif [ -x "$HOME/.Xclients" ]; then
+-	exec "$HOME/.Xclients"
++    exec "$HOME/.Xclients"
+ elif [ -x /etc/X11/xinit/Xclients ]; then
+-	exec /etc/X11/xinit/Xclients
++    exec /etc/X11/xinit/Xclients
+ else
+-	if [ -f "$resources" ]; then
+-		xrdb -load "$resources"
+-	fi
+-	exec xsm
++    exec xsm
+ fi

@@ -1,0 +1,32 @@
+--- gdm-1.0.0/src/gdmgreeter.c.nosound	Wed Mar 31 17:01:40 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Wed Mar 31 17:03:48 1999
+@@ -1618,13 +1618,27 @@
+     GtkWidget *gdmLogoCtrlHbox;
+     GtkWidget *gdmCtrlVbox;
+ 
++    char **myargv;
++    int  myargc, i;
++
+     /* Avoid creating ~gdm/.gnome stuff */
+     gnome_do_not_create_directories = TRUE;
+ 
+     openlog("gdmgreeter", LOG_PID, LOG_DAEMON);
+ 
+-    gnome_init("gdmgreeter", VERSION, argc, argv);
+-    gnome_sound_shutdown ();
++    /* disable sound completely */
++    myargc = argc + 1;
++    myargv = (char **) g_new0(char *, myargc+1);
++    for (i=0; i < argc; i++)
++      myargv[i] = argv[i];
++
++    myargv[myargc-1] = "--disable-sound";
++
++
++    gnome_init("gdmgreeter", VERSION, myargc, myargv);
++    /*    gnome_sound_shutdown (); */
++
++    g_free(myargv);
+     
+     gdm_greeter_parse_config();
+ 

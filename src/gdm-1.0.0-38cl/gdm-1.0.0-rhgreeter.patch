@@ -1,0 +1,416 @@
+--- gdm-1.0.0/src/gdmgreeter.c.rhgreeter	Fri Mar 26 16:24:51 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Fri Mar 26 16:25:13 1999
+@@ -42,7 +42,7 @@
+ #include "gdmgreeter.h"
+ 
+ static const gchar RCSid[]="$Id: gdmgreeter.c,v 1.54 1999/02/26 00:20:26 mkp Exp $";
+-
++#define MAX_PASSWORD_LENGTH 32
+ extern gchar * gdm_parse_enriched_string(gchar *str);
+ extern gboolean gdm_file_check(gchar *caller, uid_t user, gchar *dir, gchar *file, gboolean absentok);
+ 
+@@ -62,6 +62,7 @@
+ gint  GdmQuiver;
+ gint  GdmShutdownMenu;
+ gint  GdmUserMaxFile;
++gint passwd_ptr;
+ gchar *GdmSuspend;
+ gchar *GdmGlobalImageDir;
+ gchar *GdmLogoFilename;
+@@ -97,6 +98,7 @@
+ GtkWidget *browser_hbox;
+ 
+ gchar *login, *passwd;
++gchar passwd_val[MAX_PASSWORD_LENGTH + 1];
+ gchar *defsess = NULL;
+ gchar *deflang = NULL;
+ gchar *cursess = NULL;
+@@ -107,7 +109,7 @@
+ gboolean sessmatch=FALSE;
+ gboolean langmatch=TRUE;
+ gboolean sessmod=FALSE;
+-gboolean langmod=TRUE;
++gboolean langmod=FALSE;
+ 
+ GCompletion *cmpl;
+ GList *result;
+@@ -279,6 +281,7 @@
+ 			      GNOME_STOCK_BUTTON_NO,
+ 			      NULL);
+ 	    
++    gtk_window_set_position(GTK_WINDOW(req), GTK_WIN_POS_CENTER);
+     gtk_window_set_modal(GTK_WINDOW(req), TRUE);
+     return(!gnome_dialog_run(GNOME_DIALOG(req)));
+ }
+@@ -312,6 +315,7 @@
+ 				NULL);
+ 
+     gtk_window_set_modal(GTK_WINDOW(req), TRUE);
++    gtk_window_set_position(GTK_WINDOW(req), GTK_WIN_POS_CENTER);
+     gtk_widget_show_all(req);
+ }
+ 
+@@ -331,7 +335,7 @@
+     gtk_widget_show(gdmMain);
+ 
+     g_print("%cU%s\n%s\n", 0x2, gtk_entry_get_text(GTK_ENTRY (loginentry)), 
+-	    gtk_entry_get_text(GTK_ENTRY (passwdentry)));
++	    passwd_val);
+ 
+     return(TRUE);
+ }
+@@ -343,6 +347,8 @@
+     gboolean savesess=FALSE, savelang=FALSE;
+     static gchar msg[1024];
+ 
++#if 0
++    /* msf - we never save session for user - they use desktop switcher */
+     if(strcasecmp(cursess, usrsess)) {
+ 
+ 	if(sessmatch && sessmod) {
+@@ -371,8 +377,11 @@
+     }
+     else
+ 	savesess=TRUE;
++#else
++    savesess=FALSE;
++#endif
+ 
+-    if(strcasecmp(curlang, usrlang)) {
++    if(strcmp(curlang, "Default") && strcasecmp(curlang, usrlang)) {
+ 
+ 	if(langmatch && langmod) {
+ 	    g_snprintf(msg, 1023, 
+@@ -424,6 +433,8 @@
+     }
+ 
+     gdm_greeter_info(_("Invalid username or password!"));
++    passwd_val[0] = '\000';
++    passwd_ptr = 0;
+ 
+     gtk_window_set_focus(GTK_WINDOW (greeter), passwdentry);
+ }
+@@ -452,6 +463,10 @@
+     box=gnome_question_dialog_modal(_("Are you sure you want to reboot the machine?"),
+ 				    GTK_SIGNAL_FUNC (gdm_greeter_reboot),
+ 				    NULL);
++    gtk_window_position(GTK_WINDOW (box), GTK_WIN_POS_CENTER);
++
++    /* wont be centered unless we force it to be remapped */
++    gtk_widget_hide(box);
+     gtk_widget_show(box);
+ 
+     return(TRUE);
+@@ -481,6 +496,10 @@
+     box=gnome_question_dialog_modal(_("Are you sure you want to halt the machine?"),
+ 				    GTK_SIGNAL_FUNC (gdm_greeter_halt), 
+ 				    NULL);	
++    gtk_window_position(GTK_WINDOW (box), GTK_WIN_POS_CENTER);
++
++    /* wont be centered unless we force it to be remapped */
++    gtk_widget_hide(box);
+     gtk_widget_show(box);
+ 
+     return(TRUE);
+@@ -795,6 +814,9 @@
+ 	syslog(LOG_WARNING, _("No default session link found. Using %s.\n"), defsess);
+     }
+ 
++    g_slist_foreach(sessions, (GFunc) gdm_greeter_session_select, defsess);
++    cursess = defsess;
++
+ }
+ 
+ 
+@@ -863,13 +885,27 @@
+ 
+     langlist = fopen(GdmLocaleFile, "r");
+     
+-    item = gtk_radio_menu_item_new_with_label(NULL, "English");
++
++    /* put 'Default' at top of list, this is either the user setting from */
++    /* their .gnome/gdm directory, or the system default                  */
++
++    item = gtk_radio_menu_item_new_with_label(NULL, "Default");
+     languages = gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
+     gtk_widget_show(item);
+     
+     gtk_container_add(GTK_CONTAINER(submenu), item);
+     gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
++
++
++    /* add english next */
++    item = gtk_radio_menu_item_new_with_label(languages, "English");
++    languages = gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
++    gtk_widget_show(item);
+     
++    gtk_container_add(GTK_CONTAINER(submenu), item);
++    gtk_signal_connect(GTK_OBJECT(item), "activate", gdm_greeter_language_handler, NULL);
++
++    /* and the rest */
+     while(fgets(curline, sizeof(curline), langlist)) {
+ 	if(!isalpha(curline[0])) continue;
+ 	
+@@ -908,10 +944,11 @@
+  
+     /* Find user's last session and language if available */
+     if(fileok) {
++      /* msf - we ignore this for RH 
+ 	cfg=g_strconcat("=", user->homedir, "/.gnome/gdm=/session/last", NULL);
+ 	usrsess=gnome_config_get_string(cfg);
+ 	g_free(cfg);
+-	
++      */
+ 	cfg=g_strconcat("=", user->homedir, "/.gnome/gdm=/session/lang", NULL);
+ 	usrlang=gnome_config_get_string(cfg);
+ 	g_free(cfg);
+@@ -919,7 +956,8 @@
+ 
+     sessmatch=FALSE;
+     sessmod=FALSE;
+-    cursess=gdm_greeter_session_lookup(usrsess);
++    if (!cursess)
++      cursess=gdm_greeter_session_lookup(usrsess);
+ 
+     if(!usrsess)
+ 	usrsess=g_strdup(cursess);
+@@ -928,13 +966,18 @@
+     gtk_widget_set_sensitive (sessmenu, TRUE);
+ 
+     langmatch=FALSE;
+-    langmod=FALSE;
+-    curlang=gdm_greeter_language_lookup(usrlang);
++    if (curlang)
++        curlang=gdm_greeter_language_lookup(curlang);
++    else
++        curlang=gdm_greeter_language_lookup(NULL);
+ 
++ 
+     if(!usrlang)
+ 	usrlang=g_strdup(curlang);
+ 
+-    g_slist_foreach(languages, (GFunc) gdm_greeter_language_select, curlang);
++    /* msf - we dont indicate current setting in radio buttons, that */
++    /*       is what the Default setting is for                      */
++    /*    g_slist_foreach(languages, (GFunc) gdm_greeter_language_select, curlang); */
+     gtk_widget_set_sensitive (langmenu, TRUE);
+ 
+     /* Widget magic */
+@@ -965,14 +1008,14 @@
+     gtk_menu_append(GTK_MENU (optionmenu), sessmenu);
+     gdm_greeter_session_init(sessmenu);
+     gtk_widget_show(sessmenu);
+-    gtk_widget_set_sensitive (sessmenu, FALSE);
++    gtk_widget_set_sensitive (sessmenu, TRUE);
+ 
+     /* Language selection support */
+     langmenu = gtk_menu_item_new_with_label (_("Languages"));
+     gtk_menu_append(GTK_MENU (optionmenu), langmenu);
+     gdm_greeter_language_init(langmenu);
+     gtk_widget_show(langmenu);
+-    gtk_widget_set_sensitive (langmenu, FALSE);
++    gtk_widget_set_sensitive (langmenu, TRUE);
+ 
+     /* If sysadmin enabled shutdown menu */
+     if (GdmShutdownMenu) {
+@@ -1074,8 +1117,8 @@
+ 	    gnome_icon_list_unselect_all((GnomeIconList *) widget, NULL, NULL);
+ 	    gtk_entry_set_text (GTK_ENTRY (loginentry), "");
+ 	    gtk_window_set_focus(GTK_WINDOW (greeter), loginentry);
+-	    gtk_widget_set_sensitive (sessmenu, FALSE);
+-	    gtk_widget_set_sensitive (langmenu, FALSE);
++	    /*	    gtk_widget_set_sensitive (sessmenu, FALSE); */
++	    /*      gtk_widget_set_sensitive (langmenu, FALSE); */
+ 	    break;
+ 
+ 	default:
+@@ -1159,13 +1202,15 @@
+     gint i;
+     gdmUserType *user=NULL;
+ 
+-    gtk_widget_set_sensitive (sessmenu, FALSE);
+-    gtk_widget_set_sensitive (langmenu, FALSE);
++    /* msf - we always want these on cause otherwise its security risk */
++    /*    gtk_widget_set_sensitive (sessmenu, FALSE);*/
++    /*    gtk_widget_set_sensitive (langmenu, FALSE);*/
+ 
+     switch(event->keyval) {
+ 
+     case GDK_Return:
+     case GDK_Down:
++
+     case GDK_Tab:		/* Where the nightmare begins */
+ 
+ 	gtk_signal_emit_stop_by_name(GTK_OBJECT (loginentry), "key_press_event");
+@@ -1182,10 +1227,13 @@
+ 	 */
+ 	if(g_list_length(result) == 1) {
+ 	    gtk_window_set_focus(GTK_WINDOW (greeter), passwdentry);
+-	    gtk_widget_set_sensitive (sessmenu, TRUE);
+-	    gtk_widget_set_sensitive (langmenu, TRUE);
++	    /*	    gtk_widget_set_sensitive (sessmenu, TRUE); */
++	    /*      gtk_widget_set_sensitive (langmenu, TRUE); */
+ 	}
+ 	
++#if 0
++	/* msf - disable completion of username */
++
+ 	/* One or no completions => Show all users */
+ 	if(g_list_length(result) <= 1) 
+ 	    result = g_completion_complete(cmpl, "", NULL);
+@@ -1193,8 +1241,13 @@
+ 	/* If partial match write greatest common string in login
+ 	 * field
+ 	 */
++	/* msf - no bad */
+ 	if(lmatch)
+ 	    gtk_entry_set_text(GTK_ENTRY (loginentry), lmatch);
++#endif
++
++	if (lmatch)
++  	    g_free(lmatch);
+ 	
+ 	if(GdmDisplayBrowser) {
+ 	    gnome_icon_list_freeze(browser);
+@@ -1219,6 +1272,7 @@
+ 	
+ 	break;
+ 
++
+     case GDK_Up:
+ 	gtk_signal_emit_stop_by_name(GTK_OBJECT (loginentry), "key_press_event");
+ 	break;
+@@ -1233,11 +1287,44 @@
+ 
+     return(TRUE);
+ }
+-
++static void
++insert_passwd_text (GdkEventKey *event)
++{
++  gchar temp_passwd[MAX_PASSWORD_LENGTH + 1];
++  gint length;
++  if (event->string)
++    length = strlen (event->string);
++  if (event->string &&
++      ((length +
++	strlen (passwd_val + passwd_ptr) +
++	passwd_ptr) < MAX_PASSWORD_LENGTH)) {
++    strncpy (temp_passwd,
++	     passwd_val,
++	     MAX_PASSWORD_LENGTH);
++    strncpy (temp_passwd + passwd_ptr,
++	     event->string,
++	     MAX_PASSWORD_LENGTH - passwd_ptr);
++    strncpy (temp_passwd + passwd_ptr + length,
++	     passwd_val + passwd_ptr,
++	     MAX_PASSWORD_LENGTH - passwd_ptr - length);
++    strncpy (passwd_val, temp_passwd, MAX_PASSWORD_LENGTH);
++    passwd_ptr+= strlen (event->string);
++  /*  g_print (":%s:%d:\n", passwd_val, passwd_ptr); */
++  }    
++} 
++static void
++gdm_greeter_passwd_entry_text_insert (GtkEditable    *editable,
++				      const gchar    *text,
++				      gint            length,
++				      gint           *position)
++{
++  gtk_signal_emit_stop_by_name(GTK_OBJECT (passwdentry), "insert_text");
++}
+ 
+ static gboolean
+ gdm_greeter_passwd_entry_handler (GtkWidget *widget, GdkEventKey *event)
+ {
++  gtk_signal_emit_stop_by_name(GTK_OBJECT (passwdentry), "key_press_event");
+     switch(event->keyval) {
+ 
+     case GDK_Return:
+@@ -1246,16 +1333,55 @@
+ 
+     case GDK_Up:
+     case GDK_Tab:
+-	gtk_signal_emit_stop_by_name(GTK_OBJECT (passwdentry), "key_press_event");
+ 	gtk_window_set_focus(GTK_WINDOW (greeter), loginentry);	
+ 	break;
+ 
+     case GDK_Down:
+-	gtk_signal_emit_stop_by_name(GTK_OBJECT (passwdentry), "key_press_event");
+ 	break;
+-
+-    default:
++    case GDK_Left:
++        if (passwd_ptr > 0)
++	  passwd_ptr--;
++	break;
++    case GDK_Right:
++        if (passwd_ptr < strlen (passwd_val))
++	  passwd_ptr++;
+ 	break;
++    case GDK_BackSpace:
++      if (passwd_ptr > 0) {
++	gchar temp_string[MAX_PASSWORD_LENGTH];
++	strncpy (temp_string,
++		 passwd_val + passwd_ptr,
++		 MAX_PASSWORD_LENGTH);
++	strncpy (passwd_val + --passwd_ptr,
++		 temp_string,
++		 MAX_PASSWORD_LENGTH - passwd_ptr);
++      }
++      break;
++    default:
++      if (event->state &GDK_CONTROL_MASK) {
++	if ((event->keyval == 'A') ||
++	    (event->keyval == 'a'))
++	  passwd_ptr = 0;
++	else if ((event->keyval == 'E') ||
++		 (event->keyval == 'e'))
++	  passwd_ptr = strlen (passwd_val);
++	else if ((event->keyval == 'K') ||
++		 (event->keyval == 'k'))
++	  passwd_val[passwd_ptr] = '\000';
++	else if ((event->keyval == 'U') ||
++		 (event->keyval == 'u')) {
++	  passwd_ptr = 0;
++	  passwd_val[0] = '\000';
++	}
++	return (TRUE);
++      }
++      if ((event->keyval >= 0x20) && (event->keyval <= 0xFF)) {
++	if (passwd_ptr < MAX_PASSWORD_LENGTH && 
++	    ((event->state != GDK_SHIFT_MASK) || 
++	     (event->state != 0))) {
++	  insert_passwd_text (event);
++	}
++      }
+     }
+ 
+     return(TRUE);
+@@ -1309,12 +1435,18 @@
+     gtk_widget_show(loginentry);
+ 
+     passwdentry = gtk_entry_new_with_max_length (32);
++    passwd_val[0] = '\000';
++    passwd_ptr = 0;
+     gtk_entry_set_text (GTK_ENTRY (passwdentry), "");
+     gtk_entry_set_visibility(GTK_ENTRY (passwdentry), FALSE);
+     gtk_signal_connect_object(GTK_OBJECT (passwdentry), 
+ 			      "key_press_event", 
+ 			      GTK_SIGNAL_FUNC (gdm_greeter_passwd_entry_handler),
+ 			      NULL);
++    gtk_signal_connect_object(GTK_OBJECT (passwdentry), 
++			      "insert_text", 
++			      GTK_SIGNAL_FUNC (gdm_greeter_passwd_entry_text_insert),
++			      NULL);
+     gtk_box_pack_start(GTK_BOX (entryvbox), passwdentry, 
+ 		       FALSE, TRUE, 5);
+     gtk_widget_show(passwdentry);
+@@ -1507,7 +1639,7 @@
+     GdmCompletion=TRUE;
+ 
+     if(GdmCompletion)
+-	gdm_greeter_users_init();
++        gdm_greeter_users_init();
+ 
+     if(GdmGtkRC)
+ 	gtk_rc_parse(GdmGtkRC);

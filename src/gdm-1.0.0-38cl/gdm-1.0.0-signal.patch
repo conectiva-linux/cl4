@@ -1,0 +1,56 @@
+--- gdm-1.0.0/src/gdmgreeter.c.signal	Mon Apr  5 18:35:25 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Mon Apr  5 18:37:19 1999
+@@ -440,6 +440,32 @@
+ }
+ 
+ 
++
++gint signal_pipe[2];
++
++static void
++gdm_greeter_input_handler (gpointer data, gint source, GdkInputCondition condition)
++{
++  char buf;
++  read (signal_pipe[0], &buf, 1);
++  if (buf == '1')
++    gdm_greeter_invalid_passwd_req();
++  else if (buf == '2')
++    gdm_greeter_sesslang_send();
++}
++
++static void
++gdm_greeter_signal_handler (int signal)
++{
++  gchar buf;
++  
++  if (signal == SIGUSR1)
++    buf = '1';
++  else if (signal == SIGUSR2)
++    buf = '2';
++
++  write (signal_pipe[1], &buf, 1);
++}
+ static void
+ gdm_greeter_reboot(gint reply, gpointer data)
+ {
+@@ -1743,7 +1769,10 @@
+     if(sigaction(SIGTERM, &hup, NULL) < 0) 
+         gdm_greeter_abort(_("main: Error setting up TERM signal handler"));
+ 
+-    usr1.sa_handler = (void *) gdm_greeter_invalid_passwd_req;
++    pipe (signal_pipe);
++    gdk_input_add (signal_pipe[0], GDK_INPUT_READ, gdm_greeter_input_handler, NULL);
++    
++    usr1.sa_handler = gdm_greeter_signal_handler;
+     usr1.sa_flags = SA_RESTART;
+     sigemptyset(&usr1.sa_mask);
+     sigaddset(&usr2.sa_mask, SIGUSR2);
+@@ -1751,7 +1780,7 @@
+     if(sigaction(SIGUSR1, &usr1, NULL) < 0) 
+         gdm_greeter_abort(_("main: Error setting up USR1 signal handler"));
+ 
+-    usr2.sa_handler = (void *) gdm_greeter_sesslang_send;
++    usr2.sa_handler = (void *) gdm_greeter_signal_handler;
+     usr2.sa_flags = SA_RESTART;
+     sigemptyset(&usr2.sa_mask);
+     sigaddset(&usr2.sa_mask, SIGUSR1);

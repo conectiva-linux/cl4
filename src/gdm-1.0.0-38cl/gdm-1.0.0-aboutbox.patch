@@ -1,0 +1,62 @@
+--- gdm-1.0.0/src/gdmgreeter.c.aboutbox	Mon Apr  5 18:55:08 1999
++++ gdm-1.0.0/src/gdmgreeter.c	Mon Apr  5 19:25:47 1999
+@@ -96,7 +96,7 @@
+ GtkWidget *loginbutton;
+ GtkWidget *optionbutton;
+ GtkWidget *browser_hbox;
+-
++GtkWidget *about = NULL;
+ gchar *login, *passwd;
+ gchar passwd_val[MAX_PASSWORD_LENGTH + 1];
+ gchar *defsess = NULL;
+@@ -148,20 +148,28 @@
+     exit(EXIT_FAILURE);
+ }
+ 
+-
++static void
++about_callback (GtkWidget *widget, gpointer data)
++{
++	about = NULL;
++}
+ /* Show about dialog */
+ static void 
+ gdm_greeter_about (void)
+ {
+     const gchar *authors[] = {"Martin Kasper Petersen <mkp@mkp.net>", NULL};
+ 
+-    GtkWidget *about = gnome_about_new ( _("Gnome Display Manager"), 
+-					 "" VERSION "",
+-					 _("Copyright Martin K. Petersen (C) 1998, 1999"),
+-					 authors,
+-					 _("gdm manages local and remote displays and provides the user with a login window."),
+-					 NULL);
+-    gtk_widget_show (about);                
++    if (about == NULL) {
++	    about = gnome_about_new ( _("Gnome Display Manager"), 
++				      "" VERSION "",
++				      _("Copyright Martin K. Petersen (C) 1998, 1999"),
++				      authors,
++				      _("gdm manages local and remote displays and provides the user with a login window."),
++				      NULL);
++	    gtk_signal_connect (GTK_OBJECT (about), "destroy", about_callback, NULL);
++	    gtk_window_position(GTK_WINDOW (about), GTK_WIN_POS_CENTER);
++    }
++    gtk_widget_show (about);
+ }
+ 
+ 
+@@ -792,7 +800,12 @@
+ 
+     while(dent != NULL) {
+ 	gchar *s;
+-
++	/* comment out emacs files or rpm autosave files */
++	if ((strstr (dent->d_name, "~")) ||
++	    (strstr (dent->d_name, ".rpm"))) {
++		dent=readdir (sessdir);
++		continue;
++	}
+ 	s=g_strconcat(GdmSessionDir, "/", dent->d_name, NULL);
+ 	lstat(s, &statbuf);
+ 

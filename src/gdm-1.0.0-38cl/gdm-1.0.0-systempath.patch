@@ -1,0 +1,13 @@
+--- gdm-1.0.0/src/gdmslave.c.systempath	Wed Mar 17 15:05:06 1999
++++ gdm-1.0.0/src/gdmslave.c	Wed Mar 17 15:08:16 1999
+@@ -339,7 +339,9 @@
+     gdm_putenv(g_strconcat("HOME=", pwent->pw_dir, NULL));
+     gdm_putenv(g_strconcat("GDMSESSION=", session, NULL));
+     gdm_putenv(g_strconcat("SHELL=", pwent->pw_shell, NULL));
+-    gdm_putenv(g_strconcat("PATH=", GdmDefaultPath, NULL));
++
++    /* if root then use different PATH */
++    gdm_putenv(g_strconcat("PATH=", ((pwent->pw_uid) ? GdmDefaultPath : "/sbin:/usr/sbin:/bin:/usr/bin"), NULL));
+ 
+     if(!strcasecmp(lang, "english"))
+ 	putenv("LANG=C");

@@ -1,0 +1,4 @@
+#!/bin/bash -login
+
+
+/etc/X11/xdm/Xsession
