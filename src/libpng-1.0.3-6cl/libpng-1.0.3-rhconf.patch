@@ -1,0 +1,39 @@
+--- libpng-1.0.3/Makefile.rhconf	Sun Feb  7 17:52:24 1999
++++ libpng-1.0.3/Makefile	Sun Feb  7 17:57:44 1999
+@@ -6,13 +6,13 @@
+ CC=gcc
+ 
+ # where make install puts libpng.a, libpng.so*, and png.h
+-prefix=/usr/local
++prefix=/usr
+ 
+ # Where the zlib library and include files are located
+ #ZLIBLIB=/usr/local/lib
+ #ZLIBINC=/usr/local/include
+-ZLIBLIB=../zlib
+-ZLIBINC=../zlib
++ZLIBLIB=/usr/lib
++ZLIBINC=/usr/include
+ 
+ ALIGN=
+ # For I-386:
+@@ -22,8 +22,8 @@
+          -Wmissing-declarations -Wtraditional -Wcast-align \
+          -Wstrict-prototypes -Wmissing-prototypes #-Wconversion
+ 
+-CFLAGS=-I$(ZLIBINC) -Wall -O3 -funroll-loops \
+-     $(ALIGN) # $(WARNMORE) -g -DPNG_DEBUG=5
++CFLAGS=-I$(ZLIBINC) $(RPM_OPT_FLAGS) -Wall \
++     $(ALIGN) # $(WARNMORE) # -g -DPNG_DEBUG=5
+ LDFLAGS=-L. -Wl,-rpath,. -L$(ZLIBLIB) -Wl,-rpath,$(ZLIBLIB) -lpng -lz -lm
+ 
+ RANLIB=ranlib
+@@ -72,7 +72,7 @@
+ 	./pngtest
+ 
+ install: libpng.a libpng.so.$(PNGVER)
+-	-@mkdir $(INCPATH) $(LIBPATH)
++	-@mkdir -p $(INCPATH) $(LIBPATH)
+ 	cp png.h pngconf.h $(INCPATH)
+ 	chmod 644 $(INCPATH)/png.h $(INCPATH)/pngconf.h
+ 	cp libpng.a libpng.so.$(PNGVER) $(LIBPATH)
