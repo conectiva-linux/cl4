@@ -1,0 +1,6 @@
+gimp name "GIMP"
+gimp description "Programa de Manipulação Gráfica GNU"
+gimp icon "wilbur.xpm"
+gimp mini-icon "mini-wilbur.xpm"
+gimp exec "gimp &"
+gimp group Gráficos

@@ -1,0 +1,16 @@
+# KDE Config File
+[KDE Desktop Entry]
+SwallowExec=
+BinaryPattern=
+Name=Gimp
+MiniIcon=
+Protocols=
+MimeType=
+Comment=Gimp - GNU Image Manipulation Program
+Comment[pt_BR]=Gimp - Edição de Imagens
+Exec=/usr/bin/gimp
+Icon=wilbur.xpm
+TerminalOptions=
+Path=
+Type=Application
+Terminal=0
