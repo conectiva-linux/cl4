@@ -1,0 +1,37 @@
+--- rman.c.orig	Tue Dec  8 15:59:41 1998
++++ rman.c	Fri Dec 11 13:02:55 1998
+@@ -52,6 +52,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#include <locale.h>
+ 
+ 
+ /*** make #define's into consts? => can't because compilers not smart enough ***/
+@@ -119,7 +120,7 @@
+ 	/*,*//*ENDSTRUCTTAGS,*/
+ };
+ 
+-const char *tcltkOP[] = { "Command-Line Name", "Database Name", "Database Class" };
++char *tcltkOP[] = { "Command-Line Name", "Database Name", "Database Class" };
+ 
+ 
+ /* characters that need special handling in any output format, *more than just a backslash* */
+@@ -297,7 +298,7 @@
+ 	else return 1;
+ }
+ 
+-int lcexceptionscmp(const char **a, const char **b) { return stricmp(*a, *b); }
++int lcexceptionscmp(const void *a, const void *b) { return stricmp(a, b); }
+ 
+ int
+ strincmp(const char *s1, const char *s2, size_t n) {
+@@ -5136,6 +5137,8 @@
+ 		{ 'v', 0, "version", "(ersion)" },
+ 		{ '\0', 0, "", NULL }
+ 	};
++
++	setlocale (LC_ALL, "");
+ 
+ 	/* calculate strgetopt from options list */
+ 	for (i=0,p=strgetopt; option[i].letter!='\0'; i++) {
