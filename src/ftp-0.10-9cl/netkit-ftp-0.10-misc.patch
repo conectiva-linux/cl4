@@ -1,0 +1,28 @@
+--- netkit-ftp-0.10/MCONFIG.ewt	Sun Aug 24 09:52:32 1997
++++ netkit-ftp-0.10/MCONFIG	Sun Aug 24 09:52:52 1997
+@@ -24,10 +24,10 @@
+ CC=gcc
+ 
+ # Compiler warnings
+-WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
++WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline 
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe ${RPM_OPT_FLAGS} -D__USE_BSD_SIGNAL $(WARNINGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -43,10 +43,10 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ # Use GNU readline library
+-USE_READLINE=1
++USE_READLINE=0
+ 
+ 
+ 

@@ -1,0 +1,33 @@
+--- netkit-ftp-0.10/ftp/ftp.c.ovr	Thu Mar 20 21:02:13 1997
++++ netkit-ftp-0.10/ftp/ftp.c	Tue Dec 15 16:42:46 1998
+@@ -394,7 +394,8 @@
+ 			if (dig > 4 && pflag == 1 && isdigit(c))
+ 				pflag = 2;
+ 			if (pflag == 2) {
+-				if (c != '\r' && c != ')')
++				if ( (strlen(pasv) <= sizeof(pasv) - 1) &&
++				    (c != '\r') && (c != ')'))
+ 					*pt++ = c;
+ 				else {
+ 					*pt = '\0';
+@@ -811,7 +812,8 @@
+ 				return;
+ 			}
+ 		}
+-		else if (runique && (local = gunique(local)) == NULL) {
++		else if (runique && (strcmp(cmd,"NLST") != 0) &&
++			 (local = gunique(local)) == NULL) {
+ 			(void) signal(SIGINT, oldintr);
+ 			code = -1;
+ 			return;
+--- netkit-ftp-0.10/ftp/cmds.c.ovr	Sun Jun  8 16:07:19 1997
++++ netkit-ftp-0.10/ftp/cmds.c	Tue Dec 15 16:41:26 1998
+@@ -131,7 +131,7 @@
+ setpeer(int argc, char *argv[])
+ {
+ 	char *host;
+-	short port;
++	unsigned short port;
+ 
+ 	if (connected) {
+ 		printf("Already connected to %s, use close first.\n",

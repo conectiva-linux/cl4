@@ -1,0 +1,2649 @@
+diff -Nur netkit-ftp-0.10.orig/ChangeLog netkit-ftp-0.10/ChangeLog
+--- netkit-ftp-0.10.orig/ChangeLog	Sun Jun  8 18:02:32 1997
++++ netkit-ftp-0.10/ChangeLog	Thu Jan 21 15:03:33 1999
+@@ -1,3 +1,6 @@
++18-Apr-1998:
++        i18n (Arnaldo Carvalho de Melo - acme@conectiva.com.br, 
++              Fabio Dorival Victorelli - fabio@conectiva.com.br)
+ 08-Jun-1997:
+ 	Fixed doc for "newer" command. (Roderick Schertler,
+ 	  roderick@argon.org) 
+diff -Nur netkit-ftp-0.10.orig/README.i18n netkit-ftp-0.10/README.i18n
+--- netkit-ftp-0.10.orig/README.i18n	Wed Dec 31 21:00:00 1969
++++ netkit-ftp-0.10/README.i18n	Thu Jan 21 15:03:33 1999
+@@ -0,0 +1,7 @@
++ftp is now internationalized!
++
++look at the ftp/po directory to see how to make ftp speak your language.
++
++Curitiba, Brazil, 18/04/1998
++Arnaldo Carvalho de Melo <acme@conectiva.com.br>
++Fabio Dorival Victorelli <fabio@conectiva.com.br>
+diff -Nur netkit-ftp-0.10.orig/ftp/Makefile netkit-ftp-0.10/ftp/Makefile
+--- netkit-ftp-0.10.orig/ftp/Makefile	Sun Jun  8 18:42:32 1997
++++ netkit-ftp-0.10/ftp/Makefile	Thu Jan 21 15:03:33 1999
+@@ -12,6 +12,10 @@
+ LIBS += -lreadline $(LIBTERMCAP)
+ endif
+ 
++# uncomment if you want i18n
++# Arnaldo Carvalho de Melo <acme@conectiva.com.br>
++CFLAGS += -D_I18N_
++
+ ftp: cmds.o cmdtab.o domacro.o ftp.o glob.o main.o ruserpass.o
+ 	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@
+ 
+diff -Nur netkit-ftp-0.10.orig/ftp/cmds.c netkit-ftp-0.10/ftp/cmds.c
+--- netkit-ftp-0.10.orig/ftp/cmds.c	Sun Jun  8 18:07:19 1997
++++ netkit-ftp-0.10/ftp/cmds.c	Thu Jan 21 15:03:33 1999
+@@ -69,6 +69,8 @@
+ #include "cmds.h"
+ #include "glob.h"
+ 
++#include "intl.h"
++
+ void intr(int);
+ 
+ extern FILE *cout;
+@@ -106,7 +108,7 @@
+ 	int ret;
+ 
+ 	if (len >= sizeof(line) - 3) {
+-		printf("sorry, arguments too long\n");
++		printf(_("sorry, arguments too long\n"));
+ 		intr(0);
+ 	}
+ 	printf("(%s) ", prompt);
+@@ -134,7 +136,7 @@
+ 	short port;
+ 
+ 	if (connected) {
+-		printf("Already connected to %s, use close first.\n",
++		printf(_("Already connected to %s, use close first.\n"),
+ 			hostname);
+ 		code = -1;
+ 		return;
+@@ -142,7 +144,7 @@
+ 	if (argc < 2)
+ 		(void) another(&argc, &argv, "to");
+ 	if (argc < 2 || argc > 3) {
+-		printf("usage: %s host-name [port]\n", argv[0]);
++		printf(_("usage: %s host-name [port]\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -150,8 +152,8 @@
+ 	if (argc > 2) {
+ 		port = atoi(argv[2]);
+ 		if (port <= 0) {
+-			printf("%s: bad port number-- %s\n", argv[1], argv[2]);
+-			printf ("usage: %s host-name [port]\n", argv[0]);
++			printf(_("%s: bad port number-- %s\n"), argv[1], argv[2]);
++			printf (_("usage: %s host-name [port]\n"), argv[0]);
+ 			code = -1;
+ 			return;
+ 		}
+@@ -194,7 +196,7 @@
+ 				*cp = '\0';
+ 			}
+ 
+-			printf("Remote system type is %s.\n",
++			printf(_("Remote system type is %s.\n"),
+ 				reply_string+4);
+ 			if (cp)
+ 				*cp = c;
+@@ -213,7 +215,7 @@
+ 			type = 0;
+ 			(void) strcpy(typename, "binary");
+ 			if (overbose)
+-			    printf("Using %s mode to transfer files.\n",
++			    printf(_("Using %s mode to transfer files.\n"),
+ 				typename);
+ 		} else {
+ 			if (proxy)
+@@ -222,8 +224,8 @@
+ 				unix_server = 0;
+ 			if (overbose && 
+ 			    !strncmp(reply_string, "215 TOPS20", 10))
+-				printf(
+-"Remember to set tenex mode when transfering binary files from this machine.\n");
++				printf(_(
++"Remember to set tenex mode when transfering binary files from this machine.\n"));
+ 		}
+ 		verbose = overbose;
+ #else
+@@ -281,7 +283,7 @@
+ 	if (argc > 2) {
+ 		const char *sep;
+ 
+-		printf("usage: %s [", argv[0]);
++		printf(_("usage: %s ["), argv[0]);
+ 		sep = " ";
+ 		for (p = types; p->t_name; p++) {
+ 			printf("%s%s", sep, p->t_name);
+@@ -292,7 +294,7 @@
+ 		return;
+ 	}
+ 	if (argc < 2) {
+-		printf("Using %s mode to transfer files.\n", typename);
++		printf(_("Using %s mode to transfer files.\n"), typename);
+ 		code = 0;
+ 		return;
+ 	}
+@@ -322,7 +324,7 @@
+ 		if (newtype == p->t_type)
+ 			break;
+ 	if (p->t_name == 0) {
+-		printf("ftp: internal error: unknown type %d\n", newtype);
++		printf(_("ftp: internal error: unknown type %d\n"), newtype);
+ 		return;
+ 	}
+ 	if (newtype == TYPE_L && bytename[0] != '\0')
+@@ -372,7 +374,7 @@
+ void
+ setmode(void)
+ {
+-	printf("We only support %s mode, sorry.\n", modename);
++	printf(_("We only support %s mode, sorry.\n"), modename);
+ 	code = -1;
+ }
+ 
+@@ -383,7 +385,7 @@
+ void
+ setform(void)
+ {
+-	printf("We only support %s format, sorry.\n", formname);
++	printf(_("We only support %s format, sorry.\n"), formname);
+ 	code = -1;
+ }
+ 
+@@ -393,7 +395,7 @@
+ void
+ setstruct(void)
+ {
+-	printf("We only support %s structure, sorry.\n", structname);
++	printf(_("We only support %s structure, sorry.\n"), structname);
+ 	code = -1;
+ }
+ 
+@@ -416,7 +418,7 @@
+ 		goto usage;
+ 	if (argc < 3 && !another(&argc, &argv, "remote-file")) {
+ usage:
+-		printf("usage: %s local-file remote-file\n", argv[0]);
++		printf(_("usage: %s local-file remote-file\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -459,7 +461,7 @@
+ 	char *tp;
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "local-files")) {
+-		printf("usage: %s local-files\n", argv[0]);
++		printf(_("usage: %s local-files\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -602,7 +604,7 @@
+ 		goto usage;
+ 	if (argc < 3 && !another(&argc, &argv, "local-file")) {
+ usage:
+-		printf("usage: %s remote-file [ local-file ]\n", argv[0]);
++		printf(_("usage: %s remote-file [ local-file ]\n"), argv[0]);
+ 		code = -1;
+ 		return (0);
+ 	}
+@@ -643,7 +645,7 @@
+ 		ret = stat(argv[2], &stbuf);
+ 		if (restartit == 1) {
+ 			if (ret < 0) {
+-				fprintf(stderr, "local: %s: %s\n", argv[2],
++				fprintf(stderr, _("local: %s: %s\n"), argv[2],
+ 					strerror(errno));
+ 				return (0);
+ 			}
+@@ -732,7 +734,7 @@
+ 	char *cp, *tp, *tp2, tmpbuf[MAXPATHLEN];
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "remote-files")) {
+-		printf("usage: %s remote-files\n", argv[0]);
++		printf(_("usage: %s remote-files\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -825,7 +827,7 @@
+ 		umask(oldumask);
+ 
+ 		if (fd<0) {
+-			printf("Error creating temporary file, oops\n");
++			printf(_("Error creating temporary file, oops\n"));
+ 			return NULL;
+ 		}
+ 		
+@@ -845,7 +847,7 @@
+ 		verbose = oldverbose; hash = oldhash;
+ 		ftemp = fdopen(fd, "r");
+ 		if (ftemp == NULL) {
+-			printf("fdopen failed, oops\n");
++			printf(_("fdopen failed, oops\n"));
+ 			return NULL;
+ 		}
+ 	}
+@@ -874,44 +876,44 @@
+ 	int i;
+ 
+ 	if (connected)
+-		printf("Connected to %s.\n", hostname);
++		printf(_("Connected to %s.\n"), hostname);
+ 	else
+-		printf("Not connected.\n");
++		printf(_("Not connected.\n"));
+ 	if (!proxy) {
+ 		pswitch(1);
+ 		if (connected) {
+-			printf("Connected for proxy commands to %s.\n", hostname);
++			printf(_("Connected for proxy commands to %s.\n"), hostname);
+ 		}
+ 		else {
+-			printf("No proxy connection.\n");
++			printf(_("No proxy connection.\n"));
+ 		}
+ 		pswitch(0);
+ 	}
+-	printf("Mode: %s; Type: %s; Form: %s; Structure: %s\n",
++	printf(_("Mode: %s; Type: %s; Form: %s; Structure: %s\n"),
+ 		modename, typename, formname, structname);
+-	printf("Verbose: %s; Bell: %s; Prompting: %s; Globbing: %s\n", 
++	printf(_("Verbose: %s; Bell: %s; Prompting: %s; Globbing: %s\n"), 
+ 		onoff(verbose), onoff(bell), onoff(interactive),
+ 		onoff(doglob));
+-	printf("Store unique: %s; Receive unique: %s\n", onoff(sunique),
++	printf(_("Store unique: %s; Receive unique: %s\n"), onoff(sunique),
+ 		onoff(runique));
+-	printf("Case: %s; CR stripping: %s\n",onoff(mcase),onoff(crflag));
++	printf(_("Case: %s; CR stripping: %s\n"),onoff(mcase),onoff(crflag));
+ 	if (ntflag) {
+-		printf("Ntrans: (in) %s (out) %s\n", ntin,ntout);
++		printf(_("(Ntrans: (in) %s (out) %s\n"), ntin,ntout);
+ 	}
+ 	else {
+-		printf("Ntrans: off\n");
++		printf(_("Ntrans: off\n"));
+ 	}
+ 	if (mapflag) {
+-		printf("Nmap: (in) %s (out) %s\n", mapin, mapout);
++		printf(_("Nmap: (in) %s (out) %s\n"), mapin, mapout);
+ 	}
+ 	else {
+-		printf("Nmap: off\n");
++		printf(_("Nmap: off\n"));
+ 	}
+-	printf("Hash mark printing: %s; Use of PORT cmds: %s\n",
++	printf(_("Hash mark printing: %s; Use of PORT cmds: %s\n"),
+ 		onoff(hash), onoff(sendport));
+-	printf("Tick counter printing: %s\n", onoff(tick));
++	printf(_("Tick counter printing: %s\n"), onoff(tick));
+ 	if (macnum > 0) {
+-		printf("Macros:\n");
++		printf(_("Macros:\n"));
+ 		for (i=0; i<macnum; i++) {
+ 			printf("\t%s\n",macros[i].mac_name);
+ 		}
+@@ -928,7 +930,7 @@
+ {
+ 
+ 	bell = !bell;
+-	printf("Bell mode %s.\n", onoff(bell));
++	printf(_("Bell mode %s.\n"), onoff(bell));
+ 	code = bell;
+ }
+ 
+@@ -941,7 +943,7 @@
+ {
+ 
+ 	traceflag = !traceflag;
+-	printf("Packet tracing %s.\n", onoff(traceflag));
++	printf(_("Packet tracing %s.\n"), onoff(traceflag));
+ 	code = traceflag;
+ }
+ 
+@@ -957,10 +959,10 @@
+ 	if (hash && tick)
+ 		settick();
+  
+-	printf("Hash mark printing %s", onoff(hash));
++	printf(_("Hash mark printing %s"), onoff(hash));
+ 	code = hash;
+ 	if (hash)
+-		printf(" (%d bytes/hash mark)", 1024);
++		printf(_(" (%d bytes/hash mark)"), 1024);
+ 	printf(".\n");
+ }
+ 
+@@ -974,10 +976,10 @@
+ 	tick = !tick;
+ 	if (hash && tick)
+ 		sethash();
+-	printf("Tick counter printing %s", onoff(tick));
++	printf(_("Tick counter printing %s"), onoff(tick));
+ 	code = tick;
+ 	if (tick)
+-		printf(" (%d bytes/tick increment)", TICKBYTES);
++		printf(_(" (%d bytes/tick increment)"), TICKBYTES);
+ 	printf(".\n");
+ }
+ 
+@@ -990,7 +992,7 @@
+ {
+ 
+ 	verbose = !verbose;
+-	printf("Verbose mode %s.\n", onoff(verbose));
++	printf(_("Verbose mode %s.\n"), onoff(verbose));
+ 	code = verbose;
+ }
+ 
+@@ -1002,7 +1004,7 @@
+ {
+ 
+ 	sendport = !sendport;
+-	printf("Use of PORT cmds %s.\n", onoff(sendport));
++	printf(_("Use of PORT cmds %s.\n"), onoff(sendport));
+ 	code = sendport;
+ }
+ 
+@@ -1015,7 +1017,7 @@
+ {
+ 
+ 	interactive = !interactive;
+-	printf("Interactive mode %s.\n", onoff(interactive));
++	printf(_("Interactive mode %s.\n"), onoff(interactive));
+ 	code = interactive;
+ }
+ 
+@@ -1028,7 +1030,7 @@
+ {
+ 	
+ 	doglob = !doglob;
+-	printf("Globbing %s.\n", onoff(doglob));
++	printf(_("Globbing %s.\n"), onoff(doglob));
+ 	code = doglob;
+ }
+ 
+@@ -1047,7 +1049,7 @@
+ 	if (argc > 1) {
+ 		val = atoi(argv[1]);
+ 		if (val < 0) {
+-			printf("%s: bad debugging value.\n", argv[1]);
++			printf(_("%s: bad debugging value.\n"), argv[1]);
+ 			code = -1;
+ 			return;
+ 		}
+@@ -1058,7 +1060,7 @@
+ 		options |= SO_DEBUG;
+ 	else
+ 		options &= ~SO_DEBUG;
+-	printf("Debugging %s (debug=%d).\n", onoff(debug), debug);
++	printf(_("Debugging %s (debug=%d).\n"), onoff(debug), debug);
+ 	code = debug > 0;
+ }
+ 
+@@ -1073,13 +1075,13 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "remote-directory")) {
+-		printf("usage: %s remote-directory\n", argv[0]);
++		printf(_("usage: %s remote-directory\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (command("CWD %s", argv[1]) == ERROR && code == 500) {
+ 		if (verbose)
+-			printf("CWD command not recognized, trying XCWD\n");
++			printf(_("CWD command not recognized, trying XCWD\n"));
+ 		(void) command("XCWD %s", argv[1]);
+ 	}
+ }
+@@ -1099,7 +1101,7 @@
+ 	    dir = ".";
+ 	}
+ 	else if (argc != 2) {
+-		printf("usage: %s local-directory\n", argv[0]);
++		printf(_("usage: %s local-directory\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1111,7 +1113,7 @@
+ 		return;
+ 	}
+ 	if (chdir(dir) < 0) {
+-		fprintf(stderr, "local: %s: %s\n", dir, strerror(errno));
++		fprintf(stderr, _("local: %s: %s\n"), dir, strerror(errno));
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1119,7 +1121,7 @@
+ 	    if (errno==ERANGE) strcpy(buf, "<too long>");
+ 	    else strcpy(buf, "???");
+ 	}
+-	printf("Local directory now %s\n", buf);
++	printf(_("Local directory now %s\n"), buf);
+ 	code = 0;
+ }
+ 
+@@ -1133,7 +1135,7 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "remote-file")) {
+-		printf("usage: %s remote-file\n", argv[0]);
++		printf(_("usage: %s remote-file\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1151,7 +1153,7 @@
+ 	char *cp;
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "remote-files")) {
+-		printf("usage: %s remote-files\n", argv[0]);
++		printf(_("usage: %s remote-files\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1193,7 +1195,7 @@
+ 		goto usage;
+ 	if (argc < 3 && !another(&argc, &argv, "to-name")) {
+ usage:
+-		printf("%s from-name to-name\n", argv[0]);
++		printf(_("%s from-name to-name\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1218,7 +1220,7 @@
+ 		argc++, argv[2] = foo;
+ 	}
+ 	if (argc > 3) {
+-		printf("usage: %s remote-directory local-file\n", argv[0]);
++		printf(_("usage: %s remote-directory local-file\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1253,7 +1255,7 @@
+ 		goto usage;
+ 	if (argc < 3 && !another(&argc, &argv, "local-file")) {
+ usage:
+-		printf("usage: %s remote-files local-file\n", argv[0]);
++		printf(_("usage: %s remote-files local-file\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1339,7 +1341,7 @@
+ 	(void) signal(SIGINT, old1);
+ 	(void) signal(SIGQUIT, old2);
+ 	if (pid == -1) {
+-		perror("Try again later");
++		perror(_("Try again later"));
+ 		code = -1;
+ 	}
+ 	else {
+@@ -1359,7 +1361,7 @@
+ 	if (argc < 2)
+ 		(void) another(&argc, &argv, "username");
+ 	if (argc < 2 || argc > 4) {
+-		printf("usage: %s username [password] [account]\n", argv[0]);
++		printf(_("usage: %s username [password] [account]\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1371,7 +1373,7 @@
+ 	}
+ 	if (n == CONTINUE) {
+ 		if (argc < 4) {
+-			printf("Account: "); (void) fflush(stdout);
++			printf(_("Account: ")); (void) fflush(stdout);
+ 			fgets(theacct, sizeof(theacct), stdin);
+ 			argv[3] = theacct; argc++;
+ 		}
+@@ -1379,7 +1381,7 @@
+ 		aflag++;
+ 	}
+ 	if (n != COMPLETE) {
+-		fprintf(stdout, "Login failed.\n");
++		fprintf(stdout, _("Login failed.\n"));
+ 		return;
+ 	}
+ 	if (!aflag && argc == 4) {
+@@ -1400,7 +1402,7 @@
+ 	 */
+ 	verbose = 1;
+ 	if (command("PWD") == ERROR && code == 500) {
+-		printf("PWD command not recognized, trying XPWD\n");
++		printf(_("PWD command not recognized, trying XPWD\n"));
+ 		(void) command("XPWD");
+ 	}
+ 	verbose = oldverbose;
+@@ -1416,13 +1418,13 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "directory-name")) {
+-		printf("usage: %s directory-name\n", argv[0]);
++		printf(_("usage: %s directory-name\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (command("MKD %s", argv[1]) == ERROR && code == 500) {
+ 		if (verbose)
+-			printf("MKD command not recognized, trying XMKD\n");
++			printf(_("MKD command not recognized, trying XMKD\n"));
+ 		(void) command("XMKD %s", argv[1]);
+ 	}
+ }
+@@ -1437,13 +1439,13 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "directory-name")) {
+-		printf("usage: %s directory-name\n", argv[0]);
++		printf(_("usage: %s directory-name\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (command("RMD %s", argv[1]) == ERROR && code == 500) {
+ 		if (verbose)
+-			printf("RMD command not recognized, trying XRMD\n");
++			printf(_("RMD command not recognized, trying XRMD\n"));
+ 		(void) command("XRMD %s", argv[1]);
+ 	}
+ }
+@@ -1458,7 +1460,7 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "command line to send")) {
+-		printf("usage: %s line-to-send\n", argv[0]);
++		printf(_("usage: %s line-to-send\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1477,7 +1479,7 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "arguments to SITE command")) {
+-		printf("usage: %s line-to-send\n", argv[0]);
++		printf(_("usage: %s line-to-send\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1516,7 +1518,7 @@
+ 		goto usage;
+ 	if (argc < 3 && !another(&argc, &argv, "file-name")) {
+ usage:
+-		printf("usage: %s mode file-name\n", argv[0]);
++		printf(_("usage: %s mode file-name\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1718,25 +1720,25 @@
+ 	void (*oldintr)(int);
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "command")) {
+-		printf("usage: %s command\n", argv[0]);
++		printf(_("usage: %s command\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+ 	c = getcmd(argv[1]);
+ 	if (c == (struct cmd *) -1) {
+-		printf("?Ambiguous command\n");
++		printf(_("?Ambiguous command\n"));
+ 		(void) fflush(stdout);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (c == 0) {
+-		printf("?Invalid command\n");
++		printf(_("?Invalid command\n"));
+ 		(void) fflush(stdout);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (!c->c_proxy) {
+-		printf("?Invalid proxy command\n");
++		printf(_("?Invalid proxy command\n"));
+ 		(void) fflush(stdout);
+ 		code = -1;
+ 		return;
+@@ -1748,7 +1750,7 @@
+ 	oldintr = signal(SIGINT, proxabort);
+ 	pswitch(1);
+ 	if (c->c_conn && !connected) {
+-		printf("Not connected\n");
++		printf(_("Not connected\n"));
+ 		(void) fflush(stdout);
+ 		pswitch(0);
+ 		(void) signal(SIGINT, oldintr);
+@@ -1774,7 +1776,7 @@
+ setcase(void)
+ {
+ 	mcase = !mcase;
+-	printf("Case mapping %s.\n", onoff(mcase));
++	printf(_("Case mapping %s.\n"), onoff(mcase));
+ 	code = mcase;
+ }
+ 
+@@ -1782,7 +1784,7 @@
+ setcr(void)
+ {
+ 	crflag = !crflag;
+-	printf("Carriage Return stripping %s.\n", onoff(crflag));
++	printf(_("Carriage Return stripping %s.\n"), onoff(crflag));
+ 	code = crflag;
+ }
+ 
+@@ -1793,7 +1795,7 @@
+ {
+ 	if (argc == 1) {
+ 		ntflag = 0;
+-		printf("Ntrans off.\n");
++		printf(_("Ntrans off.\n"));
+ 		code = ntflag;
+ 		return;
+ 	}
+@@ -1845,12 +1847,12 @@
+ 
+ 	if (argc == 1) {
+ 		mapflag = 0;
+-		printf("Nmap off.\n");
++		printf(_("Nmap off.\n"));
+ 		code = mapflag;
+ 		return;
+ 	}
+ 	if (argc < 3 && !another(&argc, &argv, "mapout")) {
+-		printf("Usage: %s [mapin mapout]\n",argv[0]);
++		printf(_("Usage: %s [mapin mapout]\n"),argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -1978,7 +1980,7 @@
+ 						}
+ 					}
+ 					if (!*cp2) {
+-						printf("nmap: unbalanced brackets\n");
++						printf(_("nmap: unbalanced brackets\n"));
+ 						return(name);
+ 					}
+ 					match = 1;
+@@ -1991,7 +1993,7 @@
+ 					      }
+ 					}
+ 					if (!*cp2) {
+-						printf("nmap: unbalanced brackets\n");
++						printf(_("nmap: unbalanced brackets\n"));
+ 						return(name);
+ 					}
+ 					break;
+@@ -2042,7 +2044,7 @@
+ setsunique(void)
+ {
+ 	sunique = !sunique;
+-	printf("Store unique %s.\n", onoff(sunique));
++	printf(_("Store unique %s.\n"), onoff(sunique));
+ 	code = sunique;
+ }
+ 
+@@ -2050,7 +2052,7 @@
+ setrunique(void)
+ {
+ 	runique = !runique;
+-	printf("Receive unique %s.\n", onoff(runique));
++	printf(_("Receive unique %s.\n"), onoff(runique));
+ 	code = runique;
+ }
+ 
+@@ -2060,7 +2062,7 @@
+ {
+ 	if (command("CDUP") == ERROR && code == 500) {
+ 		if (verbose)
+-			printf("CDUP command not recognized, trying XCUP\n");
++			printf(_("CDUP command not recognized, trying XCUP\n"));
+ 		(void) command("XCUP");
+ 	}
+ }
+@@ -2070,10 +2072,10 @@
+ restart(int argc, char *argv[])
+ {
+ 	if (argc != 2)
+-		printf("restart: offset not specified\n");
++		printf(_("restart: offset not specified\n"));
+ 	else {
+ 		restart_point = atol(argv[1]);
+-		printf("restarting at %ld. %s\n", restart_point,
++		printf(_("restarting at %ld. %s\n"), restart_point,
+ 		    "execute get, put or append to initiate transfer");
+ 	}
+ }
+@@ -2094,17 +2096,17 @@
+ 	int c;
+ 
+ 	if (macnum == 16) {
+-		printf("Limit of 16 macros have already been defined\n");
++		printf(_("Limit of 16 macros have already been defined\n"));
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (argc < 2 && !another(&argc, &argv, "macro name")) {
+-		printf("Usage: %s macro_name\n",argv[0]);
++		printf(_("Usage: %s macro_name\n"),argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+ 	if (interactive) {
+-		printf("Enter macro line by line, terminating it with a null line\n");
++		printf(_("Enter macro line by line, terminating it with a null line\n"));
+ 	}
+ 	(void) strncpy(macros[macnum].mac_name, argv[1], 8);
+ 	if (macnum == 0) {
+@@ -2116,7 +2118,7 @@
+ 	tmp = macros[macnum].mac_start;
+ 	while (tmp != macbuf+4096) {
+ 		if ((c = getchar()) == EOF) {
+-			printf("macdef:end of file encountered\n");
++			printf(_("macdef:end of file encountered\n"));
+ 			code = -1;
+ 			return;
+ 		}
+@@ -2139,7 +2141,7 @@
+ 		while ((c = getchar()) != '\n' && c != EOF)
+ 			/* LOOP */;
+ 		if (c == EOF || getchar() == '\n') {
+-			printf("Macro not defined - 4k buffer exceeded\n");
++			printf(_("Macro not defined - 4k buffer exceeded\n"));
+ 			code = -1;
+ 			return;
+ 		}
+@@ -2153,7 +2155,7 @@
+ setpassive(void)
+ {
+         passivemode = !passivemode;
+-        printf("Passive mode %s.\n", onoff(passivemode));
++        printf(_("Passive mode %s.\n"), onoff(passivemode));
+         code = passivemode;
+ }
+ 
+@@ -2167,7 +2169,7 @@
+ {
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "filename")) {
+-		printf("usage: %s filename\n", argv[0]);
++		printf(_("usage: %s filename\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -2185,7 +2187,7 @@
+ 	int overbose;
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "filename")) {
+-		printf("usage: %s filename\n", argv[0]);
++		printf(_("usage: %s filename\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -2223,7 +2225,7 @@
+ {
+ 	if (getit(argc, argv, -1, "w")) {
+ 		/* This should be controlled by some verbose flag */
+-		printf("Local file \"%s\" is newer than remote file \"%s\"\n",
++		printf(_("Local file \"%s\" is newer than remote file \"%s\"\n"),
+ 			argv[2], argv[1]);
+ 	}
+ }
+diff -Nur netkit-ftp-0.10.orig/ftp/cmdtab.c netkit-ftp-0.10/ftp/cmdtab.c
+--- netkit-ftp-0.10.orig/ftp/cmdtab.c	Sat Apr  5 20:26:26 1997
++++ netkit-ftp-0.10/ftp/cmdtab.c	Thu Jan 21 15:03:33 1999
+@@ -40,79 +40,80 @@
+ #include <string.h>   /* for NULL */
+ #include "ftp_var.h"
+ #include "cmds.h"
++#include "intl.h"
+ 
+ /*
+  * User FTP -- Command Tables.
+  */
+ 
+-const char accounthelp[] = "send account command to remote server";
+-const char appendhelp[] =  "append to a file";
+-const char asciihelp[] =   "set ascii transfer type";
+-const char beephelp[] =    "beep when command completed";
+-const char binaryhelp[] =  "set binary transfer type";
+-const char casehelp[] =    "toggle mget upper/lower case id mapping";
+-const char cdhelp[] =      "change remote working directory";
+-const char cduphelp[] = "change remote working directory to parent directory";
+-const char chmodhelp[] =   "change file permissions of remote file";
+-const char connecthelp[] = "connect to remote tftp";
+-const char crhelp[] =      "toggle carriage return stripping on ascii gets";
+-const char deletehelp[] =  "delete remote file";
+-const char debughelp[] =   "toggle/set debugging mode";
+-const char dirhelp[] =     "list contents of remote directory";
+-const char disconhelp[] =  "terminate ftp session";
+-const char domachelp[] =   "execute macro";
+-const char formhelp[] =	"set file transfer format";
+-const char globhelp[] =	"toggle metacharacter expansion of local file names";
+-const char hashhelp[] =	"toggle printing `#' for each buffer transferred";
+-const char helphelp[] =	"print local help information";
+-const char idlehelp[] =	"get (set) idle timer on remote side";
+-const char lcdhelp[] =	"change local working directory";
+-const char lshelp[] =	"list contents of remote directory";
+-const char macdefhelp[] =  "define a macro";
+-const char mdeletehelp[] = "delete multiple files";
+-const char mdirhelp[] =    "list contents of multiple remote directories";
+-const char mgethelp[] =    "get multiple files";
+-const char mkdirhelp[] =   "make directory on the remote machine";
+-const char mlshelp[] =     "list contents of multiple remote directories";
+-const char modtimehelp[] = "show last modification time of remote file";
+-const char modehelp[] =    "set file transfer mode";
+-const char mputhelp[] =    "send multiple files";
+-const char newerhelp[] =   "get file if remote file is newer than local file ";
+-const char nlisthelp[] =   "nlist contents of remote directory";
+-const char nmaphelp[] =    "set templates for default file name mapping";
+-const char ntranshelp[] ="set translation table for default file name mapping";
+-const char passivehelp[] = "enter passive transfer mode";
+-const char porthelp[] =	   "toggle use of PORT cmd for each data connection";
+-const char prompthelp[] =  "force interactive prompting on multiple commands";
+-const char proxyhelp[] =   "issue command on alternate connection";
+-const char pwdhelp[] =     "print working directory on remote machine";
+-const char quithelp[] =    "terminate ftp session and exit";
+-const char quotehelp[] =   "send arbitrary ftp command";
+-const char receivehelp[] = "receive file";
+-const char regethelp[] =   "get file restarting at end of local file";
+-const char remotehelp[] =  "get help from remote server";
+-const char renamehelp[] =  "rename file";
+-const char restarthelp[] = "restart file transfer at bytecount";
+-const char rmdirhelp[] =   "remove directory on the remote machine";
+-const char rmtstatushelp[]="show status of remote machine";
+-const char runiquehelp[] = "toggle store unique for local files";
+-const char resethelp[] =   "clear queued command replies";
+-const char sendhelp[] =    "send one file";
+-const char sitehelp[] =    "send site specific command to remote server\n"
+-	    "\t\tTry \"rhelp site\" or \"site help\" for more information";
+-const char shellhelp[] =   "escape to the shell";
+-const char sizecmdhelp[] = "show size of remote file";
+-const char statushelp[] =  "show current status";
+-const char structhelp[] =  "set file transfer structure";
+-const char suniquehelp[] = "toggle store unique on remote machine";
+-const char systemhelp[] =  "show remote system type";
+-const char tenexhelp[] =   "set tenex file transfer type";
+-const char tickhelp[] =    "toggle printing byte counter during transfers";
+-const char tracehelp[] =   "toggle packet tracing";
+-const char typehelp[] =    "set file transfer type";
+-const char umaskhelp[] =   "get (set) umask on remote side";
+-const char userhelp[] =    "send new user information";
+-const char verbosehelp[] = "toggle verbose mode";
++const char accounthelp[] = N_("send account command to remote server");
++const char appendhelp[] =  N_("append to a file");
++const char asciihelp[] =   N_("set ascii transfer type");
++const char beephelp[] =    N_("beep when command completed");
++const char binaryhelp[] =  N_("set binary transfer type");
++const char casehelp[] =    N_("toggle mget upper/lower case id mapping");
++const char cdhelp[] =      N_("change remote working directory");
++const char cduphelp[] = N_("change remote working directory to parent directory");
++const char chmodhelp[] =   N_("change file permissions of remote file");
++const char connecthelp[] = N_("connect to remote tftp");
++const char crhelp[] =      N_("toggle carriage return stripping on ascii gets");
++const char deletehelp[] =  N_("delete remote file");
++const char debughelp[] =   N_("toggle/set debugging mode");
++const char dirhelp[] =     N_("list contents of remote directory");
++const char disconhelp[] =  N_("terminate ftp session");
++const char domachelp[] =   N_("execute macro");
++const char formhelp[] =	N_("set file transfer format");
++const char globhelp[] =	N_("toggle metacharacter expansion of local file names");
++const char hashhelp[] =	N_("toggle printing `#' for each buffer transferred");
++const char helphelp[] =	N_("print local help information");
++const char idlehelp[] =	N_("get (set) idle timer on remote side");
++const char lcdhelp[] =	N_("change local working directory");
++const char lshelp[] =	N_("list contents of remote directory");
++const char macdefhelp[] =  N_("define a macro");
++const char mdeletehelp[] = N_("delete multiple files");
++const char mdirhelp[] =    N_("list contents of multiple remote directories");
++const char mgethelp[] =    N_("get multiple files");
++const char mkdirhelp[] =   N_("make directory on the remote machine");
++const char mlshelp[] =     N_("list contents of multiple remote directories");
++const char modtimehelp[] = N_("show last modification time of remote file");
++const char modehelp[] =    N_("set file transfer mode");
++const char mputhelp[] =    N_("send multiple files");
++const char newerhelp[] =   N_("get file if remote file is newer than local file ");
++const char nlisthelp[] =   N_("nlist contents of remote directory");
++const char nmaphelp[] =    N_("set templates for default file name mapping");
++const char ntranshelp[] =N_("set translation table for default file name mapping");
++const char passivehelp[] = N_("enter passive transfer mode");
++const char porthelp[] =	   N_("toggle use of PORT cmd for each data connection");
++const char prompthelp[] =  N_("force interactive prompting on multiple commands");
++const char proxyhelp[] =   N_("issue command on alternate connection");
++const char pwdhelp[] =     N_("print working directory on remote machine");
++const char quithelp[] =    N_("terminate ftp session and exit");
++const char quotehelp[] =   N_("send arbitrary ftp command");
++const char receivehelp[] = N_("receive file");
++const char regethelp[] =   N_("get file restarting at end of local file");
++const char remotehelp[] =  N_("get help from remote server");
++const char renamehelp[] =  N_("rename file");
++const char restarthelp[] = N_("restart file transfer at bytecount");
++const char rmdirhelp[] =   N_("remove directory on the remote machine");
++const char rmtstatushelp[]=N_("show status of remote machine");
++const char runiquehelp[] = N_("toggle store unique for local files");
++const char resethelp[] =   N_("clear queued command replies");
++const char sendhelp[] =    N_("send one file");
++const char sitehelp[] =    N_("send site specific command to remote server\n"
++	    "\t\tTry \"rhelp site\" or \"site help\" for more information");
++const char shellhelp[] =   N_("escape to the shell");
++const char sizecmdhelp[] = N_("show size of remote file");
++const char statushelp[] =  N_("show current status");
++const char structhelp[] =  N_("set file transfer structure");
++const char suniquehelp[] = N_("toggle store unique on remote machine");
++const char systemhelp[] =  N_("show remote system type");
++const char tenexhelp[] =   N_("set tenex file transfer type");
++const char tickhelp[] =    N_("toggle printing byte counter during transfers");
++const char tracehelp[] =   N_("toggle packet tracing");
++const char typehelp[] =    N_("set file transfer type");
++const char umaskhelp[] =   N_("get (set) umask on remote side");
++const char userhelp[] =    N_("send new user information");
++const char verbosehelp[] = N_("toggle verbose mode");
+ 
+ struct cmd cmdtab[] = {
+ 	{ "!",		shellhelp,	0, 0, 0, NULL, NULL, shell },
+diff -Nur netkit-ftp-0.10.orig/ftp/domacro.c netkit-ftp-0.10/ftp/domacro.c
+--- netkit-ftp-0.10.orig/ftp/domacro.c	Wed Aug 14 20:27:40 1996
++++ netkit-ftp-0.10/ftp/domacro.c	Thu Jan 21 15:03:33 1999
+@@ -44,6 +44,8 @@
+ 
+ #include "ftp_var.h"
+ 
++#include "intl.h"
++
+ void
+ domacro(int argc, char *argv[])
+ {
+@@ -57,7 +59,7 @@
+ 	struct cmd *c;
+ 
+ 	if (argc < 2 && !another(&argc, &argv, "macro name")) {
+-		printf("Usage: %s macro_name.\n", argv[0]);
++		printf(_("Usage: %s macro_name.\n"), argv[0]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -67,7 +69,7 @@
+ 		}
+ 	}
+ 	if (i == macnum) {
+-		printf("'%s' macro not found.\n", argv[1]);
++		printf(_("'%s' macro not found.\n"), argv[1]);
+ 		code = -1;
+ 		return;
+ 	}
+@@ -119,15 +121,15 @@
+ 		margv = makeargv(&margc, &marg);
+ 		c = getcmd(margv[0]);
+ 		if (c == (struct cmd *)-1) {
+-			printf("?Ambiguous command\n");
++			printf(_("?Ambiguous command\n"));
+ 			code = -1;
+ 		}
+ 		else if (c == NULL) {
+-			printf("?Invalid command\n");
++			printf(_("?Invalid command\n"));
+ 			code = -1;
+ 		}
+ 		else if (c->c_conn && !connected) {
+-			printf("Not connected.\n");
++			printf(_("Not connected.\n"));
+ 			code = -1;
+ 		}
+ 		else {
+diff -Nur netkit-ftp-0.10.orig/ftp/ftp.c netkit-ftp-0.10/ftp/ftp.c
+--- netkit-ftp-0.10.orig/ftp/ftp.c	Fri Mar 21 00:02:13 1997
++++ netkit-ftp-0.10/ftp/ftp.c	Thu Jan 21 15:03:33 1999
+@@ -66,6 +66,8 @@
+ 
+ #include "../version.h"
+ 
++#include "intl.h"
++
+ int data = -1;
+ off_t restart_point = 0;
+ 
+@@ -129,7 +131,7 @@
+ 	hostname = hostnamebuf;
+ 	s = socket(hisctladdr.sin_family, SOCK_STREAM, 0);
+ 	if (s < 0) {
+-		perror("ftp: socket");
++		perror(_("ftp: socket"));
+ 		code = -1;
+ 		return (0);
+ 	}
+@@ -138,43 +140,43 @@
+ 		if (hp && hp->h_addr_list[1]) {
+ 			int oerrno = errno;
+ 
+-			fprintf(stderr, "ftp: connect to address %s: ",
++			fprintf(stderr, _("ftp: connect to address %s: "),
+ 				inet_ntoa(hisctladdr.sin_addr));
+ 			errno = oerrno;
+ 			perror((char *) 0);
+ 			hp->h_addr_list++;
+ 			bcopy(hp->h_addr_list[0],
+ 			     (caddr_t)&hisctladdr.sin_addr, hp->h_length);
+-			fprintf(stdout, "Trying %s...\n",
++			fprintf(stdout, _("Trying %s...\n"),
+ 				inet_ntoa(hisctladdr.sin_addr));
+ 			(void) close(s);
+ 			s = socket(hisctladdr.sin_family, SOCK_STREAM, 0);
+ 			if (s < 0) {
+-				perror("ftp: socket");
++				perror(_("ftp: socket"));
+ 				code = -1;
+ 				return (0);
+ 			}
+ 			continue;
+ 		}
+-		perror("ftp: connect");
++		perror(_("ftp: connect"));
+ 		code = -1;
+ 		goto bad;
+ 	}
+ 	len = sizeof (myctladdr);
+ 	if (getsockname(s, (struct sockaddr *)&myctladdr, &len) < 0) {
+-		perror("ftp: getsockname");
++		perror(_("ftp: getsockname"));
+ 		code = -1;
+ 		goto bad;
+ 	}
+ #ifdef IP_TOS
+ 	tos = IPTOS_LOWDELAY;
+ 	if (setsockopt(s, IPPROTO_IP, IP_TOS, (char *)&tos, sizeof(int)) < 0)
+-		perror("ftp: setsockopt TOS (ignored)");
++		perror(_("ftp: setsockopt TOS (ignored)"));
+ #endif
+ 	cin = fdopen(s, "r");
+ 	cout = fdopen(s, "w");
+ 	if (cin == NULL || cout == NULL) {
+-		fprintf(stderr, "ftp: fdopen failed.\n");
++		fprintf(stderr, _("ftp: fdopen failed.\n"));
+ 		if (cin)
+ 			(void) fclose(cin);
+ 		if (cout)
+@@ -183,7 +185,7 @@
+ 		goto bad;
+ 	}
+ 	if (verbose)
+-		printf("Connected to %s.\n", hostname);
++		printf(_("Connected to %s.\n"), hostname);
+ 	if (getreply(0) > 2) { 	/* read startup message from server */
+ 		if (cin)
+ 			(void) fclose(cin);
+@@ -198,7 +200,7 @@
+ 
+ 	if (setsockopt(s, SOL_SOCKET, SO_OOBINLINE, (char *)&on, sizeof(on))
+ 		< 0 && debug) {
+-			perror("ftp: setsockopt");
++			perror(_("ftp: setsockopt"));
+ 		}
+ 	}
+ #endif /* SO_OOBINLINE */
+@@ -231,9 +233,9 @@
+ 				myname = pp->pw_name;
+ 		}
+ 		if (myname)
+-			printf("Name (%s:%s): ", host, myname);
++			printf(_("Name (%s:%s): "), host, myname);
+ 		else
+-			printf("Name (%s): ", host);
++			printf(_("Name (%s): "), host);
+ 		(void) fgets(tmp, sizeof(tmp) - 1, stdin);
+ 		tmp[strlen(tmp) - 1] = '\0';
+ 		if (*tmp == '\0')
+@@ -245,7 +247,7 @@
+ 	if (n == CONTINUE) {
+ 		if (pass == NULL) {
+ 			/* fflush(stdout); */
+-			pass = getpass("Password:");
++			pass = getpass(_("Password:"));
+ 		}
+ 		n = command("PASS %s", pass);
+ 	}
+@@ -256,7 +258,7 @@
+ 		n = command("ACCT %s", zacct);
+ 	}
+ 	if (n != COMPLETE) {
+-		fprintf(stderr, "Login failed.\n");
++		fprintf(stderr, _("Login failed.\n"));
+ 		return (0);
+ 	}
+ 	if (!aflag && zacct != NULL)
+@@ -308,7 +310,7 @@
+ 		(void) fflush(stdout);
+ 	}
+ 	if (cout == NULL) {
+-		perror ("No control connection for command");
++		perror (_("No control connection for command"));
+ 		code = -1;
+ 		return (0);
+ 	}
+@@ -374,7 +376,7 @@
+ 				}
+ 				lostpeer(0);
+ 				if (verbose) {
+-					printf("421 Service not available, remote server has closed connection\n");
++					printf(_("421 Service not available, remote server has closed connection\n"));
+ 					(void) fflush(stdout);
+ 				}
+ 				code = 421;
+@@ -449,7 +451,7 @@
+ 
+ 	mflag = 0;
+ 	abrtflag = 0;
+-	printf("\nsend aborted\nwaiting for remote to finish abort\n");
++	printf(_("\nsend aborted\nwaiting for remote to finish abort\n"));
+ 	(void) fflush(stdout);
+ 	siglongjmp(sendabort, 1);
+ }
+@@ -472,9 +474,9 @@
+ 
+ 	if (verbose && printnames) {
+ 		if (local && *local != '-')
+-			printf("local: %s ", local);
++			printf(_("local: %s "), local);
+ 		if (remote)
+-			printf("remote: %s\n", remote);
++			printf(_("remote: %s\n"), remote);
+ 	}
+ 	if (proxy) {
+ 		proxtrans(cmd, local, remote);
+@@ -518,7 +520,7 @@
+ 	} else {
+ 		fin = fopen(local, "r");
+ 		if (fin == NULL) {
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 			(void) signal(SIGINT, oldintr);
+ 			code = -1;
+@@ -527,7 +529,7 @@
+ 		closefunc = fclose;
+ 		if (fstat(fileno(fin), &st) < 0 ||
+ 		    (st.st_mode&S_IFMT) != S_IFREG) {
+-			fprintf(stdout, "%s: not a plain file.\n", local);
++			fprintf(stdout, _("%s: not a plain file.\n"), local);
+ 			(void) signal(SIGINT, oldintr);
+ 			fclose(fin);
+ 			code = -1;
+@@ -549,7 +551,7 @@
+ 	if (restart_point &&
+ 	    (strcmp(cmd, "STOR") == 0 || strcmp(cmd, "APPE") == 0)) {
+ 		if (fseek(fin, (long) restart_point, 0) < 0) {
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 			restart_point = 0;
+ 			if (closefunc != NULL)
+@@ -607,7 +609,7 @@
+ 				(void) fflush(stdout);
+ 			}
+ 			if (tick && (bytes >= hashbytes)) {
+-				printf("\rBytes transferred: %ld", bytes);
++				printf(_("\rBytes transferred: %ld"), bytes);
+ 				(void) fflush(stdout);
+ 				while (bytes >= hashbytes)
+ 					hashbytes += TICKBYTES;
+@@ -620,15 +622,15 @@
+ 			(void) fflush(stdout);
+ 		}
+ 		if (tick) {
+-			(void) printf("\rBytes transferred: %ld\n", bytes);
++			(void) printf(_("\rBytes transferred: %ld\n"), bytes);
+ 			(void) fflush(stdout);
+ 		}
+ 		if (c < 0)
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 		if (d < 0) {
+ 			if (errno != EPIPE) 
+-				perror("netout");
++				perror(_("netout"));
+ 			bytes = -1;
+ 		}
+ 		break;
+@@ -642,7 +644,7 @@
+ 					hashbytes += HASHBYTES;
+ 				}
+ 				if (tick && (bytes >= hashbytes)) {
+-					(void) printf("\rBytes transferred: %ld",
++					(void) printf(_("\rBytes transferred: %ld"),
+ 						bytes);
+ 					(void) fflush(stdout);
+ 					while (bytes >= hashbytes)
+@@ -667,11 +669,11 @@
+ 			(void) fflush(stdout);
+ 		}
+ 		if (tick) {
+-			(void) printf("\rBytes transferred: %ld\n", bytes);
++			(void) printf(_("\rBytes transferred: %ld\n"), bytes);
+ 			(void) fflush(stdout);
+ 		}
+ 		if (ferror(fin))
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 		if (ferror(dout)) {
+ 			if (errno != EPIPE)
+@@ -721,7 +723,7 @@
+ 
+ 	mflag = 0;
+ 	abrtflag = 0;
+-	printf("\nreceive aborted\nwaiting for remote to finish abort\n");
++	printf(_("\nreceive aborted\nwaiting for remote to finish abort\n"));
+ 	(void) fflush(stdout);
+ 	siglongjmp(recvabort, 1);
+ }
+@@ -746,9 +748,9 @@
+ 	is_retr = strcmp(cmd, "RETR") == 0;
+ 	if (is_retr && verbose && printnames) {
+ 		if (local && *local != '-')
+-			printf("local: %s ", local);
++			printf(_("local: %s "), local);
+ 		if (remote)
+-			printf("remote: %s\n", remote);
++			printf(_("remote: %s\n"), remote);
+ 	}
+ 	if (proxy && is_retr) {
+ 		proxtrans(cmd, local, remote);
+@@ -777,7 +779,7 @@
+ 			char *dir = rindex(local, '/');
+ 
+ 			if (errno != ENOENT && errno != EACCES) {
+-				fprintf(stderr, "local: %s: %s\n", local,
++				fprintf(stderr, _("local: %s: %s\n"), local,
+ 					strerror(errno));
+ 				(void) signal(SIGINT, oldintr);
+ 				code = -1;
+@@ -789,7 +791,7 @@
+ 			if (dir != NULL)
+ 				*dir = '/';
+ 			if (d < 0) {
+-				fprintf(stderr, "local: %s: %s\n", local,
++				fprintf(stderr, _("local: %s: %s\n"), local,
+ 					strerror(errno));
+ 				(void) signal(SIGINT, oldintr);
+ 				code = -1;
+@@ -797,7 +799,7 @@
+ 			}
+ 			if (!runique && errno == EACCES &&
+ 			    chmod(local, 0600) < 0) {
+-				fprintf(stderr, "local: %s: %s\n", local,
++				fprintf(stderr, _("local: %s: %s\n"), local,
+ 					strerror(errno));
+ 				(void) signal(SIGINT, oldintr);
+ 				(void) signal(SIGINT, oldintr);
+@@ -863,7 +865,7 @@
+ 	else {
+ 		fout = fopen(local, lmode);
+ 		if (fout == NULL) {
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 			goto abort;
+ 		}
+@@ -889,7 +891,7 @@
+ 	case TYPE_L:
+ 		if (restart_point &&
+ 		    lseek(fileno(fout), (long) restart_point, L_SET) < 0) {
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 			if (closefunc != NULL)
+ 				(*closefunc)(fout);
+@@ -908,7 +910,7 @@
+ 				(void) fflush(stdout);
+ 			}
+ 			if (tick && (bytes >= hashbytes) && is_retr) {
+-				(void) printf("\rBytes transferred: %ld",
++				(void) printf(_("\rBytes transferred: %ld"),
+ 					bytes);
+ 				(void) fflush(stdout);
+ 				while (bytes >= hashbytes)
+@@ -922,7 +924,7 @@
+ 			(void) fflush(stdout);
+ 		}
+ 		if (tick && is_retr) {
+-			(void) printf("\rBytes transferred: %ld\n", bytes);
++			(void) printf(_("\rBytes transferred: %ld\n"), bytes);
+ 			(void) fflush(stdout);
+ 		}
+ 		if (c < 0) {
+@@ -932,10 +934,10 @@
+ 		}
+ 		if (d < c) {
+ 			if (d < 0)
+-				fprintf(stderr, "local: %s: %s\n", local,
++				fprintf(stderr, _("local: %s: %s\n"), local,
+ 					strerror(errno));
+ 			else
+-				fprintf(stderr, "%s: short write\n", local);
++				fprintf(stderr, _("%s: short write\n"), local);
+ 		}
+ 		break;
+ 
+@@ -954,7 +956,7 @@
+ 			}
+ 			if (fseek(fout, 0L, L_INCR) < 0) {
+ done:
+-				fprintf(stderr, "local: %s: %s\n", local,
++				fprintf(stderr, _("local: %s: %s\n"), local,
+ 					strerror(errno));
+ 				if (closefunc != NULL)
+ 					(*closefunc)(fout);
+@@ -972,7 +974,7 @@
+ 					hashbytes += HASHBYTES;
+ 				}
+ 				if (tick && (bytes >= hashbytes) && is_retr) {
+-					printf("\rBytes transferred: %ld",
++					printf(_("\rBytes transferred: %ld"),
+ 						bytes);
+ 					fflush(stdout);
+ 					while (bytes >= hashbytes)
+@@ -1003,12 +1005,12 @@
+ 			(void) fflush(stdout);
+ 		}
+ 		if (tick && is_retr) {
+-			(void) printf("\rBytes transferred: %ld\n", bytes);
++			(void) printf(_("\rBytes transferred: %ld\n"), bytes);
+ 			(void) fflush(stdout);
+ 		}
+ 		if (bare_lfs) {
+-			printf("WARNING! %d bare linefeeds received in ASCII mode\n", bare_lfs);
+-			printf("File may not have transferred correctly.\n");
++			printf(_("WARNING! %d bare linefeeds received in ASCII mode\n"), bare_lfs);
++			printf(_("File may not have transferred correctly.\n"));
+ 		}
+ 		if (ferror(din)) {
+ 			if (errno != EPIPE)
+@@ -1016,7 +1018,7 @@
+ 			bytes = -1;
+ 		}
+ 		if (ferror(fout))
+-			fprintf(stderr, "local: %s: %s\n", local,
++			fprintf(stderr, _("local: %s: %s\n"), local,
+ 				strerror(errno));
+ 		break;
+ 	}
+@@ -1083,9 +1085,9 @@
+ 		if (options & SO_DEBUG &&
+ 		    setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *)&on,
+ 			       sizeof (on)) < 0)
+-			perror("ftp: setsockopt (ignored)");
++			perror(_("ftp: setsockopt (ignored)"));
+ 		if (command("PASV") != COMPLETE) {
+-			printf("Passive mode refused.\n");
++			printf(_("Passive mode refused.\n"));
+ 			return(1);
+ 		}
+ 
+@@ -1101,7 +1103,7 @@
+ 			   &a1,&a2,&a3,&a4,&p1,&p2)
+ 		    != 6) 
+ 		{
+-			printf("Passive mode address scan failure. Shouldn't happen!\n");
++			printf(_("Passive mode address scan failure. Shouldn't happen!\n"));
+ 			return(1);
+ 		}
+ 
+@@ -1112,14 +1114,14 @@
+ 
+ 		if (connect(data, (struct sockaddr *) &data_addr,
+ 		    sizeof(data_addr))<0) {
+-			perror("ftp: connect");
++			perror(_("ftp: connect"));
+ 			return(1);
+ 		}
+ #ifdef IP_TOS
+ 		tos = IPTOS_THROUGHPUT;
+ 		if (setsockopt(data, IPPROTO_IP, IP_TOS, (char *)&tos,
+ 		    sizeof(tos)) < 0)
+-			perror("ftp: setsockopt TOS (ignored)");
++			perror(_("ftp: setsockopt TOS (ignored)"));
+ #endif
+ 		return(0);
+ 	}
+@@ -1131,30 +1133,30 @@
+ 		(void) close(data);
+ 	data = socket(AF_INET, SOCK_STREAM, 0);
+ 	if (data < 0) {
+-		perror("ftp: socket");
++		perror(_("ftp: socket"));
+ 		if (tmpno)
+ 			sendport = 1;
+ 		return (1);
+ 	}
+ 	if (!sendport)
+ 		if (setsockopt(data, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof (on)) < 0) {
+-			perror("ftp: setsockopt (reuse address)");
++			perror(_("ftp: setsockopt (reuse address)"));
+ 			goto bad;
+ 		}
+ 	if (bind(data, (struct sockaddr *)&data_addr, sizeof (data_addr)) < 0) {
+-		perror("ftp: bind");
++		perror(_("ftp: bind"));
+ 		goto bad;
+ 	}
+ 	if (options & SO_DEBUG &&
+ 	    setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *)&on, sizeof (on)) < 0)
+-		perror("ftp: setsockopt (ignored)");
++		perror(_("ftp: setsockopt (ignored)"));
+ 	len = sizeof (data_addr);
+ 	if (getsockname(data, (struct sockaddr *)&data_addr, &len) < 0) {
+-		perror("ftp: getsockname");
++		perror(_("ftp: getsockname"));
+ 		goto bad;
+ 	}
+ 	if (listen(data, 1) < 0)
+-		perror("ftp: listen");
++		perror(_("ftp: listen"));
+ 	if (sendport) {
+ 		a = (char *)&data_addr.sin_addr;
+ 		p = (char *)&data_addr.sin_port;
+@@ -1175,7 +1177,7 @@
+ #ifdef IP_TOS
+ 	on = IPTOS_THROUGHPUT;
+ 	if (setsockopt(data, IPPROTO_IP, IP_TOS, (char *)&on, sizeof(int)) < 0)
+-		perror("ftp: setsockopt TOS (ignored)");
++		perror(_("ftp: setsockopt TOS (ignored)"));
+ #endif
+ 	return (0);
+ bad:
+@@ -1197,7 +1199,7 @@
+ 
+ 	s = accept(data, (struct sockaddr *) &from, &fromlen);
+ 	if (s < 0) {
+-		perror("ftp: accept");
++		perror(_("ftp: accept"));
+ 		(void) close(data), data = -1;
+ 		return (NULL);
+ 	}
+@@ -1206,7 +1208,7 @@
+ #ifdef IP_TOS
+ 	tos = IPTOS_THROUGHPUT;
+ 	if (setsockopt(s, IPPROTO_IP, IP_TOS, (char *)&tos, sizeof(int)) < 0)
+-		perror("ftp: setsockopt TOS (ignored)");
++		perror(_("ftp: setsockopt TOS (ignored)"));
+ #endif
+ 	return (fdopen(data, lmode));
+ }
+@@ -1224,7 +1226,7 @@
+ 		s = td.tv_sec + (td.tv_usec / 1000000.);
+ #define	nz(x)	((x) == 0 ? 1 : (x))
+ 		bs = bytes / nz(s);
+-		printf("%ld bytes %s in %.3g secs (%.2g Kbytes/sec)\n",
++		printf(_("%ld bytes %s in %.3g secs (%.2g Kbytes/sec)\n"),
+ 		    bytes, direction, s, bs / 1024.0);
+ 	}
+ }
+@@ -1390,12 +1392,12 @@
+ 	if (curtype != prox_type)
+ 		changetype(prox_type, 1);
+ 	if (command("PASV") != COMPLETE) {
+-		printf("proxy server does not support third party transfers.\n");
++		printf(_("proxy server does not support third party transfers.\n"));
+ 		return;
+ 	}
+ 	pswitch(0);
+ 	if (!connected) {
+-		printf("No primary connection\n");
++		printf(_("No primary connection\n"));
+ 		pswitch(1);
+ 		code = -1;
+ 		return;
+@@ -1426,7 +1428,7 @@
+ 	(void) signal(SIGINT, oldintr);
+ 	pswitch(1);
+ 	ptflag = 0;
+-	printf("local: %s remote: %s\n", local, remote);
++	printf(_("local: %s remote: %s\n"), local, remote);
+ 	return;
+ abort:
+ 	(void) signal(SIGINT, SIG_IGN);
+@@ -1521,7 +1523,7 @@
+ 	if (cp)
+ 		*cp = '/';
+ 	if (d < 0) {
+-		fprintf(stderr, "local: %s: %s\n", local, strerror(errno));
++		fprintf(stderr, _("local: %s: %s\n"), local, strerror(errno));
+ 		return((char *) 0);
+ 	}
+ 	(void) strcpy(new, local);
+@@ -1529,7 +1531,7 @@
+ 	*cp++ = '.';
+ 	while (!d) {
+ 		if (++count == 100) {
+-			printf("runique: can't find unique file name.\n");
++			printf(_("runique: can't find unique file name.\n"));
+ 			return((char *) 0);
+ 		}
+ 		*cp++ = ext;
+diff -Nur netkit-ftp-0.10.orig/ftp/intl.h netkit-ftp-0.10/ftp/intl.h
+--- netkit-ftp-0.10.orig/ftp/intl.h	Wed Dec 31 21:00:00 1969
++++ netkit-ftp-0.10/ftp/intl.h	Thu Jan 21 15:03:33 1999
+@@ -0,0 +1,11 @@
++/* Dummy header for libintl.h */
++
++#ifdef _I18N_
++#undef __OPTIMIZE__
++#include <libintl.h>
++#define _(String) gettext((String))
++#define N_(String) (String)
++#else
++#define _(String) (String)
++#define N_(String) (String)
++#endif
+diff -Nur netkit-ftp-0.10.orig/ftp/main.c netkit-ftp-0.10/ftp/main.c
+--- netkit-ftp-0.10.orig/ftp/main.c	Fri Mar 21 00:06:46 1997
++++ netkit-ftp-0.10/ftp/main.c	Thu Jan 21 15:03:33 1999
+@@ -67,6 +67,9 @@
+ 
+ #define Extern
+ #include "ftp_var.h"
++
++#include "intl.h"
++
+ int traceflag = 0;
+ const char *home = "/";
+ 
+@@ -91,11 +94,15 @@
+ 	struct passwd *pw = NULL;
+ 	char homedir[MAXPATHLEN];
+ 
++#ifdef _I18N_
++        bindtextdomain("ftp", "/usr/share/locale");
++        textdomain("ftp");
++#endif
+ 	tick = 0;
+ 
+ 	sp = getservbyname("ftp", "tcp");
+ 	if (sp == 0) {
+-		fprintf(stderr, "ftp: ftp/tcp: unknown service\n");
++		fprintf(stderr, _("ftp: ftp/tcp: unknown service\n"));
+ 		exit(1);
+ 	}
+ 	ftp_port = sp->s_port;
+@@ -152,7 +159,7 @@
+ 
+ 			default:
+ 				fprintf(stdout,
+-				  "ftp: %c: unknown option\n", *cp);
++				  _("ftp: %c: unknown option\n"), *cp);
+ 				exit(1);
+ 			}
+ 		argc--, argv++;
+@@ -303,7 +310,7 @@
+ 			line[l] = '\0';
+ 		} 
+ 		else if (l == sizeof(line) - 2) {
+-			printf("sorry, input line too long\n");
++			printf(_("sorry, input line too long\n"));
+ 			while ((l = getchar()) != '\n' && l != EOF)
+ 				/* void */;
+ 			break;
+@@ -314,15 +321,15 @@
+ 		}
+ 		c = getcmd(margv[0]);
+ 		if (c == (struct cmd *)-1) {
+-			printf("?Ambiguous command\n");
++			printf(_("?Ambiguous command\n"));
+ 			continue;
+ 		}
+ 		if (c == NULL) {
+-			printf("?Invalid command\n");
++			printf(_("?Invalid command\n"));
+ 			continue;
+ 		}
+ 		if (c->c_conn && !connected) {
+-			printf("Not connected.\n");
++			printf(_("Not connected.\n"));
+ 			continue;
+ 		}
+ 		if (c->c_handler_v) c->c_handler_v(margc, margv);
+@@ -532,7 +539,7 @@
+ 		unsigned k;
+ 		int columns, width = 0, lines;
+ 
+-		printf("Commands may be abbreviated.  Commands are:\n\n");
++		printf(_("Commands may be abbreviated.  Commands are:\n\n"));
+ 		for (c = cmdtab; c < &cmdtab[NCMDS]; c++) {
+ 			int len = strlen(c->c_name);
+ 
+@@ -573,11 +580,11 @@
+ 		arg = *++argv;
+ 		c = getcmd(arg);
+ 		if (c == (struct cmd *)-1)
+-			printf("?Ambiguous help command %s\n", arg);
++			printf(_("?Ambiguous help command %s\n"), arg);
+ 		else if (c == NULL)
+-			printf("?Invalid help command %s\n", arg);
++			printf(_("?Invalid help command %s\n"), arg);
+ 		else
+ 			printf("%-*s\t%s\n", HELPINDENT,
+-				c->c_name, c->c_help);
++				c->c_name, _(c->c_help));
+ 	}
+ }
+diff -Nur netkit-ftp-0.10.orig/ftp/po/Makefile netkit-ftp-0.10/ftp/po/Makefile
+--- netkit-ftp-0.10.orig/ftp/po/Makefile	Wed Dec 31 21:00:00 1969
++++ netkit-ftp-0.10/ftp/po/Makefile	Thu Jan 21 15:17:05 1999
+@@ -0,0 +1,59 @@
++INSTALL= /usr/bin/install -c
++INSTALL_PROGRAM= ${INSTALL}
++INSTALL_DATA= ${INSTALL} -m 644
++INSTALLNLSDIR=${INSTALLROOT}/usr/share/locale
++
++MSGMERGE = msgmerge
++
++NLSPACKAGE = ftp
++
++CATALOGS = pt_BR.mo
++
++POTFILES=../main.c ../ftp.c ../cmds.c ../cmdtab.c ../domacro.c ../glob.c ../ruserpass.c
++
++all: $(NLSPACKAGE).pot $(CATALOGS)
++
++$(NLSPACKAGE).pot: $(POTFILES)
++	xgettext --default-domain=$(NLSPACKAGE) \
++       	  --add-comments --keyword=_ --keyword=N_ $(POTFILES)
++	if cmp -s $(NLSPACKAGE).po $(NLSPACKAGE).pot; then \
++	    rm -f $(NLSPACKAGE).po; \
++	else \
++	    mv $(NLSPACKAGE).po $(NLSPACKAGE).pot; \
++	fi
++
++
++update-po: Makefile
++	$(MAKE) $(NLSPACKAGE).pot
++	catalogs='$(CATALOGS)'; \
++	for cat in $$catalogs; do \
++		lang=`echo $$cat | sed 's/.mo//'`; \
++		mv $$lang.po $$lang.old.po; \
++		echo "$$lang:"; \
++		if $(MSGMERGE) $$lang.old.po $(NLSPACKAGE).pot -o $$lang.po; then \
++		rm -f $$lang.old.po; \
++	else \
++    		echo "msgmerge for $$cat failed!"; \
++		rm -f $$lang.po; \
++		mv $$lang.old.po $$lang.po; \
++	fi; \
++	done
++
++clean:
++	rm -f *mo $(NLSPACKAGE).pot
++
++distclean: clean
++	rm -f .depend Makefile
++
++depend:
++
++install: $(CATALOGS)
++	for n in $(CATALOGS); do \
++	    l=`basename $$n .mo`; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
++	    $(INSTALL) -m 644 $$n $(INSTALLNLSDIR)/$$l/LC_MESSAGES/ftp.mo; \
++	done
++
++%.mo: %.po
++	msgfmt -o $@ $<
+Binary files netkit-ftp-0.10.orig/ftp/po/messages and netkit-ftp-0.10/ftp/po/messages differ
+diff -Nur netkit-ftp-0.10.orig/ftp/po/pt_BR.po netkit-ftp-0.10/ftp/po/pt_BR.po
+--- netkit-ftp-0.10.orig/ftp/po/pt_BR.po	Wed Dec 31 21:00:00 1969
++++ netkit-ftp-0.10/ftp/po/pt_BR.po	Thu Jan 21 15:41:31 1999
+@@ -0,0 +1,852 @@
++msgid ""
++msgstr ""
++"Project-Id-Version: netkit-ftp 0.10\n"
++"POT-Creation-Date: 1998-04-18 16:23:02-0300\n"
++"PO-Revision-Date: 1998-04-18 16:23:02-0300\n"
++"Last-Translator: Fábio Dorival Victorelli <fabio@conectiva.com.br>\n"
++"Language-Team: Portuguese <pt@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=ISO-8859-1\n"
++"Content-Transfer-Encoding: 8-bit\n"
++
++
++#: ../main.c:105
++msgid "ftp: ftp/tcp: unknown service\n"
++msgstr "ftp: ftp/tcp: serviço desconhecido\n"
++
++#: ../main.c:162
++msgid "ftp: %c: unknown option\n"
++msgstr "ftp: %c: opção desconhecida\n"
++
++#: ../main.c:313
++msgid "sorry, input line too long\n"
++msgstr "linha de entrada muito grande\n"
++
++#: ../cmds.c:1729 ../domacro.c:124 ../main.c:324
++msgid "?Ambiguous command\n"
++msgstr "?Comando ambíguo\n"
++
++#: ../cmds.c:1735 ../domacro.c:128 ../main.c:328
++msgid "?Invalid command\n"
++msgstr "?Comando inválido\n"
++
++#: ../cmds.c:881 ../domacro.c:132 ../main.c:332
++msgid "Not connected.\n"
++msgstr "Não conectado.\n"
++
++#: ../main.c:542
++msgid ""
++"Commands may be abbreviated.  Commands are:\n"
++"\n"
++msgstr ""
++"Os comandos podem ser abreviados.  Comandos disponíveis:\n"
++"\n"
++
++#: ../main.c:583
++msgid "?Ambiguous help command %s\n"
++msgstr "?Comando de ajuda %s ambíguo\n"
++
++#: ../main.c:585
++msgid "?Invalid help command %s\n"
++msgstr "?comando de ajuda %s inválido\n"
++
++#: ../ftp.c:134 ../ftp.c:155 ../ftp.c:1136
++msgid "ftp: socket"
++msgstr ""
++
++#: ../ftp.c:143
++msgid "ftp: connect to address %s: "
++msgstr "ftp: conectado no endereço %s: "
++
++#: ../ftp.c:150
++msgid "Trying %s...\n"
++msgstr "Tentando %s...\n"
++
++#: ../ftp.c:161 ../ftp.c:1117
++msgid "ftp: connect"
++msgstr "ftp: conectado"
++
++#: ../ftp.c:167 ../ftp.c:1155
++msgid "ftp: getsockname"
++msgstr ""
++
++#: ../ftp.c:174 ../ftp.c:1124 ../ftp.c:1180 ../ftp.c:1211
++msgid "ftp: setsockopt TOS (ignored)"
++msgstr "ftp: setsockopt TOS (ignorado)"
++
++#: ../ftp.c:179
++msgid "ftp: fdopen failed.\n"
++msgstr "ftp: falha no fdopen.\n"
++
++#: ../cmds.c:879 ../ftp.c:188
++msgid "Connected to %s.\n"
++msgstr "Conectado na máquina %s.\n"
++
++#: ../ftp.c:203
++msgid "ftp: setsockopt"
++msgstr ""
++
++#: ../ftp.c:236
++msgid "Name (%s:%s): "
++msgstr "Usuário (%s:%s): "
++
++#: ../ftp.c:238
++msgid "Name (%s): "
++msgstr "Usuário (%s): "
++
++#. fflush(stdout);
++#: ../ftp.c:250
++msgid "Password:"
++msgstr "Senha:"
++
++#: ../cmds.c:1384 ../ftp.c:261
++msgid "Login failed.\n"
++msgstr "Falha no login.\n"
++
++#: ../ftp.c:313
++msgid "No control connection for command"
++msgstr "Comando sem controle de conexão"
++
++#: ../ftp.c:379
++msgid "421 Service not available, remote server has closed connection\n"
++msgstr "421 Serviço não está disponível, servidor remoto fechou conexão\n"
++
++#: ../ftp.c:454
++msgid ""
++"\n"
++"send aborted\n"
++"waiting for remote to finish abort\n"
++msgstr ""
++"\n"
++"envio abortado\n"
++"esperando pelo lado remoto para finalizar \n"
++
++#: ../ftp.c:477 ../ftp.c:751
++msgid "local: %s "
++msgstr "local: %s "
++
++#: ../ftp.c:479 ../ftp.c:753
++msgid "remote: %s\n"
++msgstr "remoto: %s\n"
++
++#: ../cmds.c:648 ../cmds.c:1116 ../ftp.c:523 ../ftp.c:554 ../ftp.c:629 ../ftp.c:676 ../ftp.c:782 ../ftp.c:794 ../ftp.c:802 ../ftp.c:868 ../ftp.c:894 ../ftp.c:937 ../ftp.c:959 ../ftp.c:1021 ../ftp.c:1526
++msgid "local: %s: %s\n"
++msgstr ""
++
++#: ../ftp.c:532
++msgid "%s: not a plain file.\n"
++msgstr "%s: não é um arquivo normal.\n"
++
++#: ../ftp.c:612 ../ftp.c:647 ../ftp.c:913 ../ftp.c:977
++msgid "\rBytes transferred: %ld"
++msgstr "\rBytes transferidos: %ld"
++
++#: ../ftp.c:625 ../ftp.c:672 ../ftp.c:927 ../ftp.c:1008
++msgid "\rBytes transferred: %ld\n"
++msgstr "\rBytes transferidos: %ld\n"
++
++#: ../ftp.c:633
++msgid "netout"
++msgstr ""
++
++#: ../ftp.c:726
++msgid ""
++"\n"
++"receive aborted\n"
++"waiting for remote to finish abort\n"
++msgstr ""
++"\n"
++"recepção abortada\n"
++"esperando lado remoto abortar\n"
++
++#: ../ftp.c:940
++msgid "%s: short write\n"
++msgstr "%s: write curto\n"
++
++#: ../ftp.c:1012
++msgid "WARNING! %d bare linefeeds received in ASCII mode\n"
++msgstr "CUIDADO! %d saltos de linha recebidos em modo ASCII\n"
++
++#: ../ftp.c:1013
++msgid "File may not have transferred correctly.\n"
++msgstr "O arquivo pode não ter sido transmitido corretamente.\n"
++
++#: ../ftp.c:1088 ../ftp.c:1152
++msgid "ftp: setsockopt (ignored)"
++msgstr "ftp: setsockopt (ignorado)"
++
++#: ../ftp.c:1090
++msgid "Passive mode refused.\n"
++msgstr "O modo passivo foi recusado.\n"
++
++#: ../ftp.c:1106
++msgid "Passive mode address scan failure. Shouldn't happen!\n"
++msgstr "Falha na busca do endereço do modo passivo. Não deveria acontecer!\n"
++
++#: ../ftp.c:1143
++msgid "ftp: setsockopt (reuse address)"
++msgstr "ftp: setsockopt (reuse o endereço)"
++
++#: ../ftp.c:1147
++msgid "ftp: bind"
++msgstr ""
++
++#: ../ftp.c:1159
++msgid "ftp: listen"
++msgstr ""
++
++#: ../ftp.c:1202
++msgid "ftp: accept"
++msgstr ""
++
++#: ../ftp.c:1229
++msgid "%ld bytes %s in %.3g secs (%.2g Kbytes/sec)\n"
++msgstr "%ld bytes %s em %.3g segundos (%.2g Kbytes/segundo)\n"
++
++#: ../ftp.c:1395
++msgid "proxy server does not support third party transfers.\n"
++msgstr "o servidor proxy não suporta transmissões de terceiros.\n"
++
++#: ../ftp.c:1400
++msgid "No primary connection\n"
++msgstr "Nenhuma conexão primária\n"
++
++#: ../ftp.c:1431
++msgid "local: %s remote: %s\n"
++msgstr "local: %s remoto: %s\n"
++
++#: ../ftp.c:1534
++msgid "runique: can't find unique file name.\n"
++msgstr "runique: não foi possível encontrar um nome único de arquivo.\n"
++
++#: ../cmds.c:111
++msgid "sorry, arguments too long\n"
++msgstr "argumentos muito grandes\n"
++
++#: ../cmds.c:139
++msgid "Already connected to %s, use close first.\n"
++msgstr "Já conectado a %s, use close primeiro.\n"
++
++#: ../cmds.c:147 ../cmds.c:156
++msgid "usage: %s host-name [port]\n"
++msgstr "uso: %s nome-máquina [porta]\n"
++
++#: ../cmds.c:155
++msgid "%s: bad port number-- %s\n"
++msgstr "%s: Porta inválida-- %s\n"
++
++#: ../cmds.c:199
++msgid "Remote system type is %s.\n"
++msgstr "O tipo do sistema remoto é %s.\n"
++
++#: ../cmds.c:218 ../cmds.c:297
++msgid "Using %s mode to transfer files.\n"
++msgstr "Usando modo %s para transmitir/receber arquivos.\n"
++
++#: ../cmds.c:228
++msgid "Remember to set tenex mode when transfering binary files from this machine.\n"
++msgstr "Lembre-se de configurar modo tenex quando estiver transmitindo/recebendo arquivos binários de/para esta máquina.\n"
++
++#: ../cmds.c:286
++msgid "usage: %s ["
++msgstr "uso: %s ["
++
++#: ../cmds.c:327
++msgid "ftp: internal error: unknown type %d\n"
++msgstr "ftp: erro interno: tipo %d desconhecido\n"
++
++#: ../cmds.c:377
++msgid "We only support %s mode, sorry.\n"
++msgstr "Nós somente suportamos o modo %s, desculpe.\n"
++
++#: ../cmds.c:388
++msgid "We only support %s format, sorry.\n"
++msgstr "Nós somente suportamos o modo %s, desculpe.\n"
++
++#: ../cmds.c:398
++msgid "We only support %s structure, sorry.\n"
++msgstr "Nós somente suportamos a estrutura %s, desculpe.\n"
++
++#: ../cmds.c:421
++msgid "usage: %s local-file remote-file\n"
++msgstr "uso: %s arquivo-local arquivo-remoto\n"
++
++#: ../cmds.c:464
++msgid "usage: %s local-files\n"
++msgstr "uso: %s arquivos-locais\n"
++
++#: ../cmds.c:607
++msgid "usage: %s remote-file [ local-file ]\n"
++msgstr "uso: %s arquivo-remoto [ arquivo-local ]\n"
++
++#: ../cmds.c:737 ../cmds.c:1156
++msgid "usage: %s remote-files\n"
++msgstr "uso: %s arquivos-remotos\n"
++
++#: ../cmds.c:830
++msgid "Error creating temporary file, oops\n"
++msgstr "Erro na criação de arquivo temporário.\n"
++
++#: ../cmds.c:850
++msgid "fdopen failed, oops\n"
++msgstr "Falha no fdopen.\n"
++
++#: ../cmds.c:885
++msgid "Connected for proxy commands to %s.\n"
++msgstr "Conectado em %s para comandos proxy.\n"
++
++#: ../cmds.c:888
++msgid "No proxy connection.\n"
++msgstr "Nenhuma conexão proxy.\n"
++
++#: ../cmds.c:892
++msgid "Mode: %s; Type: %s; Form: %s; Structure: %s\n"
++msgstr ""
++
++#: ../cmds.c:894
++msgid "Verbose: %s; Bell: %s; Prompting: %s; Globbing: %s\n"
++msgstr ""
++
++#: ../cmds.c:897
++msgid "Store unique: %s; Receive unique: %s\n"
++msgstr ""
++
++#: ../cmds.c:899
++msgid "Case: %s; CR stripping: %s\n"
++msgstr ""
++
++#: ../cmds.c:901
++msgid "(Ntrans: (in) %s (out) %s\n"
++msgstr ""
++
++#: ../cmds.c:904
++msgid "Ntrans: off\n"
++msgstr ""
++
++#: ../cmds.c:907
++msgid "Nmap: (in) %s (out) %s\n"
++msgstr ""
++
++#: ../cmds.c:910
++msgid "Nmap: off\n"
++msgstr ""
++
++#: ../cmds.c:912
++msgid "Hash mark printing: %s; Use of PORT cmds: %s\n"
++msgstr ""
++
++#: ../cmds.c:914
++msgid "Tick counter printing: %s\n"
++msgstr ""
++
++#: ../cmds.c:916
++msgid "Macros:\n"
++msgstr ""
++
++#: ../cmds.c:933
++msgid "Bell mode %s.\n"
++msgstr ""
++
++#: ../cmds.c:946
++msgid "Packet tracing %s.\n"
++msgstr ""
++
++#: ../cmds.c:962
++msgid "Hash mark printing %s"
++msgstr ""
++
++#: ../cmds.c:965
++msgid " (%d bytes/hash mark)"
++msgstr ""
++
++#: ../cmds.c:979
++msgid "Tick counter printing %s"
++msgstr "mostrando o contador de tick %s"
++
++#: ../cmds.c:982
++msgid " (%d bytes/tick increment)"
++msgstr " (%d bytes/incrementando tick)"
++
++#: ../cmds.c:995
++msgid "Verbose mode %s.\n"
++msgstr "Modo detalhado %s.\n"
++
++#: ../cmds.c:1007
++msgid "Use of PORT cmds %s.\n"
++msgstr "Uso de cmds PORT %s.\n"
++
++#: ../cmds.c:1020
++msgid "Interactive mode %s.\n"
++msgstr "Modo interativo %s.\n"
++
++#: ../cmds.c:1033
++msgid "Globbing %s.\n"
++msgstr ""
++
++#: ../cmds.c:1052
++msgid "%s: bad debugging value.\n"
++msgstr "%s: valor de debug inválido.\n"
++
++#: ../cmds.c:1063
++msgid "Debugging %s (debug=%d).\n"
++msgstr "Depurando %s (debug=%d).\n"
++
++#: ../cmds.c:1078
++msgid "usage: %s remote-directory\n"
++msgstr "uso: %s diretório remoto\n"
++
++#: ../cmds.c:1084
++msgid "CWD command not recognized, trying XCWD\n"
++msgstr "CWD comando não reconhecido, tentando XCWD\n"
++
++#: ../cmds.c:1104
++msgid "usage: %s local-directory\n"
++msgstr "Uso: %s diretório local \n"
++
++#: ../cmds.c:1124
++msgid "Local directory now %s\n"
++msgstr "Agora o diretório local é %s\n"
++
++#: ../cmds.c:1138
++msgid "usage: %s remote-file\n"
++msgstr "uso: %s arquivo remoto\n"
++
++#: ../cmds.c:1198
++msgid "%s from-name to-name\n"
++msgstr "%s nome-de nome-para\n"
++
++#: ../cmds.c:1223
++msgid "usage: %s remote-directory local-file\n"
++msgstr "uso: %s diretório-remoto arquivo-local\n"
++
++#: ../cmds.c:1258
++msgid "usage: %s remote-files local-file\n"
++msgstr "uso: %s arquivos-remoto arquivo-local\n"
++
++#: ../cmds.c:1344
++msgid "Try again later"
++msgstr "Tente mais tarde"
++
++#: ../cmds.c:1364
++msgid "usage: %s username [password] [account]\n"
++msgstr "uso: %s usuário [senha] [conta]\n"
++
++#: ../cmds.c:1376
++msgid "Account: "
++msgstr ""
++
++#: ../cmds.c:1405
++msgid "PWD command not recognized, trying XPWD\n"
++msgstr "PWD comando não reconhecido, tentando XPWD\n"
++
++#: ../cmds.c:1421 ../cmds.c:1442
++msgid "usage: %s directory-name\n"
++msgstr "uso: %s nome-diretório\n"
++
++#: ../cmds.c:1427
++msgid "MKD command not recognized, trying XMKD\n"
++msgstr "comando MKD não reconhecido, tente XMKD\n"
++
++#: ../cmds.c:1448
++msgid "RMD command not recognized, trying XRMD\n"
++msgstr "comando RMD não reconhecido, tente XRMD\n"
++
++#: ../cmds.c:1463 ../cmds.c:1482
++msgid "usage: %s line-to-send\n"
++msgstr "uso: %s linha-para-enviar\n"
++
++#: ../cmds.c:1521
++msgid "usage: %s mode file-name\n"
++msgstr "uso: %s modo nome-de-arquivo\n"
++
++#: ../cmds.c:1723
++msgid "usage: %s command\n"
++msgstr "uso: %s comando\n"
++
++#: ../cmds.c:1741
++msgid "?Invalid proxy command\n"
++msgstr "?Comando de proxy inválido\n"
++
++#: ../cmds.c:1753
++msgid "Not connected\n"
++msgstr "Não conectado\n"
++
++#: ../cmds.c:1779
++msgid "Case mapping %s.\n"
++msgstr ""
++
++#: ../cmds.c:1787
++msgid "Carriage Return stripping %s.\n"
++msgstr ""
++
++#: ../cmds.c:1798
++msgid "Ntrans off.\n"
++msgstr ""
++
++#: ../cmds.c:1850
++msgid "Nmap off.\n"
++msgstr ""
++
++#: ../cmds.c:1855
++msgid "Usage: %s [mapin mapout]\n"
++msgstr "Uso: %s [mapadeentrada  mapadesaída]\n"
++
++#: ../cmds.c:1983 ../cmds.c:1996
++msgid "nmap: unbalanced brackets\n"
++msgstr ""
++
++#: ../cmds.c:2047
++msgid "Store unique %s.\n"
++msgstr ""
++
++#: ../cmds.c:2055
++msgid "Receive unique %s.\n"
++msgstr ""
++
++#: ../cmds.c:2065
++msgid "CDUP command not recognized, trying XCUP\n"
++msgstr "comando CDUP não reconhecido, tentando XCUP\n"
++
++#: ../cmds.c:2075
++msgid "restart: offset not specified\n"
++msgstr "reiniciar: offset não especificado\n"
++
++#: ../cmds.c:2078
++msgid "restarting at %ld. %s\n"
++msgstr "reiniciando em %ld %s\n"
++
++#: ../cmds.c:2099 ../ruserpass.c:188
++msgid "Limit of 16 macros have already been defined\n"
++msgstr "Limite de 16 macros já foi definido \n"
++
++#: ../cmds.c:2104
++msgid "Usage: %s macro_name\n"
++msgstr "Uso: %s nome_de_macro\n"
++
++#: ../cmds.c:2109
++msgid "Enter macro line by line, terminating it with a null line\n"
++msgstr "Entre com macro linha após linha e termine com uma linha null\n"
++
++#: ../cmds.c:2121
++msgid "macdef:end of file encountered\n"
++msgstr "macdef: encontrado um final de arquivo\n"
++
++#. LOOP
++#: ../cmds.c:2144
++msgid "Macro not defined - 4k buffer exceeded\n"
++msgstr "Macro não definida - excedido buffer de 4k\n"
++
++#: ../cmds.c:2158
++msgid "Passive mode %s.\n"
++msgstr "Modo passivo %s.\n"
++
++#: ../cmds.c:2172 ../cmds.c:2190
++msgid "usage: %s filename\n"
++msgstr "uso: %s nomedearquivo\n"
++
++#. This should be controlled by some verbose flag
++#: ../cmds.c:2228
++msgid "Local file \"%s\" is newer than remote file \"%s\"\n"
++msgstr "Arquivo local \"%s\" e mais novo que arquivo remoto \"%s\"\n"
++
++#: ../cmdtab.c:49
++msgid "send account command to remote server"
++msgstr "envio de comando de contabilidade para o servidor remoto"
++
++#: ../cmdtab.c:50
++msgid "append to a file"
++msgstr "apendado em um arquivo"
++
++#: ../cmdtab.c:51
++msgid "set ascii transfer type"
++msgstr "tipo de transferência ascii"
++
++#: ../cmdtab.c:52
++msgid "beep when command completed"
++msgstr "emite um beep quando completar o comando"
++
++#: ../cmdtab.c:53
++msgid "set binary transfer type"
++msgstr "tipo de transferência binária"
++
++#: ../cmdtab.c:54
++msgid "toggle mget upper/lower case id mapping"
++msgstr ""
++
++#: ../cmdtab.c:55
++msgid "change remote working directory"
++msgstr "mudando diretório remoto de trabalho"
++
++#: ../cmdtab.c:56
++msgid "change remote working directory to parent directory"
++msgstr "mudando diretório remoto de trabalho, para o diretório pai"
++
++#: ../cmdtab.c:57
++msgid "change file permissions of remote file"
++msgstr "mudando permissões de arquivo no arquivo remoto"
++
++#: ../cmdtab.c:58
++msgid "connect to remote tftp"
++msgstr "conectado no tftp remoto"
++
++#: ../cmdtab.c:59
++msgid "toggle carriage return stripping on ascii gets"
++msgstr ""
++
++#: ../cmdtab.c:60
++msgid "delete remote file"
++msgstr "deleta arquivo remoto"
++
++#: ../cmdtab.c:61
++msgid "toggle/set debugging mode"
++msgstr ""
++
++#: ../cmdtab.c:62 ../cmdtab.c:71
++msgid "list contents of remote directory"
++msgstr "lista conteúdo do diretório remoto"
++
++#: ../cmdtab.c:63
++msgid "terminate ftp session"
++msgstr "termina a sessão ftp"
++
++#: ../cmdtab.c:64
++msgid "execute macro"
++msgstr "executa macro"
++
++#: ../cmdtab.c:65
++msgid "set file transfer format"
++msgstr "seta o formato de transferência de arquivo"
++
++#: ../cmdtab.c:66
++msgid "toggle metacharacter expansion of local file names"
++msgstr ""
++
++#: ../cmdtab.c:67
++msgid "toggle printing `#' for each buffer transferred"
++msgstr ""
++
++#: ../cmdtab.c:68
++msgid "print local help information"
++msgstr "mostra informações locais de help"
++
++#: ../cmdtab.c:69
++msgid "get (set) idle timer on remote side"
++msgstr ""
++
++#: ../cmdtab.c:70
++msgid "change local working directory"
++msgstr "muda diretório de trabalho local"
++
++#: ../cmdtab.c:72
++msgid "define a macro"
++msgstr "define uma macro"
++
++#: ../cmdtab.c:73
++msgid "delete multiple files"
++msgstr "apaga múltiplos arquivos"
++
++#: ../cmdtab.c:74 ../cmdtab.c:77
++msgid "list contents of multiple remote directories"
++msgstr "lista conteúdo de múltiplos diretórios remotos"
++
++#: ../cmdtab.c:75
++msgid "get multiple files"
++msgstr "pega múltiplos arquivos"
++
++#: ../cmdtab.c:76
++msgid "make directory on the remote machine"
++msgstr "cria diretório na máquina remota"
++
++#: ../cmdtab.c:78
++msgid "show last modification time of remote file"
++msgstr "mostra última modificação de tempo em arquivo remoto"
++
++#: ../cmdtab.c:79
++msgid "set file transfer mode"
++msgstr "configura modo de transferência de arquivo"
++
++#: ../cmdtab.c:80
++msgid "send multiple files"
++msgstr "envia múltiplos arquivos"
++
++#: ../cmdtab.c:81
++msgid "get file if remote file is newer than local file "
++msgstr "somente baixa arquivo, caso o arquivo remoto seja mais novo que o arquivo local"
++
++#: ../cmdtab.c:82
++msgid "nlist contents of remote directory"
++msgstr ""
++
++#: ../cmdtab.c:83
++msgid "set templates for default file name mapping"
++msgstr ""
++
++#: ../cmdtab.c:84
++msgid "set translation table for default file name mapping"
++msgstr ""
++
++#: ../cmdtab.c:85
++msgid "enter passive transfer mode"
++msgstr "entra no modo de transferência passivo"
++
++#: ../cmdtab.c:86
++msgid "toggle use of PORT cmd for each data connection"
++msgstr ""
++
++#: ../cmdtab.c:87
++msgid "force interactive prompting on multiple commands"
++msgstr ""
++
++#: ../cmdtab.c:88
++msgid "issue command on alternate connection"
++msgstr ""
++
++#: ../cmdtab.c:89
++msgid "print working directory on remote machine"
++msgstr "mostra diretório de trabalho na máquina remota"
++
++#: ../cmdtab.c:90
++msgid "terminate ftp session and exit"
++msgstr "termina sessão ftp e sai"
++
++#: ../cmdtab.c:91
++msgid "send arbitrary ftp command"
++msgstr "envia um comando ftp arbitrário"
++
++#: ../cmdtab.c:92
++msgid "receive file"
++msgstr "recebe arquivo"
++
++#: ../cmdtab.c:93
++msgid "get file restarting at end of local file"
++msgstr "baixa arquivo recomeçando no final do arquivo local"
++
++#: ../cmdtab.c:94
++msgid "get help from remote server"
++msgstr "pega a ajuda do servidor remoto"
++
++#: ../cmdtab.c:95
++msgid "rename file"
++msgstr "renomeia arquivo"
++
++#: ../cmdtab.c:96
++msgid "restart file transfer at bytecount"
++msgstr "recomeça transf. de arquivo no bytecount"
++
++#: ../cmdtab.c:97
++msgid "remove directory on the remote machine"
++msgstr "apaga diretório na maquina remota"
++
++#: ../cmdtab.c:98
++msgid "show status of remote machine"
++msgstr "mostra status da maquina remota"
++
++#: ../cmdtab.c:99
++msgid "toggle store unique for local files"
++msgstr ""
++
++#: ../cmdtab.c:100
++msgid "clear queued command replies"
++msgstr ""
++
++#: ../cmdtab.c:101
++msgid "send one file"
++msgstr "envia um arquivo"
++
++#: ../cmdtab.c:102
++msgid ""
++"send site specific command to remote server\n"
++"\t\tTry \"rhelp site\" or \"site help\" for more information"
++msgstr ""
++
++#: ../cmdtab.c:104
++msgid "escape to the shell"
++msgstr "escapa para o shell"
++
++#: ../cmdtab.c:105
++msgid "show size of remote file"
++msgstr "mostra tamanho do arquivo remoto"
++
++#: ../cmdtab.c:106
++msgid "show current status"
++msgstr "mostra o status corrente"
++
++#: ../cmdtab.c:107
++msgid "set file transfer structure"
++msgstr ""
++
++#: ../cmdtab.c:108
++msgid "toggle store unique on remote machine"
++msgstr ""
++
++#: ../cmdtab.c:109
++msgid "show remote system type"
++msgstr "mostra o tipo de sistema remoto"
++
++#: ../cmdtab.c:110
++msgid "set tenex file transfer type"
++msgstr "configura para o tipo de transferência tenex "
++
++#: ../cmdtab.c:111
++msgid "toggle printing byte counter during transfers"
++msgstr ""
++
++#: ../cmdtab.c:112
++msgid "toggle packet tracing"
++msgstr ""
++
++#: ../cmdtab.c:113
++msgid "set file transfer type"
++msgstr "configura o tipo de transferência de arquivo"
++
++#: ../cmdtab.c:114
++msgid "get (set) umask on remote side"
++msgstr "pega (configura) umask no lado remoto"
++
++#: ../cmdtab.c:115
++msgid "send new user information"
++msgstr "envia novas informações de usuário"
++
++#: ../cmdtab.c:116
++msgid "toggle verbose mode"
++msgstr ""
++
++#: ../domacro.c:62
++msgid "Usage: %s macro_name.\n"
++msgstr "Uso: %s nome_de_macro.\n"
++
++#: ../domacro.c:72
++msgid "'%s' macro not found.\n"
++msgstr "'%s' macro não localizada.\n"
++
++#: ../ruserpass.c:150
++msgid "Error: `password' must follow `login' in .netrc\n"
++msgstr "Erro: `senha' deve vir aps `login' no .netrc \n"
++
++#: ../ruserpass.c:156 ../ruserpass.c:168
++msgid "Error - .netrc file not correct permissions.\n"
++msgstr "Erro - arquivo .netrc não está com permissões corretas.\n"
++
++#: ../ruserpass.c:157
++msgid "Remove password or correct mode (should be 600).\n"
++msgstr "Remova senha ou arrume o modo (deve ser 600). \n"
++
++#: ../ruserpass.c:169
++msgid "Remove account or correct mode (should be 600).\n"
++msgstr "Remova senha ou arrume o modo (deve ser 600). \n"
++
++#: ../ruserpass.c:184
++msgid "Missing macdef name argument.\n"
++msgstr "Faltando argumento de nome macdef.\n"
++
++#: ../ruserpass.c:198 ../ruserpass.c:206 ../ruserpass.c:218
++msgid "Macro definition missing null line terminator.\n"
++msgstr "Faltando linha nula na definição de macro.\n"
++
++#: ../ruserpass.c:232
++msgid "4K macro buffer exceeded\n"
++msgstr ""
++
++#: ../ruserpass.c:237
++msgid "Unknown .netrc keyword %s\n"
++msgstr "Palavra chave %s no .netrc desconhecida \n"
+diff -Nur netkit-ftp-0.10.orig/ftp/ruserpass.c netkit-ftp-0.10/ftp/ruserpass.c
+--- netkit-ftp-0.10.orig/ftp/ruserpass.c	Sat Apr  5 22:00:31 1997
++++ netkit-ftp-0.10/ftp/ruserpass.c	Thu Jan 21 15:03:33 1999
+@@ -47,6 +47,8 @@
+ #include <unistd.h>
+ #include "ftp_var.h"
+ 
++#include "intl.h"
++
+ static FILE *cfile;
+ static int token(void);
+ 
+@@ -145,14 +147,14 @@
+ 			break;
+ 		case PASSWD:
+ 			if (*aname==NULL) {
+-	fprintf(stderr, "Error: `password' must follow `login' in .netrc\n");
++	fprintf(stderr, _("Error: `password' must follow `login' in .netrc\n"));
+ 				goto bad;
+ 			}
+ 			if (strcmp(*aname, "anonymous") &&
+ 			    fstat(fileno(cfile), &stb) >= 0 &&
+ 			    (stb.st_mode & 077) != 0) {
+-	fprintf(stderr, "Error - .netrc file not correct permissions.\n");
+-	fprintf(stderr, "Remove password or correct mode (should be 600).\n");
++	fprintf(stderr, _("Error - .netrc file not correct permissions.\n"));
++	fprintf(stderr, _("Remove password or correct mode (should be 600).\n"));
+ 				goto bad;
+ 			}
+ 			if (token() && *apass == 0) {
+@@ -163,8 +165,8 @@
+ 		case ACCOUNT:
+ 			if (fstat(fileno(cfile), &stb) >= 0
+ 			    && (stb.st_mode & 077) != 0) {
+-	fprintf(stderr, "Error - .netrc file not correct permissions.\n");
+-	fprintf(stderr, "Remove account or correct mode (should be 600).\n");
++	fprintf(stderr, _("Error - .netrc file not correct permissions.\n"));
++	fprintf(stderr, _("Remove account or correct mode (should be 600).\n"));
+ 				goto bad;
+ 			}
+ 			if (token() && *aacct == 0) {
+@@ -179,11 +181,11 @@
+ 			}
+ 			while ((c=getc(cfile)) != EOF && (c == ' ' || c == '\t'));
+ 			if (c == EOF || c == '\n') {
+-				printf("Missing macdef name argument.\n");
++				printf(_("Missing macdef name argument.\n"));
+ 				goto bad;
+ 			}
+ 			if (macnum == 16) {
+-				printf("Limit of 16 macros have already been defined\n");
++				printf(_("Limit of 16 macros have already been defined\n"));
+ 				goto bad;
+ 			}
+ 			tmp = macros[macnum].mac_name;
+@@ -193,7 +195,7 @@
+ 				*tmp++ = c;
+ 			}
+ 			if (c == EOF) {
+-				printf("Macro definition missing null line terminator.\n");
++				printf(_("Macro definition missing null line terminator.\n"));
+ 				goto bad;
+ 			}
+ 			*tmp = '\0';
+@@ -201,7 +203,7 @@
+ 				while ((c=getc(cfile)) != EOF && c != '\n');
+ 			}
+ 			if (c == EOF) {
+-				printf("Macro definition missing null line terminator.\n");
++				printf(_("Macro definition missing null line terminator.\n"));
+ 				goto bad;
+ 			}
+ 			if (macnum == 0) {
+@@ -213,7 +215,7 @@
+ 			tmp = macros[macnum].mac_start;
+ 			while (tmp != macbuf + 4096) {
+ 				if ((c=getc(cfile)) == EOF) {
+-				printf("Macro definition missing null line terminator.\n");
++				printf(_("Macro definition missing null line terminator.\n"));
+ 					goto bad;
+ 				}
+ 				*tmp = c;
+@@ -227,12 +229,12 @@
+ 				tmp++;
+ 			}
+ 			if (tmp == macbuf + 4096) {
+-				printf("4K macro buffer exceeded\n");
++				printf(_("4K macro buffer exceeded\n"));
+ 				goto bad;
+ 			}
+ 			break;
+ 		default:
+-	fprintf(stderr, "Unknown .netrc keyword %s\n", tokval);
++	fprintf(stderr, _("Unknown .netrc keyword %s\n"), tokval);
+ 			break;
+ 		}
+ 		goto done;
