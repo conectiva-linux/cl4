@@ -1,0 +1,45 @@
+--- bdflush-1.5/bdflush.c.orig	Sun Sep 18 21:59:40 1994
++++ bdflush-1.5/bdflush.c	Fri Aug  9 15:36:57 1996
+@@ -30,7 +30,11 @@
+  * - alec <Alec.Muffett@UK.Sun.COM>
+  */
+ 
+-_syscall2(int, bdflush, int, func, int, data);
++#ifdef __alpha__
++ extern int bdflush (int func, long data);
++#else
++ _syscall2(int, bdflush, int, func, int, data);
++#endif
+ 
+ static char * version_string = "1.4";
+ 
+@@ -133,16 +137,16 @@
+             
+                 bdflag = 2 + (i << 1);
+             
+-                j = bdflush(bdflag, (int) &data);
+-            
+-                printf("%d: %5d %s\n", i, data, bdparam[i]);
+-            
++                j = bdflush(bdflag, (long) &data);
++
+                 if (j)
+                 {
+                     fprintf(stderr, "bdupdate:(%d) bdflush(%08x,&d)=%d %d\n",
+                             i, bdflag, j, errno);
++		    perror("bdflush");
+                     break;
+                 }
++                printf("%d: %5d %s\n", i, data, bdparam[i]);
+             }
+ 	   
+             go = 1; 
+@@ -204,7 +208,7 @@
+ 
+     signal(SIGTERM, SIG_IGN);
+     signal(SIGINT, SIG_IGN);
+-    signal(SIGCLD, SIG_IGN);
++    signal(SIGCHLD, SIG_IGN);
+ 
+     if (!fork())                /* fork off a daemon */
+     {

@@ -1,0 +1,18 @@
+--- bdflush-1.5/Makefile.ewt	Mon Jun  2 21:11:45 1997
++++ bdflush-1.5/Makefile	Mon Jun  2 21:11:55 1997
+@@ -1,5 +1,6 @@
+ BINDIR=/sbin
+ MANDIR=/usr/man/man8
++CFLAGS=-D_GNU_SOURCE
+ 
+ install: bdflush
+ 	cp -f bdflush $(BINDIR)/update
+@@ -9,7 +10,7 @@
+ 
+ 
+ bdflush: bdflush.c
+-	$(CC) -s -Wall -O2 -o bdflush bdflush.c
++	$(CC) $(CFLAGS) -s -Wall -O2 -o bdflush bdflush.c
+ 	
+ clean:
+ 	rm -f bdflush
