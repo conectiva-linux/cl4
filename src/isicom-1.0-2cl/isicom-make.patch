@@ -1,0 +1,15 @@
+--- isicom/Makefile.old	Wed Sep 16 16:53:52 1998
++++ isicom/Makefile	Fri Mar 26 23:37:13 1999
+@@ -6,5 +6,9 @@
+ 
+ $(TARGET).o: $(TARGET).h
+ 
+-firmld:
+-	cc firmld.c -o firmld
+\ No newline at end of file
++firmld: firmld.c
++	$(CC) $< -o $@
++
++clean:
++	rm -f firmld *.o *~
++
