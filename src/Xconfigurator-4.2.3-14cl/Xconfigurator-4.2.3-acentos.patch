@@ -1,0 +1,124 @@
+diff -Nur Xconfigurator-4.2.3/Xconfigurator.c Xconfigurator-4.2.3.cnc/Xconfigurator.c
+--- Xconfigurator-4.2.3/Xconfigurator.c	Fri Jun 11 16:27:15 1999
++++ Xconfigurator-4.2.3.cnc/Xconfigurator.c	Fri Jun 11 17:28:47 1999
+@@ -138,6 +138,7 @@
+ void get_out();
+ void cpfailed();
+ int screen_autoprobe(struct XconfigState *state);
++void XF86Config_link_die(int link_errno);
+ 
+ /*
+  * These are from the selected card definition. Parameters from the
+@@ -730,7 +731,8 @@
+   "it-ibm -> it", "it -> it", "it2 -> it", "is-latin1 -> is", "is -> is", 
+   "no-latin1 -> no", "no -> no", "pl -> pl", "ru -> ru", "ru1 -> ru", 
+   "ru2 -> ru", "no -> no", "pl -> pl", "ru -> ru", "ru1 -> ru", "ru2 -> ru",
+-  "russian -> ru", "se-latin1 -> se", "uk -> gb"
++  "russian -> ru", "se-latin1 -> se", "uk -> gb",
++  "us-acentos -> us_intl", "br-abnt2 -> br"
+     };
+ 
+ #ifdef __sparc__
+@@ -2962,7 +2964,9 @@
+ "# If you'd like to switch the positions of your capslock and\n"
+ "# control keys, use:\n"
+ "#    XkbOptions  \"ctrl:swapcaps\"\n"
+-"\n"
++"\n";
++
++static char *keyboardsection_part3 =
+ "# These are the default XKB settings for XFree86\n"
+ "#    XkbRules    \"xfree86\"\n"
+ "#    XkbModel    \"pc101\"\n"
+@@ -3276,6 +3280,31 @@
+ "# **********************************************************************\n"
+ "\n";
+ 
++/*
++  Determina o Xmodmap de acordo com o mapa XKB
++  Note uma diferença de nomenclatura entre estes mapas.
++  Deveriam os mapas XKB ficar com os nomes dos Xmodmaps?
++  e ainda tem os nossos mapas do console (us-acentos :)
++*/
++
++void XF86Config_link_Xmodmap (char *xkb_keymap) {
++   char Xmodmap[16];
++
++   snprintf (Xmodmap, sizeof(Xmodmap), "Xmodmap.%s",
++     strcmp(xkb_keymap,"br") == 0      ? "abnt2" :
++     strcmp(xkb_keymap,"us_intl") == 0 ? "us+"   :
++     strcmp(xkb_keymap,"pt") == 0      ? "pt"    :
++     strcmp(xkb_keymap,"es") == 0      ? "es"    : "us+");
++
++   if (unlink("/etc/X11/xinit/.Xmodmap"))
++       if (errno != ENOENT)
++           XF86Config_link_die( errno );
++
++   if (symlink(Xmodmap,
++               "/etc/X11/xinit/.Xmodmap") )
++       if (errno != ENOENT)
++           XF86Config_link_die( errno );
++}
+ 
+ void write_XF86Config(struct XconfigState *state, char *filename) {
+ 
+@@ -3336,7 +3365,23 @@
+ 	fprintf(f, "    RightAlt        Meta\n");
+ 
+     fprintf(f, "%s", keyboardsection_part2);
+-    fprintf(f, "    XkbLayout       \"%s\"\n", state->xkb_keymap);
++
++    /* for our brazilian keyboards, just put the keymap and don't change
++       nothing for others...
++       We are using Xmodmaps, so the XKB is Disabled and XkbKeymap
++       is commented. This also applies to spanish keyboard */
++    if (strcmp(state->xkb_keymap, "us_intl") == 0 ||
++             strcmp(state->xkb_keymap, "br") == 0 ||
++             strcmp(state->xkb_keymap, "pt") == 0 ||
++             strcmp(state->xkb_keymap, "es") == 0) {
++        fprintf(f, "    XkbDisable\n");
++        fprintf(f, "#    XkbKeymap     \"xfree86(%s)\"\n", state->xkb_keymap);
++        XF86Config_link_Xmodmap(state->xkb_keymap);
++    } else {
++        fprintf(f, "%s", keyboardsection_part3);
++        fprintf(f, "    XkbLayout       \"%s\"\n", state->xkb_keymap);
++    }
++
+     fprintf(f, "%s", keyboardsection_end);
+ #ifdef __sparc__
+     }
+@@ -4303,4 +4348,34 @@
+     }
+ 
+     exit(0);
++}
++
++/* common problem - /usr/X11R6/lib/X11/XF86Config is supposed */
++/* to be a link to /etc/X11/XF86Config. If you run a XFree86  */
++/* configuration utility, this link can be destroyed.         */
++/* Notify user if this is the case                            */
++#define LINK_OK 255
++#define LINK_FAIL 0
++#define LINK_FATAL -1
++#define LINK_FIXABLE 128
++
++void XF86Config_link_die ( int link_errno )
++{
++    char *str;
++
++    newtCls();
++
++    str = (char *) malloc(80);
++    if (link_errno < sys_nerr)
++	str = strncpy(str, sys_errlist[link_errno], 80);
++    else
++	snprintf(str, 80, _("Undetermined error number %d"), link_errno);
++
++    newtWinMessage(_("Fatal Error"), _("Ok"),
++		 _("A fatal error occured checking the status of the link\n\n"
++		   "   /usr/X11R6/lib/X11/XF86Config\n\n"
++		   "Make sure you are running this utility as root. "
++		   "The fatal error was:\n\n"));
++    newtFinished();
++    exit(1);
+ }

@@ -1,0 +1,1145 @@
+diff -Nur Xconfigurator-4.2.3/MonitorsDB Xconfigurator-4.2.3.cnc/MonitorsDB
+--- Xconfigurator-4.2.3/MonitorsDB	Thu Apr 15 17:10:58 1999
++++ Xconfigurator-4.2.3.cnc/MonitorsDB	Thu Jul  1 20:07:13 1999
+@@ -5,6 +5,8 @@
+ #
+ # Each line has format:
+ #   <Monitor name>; <bandwidth in Mhz>; <horiz sync in Khz>; <verc sync in Hz>
++# Conectiva: included several monitors from Brazilian market
++# Send your contribution to dist@conectiva.com.br
+ #
+ # Horiz and vert sync can be a range; like 35.2-55.75; or 31.5,35.5
+ # BUT remember to use ';' to separate fields
+@@ -35,13 +37,22 @@
+ ADI ProVista E30; 0; 30.0-54.0; 50.0-100.0
+ ADI ProVista E40; 0; 30.0-64.0; 50.0-100.0
+ ADI ProVista E66; 0; 30.0-86.0; 50.0-120.0
++AOC 15; 135; 23.5-86; 50-120
+ AOC 4N Series; 65; 30-50; 50-90
+ AOC 4V & 5E Series; 65; 30-54; 50-120
+ AOC 5V & 5G Series; 85; 30-69; 50-120
+ AOC 7G Series; 100; 30-85; 50-130
+ AOC 7V Series; 100; 30-70; 50-130
+ AOC 9G Series; 135; 30-95; 50-150
+-AOC-15; 135; 23.5-86; 50-120
++AOC Spectrun 4Vn; 85; 30-54; 50-120
++AOC Spectrun 5E; 85; 30-54; 50-120
++AOC Spectrun 5Elr; 85; 30-54; 50-120
++AOC Spectrun 5En; 85; 30-54; 50-120
++AOC Spectrun 7Glr; 100; 30-85; 50-130
++AOC Spectrun 7GlrA; 100; 30-85; 50-130
++AOC Spectrun 7Vlr; 100; 30-70; 50-130
++AOC Spectrun 7VlrA; 100; 30-70; 50-130
++AOC Spectrun 9Glr; 100; 30-95; 47-150
+ AT&T 14 in. Color Economy; 0; 31.5; 50-90
+ AT&T 14 in. Color Economy; 0; 35.0; 50-90
+ AT&T 14 in. Color Value; 0; 31.5; 50-90
+@@ -59,7 +70,6 @@
+ Acer AcerView 33D; 0; 31.0-35.5; 50.0-100.0
+ Acer AcerView 33DL; 0; 31.0-35.5; 50.0-100.0
+ Acer AcerView 33s; 0; 31.0-35.5; 50.0-100.0
+-Acer AcerView 33s; 0; 31.0-35.5; 50.0-100.0
+ Acer AcerView 34T; 0; 31.0-48.0; 50.0-100.0
+ Acer AcerView 34TL; 0; 31.0-48.0; 50.0-100.0
+ Acer AcerView 34Ts; 0; 31.0-48.0; 50.0-100.0
+@@ -97,6 +107,9 @@
+ Acer AcerView 79t; 0; 30.0-92.0; 50.0-120.0
+ Acer AcerView 98i; 0; 30.0-82.0; 50.0-120.0
+ Acer AcerView 99D; 0; 30.0-93.0; 50.0-152.0
++Acer Acerview 11D; 45; 31.5,35.16,35.5; 50-100
++Acer Acerview 33D/33DL; 45; 31.5,35.16,35.5; 50-100
++Acer Acerview 34T/34TL; 65; 31.5,37.8,48.09,48.3; 50-100
+ Apollo 1280x1024-68Hz; 125; 73.702; 68.24
+ Apollo 1280x1024-70Hz; 125; 75.118; 70.07
+ Axion CL-1566; 100; 30-66; 50-120
+@@ -130,7 +143,7 @@
+ CTX CVS-3436; 0; 15.0-38.0; 50.0-90.0
+ CTX CVS-3450; 0; 20.0-38.0; 50.0-90.0
+ CTX Multiscan 3436; 0; 15.0-38.0; 50.0-90.0
+-CTX-1561; 100; 30-60; 50-90
++CTX 1561; 100; 30-60; 50-90
+ Chuntex CTX CPS-1560/LR; 75.0; 30.00-60.00; 50.00-100.00
+ Compaq 1024 Monitor; 0; 30-60; 50-100
+ Compaq 151FS Monitor; 0; 30-60; 50-100
+@@ -149,20 +162,22 @@
+ Compaq V75; 108; 30-60; 47.5-125
+ Compaq V90 Monitor; 0; 30-94; 48-160
+ Compudyne KD-1500N; 74.8; 30.00-66; 50-90
+-Cornerstone - Color 20/70; 0; 60.0-87.0; 60.0-120.0
+-Cornerstone - Color 20/77; 0; 31.0-96.0; 50.0-160.0
+-Cornerstone - Color 21/75; 0; 30.0-94.0; 50.0-150.0
+-Cornerstone - Color 40/95; 0; 30.0-95.0; 50.0-180.0
+-Cornerstone - Color 45/101sf; 0; 31.0-100.7; 50.0-160.0
+-Cornerstone - Color 50/101sf, 21/81; 0; 31.0-100.7; 50.0-160.0
+-Cornerstone - c1000, c1001, Color 50/95; 0; 30.0-95.0; 50.0-180.0
+-Cornerstone - c900; 0; 30.0-95.0; 50.0-180.0
+-Cornerstone - p1400; 0; 31.0-107.0; 50.0-160.0
+-Cornerstone - p1500; 0; 31.0-107.0; 50.0-160.0
+-Cornerstone - p1600, Color 50/115sf, 50/115; 0; 31.0-117.0; 50.0-160.0
+-Cornerstone - p1700; 0; 31.0-130.0; 50.0-160.0
+-Cornerstone - v300; 0; 31.0-93.0; 50.0-160.0
++Cornerstone Color 20/70; 0; 60.0-87.0; 60.0-120.0
++Cornerstone Color 20/77; 0; 31.0-96.0; 50.0-160.0
++Cornerstone Color 21/75; 0; 30.0-94.0; 50.0-150.0
++Cornerstone Color 40/95; 0; 30.0-95.0; 50.0-180.0
++Cornerstone Color 45/101sf; 0; 31.0-100.7; 50.0-160.0
++Cornerstone Color 50/101sf, 21/81; 0; 31.0-100.7; 50.0-160.0
++Cornerstone c1000, c1001, Color 50/95; 0; 30.0-95.0; 50.0-180.0
++Cornerstone c900; 0; 30.0-95.0; 50.0-180.0
++Cornerstone p1400; 0; 31.0-107.0; 50.0-160.0
++Cornerstone p1500; 0; 31.0-107.0; 50.0-160.0
++Cornerstone p1600, Color 50/115sf, 50/115; 0; 31.0-117.0; 50.0-160.0
++Cornerstone p1700; 0; 31.0-130.0; 50.0-160.0
++Cornerstone v300; 0; 31.0-93.0; 50.0-160.0
++CrystalScan 1572FS; 80.0; 30.00-57.00; 43.00-70.04
+ DEC PCXBV-KA/KB; 120.0; 30.0-66.0; 50-130
++DEC VRCX5-KA/WA/W3/W4; 86; 30-69; 50-110
+ Dell 1024i-P/1024i-Color; 0; 31.5,37.5,35.2,37.9,35.5; 60.0,72.1,56,60,87
+ Dell 1024i; 0; 31.5,35.2,35.5; 60.0,56,87
+ Dell Eizo 9080i; 0; 30.0-64.0; 50.0-90.0
+@@ -233,6 +248,7 @@
+ GoldStar LG StudioWorks76m; 0; 30.0-65.0; 50.0-110.0
+ GoldStar LG StudioWorks78T; 0; 30.0-85.0; 50.0-120.0
+ GoldStar LG StudioWorks78i; 0; 30.0-85.0; 50.0-120.0
++HP 1280x1024-72Hz; 135; 78.125; 72.008
+ HP D1187A 20-inch Display; 0; 30.0-64.0; 50.0-90.0
+ HP D1188A 20-inch Display; 0; 30.0-64.0; 50.0-90.0
+ HP D1192A VGA Monochrome 14-inch Display; 0; 31.5; 60,70
+@@ -301,6 +317,7 @@
+ Hitachi HM4921; 0; 30.0-95.0; 50.0-150.0
+ Hitachi HM6421; 0; 100.0-102.0; 72.0-77.0
+ Hitachi HM6821; 0; 30.0-103.0; 50.0-150.0
++Hitachi SuperScan 20S; 100.0; 30-69; 50-100
+ Hyundai DeluxScan 14S; 65; 30-50; 50-130
+ Hyundai DeluxScan 15 Pro; 85; 30-64; 50-120
+ Hyundai DeluxScan 15B; 65; 30-50; 50-130
+@@ -312,68 +329,129 @@
+ Hyundai DeluxScan 17MB/17MS; 65; 30-50; 50-130
+ Hyundai hcm-421E; 110; 30-36; 43-72
+ IBM 2116 MM55 Multimedia; 0; 30.0-69.0; 50.0-120.0
++IBM 2118 C70; 0; 30.0-50.0; 50.0-90.0
+ IBM 2128 MM75 Multimedia; 0; 30.0-69.0; 50.0-160.0
++IBM 2215 15"; 0; 30-64; 50-90
+ IBM 2235 C50; 0; 30.0-54.0; 50.0-120.0
+ IBM 2237 C71; 0; 30.0-69.0; 50.0-120.0
++IBM 2248 14"; 0; 30-48; 50-90
++IBM 2264-002 14"; 0; 30-64; 50-90
++IBM 2264-017 17"; 0; 29-82; 50-150
++IBM 6312 14" PS/VP; 0; 31-48; 47-100
++IBM 6314 14" PS/VP; 0; 30-60; 50-120
++IBM 6315 15L10; 0; 31-48.5; 50-90
++IBM 6318 14" PS/VP; 0; 32-37; 56-87
++IBM 6319 15" PS/VP; 0; 30-60; 50-120
++IBM 6322 14L10; 0; 31-48.5; 50-90
++IBM 6327-002 17S; 0; 30-64; 50-130
++IBM 6327-022 17S; 0; 30-64; 50-110
+ IBM 6540 G42; 0; 30.0-50.0; 55.0-100.0
+ IBM 6541 G51; 0; 30.0-54.0; 55.0-100.0
++IBM 6542 G40; 0; 30.0-38.0; 50.0-90.0
++IBM 6542 G41 & G41t; 0; 31.0-58.0; 50.0-100.0
++IBM 6543 G50 & G50t; 0; 31.0-58.0; 50.0-100.0
++IBM 6544 G70 & G70t; 0; 31.0-64.0; 50.0-120.0
++IBM 6545 G200; 0; 30.0-85.0; 50.0-120.0
+ IBM 6546 G52 & G54; 0; 30.0-69.0; 50.0-120.0
+-IBM 6547 G72 & G74; 0; 30.0-69.0; 50.0-120.0
+-IBM 6549 G94; 0; 30.0-95.0; 50.0-160.0
++IBM 6547 G72; 0; 30.0-69.0; 50.0-160.0
++IBM 6547 G74; 0; 30.0-69.0; 50.0-120.0
++IBM 6549 G94 & G96; 0; 30.0-95.0; 50.0-160.0
++IBM 6553 P50; 0; 30.0-69.0; 50.0-120.0
++IBM 6554 P70 (603 & 604); 0; 29.0-82.0; 50.0-120.0
++IBM 6554 P70 (673, 674 & 6E3); 0; 30.0-85.0; 48.0-150.0
++IBM 6555 P200 (703 & 704); 0; 29.0-90.0; 50.0-120.0
++IBM 6555 P200 (773, 774 & 7E3); 0; 29.0-96.0; 48.0-160.0
++IBM 6555 P201; 0; 30.0-107.0; 50.0-160.0
+ IBM 6556 P72; 0; 30.0-85.0; 50.0-150.0
+ IBM 6557 P92; 0; 30.0-94.0; 50.0-160.0
+ IBM 6558 P202; 0; 30.0-107.0; 50.0-160.0
++IBM 7095 MM50 Multimedia; 0; 30.0-69.0; 50.0-120.0
++IBM 7097 MM70 Multimedia; 0; 30.0-69.0; 50.0-120.0
+ IBM 8507; 45; 31.5,35.5; 70,60,87
+-IBM 9514-B TFT Panel; 0; 31.0-38.0; 60.0-75.0
+-IBM 9514-B TFT Panel; 0; 34.0-50.0; 55.0-75.0
+-IBM 9514-B TFT Panel; 0; 48.0-65.0; 60.0-75.0
+-Iiyama A101GT,        VisionMasterPro 501; 0; 27.0-96.0; 50.0-160.0
+-Iiyama A102GT,        VisionMasterPro 502; 0; 27.0-110.0; 50.0-160.0
+-Iiyama A701GT,        VisionMasterPro 400; 0; 27.0-96.0; 50.0-160.0
+-Iiyama MF-8221E/T,    VisionMaster; 0; 24-94; 50-160
+-Iiyama MF-8515G,      VisionMaster; 0; 27-69; 50-160
+-Iiyama MF-8617E/T,    VisionMaster; 0; 27-86; 50-160
+-Iiyama MF-8617ES,     VisionMaster; 0; 27-86; 50-160
+-Iiyama MF-8721E,      VisionMaster; 0; 27.0-110.0; 50.0-160.0
+-Iiyama MT-9017E/T,    VisionMasterPro; 0; 27-92; 50-160
+-Iiyama MT-9021E/T,    VisionMasterPro; 0; 24-94; 50-160
+-Iiyama MT-9221,       VisionMasterPro; 0; 27.0-110.0; 50.0-160.0
+-Iiyama S101GT,        VisionMaster 501; 0; 27.0-96.0; 50.0-160.0
+-Iiyama S102GT,        VisionMaster 502; 0; 27.0-110.0; 50.0-160.0
+-Iiyama S701GT,        VisionMaster 400; 0; 27.0-96.0; 50.0-160.0
+-Iiyama S702GT,        VisionMaster 400; 0; 27.0-96.0; 50.0-160.0
+-Iiyama S901GT,        VisionMaster 450; 0; 27.0-102.0; 50.0-160.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 31.5; 60.0-70.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 35.2; 56
+-Iiyama TXA3601GT,     Prolite36 ; 0; 37.5-37.9; 72.0-75.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 37.9; 60.3
+-Iiyama TXA3601GT,     Prolite36 ; 0; 46.9; 75.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 48.1; 72.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 48.4; 60.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 56.5; 70.0
+-Iiyama TXA3601GT,     Prolite36 ; 0; 60.0; 75.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 31.5; 60.0-70.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 35.2; 56
+-Iiyama TXA3602GT,     Prolite36 ; 0; 37.5-37.9; 72.0-75.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 37.9; 60.3
+-Iiyama TXA3602GT,     Prolite36 ; 0; 46.9; 75.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 48.1; 72.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 48.4; 60.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 56.5; 70.0
+-Iiyama TXA3602GT,     Prolite36 ; 0; 60.0; 75.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 31.5; 60.0-70.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 35.2; 56
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 37.5-43.3; 72.0-85.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 37.9; 60.3
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 46.9-53.7; 75.0-85.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 48.1; 72.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 48.4; 60.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 56.5; 70.0
+-Iiyama TXA3811/3821HT,     Prolite38 ; 0; 60.0; 75.0
++IBM 9507 TFT Panel; 0; 31.5; 60
++IBM 9514-B TFT Panel @ 1024x768; 0; 48.0-65.0; 60.0-75.0
++IBM 9514-B TFT Panel @ 640x480; 0; 31.0-38.0; 60.0-75.0
++IBM 9514-B TFT Panel @ 800x600; 0; 34.0-50.0; 55.0-75.0
++IBM 9516-A TFT Panel @ 1280x1024; 0; 63.0-64.0; 59.0-61.0
++IBM 9516-A TFT Panel @ 640x480; 0; 39.0-38.0; 59.0-61.0
++IBM 9516-B TFT Panel @ 1024x768; 0; 48.0-80.0; 59.0-100.0
++IBM 9516-B TFT Panel @ 1280x1024; 0; 64.0-80.0; 60.0-75.0
++IBM 9516-B TFT Panel @ 640x480; 0; 30.0-66.0; 59.0-120.0
++IBM 9516-B TFT Panel @ 800x600; 0; 34.0-76.0; 55.0-120.0
++IBM 9521 21X, 21XG & 21XT; 0; 30-64; 50-110
++IBM 9524 14X, 14XG & 14XT; 0; 30-64; 50-110
++IBM 9525 15X, 15XG & 15XT; 0; 30-64; 50-110
++IBM 9527 17X, 17XG & 17XT; 0; 30-82; 50-110
++IBM POWERdisplay 17 & 20; 0; 29-82; 50-150
++IDEK Vision Master 17 (4); 135.0; 23.5-86.0; 50-120
++IDEK Vision Master 17 (5); 135.0; 23.5-86; 50-120
++IDEK VisionMaster 17 (1); 135; 31.5-85.0; 60-80
++IDEK VisionMaster 17 (2); 135.0; 23.5-86.0; 50-120
++IDEK VisionMaster 17 (3); 135; 23.5-86; 50-120
++IIYAMA MF-8515G; 120; 27-69; 50-160
++IIYAMA MF-8617E; 160; 27-86; 50-160
++IIYAMA MF-8721; 240; 27-110; 50-160
++IIYAMA MT-9017E; 160; 27-92; 50-160
++IIYAMA MT-9221; 240; 27-110; 50-160
++IIYAMA R817E; 160; 27-86; 50-160
++IIYAMA S-901GT; 220; 27-102; 50-160
++Iiyama A101GT, VisionMasterPro 501; 0; 27.0-96.0; 50.0-160.0
++Iiyama A102GT, VisionMasterPro 502; 0; 27.0-110.0; 50.0-160.0
++Iiyama A701GT, VisionMasterPro 400; 0; 27.0-96.0; 50.0-160.0
++Iiyama MF-8221E/T, VisionMaster; 0; 24-94; 50-160
++Iiyama MF-8515G, VisionMaster; 0; 27-69; 50-160
++Iiyama MF-8617E/T, VisionMaster; 0; 27-86; 50-160
++Iiyama MF-8617ES, VisionMaster; 0; 27-86; 50-160
++Iiyama MF-8721E, VisionMaster; 0; 27.0-110.0; 50.0-160.0
++Iiyama MT-9017E/T, VisionMasterPro; 0; 27-92; 50-160
++Iiyama MT-9021E/T, VisionMasterPro; 0; 24-94; 50-160
++Iiyama MT-9221, VisionMasterPro; 0; 27.0-110.0; 50.0-160.0
++Iiyama S101GT, VisionMaster 501; 0; 27.0-96.0; 50.0-160.0
++Iiyama S102GT, VisionMaster 502; 0; 27.0-110.0; 50.0-160.0
++Iiyama S701GT, VisionMaster 400; 0; 27.0-96.0; 50.0-160.0
++Iiyama S702GT, VisionMaster 400; 0; 27.0-96.0; 50.0-160.0
++Iiyama S901GT, VisionMaster 450; 0; 27.0-102.0; 50.0-160.0
++Iiyama TXA3601GT, Prolite36 ; 0; 31.5; 60.0-70.0
++Iiyama TXA3601GT, Prolite36 ; 0; 35.2; 56
++Iiyama TXA3601GT, Prolite36 ; 0; 37.5-37.9; 72.0-75.0
++Iiyama TXA3601GT, Prolite36 ; 0; 37.9; 60.3
++Iiyama TXA3601GT, Prolite36 ; 0; 46.9; 75.0
++Iiyama TXA3601GT, Prolite36 ; 0; 48.1; 72.0
++Iiyama TXA3601GT, Prolite36 ; 0; 48.4; 60.0
++Iiyama TXA3601GT, Prolite36 ; 0; 56.5; 70.0
++Iiyama TXA3601GT, Prolite36 ; 0; 60.0; 75.0
++Iiyama TXA3602GT, Prolite36 ; 0; 31.5; 60.0-70.0
++Iiyama TXA3602GT, Prolite36 ; 0; 35.2; 56
++Iiyama TXA3602GT, Prolite36 ; 0; 37.5-37.9; 72.0-75.0
++Iiyama TXA3602GT, Prolite36 ; 0; 37.9; 60.3
++Iiyama TXA3602GT, Prolite36 ; 0; 46.9; 75.0
++Iiyama TXA3602GT, Prolite36 ; 0; 48.1; 72.0
++Iiyama TXA3602GT, Prolite36 ; 0; 48.4; 60.0
++Iiyama TXA3602GT, Prolite36 ; 0; 56.5; 70.0
++Iiyama TXA3602GT, Prolite36 ; 0; 60.0; 75.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 31.5; 60.0-70.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 35.2; 56
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 37.5-43.3; 72.0-85.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 37.9; 60.3
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 46.9-53.7; 75.0-85.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 48.1; 72.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 48.4; 60.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 56.5; 70.0
++Iiyama TXA3811/3821HT, Prolite38 ; 0; 60.0; 75.0
+ Impression 7 Plus 7728D; 100; 30-65; 50-100
+ LCD Panel 1024x768; 48.3; 31.5-48.5; 60
+ LCD Panel 640x480; 25.2; 31.5; 60
+ LCD Panel 800x600; 37.86; 31.5-37.9; 60
++LG 1470; 65; 30-48; 50-90
++LG StudioWorks 28i; 160; 30-85; 50-120
++LG StudioWorks 45i; 65; 30-54; 50-90
++LG StudioWorks 55i; 65; 30-54; 50-90
++LG StudioWorks 57M; 110; 30-70; 50-120
++LG StudioWorks 57i; 110; 30-70; 50-120
++LG StudioWorks 77i; 110; 30-70; 30-160
++LG StudioWorks 77m; 110; 30-70; 50-160
++LG StudioWorks 99T; 203; 30-96; 50-160
++LG StudioWorks Flatron 78FT;135; 30-85; 50-160
+ Lite-On CM1414E; 45.0; 30-40; 40.0-87.0
+ MAG 410V2; 0; 30.0-50.0; 50.0-120.0
+ MAG 510V2; 0; 30.0-50.0; 50.0-120.0
+@@ -395,10 +473,13 @@
+ MAG DJ707E; 0; 30.0-70.0; 50.0-120.0
+ MAG DJ710; 0; 30.0-86.0; 50.0-120.0
+ MAG DJ717; 0; 30.0-86.0; 50.0-160.0
++MAG DJ717; 135; 30-86; 50-160
+ MAG DJ800; 0; 30.0-86.0; 50.0-160.0
+ MAG DJ920; 0; 30.0-110.0; 50.0-160.0
+ MAG DX1495; 0; 30.0-50.0; 50.0-120.0
++MAG DX1495; 65; 30-50; 50-100
+ MAG DX1595; 0; 30.0-64.0; 50.0-120.0
++MAG DX1595; 80; 30-65; 50-120
+ MAG DX1595N; 0; 30.0-64.0; 50.0-120.0
+ MAG DX1595V; 0; 30.0-64.0; 50.0-120.0
+ MAG DX15F; 0; 30.0-64.0; 50.0-100.0
+@@ -406,6 +487,7 @@
+ MAG DX15N; 0; 30.0-64.0; 50.0-100.0
+ MAG DX15T; 0; 30.0-64.0; 50.0-120.0
+ MAG DX1795; 0; 30.0-64.0; 50.0-120.0
++MAG DX1795; 80; 30-65; 50-120
+ MAG DX1795E; 0; 30.0-64.0; 50.0-120.0
+ MAG DX17F; 0; 30.0-64.0; 50.0-100.0
+ MAG DX17FP; 0; 30.0-86.0; 50.0-120.0
+@@ -419,6 +501,9 @@
+ MAG DX500T; 0; 30.0-70.0; 50.0-120.0
+ MAG DX700T; 0; 30.0-70.0; 50.0-120.0
+ MAG DX715T; 0; 30.0-86.0; 50.0-120.0
++MAG Impression 17; 100.0; 30.00-65.00; 40.00-120.00
++MAG MX15F (1); 100; 30-65; 50-120
++MAG MX15F (2); 100.0; 30.00-65.00; 40.00-120.00
+ MAG MX15F; 100; 30-65; 50-120
+ MAG MX17D; 0; 30.0-82.0; 50.0-120.0
+ MAG MX17F; 0; 30.0-64.0; 50.0-100.0
+@@ -516,16 +601,16 @@
+ NEC MultiSync 50; 0; 31.0-69.0; 55.0-120.0
+ NEC MultiSync 70; 0; 31.0-69.0; 55.0-120.0
+ NEC MultiSync A500+; 0; 31.0-70.0; 55.0-120.0
+-NEC MultiSync A500; 0; 31.0-65.0; 55.0-120.0
++NEC MultiSync A500; 80; 31-65; 55-120
+ NEC MultiSync A700+; 0; 31.0-70.0; 55.0-120.0
+-NEC MultiSync A700; 0; 31.0-69.0; 55.0-120.0
++NEC MultiSync A700; 80; 31-65; 55-120
+ NEC MultiSync A900; 0; 31.0-92.0; 55.0-160.0
+-NEC MultiSync C400; 0; 30.0-64.0; 47.0-120.0
+-NEC MultiSync C500; 0; 30.0-64.0; 47.0-120.0
++NEC MultiSync C400; 80; 30.0-64.0; 47.0-120.0
++NEC MultiSync C500; 80; 30.0-64.0; 47.0-120.0
+ NEC MultiSync E1100+; 0; 31.0-96.0; 55.0-160.0
+-NEC MultiSync E1100; 0; 31.0-82.0; 55.0-120.0
+-NEC MultiSync E500; 0; 31.0-69.0; 55.0-120.0
+-NEC MultiSync E700; 0; 31.0-82.0; 55.0-120.0
++NEC MultiSync E1100; 120; 31-82; 55-120
++NEC MultiSync E500; 85; 31-69; 55-120
++NEC MultiSync E700; 120; 31-82; 55-120
+ NEC MultiSync E750; 0; 31.0-92.0; 55.0-160.0
+ NEC MultiSync E900+; 0; 31.0-96.0; 55.0-160.0
+ NEC MultiSync E900; 0; 31.0-92.0; 55.0-120.0
+@@ -539,22 +624,29 @@
+ NEC MultiSync LCD2010; 0; 31.0-108.0; 55.0-160.0
+ NEC MultiSync LCD400; 0; 24.0-60.0; 55.0-86.0
+ NEC MultiSync LCD400V; 0; 24.0-60.0; 55.0-86.0
+-NEC MultiSync M500; 0; 30.0-69.0; 55.0-120.0
+-NEC MultiSync M700; 0; 30.0-69.0; 55.0-120.0
+-NEC MultiSync P1150; 0; 31.0-94.0; 55.0-160.0
++NEC MultiSync M500; 85; 30.0-69.0; 55.0-120.0
++NEC MultiSync M700; 85; 30.0-69.0; 55.0-120.0
++NEC MultiSync P1150;145; 31-94; 55-160
+ NEC MultiSync P1250+; 0; 31.0-110.0; 55.0-160.0
+-NEC MultiSync P750; 0; 31.0-94.0; 55.0-160.0
++NEC MultiSync P750;145; 31-94; 55-160
+ NEC MultiSync XE15; 0; 31.0-65.0; 55.0-120.0
+ NEC MultiSync XE17; 0; 31.0-65.0; 55.0-120.0
+-NEC MultiSync XV14; 0; 30.0-57.0; 55.0-100.0
+-NEC MultiSync XV15+; 0; 31.0-65.0; 55.0-100.0
+-NEC MultiSync XV15; 0; 31.0-65.0; 55.0-100.0
+-NEC MultiSync XV17+ (-2); 0; 31.0-82.0; 55.0-100.0
++NEC MultiSync XV14; 55; 30-57; 50-100
++NEC MultiSync XV15+; 80; 31-65; 55-100
++NEC MultiSync XV15; 60; 30-65; 55-100
++NEC MultiSync XV17+;100; 31-82; 55-100
++NEC MultiSync XV17; 60; 30-65; 55-100
+ NEC Multisync 5FG; 100.0; 27-79; 55-90
+ NEC Multisync 5FGe; 60.0; 31-62; 55-90
+ NEC Multisync 5FGp; 100.0; 27-79; 55-90
+ NEC Multisync 6FG; 100.0; 27-79; 55-90
+ NEC Multisync 6FGp; 100.0; 27-79; 55-90
++NEC Multisync XE15; 80; 31-65; 55-120
++NEC Multisync XE17; 80; 31-65; 55-120
++NEC Multisync XE21; 84; 31-69; 55-120
++NEC Multisync XP15; 80; 31-65; 55-120
++NEC Multisync XP17; 120; 31-82; 55-120
++NEC Multisync XP21; 135; 31-89; 55-120
+ Nanao F340i-W; 75.0; 27-61; 55-90
+ Nanao F550i-w; 80; 27-65; 55-90
+ Nanao F550i; 100.0; 30-66; 40-130
+@@ -564,7 +656,7 @@
+ Nokia 445G; 0; 30.0-70.0; 50.0-115.0
+ Nokia 445M; 0; 30.0-82.0; 50.0-120.0
+ Nokia 445R; 0; 30.0-102.0; 50.0-120.0
+-Nokia 445X; 0; 30.0-102.0; 50.0-120.0
++Nokia 445X; 200; 30-102; 50-120
+ Nokia 445Xav; 0; 30.0-102.0; 50.0-120.0
+ Nokia 445Xavc; 0; 30.0-102.0; 50.0-120.0
+ Nokia 445Xi; 0; 30.0-102.0; 50.0-120.0
+@@ -574,6 +666,8 @@
+ Nokia 446XS; 0; 30.0-96.0; 50.0-150.0
+ Nokia 446Xpro; 0; 30.0-107.0; 50.0-150.0
+ Nokia 446Xt; 0; 30.0-96.0; 50.0-150.0
++Nokia 447B (1); 110; 30-64; 48-100
++Nokia 447B (2); 110; 30-64; 48-100
+ Nokia 447B; 0; 30.0-64.0; 50.0-124.0
+ Nokia 447DTC; 0; 30.0-92.0; 50.0-150.0
+ Nokia 447E; 0; 30.0-82.0; 50.0-110.0
+@@ -665,29 +759,32 @@
+ Panasonic TX-T1563PT1; 0; 30-69; 50-160
+ Panasonic TX-T1565P series; 0; 30-67; 50-120
+ Panasonic TX-T1567P series; 0; 30-61; 50-90
+-Philips 104B(14inch/CM1300); 0; 30.0-54.0; 50.0-110.0
++Philips 104B; 65; 30-54; 50-110
++Philips 104S; 65; 30-50; 50-100
+ Philips 105B(15inch/CM1200); 0; 30.0-66.0; 50.0-110.0
+ Philips 105B(15inch/CM1300); 0; 31.0-70.0; 50.0-120.0
+-Philips 105S(15inch/CM1300); 0; 30.0-54.0; 50.0-110.0
+-Philips 107B(17inch/CM6800); 0; 30.0-69.0; 50.0-130.0
++Philips 105B; 108; 30-69; 50-110
++Philips 105S; 65; 30-54; 50-110
+ Philips 107B(17inch/CM6800); 0; 30.0-69.0; 50.0-130.0
+ Philips 107S(17inch/CM1300); 0; 30.0-69.0; 50.0-120.0
+ Philips 107S(17inch/CM6800); 0; 30.0-66.0; 50.0-130.0
++Philips 107S; 108; 30-70; 50-160
++Philips 1764DC; 110; 30-66; 50-100
+ Philips 1764DC; 110; 30-66; 50-100
+ Philips 200B(20inch/CM5600); 0; 30.0-82.0; 50.0-120.0
+ Philips 200T(20inch/CM0700); 0; 30.0-90.0; 50.0-160.0
+ Philips 201B(21inch/CM0770); 0; 30.0-94.0; 48.0-160.0
+ Philips 201B(PRODUCT ID 21B58...); 0; 30.0-107.0; 50.0-160.0
+ Philips 7BM749; 28; 30-33; 55-70
+-Philips Brilliance 105(15inch/CM2200); 0; 30.0-69.0; 50.0-120.0
++Philips Brilliance 105; 108; 30-69; 50-120
+ Philips Brilliance 107(17inch/CM8800); 0; 30.0-86.0; 50.0-160.0
+-Philips Brilliance 107(PRODUCT ID 17A58...); 0; 30.0-95.0; 50.0-160.0
+-Philips Brilliance 109(PRODUCT ID 19A58...); 0; 30.0-95.0; 50.0-160.0
++Philips Brilliance 107(PRODUCT ID 17A58...); 107; 30.0-95.0; 50.0-160.0
++Philips Brilliance 109; 203; 30-95; 50-160
+ Philips Brilliance 201(21inch/CM1700); 0; 31.5-107.0; 50.0-170.0
+ Philips Brilliance 201(PRODUCT ID 21A58...); 0; 30.0-115.0; 50.0-160.0
++Philips Brilliance 201B; 229; 30-107; 50-160
+ Philips Brilliance 201CS(21inch/CM0900); 0; 30.0-107.0; 50.0-170.0
+ Philips Brilliance AX4500(14.5 LCD MONITOR); 0; 30.0-60.0; 56.0-75.0
+-Philips Brilliance AX4500(14.5 LCD MONITOR); 0; 30.0-60.0; 56.0-75.0
+ Princeton Graphic Systems Arcadia AR2.7; 0; 31.5-38.0; 30.0-90.0
+ Princeton Graphic Systems Arcadia AR2.7AV; 0; 31.5-38.0; 30.0-90.0
+ Princeton Graphic Systems Arcadia AR3.1; 0; 31.5-38.0; 30.0-90.0
+@@ -722,25 +819,52 @@
+ Princeton Graphic Systems Ultra 71; 0; 30.0-54.0; 50.0-100.0
+ Princeton Graphic Systems Ultra 72; 0; 30.0-69.0; 55.0-90.0
+ Princeton Graphic Systems Ultra 80; 0; 30.0-86.0; 50.0-120.0
++Princeton Graphics Systems Ultra 17; 100; 30-64; 50-100
+ Quantex TE1564M - Super View 1280; 75; 30-64; 50-100
+ Relisys RE1564; 80.0; 30-64; 50-100
+ Sampo alphascan-17; 95; 30-77; 20-105
++Samsung SyncMaster 1000b/1000p; 230; 30-107; 50-160
+ Samsung SyncMaster 15GLe; 65; 30-50; 50-120
+ Samsung SyncMaster 15GLi; 110; 30-65; 50-120
+ Samsung SyncMaster 15M; 110; 30-65; 50-120
+ Samsung SyncMaster 17GLi; 110; 30-65; 50-120
+ Samsung SyncMaster 17GLsi; 135; 30-85; 50-120
++Samsung SyncMaster 20GLsi; 150; 30-82; 50-120
++Samsung SyncMaster 21GLS; 150; 30-85; 50-160
++Samsung SyncMaster 2400W; 85; 15,30-55; 50-160
+ Samsung SyncMaster 3; 45; 31.5,35.2,35.5,37.5,38; 50-90
+ Samsung SyncMaster 3Ne; 65; 31.5,35.2,35.5,37.5,38,48; 50-90
++Samsung SyncMaster 400b; 65; 30-55; 50-120
++Samsung SyncMaster 410b/450b; 65; 30-55; 50-120
++Samsung SyncMaster 500b/500Mb/500b plus; 110; 30-69; 50-160
+ Samsung SyncMaster 500b/500Mb; 110; 30-69; 50-160
+ Samsung SyncMaster 500p/500Mp; 110; 30-69; 50-160
++Samsung SyncMaster 500s plus/500Ms; 56; 30-54; 50-120
+ Samsung SyncMaster 500s/500Ms; 56; 30-54; 50-120
++Samsung SyncMaster 510b; 110; 30-70; 50-160
++Samsung SyncMaster 510s/550s; 80; 30-61; 50-120
++Samsung SyncMaster 610b; 110; 30-70; 50-160
++Samsung SyncMaster 6Ne; 85; 30-65; 50-100
++Samsung SyncMaster 700 IFT; 205; 30-96; 50-160
+ Samsung SyncMaster 700b/700Mb; 110; 30-69; 50-160
++Samsung SyncMaster 700p/700Mp/700p plus; 135; 30-85; 50-160
+ Samsung SyncMaster 700p/700Mp; 135; 30-85; 50-160
++Samsung SyncMaster 700s/700Ms/700s plus; 110; 30-69; 50-160
+ Samsung SyncMaster 700s/700Ms; 110; 30-69; 50-160
++Samsung SyncMaster 710b/710s; 110; 30-70; 50-160
++Samsung SyncMaster 900 IFT; 205; 30-96; 50-160
++Samsung SyncMaster 900p; 205; 30-96; 50-160
++Samtron 40B; 65; 30-55; 50-120
++Samtron 50B; 110; 30-70; 50-160
++Samtron 50E; 80; 30-61; 50-120
+ Samtron 5B/5MB; 110; 30-69; 50-160
++Samtron 5Bi; 110; 30-70; 50-120
+ Samtron 5E/5ME; 56; 30-54; 50-120
++Samtron 5Ei; 65; 30-55; 50-120
++Samtron 60B; 110; 30-70; 50-160
++Samtron 70B/70E; 110; 30-70; 50-160
+ Samtron 7E/7ME/7B/7MB; 110; 30-69; 50-160
++Samtron 7Ei; 110; 30-70; 50-120
+ Samtron SC-428PS/PSL; 45; 31.5,35.2,35.5,37.5,38; 50-90
+ Samtron SC-428PT/PTL; 65; 31.5,35.2,35.5,37.5,38,48; 50-90
+ Samtron SC-528MDL; 60; 30-48; 50-100
+@@ -752,21 +876,23 @@
+ Sony CPD-100EST; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-100GS; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-100GST; 0; 30.0-70.0; 50.0-120.0
+-Sony CPD-100SF; 0; 30.0-70.0; 50.0-120.0
++Sony CPD-100SF; 85; 31-70; 50-120
+ Sony CPD-100SFB; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-100SFT; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-100SX; 0; 30.0-65.0; 50.0-120.0
+-Sony CPD-100VS; 0; 31.0-65.0; 50.0-120.0
++Sony CPD-100VS; 80; 31-65; 50-120
+ Sony CPD-101VS iGPE; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-110GS/110EST; 0; 30.0-70.0; 48.0-120.0
+ Sony CPD-120AS; 0; 30.0-70.0; 50.0-120.0
+-Sony CPD-120VS; 0; 30.0-70.0; 50.0-120.0
++Sony CPD-120VS; 80; 30-70; 50-120
++Sony CPD-1430; 77.0; 28.0-58.0; 55.0-110.0
+ Sony CPD-15ES2; 0; 30.0-70.0; 48.0-120.0
+ Sony CPD-15ES; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-15SF2; 0; 31.0-65.0; 50.0-120.0
+ Sony CPD-15SF8; 0; 24.0-65.0; 50.0-120.0
+ Sony CPD-15SF9; 0; 24.0-70.0; 50.0-120.0
+ Sony CPD-15SX1; 0; 30.0-65.0; 50.0-120.0
++Sony CPD-15SX;  80; 31-65; 50-120
+ Sony CPD-17C1; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-17ES2; 0; 30.0-70.0; 48.0-120.0
+ Sony CPD-17GS; 0; 30.0-85.0; 50.0-120.0
+@@ -779,7 +905,7 @@
+ Sony CPD-200EST; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-200GS; 0; 30.0-85.0; 50.0-120.0
+ Sony CPD-200GST; 0; 30.0-85.0; 50.0-120.0
+-Sony CPD-200SF; 0; 30.0-80.0; 50.0-120.0
++Sony CPD-200SF;115; 30-80; 50-120
+ Sony CPD-200SFT; 0; 30.0-80.0; 50.0-120.0
+ Sony CPD-200SX; 0; 30.0-70.0; 50.0-150.0
+ Sony CPD-201VS iGPE; 0; 30.0-70.0; 50.0-120.0
+@@ -791,7 +917,8 @@
+ Sony CPD-210SFB; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-220AS; 0; 30.0-70.0; 50.0-120.0
+ Sony CPD-220GS/17GS2; 0; 30.0-85.0; 48.0-120.0
+-Sony CPD-220VS; 0; 30.0-70.0; 50.0-120.0
++Sony CPD-220VS; 80; 30-70; 50-120
++Sony CPD-300SF;120; 30-86; 48-150
+ Sony CPD-300SFT5; 0; 30.0-86.0; 48.0-150.0
+ Sony CPD-300SFT; 0; 30.0-86.0; 48.0-150.0
+ Sony CPD-420GS/420GST/19GS2; 0; 30.0-96.0; 48.0-120.0
+@@ -813,39 +940,73 @@
+ Sony GDM-F400; 0; 30.0-107.0; 48.0-160.0
+ Sony GDM-F500; 0; 30.0-121.0; 48.0-160.0
+ Sony GDM-W900; 0; 30.0-96.0; 50.0-160.0
++Sony Multiscan 100sf; 80; 30-70; 50-120
++Sony Multiscan 100sx; 80; 31-65; 50-120
++Sony Multiscan 15sf;   80; 31.5-64; 50-120
++Sony Multiscan 15sfII; 80; 31.5-65; 50-120
++Sony Multiscan 17se; 135; 31.5-82; 50-150
++Sony Multiscan 17seII; 80; 31.5-65; 50-120
++Sony Multiscan 17sf; 0; 31-64; 50-120
++Sony Multiscan 17sfII; 0; 31-65; 50-120
++Sony Multiscan 200sf; 100; 30-80; 50-120
++Sony Multiscan 200sx; 80; 30-70; 50-120
+ Sony VMU-1000; 0; 30.0-86.0; 48.0-150.0
+ Sun 17-inch 447Z; 100; 31.0-72.0; 50.0-120.0
+ TARGA TM 1710 D; 100; 30-65; 50-90
+ TAXAN 875; 130; 30-78; 50-90
++TCE DX447D; 65; 30-50; 50-90
++TCE DX449D; 65; 30-50; 50-90
++TCE DX547D; 65; 30-54; 40-120
++TCE DX549D; 110; 30-65; 40-90
++TCE DX749D; 110; 30-50; 50-100
+ Tandberg ErgoScan 21c; 202.5; 30.0-95.0; 50.0-160.0
++Tatung C4AXE; 75; 30-50; 50-90
++Tatung C4DYS/C4DYE; 75; 30-54; 50-100
++Tatung C5DYS/C5DYE/C5DYR; 75; 30-57; 50-100
++Tatung C5V1R; 100; 30-70; 50-100
++Tatung C7GXR; 100; 30-70; 50-100
++Tatung C7GYR; 100; 30-69; 50-100
++Tatung CM-15UHS/UHE; 65; 31.5-50; 50-100
++Tatung CM-15VBR; 75; 31.5-56.5; 50-100
++Tatung CM-15VCR; 107; 31.5-65; 50-100
++Tatung CM-17MKR/MKR-8; 130; 28-82; 50-120
++Tatung CM-17MLP; 76; 31-64; 50-100
++Tatung CM-17MOR; 108; 30-65; 50-90
++Tatung CM-17MUR; 107; 30-64; 50-100
++Tatung CM-17MVR; 130; 28-85; 50-160
++Tatung CM-20MVR; 130; 28-85; 50-160
+ Tatung CM14UHE; 55; 31.5,35-38,46-50; 50-100
+ Tatung CM14UHR; 55; 31.5,35-38,46-50; 50-100
+ Tatung CM14UHS; 55; 31.5,35-38,46-50; 50-100
++Tatung MM-14SCE; 45; 30-38; 50-90
++Tatung VM-14AF; 30; 30-38; 50-90
++Tatung VM-9AF; 45; 30-38; 50-90
+ Unisys-19; 110; 57-65; 55-65
+ ViewSonic 14E; 0; 31.47,37.88,48.08,48.36,56.48; 60,60,72,60,70
+ ViewSonic 14ES; 0; 30-48.4; 50-100
+ ViewSonic 15; 0; 30-65; 50-90
+ ViewSonic 15E; 0; 31.47,37.88,48.08,48.36,56.48,60.02; 60,60,72,60,70,75
+ ViewSonic 15ES-2; 0; 31.5-62; 50-100
+-ViewSonic 15ES; 0; 30-62; 50-100
++ViewSonic 15ES; 86; 31.5,35-40,46-51,56-62; 50-90
+ ViewSonic 15EX; 0; 30-62; 50-100
+ ViewSonic 15G-2; 0; 30-66; 50-100
+ ViewSonic 15G; 0; 31.47,37.86,37.88,48.08,35.52,48.36,56.48,59.5,62,48.1,63.7; 60,72,60,72,43.48,60,70,72,76,43.48,60
+ ViewSonic 15GA-2; 0; 30-69; 50-160
+-ViewSonic 15GA; 0; 30-69; 50-160
++ViewSonic 15GA; 85; 30-69; 50-160
+ ViewSonic 15GS-2; 0; 30-69; 50-120
+ ViewSonic 15GS-3; 0; 30-69; 50-120
+-ViewSonic 15GS; 0; 30-69; 50-120
++ViewSonic 15GS; 85; 30-69; 50-120
+ ViewSonic 17; 0; 30-82; 50-160
++ViewSonic 17; 75.0; 30-82; 50-90
+ ViewSonic 17E; 0; 30-65; 50-160
+ ViewSonic 17EA; 0; 30-69; 50-120
+ ViewSonic 17G; 0; 31.47,37.86,37.88,48.08,35.52,48.36,56.48,59.5,62,48.1,63.7; 60,72,60,72,43.48,60,70,72,76,43.48,60
+ ViewSonic 17GA-2; 0; 30-69; 50-160
+-ViewSonic 17GA; 0; 30-69; 50-160
++ViewSonic 17GA; 85; 30-69; 50-160
+ ViewSonic 17GS-2; 0; 30-69; 50-160
+ ViewSonic 17GS; 0; 30-69; 50-160
+ ViewSonic 17PS-2; 0; 30-86; 50-160
+-ViewSonic 17PS; 0; 30-82; 50-160
++ViewSonic 17PS; 130; 30-82; 50-160
+ ViewSonic 1; 0; 31.47,31.47,31.47; 70,70,60
+ ViewSonic 20; 0; 30-82; 50-120
+ ViewSonic 20G-2; 0; 31.47,37.50,37.88,46.88,48.36,60.02,65.70,79.98; 60,75,60,75,60,75,60,75
+@@ -862,7 +1023,8 @@
+ ViewSonic 5+; 0; 31.47,31.47,31.47,35.16,37.88,48.08,35.52,48.36,56.48; 70,70,60,56.25,60,72,43.48,60,70
+ ViewSonic 5; 0; 31.47,31.47,31.47,35.16,37.88,35.52,48.36; 70,70,60,56.25,60,43.48,60
+ ViewSonic 5E; 0; 31.47,37.86,35.16,37.88,48.08,35.52,48.36,56.48,59.52; 60,72,56.25,60,72,43.48,60,70,72
+-ViewSonic 6; 0; 31.47,35.16,35.52,48.36; 60,56.25,43.48,60
++ViewSonic 5e; 25.2; 30-60; 50-90
++ViewSonic 6; 80; 31.47,35.16,35.52,48.36; 60,56.25,43.48,60
+ ViewSonic 6E; 0; 31.47,37.88,48.08,48.36; 60,60,72,60
+ ViewSonic 6FS; 0; 31-60; 50-90
+ ViewSonic 7; 0; 30-65; 50-90
+@@ -872,45 +1034,44 @@
+ ViewSonic E41; 0; 30-54; 50-100
+ ViewSonic E51; 0; 30-70; 50-120
+ ViewSonic E641-2; 0; 30-54; 50-100
+-ViewSonic E641; 0; 30-54; 50-100
++ViewSonic E641; 52; 30-54; 50-100
+ ViewSonic E651; 0; 30-54; 50-100
+ ViewSonic E655-2; 0; 30-70; 50-100
+ ViewSonic E655-3; 0; 30-70; 50-120
+-ViewSonic E655; 0; 30-65; 50-100
++ViewSonic E655; 85; 30-70; 50-100
+ ViewSonic E71; 0; 30-70; 50-120
+ ViewSonic E771-2; 0; 30-70; 50-120
+ ViewSonic E771; 0; 30-70; 50-120
+-ViewSonic EA771; 0; 30-70; 50-120
++ViewSonic EA771; 85; 30-70; 50-120
+ ViewSonic EA771B; 0; 30-70; 50-120
+ ViewSonic G653-2; 0; 30-70; 50-120
+-ViewSonic G653; 0; 30-70; 50-120
++ViewSonic G653; 85; 30-70; 50-120
+ ViewSonic G655; 0; 30-70; 50-120
+-ViewSonic G771; 0; 30-70; 50-180
++ViewSonic G771; 85; 30-70; 50-180
+ ViewSonic G773-2; 0; 30-70; 50-160
+-ViewSonic G773; 0; 30-70; 50-160
++ViewSonic G773; 85; 30-70; 50-160
+ ViewSonic G790; 0; 30-95; 50-180
+ ViewSonic G800; 0; 30-86; 50-120
+ ViewSonic G810-2; 0; 30-92; 50-180
+ ViewSonic G810; 0; 30-89; 50-160
+ ViewSonic GA655; 0; 30-70; 50-180
+-ViewSonic GA771; 0; 30-70; 50-180
+ ViewSonic GS771; 0; 30-70; 50-180
+-ViewSonic GT770; 0; 30-65; 50-120
+-ViewSonic GT775; 0; 30-86; 50-160
++ViewSonic GT770; 80; 30-65; 50-120
++ViewSonic GT775; 130; 30-86; 50-160
+ ViewSonic GT800; 0; 30-85; 50-150
+ ViewSonic MB110; 0; 30-95; 50-180
+ ViewSonic MB50; 0; 30-70; 50-160
+ ViewSonic MB70; 0; 30-70; 50-160
+ ViewSonic MB90; 0; 30-95; 50-180
+ ViewSonic P655; 0; 30-70; 50-180
+-ViewSonic P775; 0; 30-95; 50-180
++ViewSonic P775; 145; 30-95; 50-180
+ ViewSonic P810-3; 0; 30-95; 50-180
+ ViewSonic P810-A; 0; 30-95; 50-160
+ ViewSonic P810-E; 0; 30-95; 50-160
+ ViewSonic P810-ER; 0; 30-95; 50-160
+ ViewSonic P810-MR; 0; 30-95; 50-160
+-ViewSonic P810; 0; 30-95; 50-160
+-ViewSonic P815; 0; 30-115; 50-160
++ViewSonic P810; 145; 30-95; 50-160
++ViewSonic P815; 175; 30-115; 50-160
+ ViewSonic P817; 0; 30-137; 50-180
+ ViewSonic PJ1000; 0; 31-64; 50-85
+ ViewSonic PJ800; 0; 15.75-69; 50-75
+@@ -918,16 +1079,28 @@
+ ViewSonic PJL802; 0; 31-61; 50-85
+ ViewSonic PS775; 0; 30-97; 50-180
+ ViewSonic PS790; 0; 30-95; 50-180
+-ViewSonic PT770; 0; 30-82; 50-130
++ViewSonic PT770; 120; 30-82; 50-130
+ ViewSonic PT771; 0; 30-92; 50-160
+-ViewSonic PT775; 0; 30-96; 50-160
++ViewSonic PT775; 145; 30-96; 50-160
+ ViewSonic PT810-2; 0; 30-96; 50-120
+ ViewSonic PT810-3; 0; 30-96; 50-160
+ ViewSonic PT810; 0; 30-86; 50-130
+ ViewSonic PT813-1; 0; 30-107; 50-160
++ViewSonic PT813; 160;30-107; 50-160
+ ViewSonic S6E; 0; 30-60; 50-90
+-ViewSonic VP140; 0; 30-61; 50-77
++ViewSonic VP140; 58;30-61; 50-77
+ ViewSonic VP150; 0; 30-61; 50-77
+ ViewSonic VPA138; 0; 30-62; 50-75
+ ViewSonic VPA145; 0; 30-62; 50-75
+ ViewSonic VPA150; 0; 30-62; 50-75
++ViewSonic-7; 110; 30.0-64.0; 50.0-90.0
++Waytec MMSV-0910; 45; 30-38; 50-90
++Waytec MPSV-1010; 50; 31-35; 50-90
++Waytec MPSV-1410 S; 80; 30-54; 50-120
++Waytec MPSV-1420; 65; 30-54; 50-90
++Waytec MPSV-1510 S; 110; 30-70; 50-120
++Waytec MPSV-1520; 75; 30-69; 50-90
++Waytec MPSV-1710 S; 110; 30-70; 50-120
++Waytec MPSV-1720; 75; 30-69; 50-90
++Waytec MPSV-2020; 100; 30-86; 50-200
++Waytec MPSV-2120; 210; 30-95; 50-160
+diff -Nur Xconfigurator-4.2.3/Xconfigurator.c Xconfigurator-4.2.3.cnc/Xconfigurator.c
+--- Xconfigurator-4.2.3/Xconfigurator.c	Tue Apr 20 15:30:15 1999
++++ Xconfigurator-4.2.3.cnc/Xconfigurator.c	Thu Jul  1 20:11:43 1999
+@@ -25,6 +25,8 @@
+ /* to promote the sale, use or other dealings in this Software without prior */
+ /* written authorization from the XFree86 Project.*/
+ 
++/* acme@conectiva.com.br - First choose Vendor, then Model :)            */
++/*                         fontserver usage selectable			 */
+ /* jj@ultra.linux.cz - added support for SBUS servers			 */
+ /* ewt@redhat.com - general cleanups -- I'm sure I added a bunch
+ 		    of memory leaks throughout, but who cares?           */
+@@ -83,11 +85,12 @@
+ /* #define DEBUG_XKB_FILE "/tmp/Xconfigurator.log" */
+ 
+ struct monitorInfo {
+-    char * name, * horizSync, * vertSync;
++    char *vendor, *model, *horizSync, *vertSync;
+ } ;
+ 
+ struct monitorInfo *monitorInfo;
+ int monitorInfoNum = 0;
++int monitorVendorNum = 0;
+ 
+ void modeline_to_res(char *m, int *x, int *y);
+ 
+@@ -127,6 +130,8 @@
+ char *ks_mouse=NULL;
+ char *pciprobedcard=NULL;
+ int  ks_emulate3=0;
++/* default = with font server, as in RH 6.0 */
++int ks_without_font_server=0;
+ 
+ /* rest of the mess */
+ 
+@@ -1014,16 +1019,15 @@
+ /* Read monitor data in from disk */
+ int ReadMonitorDB( void ) {
+     FILE *f;
+-    char line[100];
++    char line[128];
+     char *s, *t;
+-    char *cardtype, *bandwidth, *horsync, *versync;
+-    int  num;
++    char *vendor, *model, *bandwidth, *horsync, *versync, *lastVendor = NULL;
++    int  num = 0;
++    int  numVendors = 0;
+ 
+-    f = fopen(MONITOR_DATABASE_FILE, "r");
+-    if (f == NULL)
++    if ((f = fopen(MONITOR_DATABASE_FILE, "r")) == NULL)
+ 	return -1;
+ 
+-    num = 0;
+     while(1) {
+ 	if (!fgets(line, sizeof(line), f))
+ 	    break;
+@@ -1034,6 +1038,16 @@
+ 	if (!*s || *s == '#')
+ 	    continue;
+ 
++	/* find vendor (actually inside the first element delimited by ';') */
++	for (t=s; *t && *t != ' '; t++);
++
++	if (!*t)
++	    continue;
++
++	*t = 0;
++	vendor = s;
++	s = t+1;
++
+ 	/* find first field delim */
+ 	for (t=s; *t && *t != ';'; t++);
+ 
+@@ -1041,7 +1055,7 @@
+ 	    continue;
+ 
+ 	*t = 0;
+-	cardtype = s;
++	model = s;
+ 	s = t+1;
+ 
+ 	/* find second field delim */
+@@ -1079,9 +1093,16 @@
+ 	    monitorInfo=(struct monitorInfo *)realloc(monitorInfo,
+ 					     (num+1)*sizeof(*monitorInfo));
+ 
+-	monitorInfo[num].name      = strdup(cardtype);
++	monitorInfo[num].vendor    = strdup(vendor);
++	monitorInfo[num].model     = strdup(model);
+ 	monitorInfo[num].horizSync = strdup(horsync);
+ 	monitorInfo[num].vertSync  = strdup(versync);
++
++	if (!lastVendor || strcmp(vendor, lastVendor)) {
++		lastVendor = monitorInfo[num].vendor;
++		++numVendors;
++	}
++
+ 	num++;
+     }
+ 
+@@ -1090,6 +1111,7 @@
+ 					      (num+1)*sizeof(*monitorInfo));
+     memset(&monitorInfo[num], 0, sizeof(*monitorInfo));
+     monitorInfoNum = num;
++    monitorVendorNum = numVendors;
+     fclose(f);
+     return 0;
+ }
+@@ -1103,7 +1125,8 @@
+     }
+ 
+     for (i=0; i < monitorInfoNum; i++)
+-	fprintf(stderr,"                        %s\n",monitorInfo[i].name);
++	fprintf(stderr,"                        %s %s\n",
++		monitorInfo[i].vendor, monitorInfo[i].model);
+ 
+     fprintf(stderr,
+ 	_("\n      These generic types are also supported (use only the 'Generic##' part\n"
+@@ -1118,9 +1141,9 @@
+ 
+ /* return 1 on cancel, 2 on error, 0 on success */
+ int monitor_configuration(struct XconfigState *state) {
+-    int i;
++    int i, j = 0;
+     int rc;
+-    char ** monitors;
++    char ** vendors, *lastVendor = NULL;
+ 
+     /* read monitor database */
+     if (monitorInfoNum == 0) {
+@@ -1160,26 +1183,35 @@
+ 			else
+ 			    state->vsyncrange = "50-90";
+ 			state->monitoridentifier = monitortype_name[idx];
+-			state->monitorvendorname = "Unknown";
+-			state->monitormodelname = "Unknown";
++			state->monitorvendorname = _("Unknown");
++			state->monitormodelname = _("Unknown");
+ 			return 0;
+ 		    }
+ 		}
+ 	    }
+ 
+ 	    /* didnt find a valid generic monitor, keep trying */
+-	    for (i = 0; monitorInfo[i].name; i++)
+-		if (!strcasecmp(ks_monitor, monitorInfo[i].name)) {
++	    for (i = 0; monitorInfo[i].vendor; i++) {
++	    	char aux[128];
++
++		snprintf(aux, sizeof(aux), "%s %s",
++			 monitorInfo[i].vendor, monitorInfo[i].model);
++
++		if (!strcasecmp(ks_monitor, aux)) {
+ 		    sel = i;
+ 		    break;
+ 		}
++	    }
+ 
+ 	    if (sel != -1) {
++	    	static char aux[100];
++		snprintf(aux, sizeof(aux), "%s %s",
++			 monitorInfo[i].vendor, monitorInfo[i].model);
+ 		state->hsyncrange = monitorInfo[sel].horizSync;
+ 		state->vsyncrange = monitorInfo[sel].vertSync;
+-		state->monitoridentifier = monitorInfo[sel].name;
+-		state->monitorvendorname = "Unknown";
+-		state->monitormodelname = "Unknown";
++		state->monitoridentifier = aux;
++		state->monitorvendorname = monitorInfo[i].vendor;
++		state->monitormodelname = monitorInfo[i].model;
+ 		return 0;
+ 	    } else {
+ 		for (i = 0; i < NU_MONITORTYPES; i++)
+@@ -1199,8 +1231,8 @@
+ 		    else
+ 			state->vsyncrange = "50-90";
+ 		    state->monitoridentifier = monitortype_name[sel];
+-		    state->monitorvendorname = "Unknown";
+-		    state->monitormodelname = "Unknown";
++		    state->monitorvendorname = _("Unknown");
++		    state->monitormodelname = _("Unknown");
+ 		    return 0;
+ 		}
+ 	    }
+@@ -1209,9 +1241,9 @@
+ 	    if (ks_hsync && ks_vsync) {
+ 		state->hsyncrange = ks_hsync;
+ 		state->vsyncrange = ks_vsync;
+-		state->monitoridentifier = "User Specified Specs";
+-		state->monitorvendorname = "Unknown";
+-		state->monitormodelname = "Unknown";
++		state->monitoridentifier = _("User Specified Specs");
++		state->monitorvendorname = _("Unknown");
++		state->monitormodelname = _("Unknown");
+ 		return 0;
+ 	    }
+ 	}
+@@ -1226,40 +1258,76 @@
+ 	    */
+ 	    state->hsyncrange = "31.5" ;
+ 	    state->vsyncrange = "60";
+-	    state->monitoridentifier = "Standard VGA, 640x480 @ 60 Hz";
+-	    state->monitorvendorname = "Unknown";
+-	    state->monitormodelname = "Unknown";
++	    state->monitoridentifier = _("Standard VGA, 640x480 @ 60 Hz");
++	    state->monitorvendorname = _("Unknown");
++	    state->monitormodelname = _("Unknown");
+ 	    return 0;
+ 	}
+     }
+ 
+     /* we got the database, now display and get an answer */
+ 
+-    monitors = alloca(sizeof(*monitors) * (monitorInfoNum + 2));
+-    monitors[0] = _("Custom");
+-    for (i = 0; monitorInfo[i].name; i++)
+-	monitors[i + 1] = monitorInfo[i].name;
+-    monitors[i + 1] = NULL;
++    vendors = alloca(sizeof(*vendors) * (monitorVendorNum + 2));
++    vendors[0] = _("Custom");
++    for (i = 0; monitorInfo[i].vendor; i++)
++    	if (!lastVendor || strcmp(lastVendor, monitorInfo[i].vendor))
++		vendors[++j] = lastVendor = monitorInfo[i].vendor;
++
++    vendors[++j] = NULL;
+ 
+     i = 0;
+     rc = newtWinMenu(_("Monitor Setup"),
+ 		   _("What type of monitor do you have? If you would rather "
+ 		   "specify the sync frequencies of your monitor, choose "
+ 		   "\"Custom\" from the list."),
+-		     56, 0, 20, 7, monitors, &i, _("Ok"), _("Back"), NULL);
+-    if (rc == 2) return 1;
++		     56, 0, 20, 7, vendors, &i, _("Ok"), _("Back"), NULL);
++    while (rc == 2) return 1;
+ 
+     if (!i) {
+       if (custommonitor_configuration(state, 1) == 1)
+ 	return monitor_configuration(state);
+     } else {
+-	i = i - 1;
++    	char* vendor = vendors[i];
++	char** models;
++	static char aux[128];
++
++    	j = 0;
++
++    	for (i = 0; monitorInfo[i].vendor; i++)
++		if (!strcmp(vendor, monitorInfo[i].vendor)) {
++			if (j == 0)
++	    			models = malloc(sizeof(*models));
++			else
++	    			models = realloc(models,
++						 (j + 1) * sizeof(*models));
++
++			models[j++] = monitorInfo[i].model;
++		}
++	/* opens space for the termination mark - cavassin */
++	models = realloc(models, (j + 1) * sizeof(*models));
++	models[j] = NULL;
++
++	j = 0;
++	snprintf(aux, sizeof(aux), _("What %s model do you have? "), vendor);
++        rc = newtWinMenu(_("Model Setup"), aux, 56, 0, 20, 7, models, &j,
++			 _("Ok"), _("Back"), NULL);
++
++    	if (rc == 2) return 1;
++
++    	for (i = 0; monitorInfo[i].vendor; i++)
++    		if (!strcmp(vendor, monitorInfo[i].vendor) &&
++    		    !strcmp(models[j], monitorInfo[i].model))
++		break;
++
++	snprintf(aux, sizeof(aux), "%s %s",
++		 monitorInfo[i].vendor, monitorInfo[i].model);
+ 	state->hsyncrange = monitorInfo[i].horizSync;
+ 	state->vsyncrange = monitorInfo[i].vertSync;
+-	state->monitoridentifier = monitorInfo[i].name;
+-	state->monitorvendorname = "Unknown";
+-	state->monitormodelname = "Unknown";
++	state->monitoridentifier = aux;
++	state->monitorvendorname = monitorInfo[i].vendor;
++	state->monitormodelname = monitorInfo[i].model;
+     }
++
+     return 0;
+ }
+ 
+@@ -1306,9 +1374,9 @@
+ 	else {
+ 	  state->vsyncrange = vsync_range[vsync];
+ 
+-	  state->monitoridentifier = "My Monitor";
+-	  state->monitorvendorname = "Unknown";
+-	  state->monitormodelname = "Unknown";
++	  state->monitoridentifier = _("My Monitor");
++	  state->monitorvendorname = _("Unknown");
++	  state->monitormodelname = _("Unknown");
+ 	  step = MONITORDONE;
+ 	}
+       case MONITORDONE:
+@@ -1758,7 +1826,7 @@
+ #define NUM_VIDEOMEMORY (sizeof(videomemory) / sizeof(*videomemory))
+ 
+ static char *wangermemorys[NUM_VIDEOMEMORY + 1] = {
+-    "256 kb", "512 kb", "1 mb", "2 mb", "4 mb", "8 mb or more", NULL
++    N_("256 kb"), N_("512 kb"), N_("1 mb"), N_("2 mb"), N_("4 mb"), N_("8 mb or more"), NULL
+ };
+ 
+ /* On entry, "modes" contains a *single* mode, which is the highest
+@@ -1946,9 +2014,9 @@
+ 	if (pciprobedcard)
+ 	  state->deviceidentifier = pciprobedcard;
+ 	else
+-	  state->deviceidentifier = "My Video Card";
+-	state->devicevendorname = "Unknown";
+-	state->deviceboardname = "Unknown";
++	  state->deviceidentifier = _("My Video Card");
++	state->devicevendorname = _("Unknown");
++	state->deviceboardname = _("Unknown");
+ 
+ 	/*
+ 	 * Initialize screen mode variables for svga and accel
+@@ -2399,10 +2467,10 @@
+     if (pciprobedcard)
+ 	state->deviceidentifier = pciprobedcard;
+     else
+-	state->deviceidentifier = "My Video Card";
++	state->deviceidentifier = _("My Video Card");
+ 
+-    state->devicevendorname = "Unknown";
+-    state->deviceboardname = "Unknown";
++    state->devicevendorname = _("Unknown");
++    state->deviceboardname = _("Unknown");
+ 
+     /* create all the temp files we'll need */
+     if (!(tfilefd=mkstemp(tcfgnm))) {
+@@ -2779,6 +2847,25 @@
+ "# section.\n"
+ "# **********************************************************************\n"
+ "\n";
++
++static char *XF86Config_with_font_server =
++"# By default, Red Hat 6.0 and later now use a font server independent of\n"
++"# the X server to render fonts.\n"
++"\n"
++"    FontPath   \"unix/:-1\"\n";
++
++static char *XF86Config_without_font_server =
++"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/misc:unscaled\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/75dpi:unscaled\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/100dpi:unscaled\"\n"
++"    FontPath   \"/usr/share/fonts/default/TrueType\"\n"
++"    FontPath   \"/usr/share/fonts/default/URW\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/Type1\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/Speedo\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/75dpi\"\n"
++"    FontPath   \"/usr/X11R6/lib/X11/fonts/100dpi\"\n";
++
+ static char *XF86Config_secondchunk_text =
+ "# **********************************************************************\n"
+ "# Files section.  This allows default font and rgb paths to be set\n"
+@@ -2793,10 +2880,7 @@
+ "    RgbPath	\"/usr/X11R6/lib/X11/rgb\"\n"
+ "\n"
+ "# Multiple FontPath entries are allowed (they are concatenated together)\n"
+-"# By default, Red Hat 6.0 and later now use a font server independent of\n"
+-"# the X server to render fonts.\n"
+-"\n"
+-"    FontPath   \"unix/:-1\"\n"
++"%s"
+ "\n"
+ "EndSection\n"
+ "\n";
+@@ -3225,7 +3309,9 @@
+      fprintf(f, "%s", XF86firstchunk_text);
+      if (state->screentype == 5)
+        fprintf(f, "%s", XF86Config_firstchunk_text_sun);
+-     fprintf(f, "%s", XF86Config_secondchunk_text);
++     fprintf(f, XF86Config_secondchunk_text, ks_without_font_server ?
++					     XF86Config_without_font_server :
++					     XF86Config_with_font_server);
+      if (state->screentype <= 4)
+        fprintf(f, "%s", XF86Config_thirdchunk_text);
+ 
+@@ -3924,6 +4010,7 @@
+ 	{"startxonboot", '\0', POPT_ARG_NONE, &onboot, 0},
+ 	{"test", '\0', POPT_ARG_NONE, &testing, 0 },
+ 	{"back", '\0', POPT_ARG_NONE, &back, 0 },
++	{"withoutfontserver", '\0', POPT_ARG_NONE, &ks_without_font_server, 0},
+ 	{ 0, 0, 0, 0, 0 }
+     };
+     struct XconfigState myState, *state = &myState;
+@@ -3937,7 +4024,7 @@
+     progName = argv[0];
+ 
+     if (getuid() != 0) {
+-	fprintf(stderr, "You must be root to run Xconfigurator...\n");
++	fprintf(stderr, _("You must be root to run Xconfigurator...\n"));
+ 	exit(1);
+     }
+ 
+@@ -3960,8 +4047,8 @@
+ 	state->runLevel = 3;
+ 
+     if ((tempbuf = poptGetArg(optCon))) {
+-	fprintf(stderr, "unexpected argument %s -- use --help for usage "
+-		"information\n", tempbuf);
++	fprintf(stderr, _("unexpected argument %s -- use --help for usage "
++		"information\n"), tempbuf);
+ 	exit(1);
+     }
+ 
+@@ -3973,6 +4060,7 @@
+     translate_array(clockchip_name);
+     translate_array(ramdac_name);
+     translate_array(monitortype_name);
++    translate_array(wangermemorys);
+ 
+     normal = !pick && !rhcontinue && !kickstart;
+     ks_pick = pick && kickstart;

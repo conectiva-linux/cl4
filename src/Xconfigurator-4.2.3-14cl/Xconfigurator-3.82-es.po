@@ -1,0 +1,1534 @@
+# Portuguese messages for Xconfigurator
+# Copyright (C) 1998 Free Software Foundation, Inc.
+# Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>, 1998.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Xconfigurator 1.81\n"
+"POT-Creation-Date: 1998-10-18 13:41-0200\n"
+"PO-Revision-Date: 1998-09-21 09:50 +ZONE\n"
+"Last-Translator: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
+"Language-Team: Portuguese <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: ../Xconfigurator.c:197
+msgid ""
+"This program will create a basic XF86Config file, based on menu selections "
+"you make.\n"
+"\n"
+"The XF86Config file usually resides in /usr/X11R6/lib/X11 or /etc/X11. A "
+"sample XF86Config file is supplied with XFree86; it is configured for a "
+"standard VGA card and monitor with 640x480 resolution. \n"
+"\n"
+"You can either take the sample XF86Config as a base and edit it for your "
+"configuration, or let this program produce a base XF86Config file for your "
+"configuration and fine-tune it. Refer to "
+"/usr/X11R6/lib/X11/doc/README.Config for a detailed overview of the "
+"configuration process. \n"
+"\n"
+"For accelerated servers (including accelerated drivers in the SVGA server), "
+"there are many chipset and card-specific options and settings. This program "
+"does not know about these. On some configurations some of these settings "
+"must be specified. Refer to the server man pages and chipset-specific "
+"READMEs. \n"
+"\n"
+"Before continuing with this program, make sure you know the chipset and "
+"amount of video memory on your video card. SuperProbe can help with this.  "
+"It is also helpful if you know what server you want to run."
+msgstr ""
+"Este programa crea el archivo XF86Config básico a partir de las opciones de menú "
+"seleccionadas.\n"
+"\n"
+"El archivo XF86Config normalmente está en /usr/X11R6/lib/X11 o /etc/X11. Un "
+"ejemplo del archivo XF86Config se ofrece con el XFree86, que está "
+"configurado para una tarjeta VGA patrón y un monitor con resolución de 640x480. "
+"\n"
+"\n"
+"Puedes usar el XF86Config de ejemplo como base y editarlo para tu "
+"configuración, o dejar este programa crear un nuevo XF86Config, haciendo los "
+"ajustes necesarios. En /usr/X11R6/lib/X11/doc/README. En Config puedes ver la "
+"descripción detallada del proceso de configuración.\n"
+"\n"
+"Para servidor acelerado (incluso drivers aceleradores en el servidor SVGA), "
+"existen muchos chipsets y opciones específicas de tarjetas. Este programa no "
+"tiene ese conocimiento. En algunas situaciones estas configuraciones tienen que ser "
+"especificadas. Mira las páginas de manual del servidor y el README específico "
+"del chipset\n"
+"\n"
+"Antes de continuar asegúrate que sabes cual es el chipset y el total de "
+"memoria de tu placa de vídeo. SuperProbe puede ayudarlo en esto. También "
+"es útil si sabes que servidor deseas ejecutar."
+
+#: ../Xconfigurator.c:219
+msgid ""
+"File has been written. Take a look at it before running 'startx'. Note that "
+"the XF86Config file must be in one of the directories searched by the server "
+"(e.g. /usr/X11R6/lib/X11) in order to be used. Within the server press ctrl, "
+"alt and '+' simultaneously to cycle video resolutions. Pressing ctrl, alt "
+"and backspace simultaneously immediately exits the server (use if the "
+"monitor doesn't sync for a particular mode).\n"
+"\n"
+"For further configuration, refer to /usr/X11R6/lib/X11/doc/README.Config.\n"
+"\n"
+msgstr ""
+
+"El archivo fue grabado. Verifícalo antes de ejecutar 'startx'. Nota que el "
+"archivo XF86Config tiene que estar en uno de los directorios pesquisados por el "
+"servidor (ej. /usr/X11R6/lib/X11). Dentro del servidor presiona ctrl, alt y "
+"'+' simultáneamente, para alternar la resolución del vídeo. Presionando ctrl, "
+"alt y retroceso simultáneamente, sales del servidor inmediatamente.\n"
+"\n"
+"Para otras configuraciones mira /usr/X11R6/lib/X11/doc/README.Config.\n"
+"\n"
+
+#: ../Xconfigurator.c:362
+msgid ""
+"Select the video modes you would like to use.  8 bit modes allow for 256 "
+"colors, 16 bit modes allow for 64k colors, and 24 bit modes allow for true "
+"color.  Performance will be slower, however, the higher you go.  You should "
+"select at least one of the elements below."
+msgstr ""
+"Selecciona el modo de vídeo que deseas usar. Modo 8 bits permite 256 colores, "
+"modo 16 bits permite 64k colores, y modo 24 bits permite \"colores reales\" "
+"(cantidad de colores que la visión humana puede percibir).  No obstante el "
+"desempeño baja a medida que se aumenta la definición de colores. Debes "
+"seleccionar al menos uno de los elementos abajo."
+
+#: ../Xconfigurator.c:373
+msgid "8 bit:"
+msgstr "8 bits:"
+
+#: ../Xconfigurator.c:376
+msgid "16 bit:"
+msgstr "16 bits:"
+
+#: ../Xconfigurator.c:379
+msgid "24 bit:"
+msgstr "24 bits:"
+
+#: ../Xconfigurator.c:387 ../Xconfigurator.c:956 ../Xconfigurator.c:1076
+#: ../Xconfigurator.c:1111 ../Xconfigurator.c:1123 ../Xconfigurator.c:1135
+#: ../Xconfigurator.c:1238 ../Xconfigurator.c:1312 ../Xconfigurator.c:1348
+#: ../Xconfigurator.c:1396 ../Xconfigurator.c:1544 ../Xconfigurator.c:1653
+#: ../Xconfigurator.c:1699 ../Xconfigurator.c:1829 ../Xconfigurator.c:1847
+#: ../Xconfigurator.c:1938 ../Xconfigurator.c:2259 ../Xconfigurator.c:2276
+#: ../Xconfigurator.c:2323 ../Xconfigurator.c:2363 ../Xconfigurator.c:2391
+#: ../Xconfigurator.c:2406 ../Xconfigurator.c:2463 ../Xconfigurator.c:2571
+#: ../Xconfigurator.c:2892 ../Xconfigurator.c:3307 ../Xconfigurator.c:3409
+#: ../Xconfigurator.c:3416 ../Xconfigurator.c:3622 ../Xconfigurator.c:3713
+msgid "Ok"
+msgstr ""
+
+#: ../Xconfigurator.c:387 ../Xconfigurator.c:1076 ../Xconfigurator.c:1111
+#: ../Xconfigurator.c:1123 ../Xconfigurator.c:1135 ../Xconfigurator.c:1348
+#: ../Xconfigurator.c:1397 ../Xconfigurator.c:1700 ../Xconfigurator.c:1829
+#: ../Xconfigurator.c:1847 ../Xconfigurator.c:2509 ../Xconfigurator.c:3622
+msgid "Back"
+msgstr "Anterior"
+
+#: ../Xconfigurator.c:390
+msgid "Select Video Modes"
+msgstr "Seleccionar Modos de Vídeo"
+
+#: ../Xconfigurator.c:433
+#, c-format
+msgid "%s: cannot open /etc/sysconfig/mouse: %s\n"
+msgstr "%s: no fue posible abrir el archivo /etc/sysconfig/mouse: %s\n"
+
+#: ../Xconfigurator.c:461 ../Xconfigurator.c:476
+#, c-format
+msgid "%s: mismatched quotes on line %d in /etc/sysconfig/mouse\n"
+msgstr "%s: comillas incorrectas en la línea %d del archivo /etc/sysconfig/mouse\n"
+
+#: ../Xconfigurator.c:491 ../Xconfigurator.c:641
+#, c-format
+msgid "%s: mismatched quotes on line %d in /etc/sysconfig/keyboard\n"
+msgstr "%s: comillas incorrectas en la línea %d del archivo /etc/sysconfig/keyboard\n"
+
+#: ../Xconfigurator.c:509
+#, c-format
+msgid "%s: line %d unexpected in /etc/sysconfig/mouse\n"
+msgstr "%s: línea %d  no válida en /etc/sysconfig/mouse\n"
+
+#: ../Xconfigurator.c:519
+#, c-format
+msgid "%s: cannot read /etc/sysconfig/mouse: %s\n"
+msgstr "%s: no fue posible leer el archivo /etc/sysconfig/mouse: %s\n"
+
+#: ../Xconfigurator.c:571
+#, c-format
+msgid "%s: Critical error reading /etc/sysconfig/mouse.\n"
+msgstr "%s: error crítico leyendo el archivo /etc/sysconfig/mouse.\n"
+
+#: ../Xconfigurator.c:573
+#, c-format
+msgid "%s: Check permissions of /etc/sysconfig/mouse.\n"
+msgstr "%s: verifica los permisos del archivo /etc/sysconfig/mouse.\n"
+
+#: ../Xconfigurator.c:575 ../Xconfigurator.c:739
+#, c-format
+msgid "%s: Also - make sure you are running this program as root\n"
+msgstr ""
+"%s: y asegúrate que de que este programa se esté ejecutando como root\n"
+
+#: ../Xconfigurator.c:609
+#, c-format
+msgid "%s: cannot open /etc/sysconfig/keyboard: %s\n"
+msgstr "%s: no fue posible abrir el archivo /etc/sysconfig/keyboard: %s\n"
+
+#: ../Xconfigurator.c:667
+#, c-format
+msgid "%s: line %d unexpected in /etc/sysconfig/keyboard\n"
+msgstr "%s: línea %d no válida en el archivo /etc/sysconfig/keyboard\n"
+
+#: ../Xconfigurator.c:677
+#, c-format
+msgid "%s: cannot read /etc/sysconfig/keyboard: %s\n"
+msgstr "%s: no fue posible leer el archivo /etc/sysconfig/keyboard: %s\n"
+
+#: ../Xconfigurator.c:735
+#, c-format
+msgid "%s: Critical error reading /etc/sysconfig/keyboard.\n"
+msgstr "%s: Error crítico durante lectura del archivo /etc/sysconfig/keyboard.\n"
+
+#: ../Xconfigurator.c:737
+#, c-format
+msgid "%s: Check permissions of /etc/sysconfig/keyboard.\n"
+msgstr "%s: Verifica los permisos del archivo /etc/sysconfig/keyboard.\n"
+
+#: ../Xconfigurator.c:768
+msgid ""
+"Now we want to set the specifications of the monitor. The two critical "
+"parameters are the vertical refresh rate, which is the rate at which the the "
+"whole screen is refreshed, and most importantly the horizontal sync rate, "
+"which is the rate at which scanlines are displayed.\n"
+"\n"
+"The valid range for horizontal sync and vertical sync should be documented "
+"in the manual of your monitor. If in doubt, check the monitor database "
+"/usr/X11R6/lib/X11/doc/Monitors to see if your monitor is there."
+msgstr ""
+"Ahora vamos especificar la configuración de tu monitor. Los dos parámetros "
+"críticos son: la frecuencia vertical, que es la frecuencia en que se hace la "
+"actualización de toda la pantalla; y lo más importante, la frecuencia horizontal, o "
+"tasa de barredura (sync) horizontal, que es la frecuencia en que las líneas son "
+"enseñadas en pantalla.\n"
+"\n"
+"Las bandas válidas para frecuencias horizontal y vertical deben estar "
+"documentadas en el manual de tu monitor. En caso de duda, mira el archivo "
+"/usr/X11R6/lib/X11/doc/Monitors para ver si tu monitor está en aquella lista."
+
+#: ../Xconfigurator.c:778
+msgid ""
+"You must indicate the horizontal sync range of your monitor. You can either "
+"select one of the predefined ranges below that correspond to "
+"industry-standard monitor types, or give a specific range.\n"
+"It is VERY IMPORTANT that you do not specify a monitor type with a "
+"horizontal sync range that is beyond the capabilities of your monitor. If in "
+"doubt, choose a conservative setting."
+msgstr ""
+"Tienes que indicar la frecuencia horizontal de tu monitor. Puedes "
+"seleccionar una de las frecuencias predefinidas abajo que corresponden a tipos "
+"patrones de monitor, o elegir un valor específico.\n"
+"ES MUY IMPORTANTE no especificar un tipo de monitor con una tasa de "
+"frecuencia horizontal superior a la capacidad de tu monitor. En caso de duda "
+"elige una configuración conservadora (valores subdimensionados)."
+
+#: ../Xconfigurator.c:787
+msgid ""
+"You must indicate the vertical sync range of your monitor. You can either "
+"select one of the predefined ranges below that correspond to "
+"industry-standard monitor types, or give a specific range. For interlaced "
+"modes, the number that counts is the high one (e.g. 87 Hz rather than 43 Hz)."
+msgstr ""
+"Tienes que indicar la frecuencia vertical de tu monitor. Puedes "
+"seleccionar una de las frecuencias predefinidas abajo que corresponden a tipos "
+"patrones de monitor, o pasar un valor específico. Para monitor entrelazado, "
+"el valor que vale es el más alto (ej. 87 Hz en lugar de 43 Hz)."
+
+#: ../Xconfigurator.c:813
+msgid "Standard VGA, 640x480 @ 60 Hz"
+msgstr "VGA Patrón, 640x480 en 60 Hz"
+
+
+#: ../Xconfigurator.c:814
+msgid "Super VGA, 800x600 @ 56 Hz"
+msgstr "Super VGA, 800x600 en 56 Hz"
+
+#: ../Xconfigurator.c:815
+msgid "8514 Compatible, 1024x768 @ 87 Hz interlaced (no 800x600)"
+msgstr "Compatible con 8514, 1024x768 en 87 Hz entrelazado (sin 800x600)"
+
+#: ../Xconfigurator.c:816
+msgid "Super VGA, 1024x768 @ 87 Hz interlaced, 800x600 @ 56 Hz"
+msgstr "Super VGA, 1024x768 en 87 Hz entrelazado, 800x600 en 56 Hz"
+
+#: ../Xconfigurator.c:817
+msgid "Extended Super VGA, 800x600 @ 60 Hz, 640x480 @ 72 Hz"
+msgstr "Super VGA extendido, 800x600 en 60 Hz, 640x480 en 72 Hz"
+
+#: ../Xconfigurator.c:818
+msgid "Non-Interlaced SVGA, 1024x768 @ 60 Hz, 800x600 @ 72 Hz"
+msgstr "SVGA no entrelazado, 1024x768 en 60 Hz, 800x600 en 72 Hz"
+
+#: ../Xconfigurator.c:819
+msgid "High Frequency SVGA, 1024x768 @ 70 Hz"
+msgstr "SVGA alta frecuencia, 1024x768 en 70 Hz"
+
+#: ../Xconfigurator.c:820
+msgid "Monitor that can do 1280x1024 @ 60 Hz"
+msgstr "Monitor con soporte a 1280x1024 en 60 Hz"
+
+#: ../Xconfigurator.c:821
+msgid "Monitor that can do 1280x1024 @ 74 Hz"
+msgstr "Monitor con soporte a 1280x1024 en 74 Hz"
+
+#: ../Xconfigurator.c:822
+msgid "Monitor that can do 1280x1024 @ 76 Hz"
+msgstr "Monitor con soporte a 1280x1024 en 76 Hz"
+
+#: ../Xconfigurator.c:928
+msgid ""
+"\n"
+"\n"
+"Monitor database was not found!\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+" No fue encontrado banco de datos de monitores.\n"
+"\n"
+
+#: ../Xconfigurator.c:936
+msgid ""
+"\n"
+"      These generic types are also supported (use only the 'Generic##' part\n"
+"      when specifying the monitor). You must specify the preceding\n"
+"      '0' if the type is less than 10 (ie. 'Generic02')\n"
+"\n"
+msgstr ""
+"\n"
+"    Estos tipos genéricos también son soportados (usa sólo la parte 'Generic##'\n"
+"    cuando especifiques el monitor). Debes especificar el '0' inicial si o\n"
+"    tipo es menor que 10 (ej.: 'Generic02')\n"
+
+#: ../Xconfigurator.c:956
+msgid "Monitor DB"
+msgstr "BD Monitores"
+
+#: ../Xconfigurator.c:957
+#, c-format
+msgid ""
+"The monitor database file %s could not be loaded. Please select a custom "
+"monitor configuration closest to your actual monitor."
+msgstr ""
+"El archivo del banco de datos %s no se puede cargar. Por favor selecciona la "
+"configuración más próxima de tu monitor."
+
+#: ../Xconfigurator.c:1066
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../Xconfigurator.c:1072
+msgid "Monitor Setup"
+msgstr "Configuración del Monitor"
+
+#: ../Xconfigurator.c:1073
+msgid ""
+"What type of monitor do you have? If you would rather specify the sync "
+"frequencies of your monitor, choose \"Custom\" from the list."
+msgstr ""
+"¿Qué tipo de monitor tienes? Si prefieres especificar la frecuencia de tu "
+"monitor, elige \"Personalizado\" en la lista."
+
+#: ../Xconfigurator.c:1111
+msgid "Custom Monitor Setup"
+msgstr "Configuración Personalizada del Monitor"
+
+#: ../Xconfigurator.c:1120 ../Xconfigurator.c:1132
+msgid "Custom Monitor Setup (Continued)"
+msgstr "Configuración Personalizada del Monitor (Continuación)"
+
+#: ../Xconfigurator.c:1182
+msgid ""
+"\n"
+"\n"
+"Can't read card database.  \n"
+"\n"
+msgstr ""
+"\n"
+"No fue posible leer el     \n"
+"banco de datos de tarjetas.  \n"
+"\n"
+
+#: ../Xconfigurator.c:1207
+msgid ""
+"\n"
+"\n"
+"Can't read card database.  Exiting.\n"
+"\n"
+msgstr ""
+"\n"
+" No fue posible leer el banco de    \n"
+" datos de tarjetas. Finalizando        \n"
+"\n"
+
+#: ../Xconfigurator.c:1238
+msgid "Unknown Server"
+msgstr "Servidor Desconocido"
+
+#: ../Xconfigurator.c:1239
+msgid "Somehow in continue mode an unknown server type exists."
+msgstr ""
+"Prosiguiendo en la configuración, a pesar de existir un tipo de servidor "
+"desconocido."
+
+#: ../Xconfigurator.c:1312
+msgid "PCI Probe"
+msgstr "Detección PCI"
+
+#: ../Xconfigurator.c:1312
+#, c-format
+msgid ""
+"PCI probing found a:\n"
+"\n"
+"  PCI Entry: %s\n"
+"  X Server : %s\n"
+msgstr ""
+"La detección PCI ha encontrado un:\n"
+"\n"
+"  Entrada PCI: %s\n"
+"  Servidor X : %s\n"
+
+#: ../Xconfigurator.c:1315 ../Xconfigurator.c:1316
+msgid "No match"
+msgstr "Sin asociación"
+
+#: ../Xconfigurator.c:1337
+msgid "Unlisted Card"
+msgstr "Tarjeta No Listada"
+
+#: ../Xconfigurator.c:1343
+msgid "Choose a Card"
+msgstr "Elige una Tarjeta"
+
+#: ../Xconfigurator.c:1344
+msgid ""
+"Pick a Card from the list below (Or choose \"Unlisted Card\" at the bottom "
+"of the list if your card isn't listed):"
+msgstr ""
+"Elige una Tarjeta de la lista abajo (O \"Tarjeta no relacionada\" en el "
+"final de la lista, si tu tarjeta no se encuentra en ella.):"
+
+#: ../Xconfigurator.c:1395
+msgid "Pick a Server"
+msgstr "Elige un Servidor"
+
+#: ../Xconfigurator.c:1395
+msgid "Which server do you need?"
+msgstr "¿Qué servidor hace falta?"
+
+#: ../Xconfigurator.c:1423
+msgid "No RAMDAC Setting (recommended)"
+msgstr "Sin Configuración RAMDAC (recomendado)"
+
+#: ../Xconfigurator.c:1424
+msgid "AT&T 20C490 (S3 and AGX servers, ARK driver)"
+msgstr "AT&T 20C490 (servidores S3 y AGX, driver ARK)"
+
+#: ../Xconfigurator.c:1425
+msgid "AT&T 20C498/21C498/22C498 (S3, autodetected)"
+msgstr "AT&T 20C498/21C498/22C498 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1426
+msgid "AT&T 20C409/20C499 (S3, autodetected)"
+msgstr "AT&T 20C409/20C499 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1427
+msgid "AT&T 20C505 (S3)"
+msgstr ""
+
+#: ../Xconfigurator.c:1428
+msgid "BrookTree BT481 (AGX)"
+msgstr ""
+
+#: ../Xconfigurator.c:1429
+msgid "BrookTree BT482 (AGX)"
+msgstr ""
+
+#: ../Xconfigurator.c:1430
+msgid "BrookTree BT485/9485 (S3)"
+msgstr ""
+
+#: ../Xconfigurator.c:1431
+msgid "Sierra SC15025 (S3, AGX)"
+msgstr ""
+
+#: ../Xconfigurator.c:1433
+msgid "S3 GenDAC (86C708) (autodetected)"
+msgstr "S3 GenDAC (86C708) (autodetectado)"
+
+#: ../Xconfigurator.c:1434
+msgid "S3 SDAC (86C716) (autodetected)"
+msgstr "S3 SDAC (86C716) (autodetectado)"
+
+#: ../Xconfigurator.c:1436
+#, fuzzy
+msgid "S3 GenDAC (86C708)"
+msgstr "S3 GenDAC (86C708) (autodetectado)"
+
+#: ../Xconfigurator.c:1437 ../Xconfigurator.c:1474
+#, fuzzy
+msgid "S3 SDAC (86C716)"
+msgstr "S3 SDAC (86C716) (autodetectado)"
+
+#: ../Xconfigurator.c:1439
+msgid "STG-1700 (S3, autodetected)"
+msgstr "STG-1700 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1440
+msgid "STG-1703 (S3, autodetected)"
+msgstr "STG-1703 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1441
+msgid "TI 3020 (S3)"
+msgstr ""
+
+#: ../Xconfigurator.c:1442
+msgid "TI 3025 (S3, autodetected)"
+msgstr "TI 3025 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1443
+msgid "TI 3026 (S3, autodetected)"
+msgstr "TI 3026 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1444
+msgid "IBM RGB 514 (S3, autodetected)"
+msgstr "IBM RGB 514 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1445
+msgid "IBM RGB 524 (S3, autodetected)"
+msgstr "IBM RGB 524 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1446
+msgid "IBM RGB 525 (S3, autodetected)"
+msgstr "IBM RGB 525 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1447
+#, fuzzy
+msgid "IBM RGB 526 (S3)"
+msgstr "IBM RGB 524 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1448
+msgid "IBM RGB 528 (S3, autodetected)"
+msgstr "IBM RGB 528 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1449
+msgid "ICS5342 (S3, ARK)"
+msgstr ""
+
+#: ../Xconfigurator.c:1450
+msgid "ICS5341 (W32)"
+msgstr ""
+
+#: ../Xconfigurator.c:1451
+msgid "IC Works w30C516 ZoomDac (ARK)"
+msgstr ""
+
+#: ../Xconfigurator.c:1452
+msgid "Normal DAC"
+msgstr "DAC Normal"
+
+#: ../Xconfigurator.c:1467
+msgid "No Clockchip Setting (recommended)"
+msgstr "Sin Configuración RAMDAC (recomendado)"
+
+#: ../Xconfigurator.c:1468
+msgid "Chrontel 8391"
+msgstr ""
+
+#: ../Xconfigurator.c:1469
+msgid "ICD2061A and compatibles (ICS9161A, DCS2824)"
+msgstr "ICD2061A y compatibles (ICS9161A, DCS2824)"
+
+#: ../Xconfigurator.c:1470
+msgid "ICS2595"
+msgstr ""
+
+#: ../Xconfigurator.c:1471
+msgid "ICS5342 (similar to SDAC, but not completely compatible)"
+msgstr "ICS5342 (similar al SDAC, pero no completamente compatible)"
+
+#: ../Xconfigurator.c:1472
+msgid "ICS5341"
+msgstr ""
+
+#: ../Xconfigurator.c:1473
+msgid "S3 GenDAC (86C708) and ICS5300 (autodetected)"
+msgstr "S3 GenDAC (86C708) (autodetectado)"
+
+#: ../Xconfigurator.c:1475
+msgid "STG 1703 (autodetected)"
+msgstr "STG-1703 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1476
+msgid "Sierra SC11412"
+msgstr ""
+
+#: ../Xconfigurator.c:1477
+msgid "TI 3025 (autodetected)"
+msgstr "TI 3025 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1478
+msgid "TI 3026 (autodetected)"
+msgstr "TI 3026 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1479
+msgid "IBM RGB 51x/52x (autodetected)"
+msgstr "IBM RGB 514 (S3, autodetectado)"
+
+#: ../Xconfigurator.c:1490
+msgid ""
+"It is possible that the hardware detection routines in the server some how "
+"cause the system to crash and the screen to remain blank. If this is the "
+"case, skip this step the next time. The server may need a Ramdac, ClockChip "
+"or special option (e.g. \"nolinear\" for S3) to probe and start-up correctly."
+msgstr ""
+"Es posible que las rutinas de detección de hardware en el servidor puedan de "
+"alguna forma bloquear el sistema y la pantalla continúe vacía. Si este es tu caso,"
+"no utilices este paso de la próxima vez. El servidor puede necesitar de un "
+"Ramdac, ClockChip o una opción especial (ex.: \"nolinear\" em placas S3) "
+"para detectar e inicializar correctamente."
+
+#: ../Xconfigurator.c:1544 ../Xconfigurator.c:1653 ../Xconfigurator.c:2276
+#: ../Xconfigurator.c:2323 ../Xconfigurator.c:2363 ../Xconfigurator.c:2391
+#: ../Xconfigurator.c:2406
+msgid "X Error"
+msgstr "Error del servidor X"
+
+#: ../Xconfigurator.c:1545 ../Xconfigurator.c:1654 ../Xconfigurator.c:2364
+#: ../Xconfigurator.c:2392 ../Xconfigurator.c:2407
+msgid ""
+"There was an error detecting the video ram on your card. You should try "
+"configuring the video card manually."
+msgstr ""
+"Ha ocurrido un error detectando la RAM de vídeo en tu tarjeta. Deberás intentar "
+"la configuración de la tarjeta de vídeo manualmente."
+
+#: ../Xconfigurator.c:1550 ../Xconfigurator.c:1659 ../Xconfigurator.c:1803
+msgid "Fatal error: Invalid amount of video memory.\n"
+msgstr "Error fatal: cantidad no válida de memoria de vídeo.\n"
+
+#: ../Xconfigurator.c:1697
+msgid "Video Memory"
+msgstr "Memoria de Vídeo"
+
+#: ../Xconfigurator.c:1698
+msgid "How much video memory do you have?"
+msgstr "¿Cuánta memoria de vídeo tienes?"
+
+#: ../Xconfigurator.c:1826
+msgid "RAMDAC Configuration"
+msgstr "Configuración RAMDAC"
+
+#: ../Xconfigurator.c:1827
+msgid "Which RAMDAC do you have?"
+msgstr "¿Qué RAMDAC tienes?"
+
+#: ../Xconfigurator.c:1845
+msgid "Clockchip Configuration"
+msgstr "Configuración \"Clockchip\""
+
+#: ../Xconfigurator.c:1846
+msgid "Which Clockchip do you have?"
+msgstr "¿Qué \"Clockchip\" tienes?"
+
+#: ../Xconfigurator.c:1874 ../Xconfigurator.c:3503
+msgid "Probe"
+msgstr "Detectar"
+
+#: ../Xconfigurator.c:1874
+msgid "Skip"
+msgstr "Ignorar"
+
+#: ../Xconfigurator.c:1878
+msgid "Do you want to run 'X -probeonly' now?"
+msgstr "Deseas ejecutar 'X -probeonly' ahora?"
+
+#: ../Xconfigurator.c:1880
+msgid "Probe for Clocks"
+msgstr "Verifica Clocks"
+
+#: ../Xconfigurator.c:1938
+msgid "Clock Probe Failed"
+msgstr "Hubo un fallo en la detección del Reloj"
+
+#: ../Xconfigurator.c:1939
+msgid "Configuration will proceed using default values."
+msgstr "La configuración continuará usando valores por defecto."
+
+#: ../Xconfigurator.c:2107
+msgid "Unable to probe card - error running X\n"
+msgstr "No fue posible detectar la tarjeta- error durante la ejecución del X\n"
+
+#: ../Xconfigurator.c:2131 ../Xconfigurator.c:2141 ../Xconfigurator.c:2150
+msgid "Couldn't grep mode lines from probe output.\n"
+msgstr "No fueron encontradas líneas de modo en la salida del proceso de detección.\n"
+
+#: ../Xconfigurator.c:2222 ../Xconfigurator.c:2227 ../Xconfigurator.c:2233
+#: ../Xconfigurator.c:2240
+msgid "Failed to create tempfile in kickstart mode\n"
+msgstr "Hubo un fallo en la creación de archivo temporal modo kickstart\n"
+
+#: ../Xconfigurator.c:2259
+msgid "Probing to begin"
+msgstr "Detección para iniciar"
+
+#: ../Xconfigurator.c:2260
+msgid ""
+"Xconfigurator will now run the X server you selected to probe various "
+"information about your video card. It is normal for the screen to blink "
+"several times."
+msgstr ""
+"Xconfigurator irá ejecutar ahora el servidor X seleccionado para detectar "
+"información sobre tu placa de vídeo. Es normal que la pantalla empieze a "
+"parpadear veces."
+
+#: ../Xconfigurator.c:2277
+msgid ""
+"There was an error executing the X server in a probing mode. You should try "
+"configuring the video card manually."
+msgstr ""
+"Ocurrió un error ejecutando el servidor X en modo detección. Deberás "
+"intentar configurar la tarjeta de vídeo manualmente."
+
+#: ../Xconfigurator.c:2324
+msgid ""
+"There was an error probing the clocks on your video card. You should try "
+"configuring the video card manually."
+msgstr ""
+"Ocurrió un error detectando los \"clocks\" para tu tarjeta de vídeo. Deberás "
+"intentar configurar la tarjeta de vídeo manualmente."
+
+#: ../Xconfigurator.c:2463
+msgid "No Valid Modes"
+msgstr "No válido modo alguno"
+
+#: ../Xconfigurator.c:2464
+msgid ""
+"No valid video modes were autodetected at 8, 16, or 24 bits per pixel. It is "
+"likely that the X server for your video card did not return the information "
+"in the way expected by this tool.  You can still attempt to configure you "
+"video card manually."
+msgstr ""
+"No ha sido detectado modo de vídeo alguno para 8, 16 o 24 bits por pixel. "
+"Probablemente el servidor X para tu tarjeta de vídeo no ha retornado la "
+"información de la forma esperada por esta herramienta. Deberás intentar "
+"configurar tu tarjeta de vídeo manualmente."
+
+#: ../Xconfigurator.c:2508
+msgid "Probing finished"
+msgstr "Detección finalizada"
+
+#: ../Xconfigurator.c:2508
+msgid "Use Default"
+msgstr "Usa por defecto"
+
+#: ../Xconfigurator.c:2509
+msgid "Let Me Choose"
+msgstr "Déjame elegir"
+
+#: ../Xconfigurator.c:2510
+#, c-format
+msgid ""
+"Xconfigurator has sucessfully probed your video card. The default video mode "
+"will be:\n"
+"\n"
+"   Color Depth: %s bits per pixel\n"
+"   Resolution : %s\n"
+"\n"
+"Do you want to accept this setting, or select for yourself?"
+msgstr ""
+"Xconfigurator ha detectado tu tarjeta de vídeo con éxito. El modo de vídeo "
+"por defecto será:\n"
+"\n"
+"   Colores     : %s bits por pixel\n"
+"   Resolución : %s\n"
+"\n"
+"¿Deseas mantener esta configuración, o seleccionar otra?"
+
+#: ../Xconfigurator.c:2565
+msgid ""
+"An error occured during probing;  please start over.\n"
+"\n"
+msgstr ""
+"Ocurrió un error durante la detección; empieza de nuevo.\n"
+"\n"
+
+#: ../Xconfigurator.c:2568
+msgid "The error occured trying to exec X."
+msgstr "El error ocurrió durante el intento de ejecución del X."
+
+#: ../Xconfigurator.c:2570
+msgid "The error occured trying to exec grep."
+msgstr "El error ocurrió durante el intento de ejecución del grep."
+
+#: ../Xconfigurator.c:2571
+msgid "Error"
+msgstr "Error"
+
+#: ../Xconfigurator.c:2890
+msgid "Can't open file for writing.  Perhaps you aren't root?"
+msgstr ""
+"No fue posible grabar el archivo. Tal vez no estés como superusuario."
+
+#: ../Xconfigurator.c:3305
+#, c-format
+msgid "Undetermined error number %d"
+msgstr "Error indeterminado número %d"
+
+#: ../Xconfigurator.c:3307
+msgid "Fatal Error"
+msgstr "Error Fatal!"
+
+#: ../Xconfigurator.c:3308
+msgid ""
+"A fatal error occured checking the status of the link\n"
+"\n"
+"   /usr/X11R6/lib/X11/XF86Config\n"
+"\n"
+"Make sure you are running this utility as root. The fatal error was:\n"
+"\n"
+msgstr ""
+"Ocurrió un error fatal en la verificación del estado del link\n"
+"\n"
+"   /usr/X11R6/lib/X11/XF86Config\n"
+"\n"
+"Asegúrate que estás ejecutando este programa como superusuario. El error "
+"fatal fue:\n"
+"\n"
+
+#: ../Xconfigurator.c:3320
+msgid "Error with existing XF86Config"
+msgstr "Error con el archivo XF86Config"
+
+#: ../Xconfigurator.c:3320
+msgid "Yes"
+msgstr "Sí"
+
+#: ../Xconfigurator.c:3321
+msgid "No"
+msgstr "No"
+
+#: ../Xconfigurator.c:3322
+msgid ""
+"There is something wrong with the file\n"
+"\n"
+"       /usr/X11R6/lib/X11/XF86Config\n"
+"\n"
+"This file should normally be a link to\n"
+"\n"
+"       /etc/X11/XF86Config\n"
+"\n"
+"Shall I make that link now?"
+msgstr ""
+"Hay algo mal con el archivo\n"
+"\n"
+"       /usr/X11R6/lib/X11/XF86Config\n"
+"\n"
+"Normalmente este archivo debería ser un link para\n"
+"\n"
+"       /etc/X11/XF86Config\n"
+"\n"
+"¿Debo hacer crear este link ahora?"
+
+#. warn user link is still not ok, should look into it
+#: ../Xconfigurator.c:3409
+msgid "Warning"
+msgstr "Atención"
+
+#: ../Xconfigurator.c:3410
+msgid ""
+"Since you did not set this link, the config file created with this utilty "
+"may not be used next time X is started.\n"
+"\n"
+"It is recommended you look into why this link is not currently set as "
+"recommended.\n"
+"\n"
+"The install will proceed now..."
+msgstr ""
+"Como no has creado este link, el archivo de configuración generado con este "
+"utilitario puede no ser utilizado en la próxima inicialización del X.\n"
+"\n"
+"Lo indicado será que verifiques porque este link no ha sido hecho como "
+"fue recomendado.\n"
+"\n"
+"La instalación será efectivada ahora..."
+
+#: ../Xconfigurator.c:3502
+msgid "Screen Configuration"
+msgstr "Pantalla de configuración"
+
+#: ../Xconfigurator.c:3503
+msgid "Don't Probe"
+msgstr "Não detectar"
+
+#: ../Xconfigurator.c:3504
+msgid ""
+"Xconfigurator now needs to setup the default resolution and color depth.  "
+"Most modern PCI video cards can be probed, and Xconfigurator will "
+"automatically determine the best video mode/color depth possible for your "
+"system. There is a chance, however, this could lock up your system.  If you "
+"would prefer to give the required information instead of having it probed, "
+"answer \"Don't Probe\" to the following question."
+msgstr ""
+"Xconfigurator irá configurar la resolución patrón y la profundidad de colores. La "
+"mayoría de las tarjetas de vídeo PCI más modernas pueden ser detectadas,  y "
+"Xconfigurator irá automáticamente determinar el mejor modo de "
+"vídeo/profundidad de colores posible. No obstante, hay el riesgo de que esta "
+"detección pueda bloquear tu sistema. Si prefieres ofrecer la "
+"información requerida en lugar de la autodetección, responda \"No detectar\" "
+"a la pregunta a continuación."
+
+#. XXX - intl
+#: ../Xconfigurator.c:3622
+msgid "Welcome"
+msgstr "Bienvenido"
+
+#: ../Xconfigurator.c:3622
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../Xconfigurator.c:3644
+msgid "No card determined in kickstart - bailing\n"
+msgstr "Tarjeta alguna ha sido especificada en el kicstart - saliendo\n"
+
+#: ../Xconfigurator.c:3687
+msgid ""
+"\n"
+"\tServer doesn't exist, can't continue.\n"
+msgstr ""
+"\n"
+"\tServidor no existe, no puedo continuar.\n"
+
+#: ../Xconfigurator.c:3688
+#, c-format
+msgid "tried to use %s\n"
+msgstr "he intentado usar %s\n"
+
+#: ../Xconfigurator.c:3713
+msgid "You're Done!"
+msgstr "¡Hecho!"
+
+#~ msgid "%s: bad keytable %s\n"
+#~ msgstr "%s: tabla no válida de teclas %s\n"
+
+#~ msgid "Please answer the following question with either 'y' or 'n'.\n"
+#~ msgstr ""
+#~ "Por favor contesta a la siguiente questión con 'y' para sí o 'n' para no.\n"
+
+#~ msgid "Do you want to enable these bindings for the Alt keys? "
+#~ msgstr "¿Quieres habilitar estas asociaciones para las teclas Alt? "
+
+#~ msgid "8514 compatible"
+#~ msgstr "Compatible con 8514"
+
+#, fuzzy
+#~ msgid "Unknown"
+#~ msgstr "Servidor Desconocido"
+
+#~ msgid "User Specified Specs"
+#~ msgstr "Especificaciones hechas por el usuario"
+
+#, fuzzy
+#~ msgid "My Monitor"
+#~ msgstr "BD Monitores"
+
+#~ msgid "My Video Card"
+#~ msgstr "Mi tarjeta de Vídeo"
+
+#~ msgid ""
+#~ "# File generated by XConfigurator.\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Refer to the XF86Config(4/5) man page for details about the format of \n"
+#~ "# this file.\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Files section.  This allows default font and rgb paths to be set\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Files\"\n"
+#~ "\n"
+#~ "# The location of the RGB database.  Note, this is the name of the\n"
+#~ "# file minus the extension (like \".txt\" or \".db\").  There is normally\n"
+#~ "# no need to change the default.\n"
+#~ "\n"
+#~ "    RgbPath\t\"/usr/X11R6/lib/X11/rgb\"\n"
+#~ "\n"
+#~ "# Multiple FontPath entries are allowed (they are concatenated together)\n"
+#~ "\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/misc/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/Type1/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/Speedo/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/75dpi/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/100dpi/\"\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Server flags section.\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"ServerFlags\"\n"
+#~ "\n"
+#~ "    # Uncomment this to cause a core dump at the spot where a signal is \n"
+#~ "    # received.  This may leave the console in an unusable state, but may\n"
+#~ "    # provide a better stack trace in the core dump to aid in debugging\n"
+#~ "    #NoTrapSignals\n"
+#~ "\n"
+#~ "    # Uncomment this to disable the <Crtl><Alt><BS> server abort sequence\n"
+#~ "    # This allows clients to receive this key event.\n"
+#~ "    #DontZap\n"
+#~ "\n"
+#~ "    # Uncomment this to disable the <Crtl><Alt><KP_+>/<KP_-> mode switching\n"
+#~ "    # sequences.  This allows clients to receive these key events.\n"
+#~ "    #DontZoom\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Input devices\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# Archivo generado por el utilitario XConfigurator.\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Lee el manual del XF86Config (secciones 4/5) para mayores detalles sobre o\n"
+#~ "# formato de este archivo.\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Sección de Archivos. En esta sección son configurados  fuentes por defectoe\n"
+#~ "# las rutas para rgb\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Files\"\n"
+#~ "\n"
+#~ "# La localización del banco de datos RGB. Nota, este es el nombre del archivo\n"
+#~ "# menos la extensión (como \".txt\" o \".db\"). Normalmente no hace\n"
+#~ "# falta cambiar la configuración por defecto.\n"
+#~ "\n"
+#~ "    RgbPath\t\"/usr/X11R6/lib/X11/rgb\"\n"
+#~ "\n"
+#~ "# Se permite múltiples entradas FontPath (ellas serán concatenadas)\n"
+#~ "\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/misc/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/Type1/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/Speedo/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/75dpi/\"\n"
+#~ "    FontPath\t\"/usr/X11R6/lib/X11/fonts/100dpi/\"\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Sección de flags del servidor.\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"ServerFlags\"\n"
+#~ "\n"
+#~ "    # No comente esto para causar un core dump en el local exacto cuando una\n"
+#~ "    # señal se reciba. Esto puede dejar la consola en un estado inestable,\n"
+#~ "    # pero pude ofrecer un trace mejor de la pila en el core dump para ayudar\n"
+#~ "    # en la depuración.    #NoTrapSignals\n"
+#~ "\n"
+#~ "    # No comente esto para deshabilitar la secuencia de término del servidor\n"
+#~ "    # <Crtl><Alt><BS>. Esto permite que programas clientes reciban este \n"
+#~ "    # evento de secuencia de teclas.\n"
+#~ "    #DontZap\n"
+#~ "\n"
+#~ "    # No comente esto para deshabilitar las secuencias de cambio de modo \n"
+#~ "    # <Crtl><Alt><KP_+>/<KP_->. Esto permite que programas clientes reciban\n"
+#~ "    #  este evento de secuencia de teclas.\n"
+#~ "    #DontZoom\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# **********************************************************************\n"
+#~ "# Dispositivos de Entrada\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# **********************************************************************\n"
+#~ "# Keyboard section\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Keyboard\"\n"
+#~ "\n"
+#~ "    Protocol    \"Standard\"\n"
+#~ "\n"
+#~ "    # when using XQUEUE, comment out the above line, and uncomment the\n"
+#~ "    # following line\n"
+#~ "    #Protocol   \"Xqueue\"\n"
+#~ "\n"
+#~ "    AutoRepeat  500 5\n"
+#~ "\n"
+#~ "    # Let the server do the NumLock processing.  This should only be \n"
+#~ "    # required when using pre-R6 clients\n"
+#~ "    #ServerNumLock\n"
+#~ "\n"
+#~ "    # Specify which keyboard LEDs can be user-controlled (eg, with xset(1))\n"
+#~ "    #Xleds      1 2 3\n"
+#~ "\n"
+#~ "    #To set the LeftAlt to Meta, RightAlt key to ModeShift, \n"
+#~ "    #RightCtl key to Compose, and ScrollLock key to ModeLock:\n"
+#~ "\n"
+#~ "    LeftAlt        Meta\n"
+#~ msgstr ""
+#~ "# **********************************************************************\n"
+#~ "# Sección del Teclado\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Keyboard\"\n"
+#~ "\n"
+#~ "    Protocol    \"Standard\"\n"
+#~ "\n"
+#~ "    # cuando estés usando XQUEUE, comente la línea arriba y no comente\n"
+#~ "    # la línea siguiente\n"
+#~ "    #Protocol   \"Xqueue\"\n"
+#~ "\n"
+#~ "    AutoRepeat  500 5\n"
+#~ "\n"
+#~ "    # Permita el procesamiento de la tecla NumLock por el servidor. Esto solamente\n"
+#~ "    # debe ser necesario cuando estés usando clientes pre-R6\n"
+#~ "    #ServerNumLock\n"
+#~ "\n"
+#~ "    # Especifica que LEDs del teclado puden ser controlados por el usuario\n"
+#~ "    # (ej. A través del utilitario xset(1))\n"
+#~ "    #Xleds      1 2 3\n"
+#~ "\n"
+#~ "    # Para configurar LeftAlt para Meta, RightAlt para ModeShift,\n"
+#~ "    # RightCtl para Compose y ScrollLock para ModeLock:\n"
+#~ "\n"
+#~ "    LeftAlt        Meta\n"
+
+#~ msgid ""
+#~ "   ScrollLock      Compose\n"
+#~ "   RightCtl        Control\n"
+#~ "\n"
+#~ "# To disable the XKEYBOARD extension, uncomment XkbDisable.\n"
+#~ "\n"
+#~ "#    XkbDisable\n"
+#~ "\n"
+#~ "# To customise the XKB settings to suit your keyboard, modify the\n"
+#~ "# lines below (which are the defaults).  For example, for a non-U.S.\n"
+#~ "# keyboard, you will probably want to use:\n"
+#~ "#    XkbModel    \"pc102\"\n"
+#~ "# If you have a US Microsoft Natural keyboard, you can use:\n"
+#~ "#    XkbModel    \"microsoft\"\n"
+#~ "#\n"
+#~ "# Then to change the language, change the Layout setting.\n"
+#~ "# For example, a german layout can be obtained with:\n"
+#~ "#    XkbLayout   \"de\"\n"
+#~ "# or:\n"
+#~ "#    XkbLayout   \"de\"\n"
+#~ "#    XkbVariant  \"nodeadkeys\"\n"
+#~ "#\n"
+#~ "# If you'd like to switch the positions of your capslock and\n"
+#~ "# control keys, use:\n"
+#~ "#    XkbOptions  \"ctrl:swapcaps\"\n"
+#~ "\n"
+#~ "# These are the default XKB settings for XFree86\n"
+#~ "#    XkbRules    \"xfree86\"\n"
+#~ "#    XkbModel    \"pc101\"\n"
+#~ "#    XkbLayout   \"us\"\n"
+#~ "#    XkbVariant  \"\"\n"
+#~ "#    XkbOptions  \"\"\n"
+#~ "\n"
+#~ "   XkbKeycodes     \"xfree86\"\n"
+#~ "   XkbTypes        \"default\"\n"
+#~ "   XkbCompat       \"default\"\n"
+#~ "   XkbSymbols      \"us(pc101)\"\n"
+#~ "   XkbGeometry     \"pc\"\n"
+#~ "   XkbRules        \"xfree86\"\n"
+#~ "   XkbModel        \"pc101\"\n"
+#~ msgstr ""
+#~ "   ScrollLock      Compose\n"
+#~ "   RightCtl        Control\n"
+#~ "\n"
+#~ "# Para deshabilitar la extensión XKEYBOARD no comente XkbDisable.\n"
+#~ "\n"
+#~ "#    XkbDisable\n"
+#~ "\n"
+#~ "# Para adecuar las configuraciones del XKB para tu teclado modifica las\n"
+#~ "# líneas abajo (que son los por defecto). Por ejemplo, para un teclado no\n"
+#~ "# US probablemente usarás:\n"
+#~ "#    XkbModel    \"pc102\"\n"
+#~ "# Si tienes un teclado Microsoft Natural US, puedes usar:\n"
+#~ "#    XkbModel    \"microsoft\"\n"
+#~ "#\n"
+#~ "# Para cambiar el lenguaje, cambia la configuración de Layout.\n"
+#~ "# Por ejemplo, un visual alemán puede ser obtenido con:\n"
+#~ "#    XkbLayout   \"de\"\n"
+#~ "# o:\n"
+#~ "#    XkbLayout   \"de\"\n"
+#~ "#    XkbVariant  \"nodeadkeys\"\n"
+#~ "#\n"
+#~ "# Si quieres cambiar las posiciones de tus teclas capslock y \n"
+#~ "# Control usa:\n"
+#~ "#    XkbOptions  \"ctrl:swapcaps\"\n"
+#~ "\n"
+#~ "# Estas son las configuraciones por defecto del XKB para XFree86\n"
+#~ "#    XkbRules    \"xfree86\"\n"
+#~ "#    XkbModel    \"pc101\"\n"
+#~ "#    XkbLayout   \"us\"\n"
+#~ "#    XkbVariant  \"\"\n"
+#~ "#    XkbOptions  \"\"\n"
+#~ "\n"
+#~ "   XkbKeycodes     \"xfree86\"\n"
+#~ "   XkbTypes        \"default\"\n"
+#~ "   XkbCompat       \"default\"\n"
+#~ "   XkbSymbols      \"us(pc101)\"\n"
+#~ "   XkbGeometry     \"pc\"\n"
+#~ "   XkbRules        \"xfree86\"\n"
+#~ "   XkbModel        \"pc101\"\n"
+
+#~ msgid ""
+#~ "# **********************************************************************\n"
+#~ "# Pointer section\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Pointer\"\n"
+#~ msgstr ""
+#~ "# **********************************************************************\n"
+#~ "# Sección de Apuntadores\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "Section \"Pointer\"\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "# When using XQUEUE, comment out the above two lines, and uncomment\n"
+#~ "# the following line.\n"
+#~ "\n"
+#~ "#    Protocol\t\"Xqueue\"\n"
+#~ "\n"
+#~ "# Baudrate and SampleRate are only for some Logitech mice\n"
+#~ "\n"
+#~ "#    BaudRate\t9600\n"
+#~ "#    SampleRate\t150\n"
+#~ "\n"
+#~ "# Emulate3Buttons is an option for 2-button Microsoft mice\n"
+#~ "# Emulate3Timeout is the timeout in milliseconds (default is 50ms)\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "# Cuando estés usando XQUEUE comente las dos líneas arriba y no comente\n"
+#~ "# la línea siguiente:\n"
+#~ "\n"
+#~ "#    Protocol\t\"Xqueue\"\n"
+#~ "\n"
+#~ "# BaudRate y SampleRate son solamente para ratones Logitech\n"
+#~ "\n"
+#~ "#    BaudRate\t9600\n"
+#~ "#    SampleRate\t150\n"
+#~ "\n"
+#~ "# Emulate3Buttons es una opción para ratones de dos botones de Microsoft\n"
+#~ "# Emulate3Timeout es el tiempo limite en milisegundos (por defecto es 50ms)\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# **********************************************************************\n"
+#~ "# Monitor section\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# Any number of monitor sections may be present\n"
+#~ "\n"
+#~ "Section \"Monitor\"\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# **********************************************************************\n"
+#~ "# Sección de los Monitores\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# Cualquier número de secciones de monitores pueden estar presentes\n"
+#~ "\n"
+#~ "Section \"Monitor\"\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# HorizSync is in kHz unless units are specified.\n"
+#~ "# HorizSync may be a comma separated list of discrete values, or a\n"
+#~ "# comma separated list of ranges of values.\n"
+#~ "# NOTE: THE VALUES HERE ARE EXAMPLES ONLY.  REFER TO YOUR MONITOR'S\n"
+#~ "# USER MANUAL FOR THE CORRECT NUMBERS.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# HorizSync se especifica en kHz a menos que sean especificadas unidades.\n"
+#~ "# HorizSync puede ser una lista de valores discretos separados por comas"
+#~ "o\n"
+#~ "# una lista de bandas de valores separadas por comas.\n"
+#~ "# NOTA: LOS VALORES AQUÍ SON SOLAMENTE EJEMPLOS. LEE EL MANUAL DE TU MONITOR "
+#~ "PARA\n"
+#~ "# LOS NÚMEROS CORRECTOS.\n"
+
+#~ msgid ""
+#~ "# VertRefresh is in Hz unless units are specified.\n"
+#~ "# VertRefresh may be a comma separated list of discrete values, or a\n"
+#~ "# comma separated list of ranges of values.\n"
+#~ "# NOTE: THE VALUES HERE ARE EXAMPLES ONLY.  REFER TO YOUR MONITOR'S\n"
+#~ "# USER MANUAL FOR THE CORRECT NUMBERS.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# VertRefresh se especifica en Hz a menos que sean especificadas"
+#~ "unidades.\n"
+#~ "# VertRefresh puede ser una lista de valores discretos separados por comas"
+#~ "o\n"
+#~ "# una lista de bandas de valores separadas por comas.\n"
+#~ "# NOTA: LOS VALORES AQUÍ SON SOLAMENTE EJEMPLOS. LEE EL MANUAL DE TU MONITOR "
+#~ "PARA\n"
+#~ "# LOS NÚMEROS CORRECTOS.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# Modes can be specified in two formats.  A compact one-line format, or\n"
+#~ "# a multi-line format.\n"
+#~ "\n"
+#~ "# These two are equivalent\n"
+#~ "\n"
+#~ "#    ModeLine \"1024x768i\" 45 1024 1048 1208 1264 768 776 784 817 "
+#~ "Interlace\n"
+#~ "\n"
+#~ "#    Mode \"1024x768i\"\n"
+#~ "#        DotClock\t45\n"
+#~ "#        HTimings\t1024 1048 1208 1264\n"
+#~ "#        VTimings\t768 776 784 817\n"
+#~ "#        Flags\t\t\"Interlace\"\n"
+#~ "#    EndMode\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# Los modos pueden ser especificados en dos formatos. Un formato compacto en "
+#~ "solamente\n"
+#~ "# una línea o un formato con varias líneas.\n"
+#~ "\n"
+#~ "# Estos dos son equivalentes\n"
+#~ "\n"
+#~ "#    ModeLine \"1024x768i\" 45 1024 1048 1208 1264 768 776 784 817 "
+#~ "Interlace\n"
+#~ "\n"
+#~ "#    Mode \"1024x768i\"\n"
+#~ "#        DotClock\t45\n"
+#~ "#        HTimings\t1024 1048 1208 1264\n"
+#~ "#        VTimings\t768 776 784 817\n"
+#~ "#        Flags\t\t\"Interlace\"\n"
+#~ "#    EndMode\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# **********************************************************************\n"
+#~ "# Graphics device section\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# Any number of graphics device sections may be present\n"
+#~ "\n"
+#~ "Section \"Device\"\n"
+#~ "    Identifier        \"Generic VGA\"\n"
+#~ "    VendorName        \"Unknown\"\n"
+#~ "    BoardName \"Unknown\"\n"
+#~ "    Chipset   \"generic\"\n"
+#~ "\n"
+#~ "#    VideoRam 256\n"
+#~ "\n"
+#~ "#    Clocks   25.2 28.3\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# Device configured by Xconfigurator:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# **********************************************************************\n"
+#~ "# Sección de Dispositivos Gráficos\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ "# Cualquier número de secciones de dispositivos gráficos pueden estar presentes\n"
+#~ "\n"
+#~ "Section \"Device\"\n"
+#~ "    Identifier        \"Generic VGA\"\n"
+#~ "    VendorName        \"Desconhecido\"\n"
+#~ "    BoardName \"Desconhecido\"\n"
+#~ "    Chipset   \"generic\"\n"
+#~ "\n"
+#~ "#    VideoRam 256\n"
+#~ "\n"
+#~ "#    Clocks   25.2 28.3\n"
+#~ "\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ "# Dispositivo configurado por el utilitario Xconfigurator:\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# **********************************************************************\n"
+#~ "# Screen sections\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# **********************************************************************\n"
+#~ "# Secciones de Pantallas\n"
+#~ "# **********************************************************************\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# ChordMiddle is an option for some 3-button Logitech mice\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# ChorMiddle es una opción para algunos ratones de 3 botones de la Logitech\n"
+#~ "\n"
+
+#~ msgid "    # Insert Clocks lines here if appropriate\n"
+#~ msgstr "    # Inserta líneas Clocks aquí, si necesario\n"
+
+#~ msgid ""
+#~ "# The Colour SVGA server\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"svga\"\n"
+#~ "    # Use Device \"Generic VGA\" for Standard VGA 320x200x256\n"
+#~ "    #Device      \"Generic VGA\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ msgstr ""
+#~ "# El servidor SVGA colorido\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"svga\"\n"
+#~ "    # Use Device \"Generic VGA\" para VGA patrón en 320x200x256\n"
+#~ "    #Device      \"Generic VGA\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+
+#~ msgid ""
+#~ "    Subsection \"Display\"\n"
+#~ "        Depth       8\n"
+#~ "        # Omit the Modes line for the \"Generic VGA\" device\n"
+#~ "        Modes       %s\n"
+#~ "        ViewPort    0 0\n"
+#~ "        # Use Virtual 320 200 for Generic VGA\n"
+#~ "        Virtual     %d %d\n"
+#~ "    EndSubsection\n"
+#~ msgstr ""
+#~ "    Subsection \"Display\"\n"
+#~ "        Depth       8\n"
+#~ "        # Omita la línea Modes para dispositivos \"Generic VGA\"\n"
+#~ "        Modes       %s\n"
+#~ "        ViewPort    0 0\n"
+#~ "        # Usa Virtual 320 200 para dispositivos \"Generic VGA\"\n"
+#~ "        Virtual     %d %d\n"
+#~ "    EndSubsection\n"
+
+#~ msgid ""
+#~ "# The Colour SVGA server\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"svga\"\n"
+#~ "    Device      \"Generic VGA\"\n"
+#~ "    #Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Depth       8\n"
+#~ "        #Modes       %s\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     320 200\n"
+#~ "        #Virtual     %d %d\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# El servidor SVGA colorido\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"svga\"\n"
+#~ "    Device      \"Generic VGA\"\n"
+#~ "    #Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Depth       8\n"
+#~ "        #Modes       %s\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     320 200\n"
+#~ "        #Virtual     %d %d\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# The 16-color VGA server\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"vga16\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Modes       \"640x480\" \"800x600\"\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     800 600\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# El servidor VGA con 16 colores\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"vga16\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Modes       \"640x480\" \"800x600\"\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     800 600\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "# The Mono server\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"vga2\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Modes       \"640x480\" \"800x600\"\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     800 600\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+#~ msgstr ""
+#~ "# El Servidor Mono\n"
+#~ "\n"
+#~ "Section \"Screen\"\n"
+#~ "    Driver      \"vga2\"\n"
+#~ "    Device      \"%s\"\n"
+#~ "    Monitor     \"%s\"\n"
+#~ "    Subsection \"Display\"\n"
+#~ "        Modes       \"640x480\" \"800x600\"\n"
+#~ "        ViewPort    0 0\n"
+#~ "        Virtual     800 600\n"
+#~ "    EndSubsection\n"
+#~ "EndSection\n"
+#~ "\n"
+
+msgid ""
+"  <Tab>/<Alt-Tab> between elements   |  <Space> selects   |  <F12> next "
+"screen"
+msgstr ""
+"  <Tab>/<Alt-Tab> mueve entre opciones    | <Espacio> selecciona | <F12> próxima "
+"pantalla "
+
+
+

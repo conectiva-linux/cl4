@@ -1,0 +1,52 @@
+diff -uNr Xconfigurator-4.2.3/Xconfigurator.c Xconfigurator-4.2.3-setsysfont/Xconfigurator.c
+--- Xconfigurator-4.2.3/Xconfigurator.c	Tue Apr 20 15:30:15 1999
++++ Xconfigurator-4.2.3-setsysfont/Xconfigurator.c	Fri May 21 19:25:57 1999
+@@ -2101,11 +2101,11 @@
+ 	    unlink(tfilenm1);
+ 	    unlink(tfilenm2);
+ 	    unlink(tcfgnm);
+-	    system("/sbin/setsysfont 2> /dev/null");
++	    // system("/sbin/setsysfont 2> /dev/null");
+ 	    step = SKIPCLOCKPROBING;
+ 	    break;
+ 	  }
+-	  system("/sbin/setsysfont 2> /dev/null");
++	  // system("/sbin/setsysfont 2> /dev/null");
+ 
+ 	  /* Look for 'clocks:' (case sensitive). */
+ 	  snprintf(cmd, sizeof(cmd), "grep clocks\\: %s >> %s",
+@@ -2292,14 +2292,14 @@
+     snprintf(buf,sizeof(buf),"/etc/X11/X :9 -probeonly -pn -xf86config %s "
+ 	     " -bpp %d 2>> %s", tcfgnm, bpp, tfilenm1);
+     if (system(buf)) {
+-	system("/sbin/setsysfont 2> /dev/null");
++	// system("/sbin/setsysfont 2> /dev/null");
+ 	if (!kickstart)
+ 	    fprintf(stderr, _("Unable to probe card - error running X\n"));
+ 	unlink(tcfgnm);
+ 	unlink(tfilenm1);
+ 	return NULL;
+     }
+-    system("/sbin/setsysfont 2> /dev/null");
++    // system("/sbin/setsysfont 2> /dev/null");
+ 
+     /* this is old way, doesnt work on Mach64, among others */
+     /* new way, should be more robust */
+@@ -2454,7 +2454,7 @@
+ 
+     rc=system(cmd);
+     if (rc) {
+-	system("/sbin/setsysfont 2> /dev/null");
++	// system("/sbin/setsysfont 2> /dev/null");
+ 	unlink(tcfgnm);
+ 	unlink(tfilenm1);
+ 	unlink(tfilenm2);
+@@ -2469,7 +2469,7 @@
+ 	    exit(2); /* what can we do in kickstart? No 'ASK' option yet */
+ 	}
+     }
+-    system("/sbin/setsysfont 2> /dev/null");
++    // system("/sbin/setsysfont 2> /dev/null");
+ 
+     /* do we need to grab out the clocks lines? */
+     buf = alloca(8192);

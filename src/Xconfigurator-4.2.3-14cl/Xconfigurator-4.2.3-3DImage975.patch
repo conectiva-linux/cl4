@@ -1,0 +1,20 @@
+diff -uNr Xconfigurator-4.2.3/pci-probing/map-video.lst Xconfigurator-4.2.3-3D975/pci-probing/map-video.lst
+--- Xconfigurator-4.2.3/pci-probing/map-video.lst	Wed Apr 14 17:21:06 1999
++++ Xconfigurator-4.2.3-3D975/pci-probing/map-video.lst	Fri May 21 19:28:03 1999
+@@ -81,3 +81,4 @@
+ Matrox G100 AGP      | "Card:Matrox Millennium G100 4MB"
+ Matrox G200 AGP      | "Card:Matrox Millennium G200 4MB"
+ Matrox G200 PCI      | "Card:Matrox Millennium G200 4MB"
++Image 975            | "Card:Trident 3DImage975 AGP (generic)"
+diff -uNr Xconfigurator-4.2.3/pci-probing/pci-ids.h Xconfigurator-4.2.3-3D975/pci-probing/pci-ids.h
+--- Xconfigurator-4.2.3/pci-probing/pci-ids.h	Thu Apr 15 21:23:35 1999
++++ Xconfigurator-4.2.3-3D975/pci-probing/pci-ids.h	Fri May 21 19:29:14 1999
+@@ -323,7 +323,7 @@
+ 	{0x1023  , 0x9397  , ( 	"Cyber9397" ), ( "Server:SVGA" )} ,
+ 	{0x1023  , 0x9660  , ( 	"TG 9660" ), ( "Card:Trident TGUI9660 (generic)" )} ,
+ 	{0x1023  , 0x9660  , ( 	"TG 9660 / Cyber9385" ), ( "Server:SVGA" )} ,
+-	{0x1023  , 0x9750  , ( 	"Image 975" ), ( "UNKNOWN" )} ,
++	{0x1023  , 0x9750  , (  "Image 975" ), ( "Card:Trident 3DImage975 AGP (generic)" )} ,
+         {0x104c  , 0x3d04  , (      "TVP4010 Permedia" ), ( "UNKNOWN" )} ,
+         {0x104c  , 0x3d07  , (      "TVP4020 Permedia 2" ), ( "Server:3DLabs" )} ,
+         {0x3d3d  , 0x0006  , (       "GLINT MX" ), ( "Server:3DLabs" )} ,
