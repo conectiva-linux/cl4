@@ -1,0 +1,24 @@
+--- BitchX/Makefile.in.old	Fri Nov 27 22:31:21 1998
++++ BitchX/Makefile.in	Wed Mar 31 19:50:29 1999
+@@ -67,9 +67,9 @@
+ LDFLAGS = @LDFLAGS@
+ 
+ #uncomment the following if you want the cd device player
+-# CD_PLAY = -DWANT_CD
+-# CD_SRCS = cdrom.c
+-# CD_OBJS = cdrom.o
++CD_PLAY = -DWANT_CD
++CD_SRCS = cdrom.c
++CD_OBJS = cdrom.o
+ 
+ # Use one of the following for mips systems:
+ # Choice 1, if your system has the wait3() call
+@@ -102,7 +102,7 @@
+ # the Makefile, but it can contain multiple path elements
+ # separated by colons. The path MUST lead to an existing directory,
+ # because the 'global' script is expected to be found there.
+-IRC_PATH = ~/.irc:$(INSTALL_SCRIPT):~/.BitchX:.
++IRC_PATH = ~/.irc:~/.BitchX:$(INSTALL_SCRIPT):.
+ 
+ # This command will be used to install the irc help files.  If you don't
+ # want to install them, replace with the following:

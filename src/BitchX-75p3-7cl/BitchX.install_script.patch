@@ -1,0 +1,32 @@
+diff -uNr BitchX.old/install-bitchx BitchX/install-bitchx
+--- BitchX.old/install-bitchx	Wed Dec 31 18:00:00 1969
++++ BitchX/install-bitchx	Tue Oct 13 09:26:19 1998
+@@ -0,0 +1,28 @@
++#!/bin/sh
++
++# This is the BitchX installation script for Red Hat Linux users
++# Made by ObiTuarY for the bitchx-73p2 .rpm
++
++echo
++echo Installing BitchX in your home directory...
++echo
++
++# The $HOME/.BitchX directory
++
++if [ -d $HOME/.BitchX ]; then echo $HOME/.BitchX exists... Ok; else mkdir $HOME/.BitchX; fi
++
++# Copying the files
++
++echo
++echo Copying the BitchX configuration files to your .BitchX directory
++echo
++
++if [ -e $HOME/.BitchX/BitchX.help ]; then echo found BitchX.help... Ok; else cp /usr/doc/BitchX*/BitchX.help $HOME/.BitchX/; fi
++if [ -e $HOME/.BitchX/BitchX.quit ]; then echo found BitchX.quit... Ok; else cp /usr/doc/BitchX*/BitchX.quit $HOME/.BitchX/; fi
++if [ -e $HOME/.BitchX/BitchX.reasons ]; then echo found BitchX.reasons... Ok; else cp /usr/doc/BitchX*/BitchX.reasons $HOME/.BitchX; fi
++
++# We're finished
++
++echo
++echo Installation Done, to run BitchX type BitchX
++echo

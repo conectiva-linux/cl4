@@ -1,0 +1,11 @@
+--- BitchX/include/config.h.old	Tue Feb 23 09:59:14 1999
++++ BitchX/include/config.h	Wed Mar 31 19:16:34 1999
+@@ -188,7 +188,7 @@
+  * translation tables from ircII for this to work. Also enable /set TRANSLATE
+  */
+  
+-#define TRANSLATION_PATH "/usr/local/lib/bx/translation"
++#define TRANSLATION_PATH "/usr/lib/bx/translation"
+ 
+ /*
+  * Below are the IRCII variable defaults.  For boolean variables, use 1 for
