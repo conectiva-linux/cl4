@@ -1,0 +1,28 @@
+--- php-2.0.1/src/Makefile.in.dynamic	Sat Nov 15 02:45:42 1997
++++ php-2.0.1/src/Makefile.in	Fri Feb 27 19:41:08 1998
+@@ -42,7 +42,9 @@
+ INC_CFLAGS = @INC_CFLAGS@
+ SYS_CFLAGS = @SYS_CFLAGS@
+ CFLAGS = $(OPT_CFLAGS) $(INC_CFLAGS) $(SYS_CFLAGS)
++CFLAGS += -DDYNAMIC_MODULE
+ LDFLAGS = @LDFLAGS@ @MSQL_LIB@ @MYSQL_LIB@ @SYB_LIB@ @SOLID_LIB@ @ORACLE_LIB@ @PQ_LIB@ @FCGI_LIB@ @LIBREGEXDIR@
++LDFLAGS += -lc
+ #DEBUG=-g -Wall -DDEBUG
+ CPPFLAGS = @REGEX_INCLUDE@ -I. @CPPFLAGS@ @MSQL_INCLUDE@ @ODBC_DEF@ @MSQL_DEF@ @SYB_DEF@ @SYB_INCLUDE@ @MYSQL_INCLUDE@ @ADA_INCLUDE@ @ADA_DEF@ @SOLID_INCLUDE@ @SOLID_DEF@ @ORACLE_INCLUDE@ @ORACLE_DEF@ @MYSQL_DEF@ @FILEPRO_DEF@ @PQ_INCLUDE@ @PQ_DEF@ @FCGI_INCLUDE@ @FCGI_DEF@ @APACHE_INCLUDE@ @STRONGHOLD@ @ACCESS_CONTROL@ @ACCESS_DIR@ @LOGGING@ @LOG_DIR@ @HGD@ @FILE_UPLOAD@ @APACHE@ @APACHE_API@ @PHPSENDMAIL@ -DSENDMAIL=\""@SENDMAIL@ -t"\" @PHP_DOCUMENT_ROOT@ $(DEBUG) 
+ 
+@@ -165,12 +167,10 @@
+ mod_php.o: mod_php.h mod_php.c
+ 	$(CC) -fPIC $(CFLAGS) $(SYSTEM) $(NSAPI_DEFS) $(NSAPI_INCLUDE) $(CPPFLAGS) @DEBIAN@ -c mod_php.c
+ 
+-mod_php-dynamic.so: mod_php.o
++mod_php.so: mod_php.o
+ 	$(CC) -shared $< $(LDFLAGS) -L. -lphp $(LIBS) -lm -o $@
+-mod_php-static.so: mod_php.o
+-	$(CC) -shared $< $(LDFLAGS) -L. -lphp $(STATICLIBS) -lm -o $@
+ 
+-module_auto_build: @MODULE_PHP@
++module_auto_build: mod_php.so
+ 	@echo "The PHP module has been built for ELF dynamic linking."
+ 	@echo "Please install it where it belongs (usually in the"
+ 	@echo "/usr/local/lib/apache/modules or /usr/lib/apache/modules"
+

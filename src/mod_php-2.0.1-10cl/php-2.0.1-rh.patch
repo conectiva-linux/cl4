@@ -1,0 +1,35 @@
+--- php-2.0.1/src/php.h.rh	Fri Feb 27 15:46:36 1998
++++ php-2.0.1/src/php.h	Fri Feb 27 15:49:24 1998
+@@ -245,10 +245,8 @@
+  * The EXEC_DIR is the directory where Exec(), System(), PassThru() and 
+  * Popen() calls are allowed to execute binaries from in SAFE MODE.
+  */
+-/*
+ #define PHP_SAFE_MODE 1
+-#define PHP_SAFE_MODE_EXEC_DIR "/usr/local/bin"
+-*/
++#define PHP_SAFE_MODE_EXEC_DIR "/usr/bin"
+ 
+ /*
+  * Set PHP_LOOPLIMIT to ensure that your programs don't go into an
+diff -urN php-2.0.1/src/mod_php.module.in php-2.0.1.rh/src/mod_php.module.in
+--- php-2.0.1/src/mod_php.module.in     Sat Nov 15 02:21:19 1997
++++ php-2.0.1.rh/src/mod_php.module.in  Thu Sep  3 11:33:13 1998
+@@ -6,5 +6,5 @@
+		@SOLID_LIB@ @ORACLE_LIB@ @PQ_LIB@ @FCGI_LIB@ \
+		@HLNK@ @LIBS@ @best_dbm@ @LIBMSQL@ @LIBSYB@ \
+		@LIBPQ@ @LIBMYSQL@ @LIBADA@ @LIBSOLID@ @LIBORACLE@ \
+-		@LIBFCGI@ $LIBS
++		@LIBFCGI@ $LIBS"
+ ConfigEnd
+--- php-2.0.1/src/mod_php.h     Thu Sep  3 11:50:41 1998
++++ php-2.0.1.rh/src/mod_php.h  Thu Sep  3 11:49:20 1998
+@@ -21,6 +21,8 @@
+ \****************************************************************************/
+ /* $Id: mod_php.h,v 1.15 1997/09/13 16:14:29 shane Exp $ */
+
++#include "ap_compat.h"
++
+ typedef struct {
+        int ShowInfo;
+        int Logging;
