@@ -1,0 +1,40 @@
+diff -ur bootparamd/bootparamd.init bootparamd.acme/bootparamd.init
+--- bootparamd/bootparamd.init	Tue Feb  9 17:54:00 1999
++++ bootparamd.acme/bootparamd.init	Fri Mar 12 15:59:48 1999
+@@ -4,6 +4,10 @@
+ # description: The bootparamd server allows older Sun workstations to \
+ #              net boot from Linux boxes. It (along with rarp) is rarely \
+ #              used anymore; bootp and dhcp have mostly replaced both of them.
++# description(pt_BR): O servidor bootparamd permite que estações de trabalho \
++#	       Sun antigas sejam inicializadas via rede a partir de servidores \
++#              Linux. Ele, junto com o protocolo rarp são raramente usados, \
++#              tendo sido substituídos por soluções usando bootp e/ou dhcp.
+ # processname: rpc.bootparamd
+ # config: /etc/bootparams
+ 
+@@ -24,14 +28,14 @@
+ # See how we were called.
+ case "$1" in
+   start)
+-	echo -n "Starting bootparamd services: "
++	gprintf "Starting %s services: " "bootparamd"
+ 	daemon rpc.bootparamd
+ 
+ 	echo
+ 	touch /var/lock/subsys/bootparamd
+ 	;;
+   stop)
+-	echo -n "Stopping bootparamd services: "
++	gprintf "Stopping %s services: " "bootparamd"
+ 	killproc rpc.bootparamd
+ 
+ 	echo
+@@ -45,7 +49,7 @@
+ 	$0 start
+ 	;;
+   *)
+-	echo "Usage: bootparamd {start|stop|status|restart|reload}"
++	gprintf "Usage: %s {start|stop|status|restart|reload}\n" "bootparamd"
+ 	exit 1
+ esac
+ 
