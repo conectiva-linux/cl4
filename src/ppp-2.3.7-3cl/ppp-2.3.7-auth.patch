@@ -1,0 +1,12 @@
+--- ppp-2.3.7/pppd/auth.c.auth	Thu Apr  1 02:07:44 1999
++++ ppp-2.3.7/pppd/auth.c	Thu Apr  1 16:19:28 1999
+@@ -785,7 +785,8 @@
+     } else {
+ 	check_access(f, filename);
+ 	if (scan_authfile(f, user, our_name, secret, &addrs, filename) < 0
+-	    || (secret[0] != 0 && (cryptpap || strcmp(passwd, secret) != 0)
++	    || (!uselogin && secret[0] != 0 &&
++		(cryptpap || strcmp(passwd, secret) != 0)
+ 		&& strcmp(crypt(passwd, secret), secret) != 0)) {
+ 	    warn("PAP authentication failure for %s", user);
+ 	    ret = UPAP_AUTHNAK;
