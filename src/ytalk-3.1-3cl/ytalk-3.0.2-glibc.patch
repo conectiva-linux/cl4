@@ -1,0 +1,12 @@
+--- ytalk-3.0.2-8bit/header.h.ewt	Mon Aug 19 22:43:46 1996
++++ ytalk-3.0.2-8bit/header.h	Mon Aug 19 22:43:56 1996
+@@ -223,7 +223,9 @@
+ 
+ /* ---- global variables ---- */
+ 
++#ifndef __linux__
+ extern char *sys_errlist[];	/* system errors */
++#endif
+ 
+ extern yuser *me;		/* just lil' ol' me */
+ extern yuser *user_list;	/* full list of invited/connected users */

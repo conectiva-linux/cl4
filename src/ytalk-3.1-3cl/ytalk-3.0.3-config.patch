@@ -1,0 +1,35 @@
+--- ytalk-3.0.3-8bit/Imakefile.config	Mon Nov 11 11:37:03 1996
++++ ytalk-3.0.3-8bit/Imakefile	Tue Mar 25 17:34:17 1997
+@@ -51,7 +51,9 @@
+ # If your machine has a 64-bit architecture or uses 64-bit 'long's, then you
+ # will need to uncomment the following line.
+ 
+-#BDEFS = -DY64BIT
++#ifdef __alpha__
++BDEFS = -DY64BIT
++#endif
+ 
+ #
+ # If you want ytalk to be 8-bit clean, you need to define this.  Note that
+@@ -72,8 +74,8 @@
+ # the following lines.  Y_BINDIR is where the binary will be placed.
+ # Y_MANDIR is where the manpage will be placed.
+ 
+-Y_BINDIR = /usr/local/bin
+-Y_MANDIR = /usr/local/man/man1
++Y_BINDIR = /usr/bin
++Y_MANDIR = /usr/man/man1
+ 
+ # Uncomment if you have gcc - recommended
+ 
+@@ -82,8 +84,8 @@
+ ############################################################
+ ## Past this point, you shouldn't need to modify anything ##
+ ############################################################
+-LIB = -lcurses -ltermcap $(SLIBS) $(XLIB)
+-DEFINES = -DUSE_X11 -I/usr/local/include $(TDEFS) $(BDEFS) $(RCDEF) $(VDEFS) \
++LIB = -lncurses -ltermcap $(SLIBS) $(XLIB)
++DEFINES = -DUSE_X11 -I/usr/include/ncurses $(DEBCFLAGS) $(TDEFS) $(BDEFS) $(RCDEF) $(VDEFS) \
+       $(PDEFS) $(EBCDEFS) -O
+ LDFLAGS = $(LDOPTIONS)
+ OBJ = main.o term.o user.o fd.o comm.o menu.o socket.o rc.o exec.o cwin.o \
