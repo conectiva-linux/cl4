@@ -1,0 +1,75 @@
+#! /bin/sh
+#
+# chkconfig: 345 87 07
+# description: Squid - Internet Object Cache. Internet object caching is \
+#       a way to store requested Internet objects (i.e., data available \
+#       via the HTTP, FTP, and gopher protocols) on a system closer to the \
+#       requesting site than to the source. Web browsers can then use the \
+#       local Squid cache as a proxy HTTP server, reducing access time as \
+#       well as bandwidth consumption.
+# description(pt_BR): Squid - Cache de Objetos da Internet. Cache de objetos \
+#                     é uma maneira de armazenar objetos Internet (i.e. dados \
+#                     disponíveis via protocolos HTTP, FTP e gopher) em um \
+#                     sistema mais próximo ao site requisitante do que o \
+#                     sistema original na internet. Navegadores www podem usar \
+#                     o cache squid local como um servidor proxy HTTP, \
+#		      reduzindo o tempo de acesso bem como o consumo de banda \
+#		      de comunicação.
+# pidfile: /var/run/squid.pid
+# config: /etc/squid/squid.conf
+
+PATH=/usr/bin:/sbin:/bin:/usr/sbin
+export PATH
+SQUID=/usr/bin/squid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+[ -f /usr/bin/squid ] || exit 0
+
+# Check that networking is up.
+. /etc/sysconfig/network
+[ ${NETWORKING} = "no" ] && exit 0
+
+# check if the squid conf file is present
+[ -f /etc/squid/squid.conf ] || exit 0
+
+# determine which one is the cache_swap directory
+CACHE_SWAP=`grep -v '#.*' /etc/squid/squid.conf | \
+	    grep cache_dir | cut -d ' ' -f 2 | head -1`
+[ -z "$CACHE_SWAP" ] && CACHE_SWAP=/var/spool/squid
+
+case "$1" in
+  start)
+	if [ ! -d $CACHE_SWAP/00 ] ; then
+		action "creating directories at %s, wait... " "$CACHE_SWAP" $SQUID -z
+	fi
+
+	# already running ?
+	pid=`pidof squid`	
+	[ $? = 0 ] && exec $0 status
+
+	gprintf "Starting %s" "squid"
+	$SQUID &
+	sleep 2
+	# since squid don't fork, we're assuming it is OK
+	success ""
+	echo
+	touch /var/lock/subsys/squid
+	;;
+  stop)
+	gprintf "Stopping %s" "squid"
+	killproc squid
+	rm -f /var/lock/subsys/squid
+	echo
+	;;
+  status)
+	status squid
+	;;
+  restart)
+	action "Restarting %s: " "squid" $SQUID -k reconfigure
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "squid"
+	exit 1
+esac

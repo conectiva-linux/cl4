@@ -1,0 +1,195 @@
+diff -uNr squid-2.1.2/scripts/AnnounceCache.pl squid-2.1.2.acme/scripts/AnnounceCache.pl
+--- squid-2.1.2/scripts/AnnounceCache.pl	Thu Feb 22 03:23:57 1996
++++ squid-2.1.2.acme/scripts/AnnounceCache.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ $|=1;
+ 
+diff -uNr squid-2.1.2/scripts/access-log-matrix.pl squid-2.1.2.acme/scripts/access-log-matrix.pl
+--- squid-2.1.2/scripts/access-log-matrix.pl	Thu Feb 22 03:23:57 1996
++++ squid-2.1.2.acme/scripts/access-log-matrix.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # access-log-matrix.pl
+ # 
+diff -uNr squid-2.1.2/scripts/cache-compare.pl squid-2.1.2.acme/scripts/cache-compare.pl
+--- squid-2.1.2/scripts/cache-compare.pl	Tue Sep 17 13:32:27 1996
++++ squid-2.1.2.acme/scripts/cache-compare.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # cache-compare.pl
+ #
+diff -uNr squid-2.1.2/scripts/cachetrace.pl squid-2.1.2.acme/scripts/cachetrace.pl
+--- squid-2.1.2/scripts/cachetrace.pl	Tue Mar  4 03:16:23 1997
++++ squid-2.1.2.acme/scripts/cachetrace.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ require 'sys/socket.ph';
+ 
+diff -uNr squid-2.1.2/scripts/check_cache.pl squid-2.1.2.acme/scripts/check_cache.pl
+--- squid-2.1.2/scripts/check_cache.pl	Mon Feb  3 21:42:21 1997
++++ squid-2.1.2.acme/scripts/check_cache.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # check_cache.pl 
+ #
+diff -uNr squid-2.1.2/scripts/fileno-to-pathname.pl squid-2.1.2.acme/scripts/fileno-to-pathname.pl
+--- squid-2.1.2/scripts/fileno-to-pathname.pl	Wed Jul 16 18:31:55 1997
++++ squid-2.1.2.acme/scripts/fileno-to-pathname.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # $Id: fileno-to-pathname.pl,v 1.2 1997/07/16 20:31:55 wessels Exp $
+ # Convert hexadecimal cache file numbers (from swap log) into full pathnames.  
+diff -uNr squid-2.1.2/scripts/flag_truncs.pl squid-2.1.2.acme/scripts/flag_truncs.pl
+--- squid-2.1.2/scripts/flag_truncs.pl	Thu Feb 22 03:23:57 1996
++++ squid-2.1.2.acme/scripts/flag_truncs.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # flag_truncs.pl - martin hamilton <m.t.hamilton@lut.ac.uk>
+ #
+diff -uNr squid-2.1.2/scripts/icp-test.pl squid-2.1.2.acme/scripts/icp-test.pl
+--- squid-2.1.2/scripts/icp-test.pl	Thu Aug 13 13:52:25 1998
++++ squid-2.1.2.acme/scripts/icp-test.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # icp-test.pl 
+ #
+diff -uNr squid-2.1.2/scripts/icpserver.pl squid-2.1.2.acme/scripts/icpserver.pl
+--- squid-2.1.2/scripts/icpserver.pl	Thu Feb 22 03:23:57 1996
++++ squid-2.1.2.acme/scripts/icpserver.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # parse and answer ICP type 1 requests via unicast/multicast UDP
+ # cf. <URL:http://excalibur.usc.edu/icpdoc/icp.html>
+diff -uNr squid-2.1.2/scripts/tcp-banger.pl squid-2.1.2.acme/scripts/tcp-banger.pl
+--- squid-2.1.2/scripts/tcp-banger.pl	Wed Apr  3 22:57:54 1996
++++ squid-2.1.2.acme/scripts/tcp-banger.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # tcp-banger.pl	
+ #
+diff -uNr squid-2.1.2/scripts/udp-banger.pl squid-2.1.2.acme/scripts/udp-banger.pl
+--- squid-2.1.2/scripts/udp-banger.pl	Fri Nov 20 20:50:42 1998
++++ squid-2.1.2.acme/scripts/udp-banger.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # udp-banger.pl 
+ #
+diff -uNr squid-2.1.2/scripts/upgrade-1.0-store.pl squid-2.1.2.acme/scripts/upgrade-1.0-store.pl
+--- squid-2.1.2/scripts/upgrade-1.0-store.pl	Fri Oct 11 17:56:06 1996
++++ squid-2.1.2.acme/scripts/upgrade-1.0-store.pl	Fri Mar 12 14:53:30 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # $Id: upgrade-1.0-store.pl,v 1.2 1996/10/11 19:56:06 wessels Exp $
+ 
+diff -uNr squid-2.1.2/squid.logrotate squid-2.1.2.acme/squid.logrotate
+--- squid-2.1.2/squid.logrotate	Wed Dec 31 21:00:00 1969
++++ squid-2.1.2.acme/squid.logrotate	Fri Mar 12 14:53:30 1999
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++/usr/bin/squid -k rotate >/dev/null 2>&1
++
+diff -uNr squid-2.1.2/src/Makefile.in squid-2.1.2.acme/src/Makefile.in
+--- squid-2.1.2/src/Makefile.in	Sat Oct 31 12:25:36 1998
++++ squid-2.1.2.acme/src/Makefile.in	Fri Mar 12 14:53:30 1999
+@@ -31,11 +31,11 @@
+ DEFAULT_CONFIG_FILE     = $(sysconfdir)/squid.conf
+ DEFAULT_MIME_TABLE	= $(sysconfdir)/mime.conf
+ DEFAULT_DNSSERVER       = $(libexecdir)/$(DNSSERVER_EXE)
+-DEFAULT_CACHE_LOG       = $(localstatedir)/logs/cache.log
+-DEFAULT_ACCESS_LOG      = $(localstatedir)/logs/access.log
+-DEFAULT_STORE_LOG       = $(localstatedir)/logs/store.log
+-DEFAULT_PID_FILE        = $(localstatedir)/logs/squid.pid
+-DEFAULT_SWAP_DIR        = $(localstatedir)/cache
++DEFAULT_CACHE_LOG       = /var/log/squid/cache.log
++DEFAULT_ACCESS_LOG      = /var/log/squid/access.log
++DEFAULT_STORE_LOG       = /var/log/squid/store.log
++DEFAULT_PID_FILE        = /var/run/squid.pid
++DEFAULT_SWAP_DIR        = /var/spool/squid
+ DEFAULT_PINGER		= $(libexecdir)/$(PINGER_EXE)
+ DEFAULT_UNLINKD		= $(libexecdir)/$(UNLINKD_EXE)
+ DEFAULT_ICON_DIR	= $(sysconfdir)/icons
+@@ -280,10 +280,6 @@
+ 	-@if test ! -d $(localstatedir); then \
+ 		echo "mkdir $(localstatedir)"; \
+ 		mkdir $(localstatedir); \
+-	fi
+-	-@if test ! -d $(localstatedir)/logs; then \
+-		echo "mkdir $(localstatedir)/logs"; \
+-		mkdir $(localstatedir)/logs; \
+ 	fi
+ 
+ # Michael Lupp <mike@nemesis.saar.de> wants to know about additions
+diff -uNr squid-2.1.2/src/cf.data.pre squid-2.1.2.acme/src/cf.data.pre
+--- squid-2.1.2/src/cf.data.pre	Thu Nov 19 19:24:36 1998
++++ squid-2.1.2.acme/src/cf.data.pre	Fri Mar 12 14:53:30 1999
+@@ -1590,7 +1590,7 @@
+ 
+ NAME: cache_effective_group
+ TYPE: string
+-DEFAULT: nogroup
++DEFAULT: nobody
+ LOC: Config.effectiveGroup
+ DOC_START
+ 
+@@ -1603,7 +1603,7 @@
+ 	you cannot set http_port to a value lower than 1024.
+ 
+ cache_effective_user nobody
+-cache_effective_group nogroup
++cache_effective_group nobody
+ DOC_END
+ 
+ 
+@@ -1787,7 +1787,7 @@
+ 
+ NAME: logfile_rotate
+ TYPE: int
+-DEFAULT: 10
++DEFAULT: 4
+ LOC: Config.Log.rotateNumber
+ DOC_START
+ 	Specifies the number of logfile rotations to make when you
+@@ -1804,7 +1804,7 @@
+ 	in the habit of using 'squid -k rotate' instead of 'kill -USR1
+ 	<pid>'.
+ 
+-logfile_rotate 10
++logfile_rotate 4
+ DOC_END
+ 
+ 
+@@ -2345,7 +2345,7 @@
+ 
+ 	NOTE: SNMP support requires use the --enable-snmp configure
+ 	command line option.
+-snmp_port 3401
++snmp_port -1
+ DOC_END
+ 
+ NAME: snmp_do_queueing

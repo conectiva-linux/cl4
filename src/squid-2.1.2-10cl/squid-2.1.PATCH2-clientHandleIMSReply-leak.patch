@@ -1,0 +1,67 @@
+diff -u -r1.444.2.11 -r1.444.2.12
+--- ChangeLog.orig	1998/12/09 03:44:10	1.444.2.11
++++ ChangeLog	1998/12/14 04:05:25	1.444.2.12
+@@ -105,6 +105,9 @@
+ 	  store_digest's stuck in memory.
+ 	- Fixed clientProcessOnlyIfCachedMiss so it unlocks and
+ 	  unregisters from "cache hit" entries.
++	* Changes below have been made to SQUID_2_1_PATCH3
++	- Fixed memory leak in clientHandleIMSReply for
++	  storeClientCopy failures.
+ 
+ Changes to Squid-2.0 (October 2, 1998):
+ 
+diff -u -r1.420.2.14 -r1.420.2.15
+--- src/client_side.c.orig	1998/12/09 20:50:41	1.420.2.14
++++ src/client_side.c	1998/12/11 05:45:02	1.420.2.15
+@@ -1,6 +1,6 @@
+ 
+ /*
+- * $Id: client_side.c,v 1.420.2.14 1998/12/09 20:50:41 wessels Exp $
++ * $Id: client_side.c,v 1.420.2.15 1998/12/11 05:45:02 wessels Exp $
+  *
+  * DEBUG: section 33    Client-side Routines
+  * AUTHOR: Duane Wessels
+@@ -372,38 +372,10 @@
+     int recopy = 1;
+     const http_status status = mem->reply->sline.status;
+     debug(33, 3) ("clientHandleIMSReply: %s, %d bytes\n", url, (int) size);
+-    if (size < 0 && entry->store_status != STORE_ABORTED)
+-#if OLD_CODE
+-	/*
+-	 * This storeAbort() call causes wrong behaviour in some situations.
+-	 * If there are multiple clients hanging on this entry, the second
+-	 * client will not want the entry to be aborted.  This shows up in
+-	 * the stack trace below:
+-	 *
+-	 * #0  0xef5f452c in kill ()
+-	 * #1  0xef5ba620 in abort ()
+-	 * #2  0x7d680 in __eprintf (string=0x82a70 "%s:%u: failed assertion `%s'\n", expression=0x82a90 "client_side.c", line=1111, filename=0x83468 "size > 0")
+-	 * #3  0x2ad7c in clientCacheHit (data=0x31ae318, buf=0x17f1450 "", size=0) at client_side.c:1111
+-	 * #4  0x65cd4 in storeClientCopy2 (e=0x4c48c0, sc=0x2eedd70) at store_client.c:264
+-	 * #5  0x665b0 in InvokeHandlers (e=0x4c48c0) at store_client.c:510
+-	 * #6  0x63c90 in storeAbort (e=0x4c48c0, cbflag=1) at store.c:626
+-	 * #7  0x29190 in clientHandleIMSReply (data=0x31e9518, buf=0x2268810 "", size=-1) at client_side.c:343
+-	 * #8  0x66450 in storeUnregister (e=0x2910c, data=0x31e9518) at store_client.c:467
+-	 * #9  0x29a54 in httpRequestFree (data=0x31e9518) at client_side.c:579
+-	 * #10 0x29eb4 in connStateFree (fd=534528, data=0x314d0d0) at client_side.c:667
+-	 * #11 0x2f27c in commCallCloseHandlers (fd=42) at comm.c:501
+-	 * #12 0x2f410 in comm_close (fd=42) at comm.c:565
+-	 * #13 0x2d054 in clientReadRequest (fd=42, data=0x314d0d0) at client_side.c:2038
+-	 * #14 0x309c8 in comm_poll (msec=434) at comm_select.c:354
+-	 * #15 0x4da64 in main (argc=5, argv=0xeffffd4c) at main.c:587
+-	 */
+-	storeAbort(entry, 1);
+-#endif
+-    /*
+-     * Lets just try to return here and see what kind of problems that
+-     * causes
+-     */
+-    return;
++    if (size < 0 && entry->store_status != STORE_ABORTED) {
++	memFree(MEM_CLIENT_SOCK_BUF, buf);
++	return;
++    }
+     if (entry->store_status == STORE_ABORTED) {
+ 	debug(33, 3) ("clientHandleIMSReply: ABORTED '%s'\n", url);
+ 	/* We have an existing entry, but failed to validate it */
