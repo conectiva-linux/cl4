@@ -1,0 +1,21 @@
+--- statserial-1.1/Makefile.orig	Tue Aug 29 17:33:48 1995
++++ statserial-1.1/Makefile	Tue Aug 29 17:34:04 1995
+@@ -10,14 +10,14 @@
+ LDFLAGS = -s -N
+ 
+ statserial:	statserial.o
+-	$(LD) $(LDFLAGS) -o statserial statserial.o -lcurses
++	$(LD) $(LDFLAGS) -o statserial statserial.o -lncurses
+ 
+ statserial.o: statserial.c
+-	$(CC) $(CFLAGS) -c statserial.c
++	$(CC) -I/usr/include/ncurses $(CFLAGS) -c statserial.c
+ 
+ install: statserial
+-	install -m 555 statserial /usr/local/bin/statserial
+-	install -m 444 statserial.1 /usr/local/man/man1/statserial.1
++	install -m 555 statserial /usr/bin/statserial
++	install -m 444 statserial.1 /usr/man/man1/statserial.1
+ 
+ clean:
+ 	$(RM) statserial statserial.o core *~
