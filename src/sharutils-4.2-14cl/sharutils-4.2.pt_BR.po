@@ -1,0 +1,607 @@
+# Portuguese translation of the "sharutils" messages
+# Copyright (1995) Free Software Foundation, Inc.
+# Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>
+# Based on portuguese version 
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sharutils 4.2\n"
+"PO-Revision-Date: 1998-04-19 18:31-03:00\n"
+"Last-Translator: Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>\n"
+"Language-Team: Portuguese <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+
+#: lib/error.c:73
+msgid "Unknown system error"
+msgstr "Erro desconhecido do sistema"
+
+#: lib/getopt.c:516
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: opção `%s' é ambígua\n"
+
+#: lib/getopt.c:540
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: opção `--%s' não aceita argumentos\n"
+
+#. +option or -option
+#: lib/getopt.c:545
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: opção `%c%s' não aceita argumentos\n"
+
+#: lib/getopt.c:559
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: opção `%s' requer um argumento\n"
+
+#. --option
+#: lib/getopt.c:587
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: opção não reconhecida `--%s'\n"
+
+#: lib/getopt.c:591
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: opção não reconhecida `%c%s'\n"
+
+#. 1003.2 specifies the format of this message.
+#: lib/getopt.c:616
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: opção ilegal -- %c\n"
+
+#: lib/getopt.c:618
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: opção inválida -- %c\n"
+
+#: lib/getopt.c:652
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: opção requer um argumento -- %c\n"
+
+#: lib/xmalloc.c:67
+msgid "memory exhausted"
+msgstr "memória insuficiente"
+
+#: src/shar.c:569
+msgid "WARNING: not restoring timestamps.  Consider getting and"
+msgstr "AVISO: não restaurando datas e horários (timestamps). Sugere-se" 
+
+#: src/shar.c:571
+msgid "installing GNU \\`touch', distributed in GNU File Utilities..."
+msgstr "a instalação do GNU touch, distribuído no GNU File Utilities..."
+
+#: src/shar.c:586
+msgid "creating lock directory"
+msgstr "criando diretório de bloqueamento (lock)"
+
+#: src/shar.c:587
+msgid "failed to create lock directory"
+msgstr "falha ao criar o diretório de bloqueamento (lock)"
+
+#: src/shar.c:617
+msgid "Too many directories for mkdir generation"
+msgstr "Excesso de diretórios para mkdir"
+
+#: src/shar.c:626
+msgid "creating directory"
+msgstr "criando diretório"
+
+#: src/shar.c:675 src/shar.c:902
+msgid "Cannot access %s"
+msgstr "Não foi possível acessar %s"
+
+#: src/shar.c:728 src/shar.c:1858
+msgid "-C is being deprecated, use -Z instead"
+msgstr "-C está em desuso, utilize -Z"
+
+#: src/shar.c:781 src/unshar.c:366
+msgid "Cannot get current directory name"
+msgstr "Não foi possível obter o nome do diretório corrente"
+
+#: src/shar.c:867
+msgid "Must unpack archives in sequence!"
+msgstr "Deve-se desempacotar arquivos em seqüência"
+
+#: src/shar.c:868 src/shar.c:1401
+msgid "Please unpack part"
+msgstr "Por favor desempacote parte"
+
+#: src/shar.c:868 src/shar.c:1402
+msgid "next!"
+msgstr "próximo!"
+
+#: src/shar.c:897
+msgid "%s: Not a regular file"
+msgstr "%s: Não é um arquivo regular"
+
+#: src/shar.c:912
+msgid "In shar: remaining size %ld\n"
+msgstr "Em shar: tamanho restante é %ld\n"
+
+#. Change to another file.
+#: src/shar.c:923 src/shar.c:1307
+msgid "Newfile, remaining %ld, "
+msgstr "Arquivo novo, restando %ld,"
+
+#: src/shar.c:924 src/shar.c:1308
+msgid "Limit still %d\n"
+msgstr "O limite ainda é %d\n"
+
+#: src/shar.c:940 src/shar.c:1317 src/shar.c:1506 src/shar.c:1524
+msgid "restore of"
+msgstr "restauração de"
+
+#: src/shar.c:940 src/shar.c:1317 src/shar.c:1506 src/shar.c:1524
+msgid "failed"
+msgstr "falhado"
+
+#: src/shar.c:941 src/shar.c:1327
+msgid "End of part"
+msgstr "Fim da parte"
+
+#: src/shar.c:942 src/shar.c:1328
+msgid "continue with part"
+msgstr "continua com parte"
+
+#: src/shar.c:955 src/shar.c:1418
+msgid "Starting file %s\n"
+msgstr "Começando com o arquivo %s\n"
+
+#: src/shar.c:990
+msgid "empty"
+msgstr "vazio"
+
+#: src/shar.c:991
+msgid "(empty)"
+msgstr "(vazio)"
+
+#: src/shar.c:1015
+msgid "Cannot open file %s"
+msgstr "Não foi possível abrir o arquivo %s"
+
+#: src/shar.c:1052
+msgid "compressed"
+msgstr "com compress"
+
+#: src/shar.c:1053
+msgid "gzipped"
+msgstr "com gzip"
+
+#: src/shar.c:1053
+msgid "binary"
+msgstr "binário"
+
+#: src/shar.c:1054
+msgid "(compressed)"
+msgstr "(com compress)"
+
+#: src/shar.c:1055
+msgid "(gzipped)"
+msgstr "(com gzip)"
+
+#: src/shar.c:1056
+msgid "(binary)"
+msgstr "(binário)"
+
+#: src/shar.c:1069
+msgid "Could not fork"
+msgstr "Não foi possível fazer `fork'"
+
+#: src/shar.c:1074 src/shar.c:1126
+msgid "File %s (%s)"
+msgstr "Arquivo %s (%s)"
+
+#: src/shar.c:1120
+msgid "text"
+msgstr "texto"
+
+#: src/shar.c:1121
+msgid "(text)"
+msgstr "(texto)"
+
+#: src/shar.c:1167
+msgid "overwriting"
+msgstr "sobrescrevendo"
+
+#: src/shar.c:1168
+msgid "overwrite"
+msgstr "sobrescrita"
+
+#: src/shar.c:1169
+msgid "[no, yes, all, quit] (no)?"
+msgstr "[no, yes, all, quit] (no)?"
+
+#: src/shar.c:1170
+msgid "extraction aborted"
+msgstr "extração cancelada"
+
+#: src/shar.c:1171 src/shar.c:1176
+msgid "SKIPPING"
+msgstr "OMITINDO"
+
+#: src/shar.c:1176
+msgid "(file already exists)"
+msgstr "(arquivo já existente)"
+
+#: src/shar.c:1194
+msgid "Saving %s (%s)"
+msgstr "Gravando %s (%s)"
+
+#: src/shar.c:1199
+msgid "extracting"
+msgstr "extraindo"
+
+#: src/shar.c:1333
+msgid "End of"
+msgstr "Fim de"
+
+#: src/shar.c:1334
+msgid "archive"
+msgstr "arquivo"
+
+#: src/shar.c:1335
+msgid "part"
+msgstr "parte"
+
+#: src/shar.c:1337 src/shar.c:1443
+msgid "File"
+msgstr "Arquivo"
+
+#: src/shar.c:1338
+msgid "is continued in part"
+msgstr "continua na parte"
+
+#: src/shar.c:1398
+msgid "Please unpack part 1 first!"
+msgstr "Por favor, extraia a parte 1 primeiro!"
+
+#: src/shar.c:1415
+msgid "STILL SKIPPING"
+msgstr "AINDA OMITINDO"
+
+#: src/shar.c:1422
+msgid "continuing file"
+msgstr "continuando arquivo"
+
+#: src/shar.c:1443
+msgid "is complete"
+msgstr "está completo"
+
+#: src/shar.c:1452
+msgid "uudecoding file"
+msgstr "decodificando arquivo (uudecode)"
+
+#: src/shar.c:1466
+msgid "uncompressing file"
+msgstr "descompactando arquivo (uncompress)"
+
+#: src/shar.c:1477
+msgid "gunzipping file"
+msgstr "descompactando arquivo (gunzip)"
+
+#: src/shar.c:1539
+msgid "MD5 check failed"
+msgstr "verificação MD5 falhou"
+
+#: src/shar.c:1580
+msgid "original size"
+msgstr "tamanho original"
+
+#: src/shar.c:1581
+msgid "current size"
+msgstr "tamanho corrente"
+
+#: src/shar.c:1630
+msgid "Opening `%s'"
+msgstr "Abrindo `%s'"
+
+#: src/shar.c:1641
+msgid "Closing `%s'"
+msgstr "Fechando `%s'"
+
+#: src/shar.c:1653 src/unshar.c:302 src/uudecode.c:370 src/uuencode.c:211
+msgid "Try `%s --help' for more information.\n"
+msgstr "Para mais informação, tente `%s --help'.\n"
+
+#: src/shar.c:1657 src/unshar.c:306
+msgid "Usage: %s [OPTION]... [FILE]...\n"
+msgstr "Uso: %s [OPÇÃO]... [ARQUIVO]...\n"
+
+#: src/shar.c:1658
+msgid "Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+"Os argumentos obrigatórios para as opções longas são também\n"
+"obrigatórios para a forma curta.\n"
+
+#: src/shar.c:1661
+msgid ""
+"\n"
+"Giving feedback:\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"  -q, --quiet, --silent   do not output verbose messages locally\n"
+"\n"
+"Selecting files:\n"
+"  -p, --intermix-type     allow -[BTzZ] in file lists to change mode\n"
+"  -S, --stdin-file-list   read file list from standard input\n"
+"\n"
+"Splitting output:\n"
+"  -o, --output-prefix=PREFIX    output to file PREFIX.01 through PREFIX.NN\n"
+"  -l, --whole-size-limit=SIZE   split archive, not files, to SIZE kilobytes\n"
+"  -L, --split-size-limit=SIZE   split archive, or files, to SIZE kilobytes\n"
+msgstr ""
+"\n"
+"Mensagens informativas:\n"
+"      --help               apresenta esta ajuda e finaliza\n"
+"      --version            apresenta versão e finaliza\n"
+"  -q, --quiet, --silent    não apresenta mensagens detalhadas localmente\n"
+"\n"
+"Seleção dos arquivos:\n"
+"  -p, --intermix-type      permite -[BTzZ] na lista de arquivos para\n"
+"                           mudar de modo\n"
+"  -S, --stdin-file-list    ler a lista de arquivos da entrada padrão\n"
+"\n"
+"Subdividindo o arquivo de saída:\n"
+"  -o, --output-prefix=PREFIXO      gera os arquivos PREFIXO.01 a PREFIXO.NN\n"
+"  -l, --whole-size-limit=TAMANHO   limita os arquivos shar, não os arquivos,\n"
+"                                   a TAMANHO kbytes\n"
+"  -L, --split-size-limit=TAMANHO   limita os arquivos shar, ou os arquivos,\n"
+"                                   a TAMANHO kbytes\n"
+
+#: src/shar.c:1677
+msgid ""
+"\n"
+"Controlling the shar headers:\n"
+"  -n, --archive-name=NAME   use NAME to document the archive\n"
+"  -s, --submitter=ADDRESS   override the submitter name\n"
+"  -a, --net-headers         output Submitted-by: & Archive-name: headers\n"
+"  -c, --cut-mark            start the shar with a cut line\n"
+"\n"
+"Selecting how files are stocked:\n"
+"  -M, --mixed-uuencode         dynamically decide uuencoding (default)\n"
+"  -T, --text-files             treat all files as text\n"
+"  -B, --uuencode               treat all files as binary, use uuencode\n"
+"  -z, --gzip                   gzip and uuencode all files\n"
+"  -g, --level-for-gzip=LEVEL   pass -LEVEL (default 9) to gzip\n"
+"  -Z, --compress               compress and uuencode all files\n"
+"  -b, --bits-per-code=BITS     pass -bBITS (default 12) to compress\n"
+msgstr ""
+"\n"
+"Controle dos cabeçalhos shar:\n"
+"  -n, --archive-name=NOME   atribui ao arquivo o nome NOME\n"
+"  -s, --submitter=ENDEREÇO  altera o nome original\n"
+"  -a, --net-headers         produz os cabeçalhos Submitted-by: e Archive-name:\n"
+"  -c, --cut-mark            coloca uma linha de demarcação no início do `shar'\n"
+"\n"
+"Métodos de armazenamento:\n"
+"  -M, --mixed-uuencode         faz uuencode dinamicamente (por default)\n"
+"  -T, --text-files             considera todos os arquivos de texto\n"
+"  -B, --uuencode               considera todos os arquivos binários,\n"
+"                               usa uuencode\n"
+"  -z, --gzip                   aplica gzip e uuencode a todos os arquivos\n"
+"  -g, --level-for-gzip=NÍVEL   fornece -NÍVEL (default 9) para o gzip\n"
+"  -Z, --compress               aplica compress e uuencode a todos os\n"
+"                               arquivos\n"
+"  -b, --bits-per-code=BITS     fornece -bBITS (default 12) o compress\n"
+
+#: src/shar.c:1694
+msgid ""
+"\n"
+"Protecting against transmission:\n"
+"  -w, --no-character-count      do not use `wc -c' to check size\n"
+"  -D, --no-md5-digest           do not use `md5sum' digest to verify\n"
+"  -F, --force-prefix            force the prefix character on every line\n"
+"  -d, --here-delimiter=STRING   use STRING to delimit the files in the shar\n"
+"\n"
+"Producing different kinds of shars:\n"
+"  -V, --vanilla-operation   produce very simple and undemanding shars\n"
+"  -P, --no-piping           exclusively use temporary files at unshar time\n"
+"  -x, --no-check-existing   blindly overwrite existing files\n"
+"  -X, --query-user          ask user before overwriting files (not for Net)\n"
+"  -m, --no-timestamp        do not restore file modification dates & times\n"
+"  -Q, --quiet-unshar        avoid verbose messages at unshar time\n"
+"  -f, --basename            restore in one directory, despite hierarchy\n"
+"      --no-i18n             do not produce internationalized shell script\n"
+msgstr ""
+"\n"
+"Proteções a utilizar na transmissão:\n"
+"  -w, --no-character-count      não verifica o tamanho com  `wc -c'\n"
+"  -D, --no-md5-digest           não usa verificação `md5sum'\n"
+"  -F, --force-prefix            coloca o caractere de prefixo em cada linha\n"
+"  -d, --here-delimiter=STRING   delimita cada arquivo com STRING\n"
+"\n"
+"Produzindo diferentes tipos de arquivos shar:\n"
+"  -V, --vanilla-operation   produz arquivos de shell simples e não exigentes\n"
+"  -P, --no-piping           usar só arquivos temporários durante a extração\n"
+"  -x, --no-check-existing   sobrescreve os arquivos existentes\n"
+"  -X, --query-user          pergunta antes de sobrescrever\n"
+"                            (não usar para arquivos distribuídos à rede)\n"
+"  -m, --no-timestamp        não restaura as datas e os tempos de modificação\n"
+"                            dos arquivos\n"
+"  -Q, --quiet-unshar        não apresenta mensagens detalhadas ao extrair\n"
+"                            os arquivos\n"
+"  -f, --basename            extrai todos os arquivos para o mesmo diretório,\n"
+"                            apesar da hierarquia\n"
+"      --no-i18n             não produz script internacionalizado\n"
+
+#: src/shar.c:1712
+msgid ""
+"\n"
+"Option -o is required with -l or -L, option -n is required with -a.\n"
+"Option -g implies -z, option -b implies -Z.\n"
+msgstr ""
+"\n"
+"Exige-se a opção -o com -l ou -L, exige-se a opção -n com -a.\n"
+"A opção -g implica -z, a opção -b implica -Z.\n"
+
+#: src/shar.c:1798
+msgid "DEBUG was not selected at compile time"
+msgstr "Não se escolheu DEBUG durante a compilação"
+
+#: src/shar.c:1819
+msgid "Hard limit %dk\n"
+msgstr "Limite tipo `hard' de %dk\n"
+
+#: src/shar.c:1886
+msgid "Soft limit %dk\n"
+msgstr "Limite tipo `soft' de %dk\n"
+
+#: src/shar.c:1987
+msgid "WARNING: No user interaction in vanilla mode"
+msgstr "ATENÇÃO: Não há intervenção do usuário no modo `vanilla'"
+
+#: src/shar.c:1998
+msgid "WARNING: Non-text storage options overridden"
+msgstr "ATENÇÃO: As opções para armazenamento não-textual foram anuladas"
+
+#: src/shar.c:2054
+msgid "No input files"
+msgstr "Nenhum arquivo de entrada"
+
+#: src/shar.c:2060
+msgid "Cannot use -a option without -n"
+msgstr "Não é possível usar a opção -a sem -n"
+
+#: src/shar.c:2066
+msgid "Cannot use -l or -L option without -o"
+msgstr "Não é possível usar a opção -l ou -L sem -o"
+
+#: src/shar.c:2078
+msgid "PLEASE avoid -X shars on Usenet or public networks"
+msgstr "Por favor, evite -X em arquivos shar na Usenet ou redes públicas"
+
+#: src/shar.c:2119
+msgid "You have unpacked the last part"
+msgstr "Você deve desempacotar a última parte"
+
+#: src/shar.c:2121
+msgid "Created %d files\n"
+msgstr "Criados %d arquivos\n"
+
+#: src/unshar.c:158
+msgid "Found no shell commands in %s"
+msgstr "Não foi encontrado nenhum comando de shell, em %s"
+
+#: src/unshar.c:174
+msgid "%s looks like raw C code, not a shell archive"
+msgstr "%s parece ser código C, não um arquivo de shell"
+
+#: src/unshar.c:210
+msgid "Found no shell commands after `cut' in %s"
+msgstr "Não foi encontrado nenhum comando de shell após o `cut', em %s"
+
+#: src/unshar.c:231
+msgid "%s is probably not a shell archive"
+msgstr "%s provavelmente não é um arquivo de shell"
+
+#: src/unshar.c:232
+msgid "The `cut' line was followed by: %s"
+msgstr "A linha de demarcação foi seguida de: %s"
+
+#: src/unshar.c:258
+msgid "Starting `sh' process"
+msgstr "Disparando o processo `sh'"
+
+#: src/unshar.c:307
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"\n"
+"  -d, --directory=DIRECTORY   change to DIRECTORY before unpacking\n"
+"  -c, --overwrite             pass -c to shar script for overwriting files\n"
+"  -e, --exit-0                same as `--split-at=\"exit 0\"'\n"
+"  -E, --split-at=STRING       split concatenated shars after STRING\n"
+"  -f, --force                 same as `-c'\n"
+"      --help                  display this help and exit\n"
+"      --version               output version information and exit\n"
+"\n"
+"If no FILE, standard input is read.\n"
+msgstr ""
+"Os argumentos obrigatórios para as opções longas são também\n"
+"obrigatórios para a forma curta.\n"
+"\n"
+"  -d, --directory=DIRETÓRIO   muda para DIRETÓRIO antes de desempacotar\n"
+"  -c, --overwrite             fornece -c a `shar' para reescrever os arquivos\n"
+"  -e, --exit-0                o mesmo que `--split-at=\"exit 0\"'\n"
+"  -E, --split-at=STRING       separa os arquivos concatenados após STRING\n"
+"  -f, --force                 o mesmo que `-c'\n"
+"      --help                  apresenta esta ajuda e finaliza\n"
+"      --version               apresenta a versão e finaliza\n"
+"\n"
+"Na ausência de qualquer ARQUIVO, o programa lê a entrada padrão.\n"
+
+#: src/unshar.c:384
+msgid "Cannot chdir to `%s'"
+msgstr "Não foi possível mudar para o diretório `%s'"
+
+#: src/unshar.c:441
+msgid "standard input"
+msgstr "entrada padrão"
+
+#: src/uudecode.c:98 src/uudecode.c:196
+msgid "%s: Short file"
+msgstr "%s: Arquivo truncado"
+
+#: src/uudecode.c:141
+msgid "%s: No `end' line"
+msgstr "%s: Falta a linha `end'"
+
+#: src/uudecode.c:205
+msgid "%s: data following `=' padding character"
+msgstr "%s: dados após caractere de preenchimento `='"
+
+#: src/uudecode.c:229 src/uudecode.c:237 src/uudecode.c:251
+msgid "%s: illegal line"
+msgstr "%s: linha ilegal"
+
+#: src/uudecode.c:289
+msgid "%s: No `begin' line"
+msgstr "%s: Falta a linha `begin'"
+
+#: src/uudecode.c:321
+msgid "%s: Illegal ~user"
+msgstr "%s: ~usuário não permitido"
+
+#: src/uudecode.c:328
+msgid "%s: No user `%s'"
+msgstr "%s: Não existe o usuário `%s'"
+
+#: src/uudecode.c:374
+msgid "Usage: %s [FILE]...\n"
+msgstr "Uso: %s [ARQUIVO]...\n"
+
+#: src/uudecode.c:375
+msgid ""
+"Mandatory arguments to long options are mandatory to short options too.\n"
+"  -h, --help               display this help and exit\n"
+"  -v, --version            output version information and exit\n"
+"  -o, --output-file=FILE   direct output to FILE\n"
+msgstr ""
+"Argumentos obrigatórios para as opções longas são também\n"
+"obrigatórios para a forma curta.\n"
+"      --help               apresenta esta ajuda e finaliza\n"
+"      --version            apresenta versão e finaliza\n"
+"  -o, --output-file=ARQ    direciona a saída para ARQ\n"
+
+#: src/uuencode.c:198
+msgid "Read error"
+msgstr "Erro de leitura"
+
+#: src/uuencode.c:215
+msgid "Usage: %s [INFILE] REMOTEFILE\n"
+msgstr "Uso: %s [ARQUIVO_DE_ENTRADA] ARQUIVO_REMOTO\n"
+
+#: src/uuencode.c:216
+msgid ""
+"\n"
+"  -h, --help      display this help and exit\n"
+"  -m, --base64    use base64 encoding as of RFC1521\n"
+"  -v, --version   output version information and exit\n"
+msgstr ""
+"\n"
+"      --help               apresenta esta ajuda e finaliza\n"
+"  -m, --base64             usa codificação base64 conforme RFC1521\n"
+"      --version            apresenta versão e finaliza\n"
+
+#: src/uuencode.c:297
+msgid "Write error"
+msgstr "Erro de escrita"
+

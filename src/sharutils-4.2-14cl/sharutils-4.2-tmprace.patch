@@ -1,0 +1,44 @@
+diff -Nur sharutils-4.2.orig/src/mailshar.in sharutils-4.2/src/mailshar.in
+--- sharutils-4.2.orig/src/mailshar.in	Mon Nov 30 01:49:53 1998
++++ sharutils-4.2/src/mailshar.in	Mon Nov 30 01:56:52 1998
+@@ -33,7 +33,7 @@
+ If none of -MTBzZ are given, -z is automatically selected if *none*
+ of the FILEs have an .arc, .exz, .gif, .z, .gz, .Z, .zip or .zoo suffix."
+ 
+-temp=/usr/tmp/$$.shar
++temp=`mktemp /usr/tmp/shar.XXXXXX`
+ 
+ ### Decode the options.
+ 
+diff -Nur sharutils-4.2.orig/src/remsync.in sharutils-4.2/src/remsync.in
+--- sharutils-4.2.orig/src/remsync.in	Mon Nov 30 01:49:53 1998
++++ sharutils-4.2/src/remsync.in	Mon Nov 30 03:09:03 1998
+@@ -1656,8 +1656,8 @@
+ 	    $list .= " '$_'";
+ 	}
+     }
+-
+-    open (SCAN, ("find$list -type f -print 2> /tmp/$$.find"
++    $TMP_FILE=`mktemp /tmp/find.XXXXXX`
++    open (SCAN, ("find$list -type f -print 2> $TMP_FILE"
+ 		 . " | xargs $sum_command |"))
+ 	|| &interrupt ("Cannot launch program \`find\'");
+ 
+@@ -1689,7 +1689,7 @@
+ 
+     # Clean out scanning for inexisting files.
+ 
+-    open (SCAN, "/tmp/$$.find");
++    open (SCAN, $TMP_FILE);
+     while (<SCAN>)
+     {
+ 	chop;
+@@ -1720,7 +1720,7 @@
+ 	}
+     }
+     close SCAN;
+-    unlink "/tmp/$$.find";
++    unlink $TMP_FILE;
+ 
+     $study_files = 0;
+ }
