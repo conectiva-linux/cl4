@@ -1,0 +1,12 @@
+diff -ur ldconfig-980708/ldconfig.c ldconfig-980708.acme/ldconfig.c
+--- ldconfig-980708/ldconfig.c	Wed Jul  8 14:55:57 1998
++++ ldconfig-980708.acme/ldconfig.c	Tue Dec  8 20:32:05 1998
+@@ -33,7 +33,7 @@
+ #include <getopt.h>
+ #include <dirent.h>
+ #include <unistd.h>
+-#include <a.out.h>
++#include <linux/a.out.h>
+ #ifdef _LIBC
+ #include <link.h>
+ #else
