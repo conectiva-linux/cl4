@@ -1,0 +1,28 @@
+--- lsof_4.40/lsof_4.40/dialects/linux/proc/dlsof.h.K22	Thu Feb 18 18:30:55 1999
++++ lsof_4.40/lsof_4.40/dialects/linux/proc/dlsof.h	Thu Feb 18 18:38:45 1999
+@@ -50,19 +50,21 @@
+ #include <linux/tcp.h>
+ #include <endian.h>
+ 
+-# if	__BYTE_ORDER!=__BIG_ENDIAN
++#undef	htons
++#undef	ntohs
+ #undef	htonl
+ #undef	ntohl
++#define	htons	BYTEORDER_htons
++#define	ntohs	BYTEORDER_ntohs
+ #define	htonl	BYTEORDER_htonl
+ #define	ntohl	BYTEORDER_ntohl
+-# endif	/* __BYTE_ORDER!=__BIG_ENDIAN */
+ 
+ #include <netinet/in.h>
+ 
+-# if	__BYTE_ORDER!=__BIG_ENDIAN
++#undef	htons
++#undef	ntohs
+ #undef	htonl
+ #undef	ntohl
+-# endif	/* __BYTE_ORDER!=__BIG_ENDIAN */
+ 
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_prot.h>
