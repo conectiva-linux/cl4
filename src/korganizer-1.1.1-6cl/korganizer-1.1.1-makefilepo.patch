@@ -1,0 +1,12 @@
+diff -ur korganizer-1.1.1/po/Makefile.in korganizer-1.1.1-acme/po/Makefile.in
+--- korganizer-1.1.1/po/Makefile.in	Wed Apr 28 12:27:56 1999
++++ korganizer-1.1.1-acme/po/Makefile.in	Sun Jun  6 18:03:48 1999
+@@ -299,7 +299,7 @@
+ 	@catalogs='$(GMFILES)'; \
+ 	for cat in $$catalogs; do \
+ 	destdir=$(localedir); \
+-	lang=`echo $$cat | sed 's/\.gmo//'`; \
++	lang=`echo $$cat | sed 's/\.po//'`; \
+ 	name=$(PACKAGE).mo \
+ 	dir=$$destdir/$$lang/LC_MESSAGES; \
+ 	$(mkinstalldirs) $$dir; \
