@@ -1,0 +1,243 @@
+! This is the XBanner app-defaults sample file.
+! It may be used as an app-defaults file... Notice that all options are
+! specified in their Class names, so that any other resoruces will override
+! this.
+
+! The application class is "XBanner", the application name is the name of
+! the binary. So if you make a link to xbanner and call it "mybanner2",
+! you can use options like "xbanner.label: label", for when xbanner is
+! called as 'xbanner' and "mybanner2.label: Banner2" for when you run the
+! link 'mybanner2'
+
+! *** GENERAL OPTIONS ***
+
+! The text that will appear! This gets parsed for environment variables
+! as in the shell. So $HOSTNAME and ${HOSTNAME} will work!
+XBanner.Label:	 	Conectiva Linux
+
+! Type of effect to render the text with. Allowed keywords:
+! None		    : Just draw the text in the Foreground color
+! Shadow	    : Add a nice shadow under the text using the ShadowColor
+! Outline	    : Add an outline to the text. See SurroundMin/Max also!
+! Shadowed-Outline  : Outline with a shadow.
+! 3D-Shadow	    : Outline and appears several times in a 3D fashion
+! Thick             : Shows the text as if it is made of thick letters
+! StandOut	    : Should look like a 3D thing standing out of the screen.
+! StandIn	    : Opposite of StandOut...
+! PopArt	    : Outlines with colors alternating HiColor/ShadowColor
+! Coin		    : Somewhat like a coin. Especially with right colors.
+! Fade		    : The Shadow/Thickness fades along a color gradient
+! Backlight	    : Text surrounded by colors of a color gradient
+! FatText	    : Text looks like it is fat and has a shadow.
+! StandOut2         : Different way to do it. Nicer, I think.
+! StandIn2	    : Same here...
+! FunnyOutline      : The wider areas of the text are filled with the HiColor
+! FgGrad            : Does a Color gradient on the text and has a shadow.
+! FgPlasma	    : The foreground of the text is a PlasmaCloud
+! Shake		    : Can produce the infamouse 'Nervous? Tense? Tired?' sign
+XBanner.Effect:		Fade
+
+! The font for the effect. See the doc about finding good scalable fonts.
+!XBanner.Font:	-bitstream-charter-bold-i-normal--200-*-100-100-*-*-iso8859-1
+!XBanner.Font:	-bitstream-terminal-bold-r-normal--50-360-100-100-c-300-iso8859-1
+!XBanner.Font:	-bitstream-courier-bold-r-normal--200-*-100-100-*-*-iso8859-1
+XBanner.Font:	-adobe-utopia-bold-i-normal--50-*-100-100-*-*-iso8859-1
+
+! The placement of the text. Allowed values are:
+! TopLeft TopCenter TopRight BottomLeft BottomCenter BottomRight XY Center
+! and CenteredOnY
+! When placement = XY, XBanner.x and XBanner.y settings take effect.
+! When placement = CenteredOnY, XBanner.y setting takes effect.
+XBanner.Placement:	CenteredOnY
+XBanner.y: 20
+
+! *** DEBUGGING/INFORMATION ***
+
+! XBanner can write warnings on the root window:
+XBanner.ShowErrors:	True
+
+! XBanner can tell you what it calculated are the relevant sizes and
+! location of the text to help you figure out what's wrong.
+XBanner.ShowCalc:	False
+
+! XBanner can dump the resources it sees into a file:
+XBanner.DumpRes:	False
+XBanner.DumpResFile:	/tmp/XB_res.lst
+
+! *** BACKGROUND EFFECTS ***
+
+! XBanner can fill the background with a nice pattern:
+! Styles: None, TopDown, LeftRight, LeftDiagonal, RightDiagonal, LeftSplit,
+! 	  RightSplit, Fan, Fill, BgPix, Plasma, Ripples
+XBanner.BgStyle:	LeftRight
+! Fill up the screen anyway, even if we paint it with something else later.
+XBanner.BgFill:		False
+XBanner.BgFillColor:	cyan4
+! The color gradient for the BG
+XBanner.BgGrad:		cyan4,cyan4
+! Repeat the color gradient of the background several times. Good to reduce
+! the number of allocated colors, and make the BarSize smaller which means
+! it will look a lot smoother.
+XBanner.BgGradRepeat:	1
+! For some BgStyle's like TopDown it's useful to paint the screen with a
+! color that's like the median color of the color gradient. This does a
+! nice trick on the eyes when the login-box disappears.
+XBanner.AutoFillBg:	True
+! This is a measure that helps determine how fine the filling of the
+! background should be. In TopDown it is the width of the bars that make up
+! the color gradient.
+XBanner.BarSize:	4
+! Name of the pixmap file to tile over the root window
+XBanner.BgPixFile:	/usr/include/X11/pixmaps/xdm_bg.xpm
+! The number of ripples for the Ripples BG style
+XBanner.Ripples:	4
+! Number of colors to use for the Ripples BG style
+XBanner.RippleColors:	4
+
+! *** UNDERLINE OPTIONS ***
+
+! XBanner can put a nice underline under the text...
+
+XBanner.Underlined:		False
+XBanner.UnderlineColor:		yellow
+! If you choose 'FGC' as the color, some of the rendering effects will be
+! rendered on the underline as well!
+!XBanner.UnderlineColor:	FGC
+XBanner.UnderlineThickness:	8
+
+! *** PASTE PIXMAP OPTIONS ***
+
+! XBanner can put an image on the screen. Currently only .XPM!
+! If your filename starts with '@', then it is a file containing a list
+! of pixmaps of the format:
+! <pathname> <x> <y>
+! And the PixmapX/PixmapY have no effect.
+XBanner.DoPixmap:	False
+XBanner.PixFile:	none
+XBanner.PixmapX:	30
+XBanner.PixmapY:	400
+
+! *** GLINT OPTIONS ***
+
+! XBanner can linger around after it has finished drawing, and glint on of
+! the corners of the text every once in a while.
+XBanner.Glint:		False
+! Speed of glints. Negative values allowed, and are slower. 0=Blink
+XBanner.GlintSpeed:	1
+! Minimum and maximum sizes of the tiny sparks glinting the text
+XBanner.GlintMin:	56
+XBanner.GlintMax:	120
+! Time boundaries for the glints (ms):
+XBanner.GlintTimeMin:	1000
+XBanner.GlintTimeMax:	3500
+! Corner-mask to glint on. Can be: All, [No]{Up|Down}{Left|Right}
+! i.e.: All,NoDownRight will give you all corners except DownRight
+XBanner.CornerMask:	All
+
+! *** COLOR CYCLING OPTIONS ***
+
+! List of things you want to have colors cycled. Can be:
+! None, FgGrad, Fade, BG, FatText, Backlight, FG, FgPlasma
+XBanner.CycleColors:	None
+!XBanner.CycleColors:	BG,Fade
+! Directions of cycling the colors. Use comma to make a list if more than 1.
+XBanner.ReverseCycle:	BG
+XBanner.ForwardCycle:	Fade
+
+! *** PLASMA OPTIONS ***
+
+! Number of colors to use for the Plasma BG style
+XBanner.PlasmaNumColors:	96
+! Graininess factor
+XBanner.PlasmaGraininess:	0.76
+! Number of colors to use for the FgPlasma effect
+XBanner.FgPlasmaNCol:		27
+! Graininess factor for the FgPlasma
+XBanner.FgPlasmaGrain:		0.95
+! Colors to draw the FgPlasma with
+XBanner.FgPlasmaGrad:		white,deepskyblue,white
+
+! *** EFFECT SPECIFIC STUFF ***
+
+! Number of shadows in the 3D-Shadow effect:
+XBanner.Shadows:	3
+! Number of colors for the color gradient of the FgCycle feature:
+XBanner.FgCycColors:	16
+! Color gradient for the Backlight effet:
+XBanner.BacklightGrad:	darkblue,cyan
+! Color gradient for the Fade effet:
+XBanner.FadeGrad:	black,gray20
+! Color gradient for the FatText effet:
+XBanner.FatTextGrad:	blue,darkblue
+! Color gradient for the FgGrad effet:
+XBanner.FgGradGrad:	darkblue,cyan
+! BarSize for the FgGrad color gradient:
+XBanner.FgGradBarSize:	4
+! Color gradient for the FgCycle feature:
+XBanner.FgCycleGrad:	white,black,white
+
+! *** AFFECTING SOME OR MOST EFFECTS ***
+
+! Color names for the foreground, shadow and hi-lite colors. If using a
+! named color, must be in your X server's list. A #rrggbb is also allowed.
+XBanner.Foreground:	red
+XBanner.ShadowColor:	black
+XBanner.HiColor:	yellow
+
+!XBanner.Foreground:	goldenrod
+!XBanner.ShadowColor:	darkgoldenrod
+!XBanner.HiColor:	lightgoldenrod
+
+!XBanner.Foreground:	#ffff00000000
+!XBanner.ShadowColor:	#0000ffff0000
+!XBanner.HiColor:	#00000000ffff
+
+!XBanner.Foreground:	gray50
+!XBanner.ShadowColor:	black
+!XBanner.HiColor:	white
+
+!XBanner.Foreground:	gray80
+!XBanner.ShadowColor:	black
+!XBanner.HiColor:	darkblue
+
+! This is used for the following effects:
+! StandIn/StandOut	- The thickness of the shadowed outline
+! StandIn2/StandOut2	- How far into the letters the filling will go
+! Thick			- The thickness of the letters
+! Coin			- Same as in StandIn/Out
+! PopArt		- The number of alternating color layers.
+! FunnyOutline		- Thickness of the outline
+! FatText		- How many pixels into the letters to do
+! Backlight		- Size of the outlines
+! Fade			- Thickness of the letters
+XBanner.Thickness:	10
+
+! The X distance and Y distance of the shadow under the text in shaodw types.
+! The common class name is "XBanner.ShadowOffset" which sets both.
+XBanner.shadowXOffset:	14
+XBanner.shadowYOffset:	14
+
+! This is the information about the surrounding size of the Outlined effects
+! Roughly, Max - Min = width of the outline. Setting both to 0 gives
+! a nice effect too. I suggest using -1,1 or -2,2 etc.
+! Notice: These are the resource names. The class for both is:
+! XBanner.Surround: <val>
+! Using this is equivalent to "XBanner.surroundMin: -<val>" together with
+! "XBanner.surroundMax: <val>"
+XBanner.surroundMin:	-4
+XBanner.surroundMax:	4
+
+! *** MISC ***
+
+! These are the X/Y location of the text when the placement is set to XY
+XBanner.X:		100
+XBanner.Y:		100
+
+! XBanner tries not to let the text out of bounds with this.
+! The common class name is "XBanner.DefOffset" which sets both
+XBanner.defXOffset:	25
+XBanner.defYOffset:	25
+
+! XBanner can linger around after it has finished drawing, and wait.
+! This is good for people running XBanner behind a XDM chooser.
+XBanner.Linger:		False
