@@ -1,0 +1,460 @@
+diff -uNr krubik-1.04/krubik/krubik.kdelnk krubik-1.04.acme/krubik/krubik.kdelnk
+--- krubik-1.04/krubik/krubik.kdelnk	Thu Mar 12 17:15:50 1998
++++ krubik-1.04.acme/krubik/krubik.kdelnk	Mon Dec  7 21:29:33 1998
+@@ -5,6 +5,7 @@
+ MimeType=
+ Comment=A 3D model of the Rubik's Cube
+ Comment[pt]=Um modelo 3D do Cubo de Rubik
++Comment[pt_BR]=Um modelo 3D do Cubo de Rubik
+ Comment[pl]=Trójwymiarowy model kostki Rubika
+ Exec=krubik -caption "%c" %i %m
+ Icon=krubik.xpm
+@@ -15,4 +16,5 @@
+ Terminal=0
+ Name=Rubik's Kube
+ Name[pt]=Cubo de Rubik
++Name[pt_BR]=Cubo de Rubik
+ Name[pl]=Kostka Rubika
+diff -uNr krubik-1.04/po/pt_BR/Makefile.am krubik-1.04.acme/po/pt_BR/Makefile.am
+--- krubik-1.04/po/pt_BR/Makefile.am	Wed Dec 31 21:00:00 1969
++++ krubik-1.04.acme/po/pt_BR/Makefile.am	Mon Dec  7 21:30:13 1998
+@@ -0,0 +1,49 @@
++
++# This has to be set. The rest should be reusable
++GMFILES = krubik.gmo
++POFILES = $(GMFILES:.gmo=.po)
++
++LANG = pt_BR
++
++localedir = $(kde_locale)
++
++DISTFILES = Makefile.am Makefile.in $(POFILES) $(GMOFILES)
++
++all: all-@USE_NLS@
++install-data-local: install-@USE_NLS@
++
++SUFFIXES = .po .gmo
++
++.po.mo:
++	$(MSGFMT) -o $@ $<
++
++.po.gmo:
++	file=$(srcdir)/`echo $* | sed 's,.*/,,'`.gmo \
++	&& rm -f $$file && $(GMSGFMT) -o $$file $< 
++
++all-yes: $(GMFILES)
++all-no:
++
++install-yes: all
++	@catalogs='$(GMFILES)'; \
++	for cat in $$catalogs; do \
++	destdir=$(localedir); \
++	name=`echo $$cat | sed -e 's/\.gmo/\.mo/'` \
++	dir=$$destdir/$(LANG)/LC_MESSAGES; \
++	$(mkinstalldirs) $$dir; \
++	$(INSTALL_DATA) $$cat $$dir/$$name; \
++	  echo "installing $$cat as $$dir/$$name"; \
++	done
++
++install-no:
++
++uninstall-local:
++	@catalogs='$(GMFILES)'; \
++	for cat in $$catalogs; do \
++	destdir=$(localedir); \
++	name=`echo $$cat | sed -e 's/\.gmo/\.mo/'` \
++	dir=$$destdir/$(LANG)/LC_MESSAGES; \
++	rm -f $$cat $$dir/$$name; \
++	echo "removing $$dir/$$name" ; \
++	done
++
+diff -uNr krubik-1.04/po/pt_BR/Makefile.in krubik-1.04.acme/po/pt_BR/Makefile.in
+--- krubik-1.04/po/pt_BR/Makefile.in	Wed Dec 31 21:00:00 1969
++++ krubik-1.04.acme/po/pt_BR/Makefile.in	Mon Dec  7 21:30:32 1998
+@@ -0,0 +1,254 @@
++# Makefile.in generated automatically by automake 1.2d from Makefile.am
++
++# Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
++# This Makefile.in is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
++# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
++# PARTICULAR PURPOSE.
++
++# This has to be set. The rest should be reusable
++
++
++SHELL = /bin/sh
++
++srcdir = @srcdir@
++top_srcdir = @top_srcdir@
++VPATH = @srcdir@
++prefix = @prefix@
++exec_prefix = @exec_prefix@
++
++bindir = @bindir@
++sbindir = @sbindir@
++libexecdir = @libexecdir@
++datadir = @datadir@
++sysconfdir = @sysconfdir@
++sharedstatedir = @sharedstatedir@
++localstatedir = @localstatedir@
++libdir = @libdir@
++infodir = @infodir@
++mandir = @mandir@
++includedir = @includedir@
++oldincludedir = /usr/include
++
++pkgdatadir = $(datadir)/@PACKAGE@
++pkglibdir = $(libdir)/@PACKAGE@
++pkgincludedir = $(includedir)/@PACKAGE@
++
++top_builddir = ../..
++
++ACLOCAL = @ACLOCAL@
++AUTOCONF = @AUTOCONF@
++AUTOMAKE = @AUTOMAKE@
++AUTOHEADER = @AUTOHEADER@
++
++INSTALL = @INSTALL@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_DATA = @INSTALL_DATA@
++INSTALL_SCRIPT = @INSTALL_SCRIPT@
++transform = @program_transform_name@
++
++NORMAL_INSTALL = :
++PRE_INSTALL = :
++POST_INSTALL = :
++NORMAL_UNINSTALL = :
++PRE_UNINSTALL = :
++POST_UNINSTALL = :
++build_alias = @build_alias@
++build_triplet = @build@
++host_alias = @host_alias@
++host_triplet = @host@
++target_alias = @target_alias@
++target_triplet = @target@
++CC = @CC@
++CFLAGS = @CFLAGS@
++CPP = @CPP@
++CXX = @CXX@
++CXXFLAGS = @CXXFLAGS@
++GLINC = @GLINC@
++GLLIB = @GLLIB@
++GMSGFMT = @GMSGFMT@
++KDE_INCLUDES = @KDE_INCLUDES@
++KDE_LDFLAGS = @KDE_LDFLAGS@
++LDFLAGS = @LDFLAGS@
++LIBCOMPAT = @LIBCOMPAT@
++LIBJPEG = @LIBJPEG@
++LIBOBJS = @LIBOBJS@
++LIBSOCKET = @LIBSOCKET@
++LN_S = @LN_S@
++MAKEINFO = @MAKEINFO@
++MOC = @MOC@
++MSGFMT = @MSGFMT@
++PACKAGE = @PACKAGE@
++PAMINC = @PAMINC@
++PAMLIBPATHS = @PAMLIBPATHS@
++PAMLIBS = @PAMLIBS@
++QT_INCLUDES = @QT_INCLUDES@
++QT_LDFLAGS = @QT_LDFLAGS@
++RANLIB = @RANLIB@
++USE_NLS = @USE_NLS@
++VERSION = @VERSION@
++XGETTEXT = @XGETTEXT@
++XPMINC = @XPMINC@
++XPMLIB = @XPMLIB@
++X_INCLUDES = @X_INCLUDES@
++X_LDFLAGS = @X_LDFLAGS@
++all_includes = @all_includes@
++all_libraries = @all_libraries@
++kde_appsdir = @kde_appsdir@
++kde_cgidir = @kde_cgidir@
++kde_confdir = @kde_confdir@
++kde_datadir = @kde_datadir@
++kde_htmldir = @kde_htmldir@
++kde_icondir = @kde_icondir@
++kde_includes = @kde_includes@
++kde_libraries = @kde_libraries@
++kde_locale = @kde_locale@
++kde_mimedir = @kde_mimedir@
++kde_minidir = @kde_minidir@
++kde_toolbardir = @kde_toolbardir@
++kde_wallpaperdir = @kde_wallpaperdir@
++qt_includes = @qt_includes@
++qt_libraries = @qt_libraries@
++topdir = @topdir@
++
++GMFILES = krubik.gmo
++POFILES = $(GMFILES:.gmo=.po)
++
++LANG = pt_BR
++
++localedir = $(kde_locale)
++
++DISTFILES = Makefile.am Makefile.in $(POFILES) $(GMOFILES)
++
++SUFFIXES = .po .gmo
++mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
++CONFIG_HEADER = ../../config.h
++CONFIG_CLEAN_FILES = 
++DIST_COMMON =  Makefile.am Makefile.in
++
++
++TAR = tar
++GZIP = --best
++default: all
++
++.SUFFIXES:
++.SUFFIXES: .gmo .po
++$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
++	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps po/pt_BR/Makefile
++
++Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
++	cd $(top_builddir) \
++	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
++
++tags: TAGS
++TAGS:
++
++
++distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
++
++subdir = po/pt_BR
++
++distdir: $(DISTFILES)
++	@for file in $(DISTFILES); do \
++	  d=$(srcdir); \
++	  test -f $(distdir)/$$file \
++	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
++	  || cp -p $$d/$$file $(distdir)/$$file; \
++	done
++info:
++dvi:
++check: all
++	$(MAKE)
++installcheck:
++install-exec: 
++	@$(NORMAL_INSTALL)
++
++install-data: install-data-local
++	@$(NORMAL_INSTALL)
++
++install: install-exec install-data all
++	@:
++
++uninstall: uninstall-local
++
++all: Makefile
++
++install-strip:
++	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
++installdirs:
++
++
++mostlyclean-generic:
++	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
++
++clean-generic:
++	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
++
++distclean-generic:
++	-rm -f Makefile $(DISTCLEANFILES)
++	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
++	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
++
++maintainer-clean-generic:
++	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
++	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
++mostlyclean:  mostlyclean-generic
++
++clean:  clean-generic mostlyclean
++
++distclean:  distclean-generic clean
++	-rm -f config.status
++
++maintainer-clean:  maintainer-clean-generic distclean
++	@echo "This command is intended for maintainers to use;"
++	@echo "it deletes files that may require special tools to rebuild."
++
++.PHONY: default tags distdir info dvi installcheck install-exec \
++install-data install uninstall all installdirs mostlyclean-generic \
++distclean-generic clean-generic maintainer-clean-generic clean \
++mostlyclean distclean maintainer-clean
++
++
++all: all-@USE_NLS@
++install-data-local: install-@USE_NLS@
++
++.po.mo:
++	$(MSGFMT) -o $@ $<
++
++.po.gmo:
++	file=$(srcdir)/`echo $* | sed 's,.*/,,'`.gmo \
++	&& rm -f $$file && $(GMSGFMT) -o $$file $< 
++
++all-yes: $(GMFILES)
++all-no:
++
++install-yes: all
++	@catalogs='$(GMFILES)'; \
++	for cat in $$catalogs; do \
++	destdir=$(localedir); \
++	name=`echo $$cat | sed -e 's/\.gmo/\.mo/'` \
++	dir=$$destdir/$(LANG)/LC_MESSAGES; \
++	$(mkinstalldirs) $$dir; \
++	$(INSTALL_DATA) $$cat $$dir/$$name; \
++	  echo "installing $$cat as $$dir/$$name"; \
++	done
++
++install-no:
++
++uninstall-local:
++	@catalogs='$(GMFILES)'; \
++	for cat in $$catalogs; do \
++	destdir=$(localedir); \
++	name=`echo $$cat | sed -e 's/\.gmo/\.mo/'` \
++	dir=$$destdir/$(LANG)/LC_MESSAGES; \
++	rm -f $$cat $$dir/$$name; \
++	echo "removing $$dir/$$name" ; \
++	done
++
++# Tell versions [3.59,3.63) of GNU make to not export all variables.
++# Otherwise a system limit (for SysV at least) may be exceeded.
++.NOEXPORT:
+diff -uNr krubik-1.04/po/pt_BR/krubik.po krubik-1.04.acme/po/pt_BR/krubik.po
+--- krubik-1.04/po/pt_BR/krubik.po	Wed Dec 31 21:00:00 1969
++++ krubik-1.04.acme/po/pt_BR/krubik.po	Mon Dec  7 21:32:35 1998
+@@ -0,0 +1,128 @@
++msgid ""
++msgstr ""
++"Last-Translator: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
++"Content-Type: text/plain; charset=\n"
++"Date: 1998-02-09 22:05:31+0100\n"
++"From: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
++"Xgettext-Options: -C -ktranslate\n"
++"Files: krubik.cpp cube.cpp vector.cpp dialog.cpp\n"
++
++#: krubik.cpp:45
++msgid "&New cube"
++msgstr "&Novo cubo"
++
++#: krubik.cpp:47
++msgid "&Save cube"
++msgstr "&Gravar cubo"
++
++#: krubik.cpp:49
++msgid "&Load cube"
++msgstr "&Carregar cubo"
++
++#: krubik.cpp:56
++msgid "C&onfigure colors"
++msgstr "C&onfigurar cores"
++
++#: krubik.cpp:59
++msgid "&Reset colors"
++msgstr "Cores por o&missão"
++
++#: krubik.cpp:63
++msgid "&Configure keys"
++msgstr "&Configurar teclas"
++
++#: krubik.cpp:70 krubik.cpp:164
++msgid "Hide Status Bar"
++msgstr "Esconder Barra de Status"
++
++#: krubik.cpp:76 krubik.cpp:156
++msgid "Show Status Bar"
++msgstr "Mostrar Barra de Status"
++
++#: krubik.cpp:82
++msgid "&About..."
++msgstr "&Sobre..."
++
++#: krubik.cpp:131
++msgid "Moves : 0000 "
++msgstr "Movimentos : 0000 "
++
++#: krubik.cpp:134
++msgid "Time : 0000 "
++msgstr "Tempo : 0000 "
++
++#: krubik.cpp:137
++msgid "Wrong pieces : 00 "
++msgstr "Blocos errados : 00 "
++
++#: krubik.cpp:179
++msgid "Moves"
++msgstr "Movimentos"
++
++#: krubik.cpp:183
++msgid "Wrong pieces"
++msgstr "Blocos errados"
++
++#: krubik.cpp:187
++msgid "Time"
++msgstr "Tempo"
++
++#: krubik.cpp:334
++msgid "Cube"
++msgstr "Cubo"
++
++#: krubik.cpp:345
++msgid "Clean cube"
++msgstr "Limpar cubo"
++
++#: krubik.cpp:347
++msgid "Scramble"
++msgstr "Embaralhar"
++
++#: krubik.cpp:378
++msgid ""
++"A program written in C++ using Qt/Kde.\n"
++"Based on original code from Karl Hornell.\n"
++"\n"
++"Written by Pieter Eendebak <pte@ddsw.nl>"
++msgstr ""
++"Um programa escrito em C++ utilizando Qt/Kde.\n"
++"Baseado em código original de Karl Hornell.\n"
++"\n"
++"Escrito por Pieter Eendebak <pte@ddsw.nl>"
++
++#: krubik.cpp:391
++msgid "Sorry, this function hasn't been implemented yet..."
++msgstr "Desculpe, esta função ainda não foi implementada..."
++
++#: cube.cpp:917
++msgid ""
++"Could not open file.\n"
++"Cube has not been saved."
++msgstr ""
++"Não consegui abrir o arquivo.\n"
++"Cubo não foi gravado."
++
++#: cube.cpp:942
++msgid "Sorry, file is no Rubik's Kube save file."
++msgstr "Desculpe, o arquivo não é um jogo gravado do Rubik´s Kube"
++
++#: cube.cpp:976
++msgid "Could not open file."
++msgstr "Não consegui abrir arquivo."
++
++#: dialog.cpp:27
++msgid "Configure colors"
++msgstr "Configurar cores"
++
++#: dialog.cpp:35
++msgid "Background"
++msgstr "Fundo"
++
++#: dialog.cpp:40
++msgid "Edges"
++msgstr "Bordas"
++
++#: dialog.cpp:50
++msgid "Color"
++msgstr "Cor"
