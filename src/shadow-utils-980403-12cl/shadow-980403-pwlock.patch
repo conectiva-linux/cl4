@@ -1,0 +1,163 @@
+diff -ur shadow-980403-dist/man/usermod.8 shadow-980403/man/usermod.8
+--- shadow-980403-dist/man/usermod.8	Thu Jun 25 14:43:34 1998
++++ shadow-980403/man/usermod.8	Thu Jun 25 14:48:38 1998
+@@ -59,6 +59,7 @@
+ .RB [ -u
+ .IR uid " ["
+ .BR -o ]]
++.RB [ -L | -U ]
+ .I login
+ .SH DESCRIPTION
+ The \fBusermod\fR command modifies the system account files to reflect
+@@ -120,6 +121,14 @@
+ tree rooted at the user's home directory will have the file user ID
+ changed automatically.
+ Files outside of the user's home directory must be altered manually.
++.IP "\fB-L\fR"
++Lock a user's password.
++This puts a '!' in front of the encrypted password, effectively disabling
++the password.  You can't use this option with \fI-p\fR or \fI-U\fR.
++.IP "\fB-U\fR"
++Unlock a user's password.
++This removes the '!' in front of the encrypted password.
++You can't use this option with \fI-p\fR or \fI-L\fR.
+ .SH CAVEATS
+ \fBusermod\fR will not allow you to change the name of a user who is
+ logged in.
+diff -ur shadow-980403-dist/src/usermod.c shadow-980403/src/usermod.c
+--- shadow-980403-dist/src/usermod.c	Thu Jan 29 17:22:45 1998
++++ shadow-980403/src/usermod.c	Thu Jun 25 15:14:45 1998
+@@ -113,6 +113,8 @@
+ 	fflg = 0, /* days until account with expired password is locked */
+ 	eflg = 0, /* days since 1970-01-01 when account becomes expired */
+ #endif
++	Lflg = 0, /* lock the password */
++	Uflg = 0, /* unlock the password */
+ 	pflg = 0, /* new encrypted password */
+ 	lflg = 0; /* new user name */
+ 
+@@ -307,7 +309,7 @@
+ #ifdef AUTH_METHODS
+ 	fprintf(stderr, "[-A {DEFAULT|program},... ] ");
+ #endif
+-	fprintf(stderr, "[-p passwd] name\n");
++	fprintf(stderr, "[-p passwd] [-L|-U] name\n");
+ 	exit(E_USAGE);
+ }
+ 
+@@ -329,6 +331,24 @@
+ #ifdef SHADOWPWD
+ 	if (!is_shadow_pwd)
+ #endif
++	if (Lflg && pwent->pw_passwd[0] != '!') {
++		char *newpw = xmalloc(strlen(pwent->pw_passwd) + 2);
++
++		SYSLOG((LOG_INFO, "lock user `%s' password\n",
++			pwent->pw_name));
++		strcpy(newpw, "!");
++		strcat(newpw, pwent->pw_passwd);
++		pwent->pw_passwd = xstrdup(newpw);
++	}
++	if (Uflg && pwent->pw_passwd[0] == '!') {
++		int i;
++
++		SYSLOG((LOG_INFO, "unlock user `%s' password\n",
++			pwent->pw_name));
++		for (i = 0; pwent->pw_passwd[i + 1] != '\0'; i ++)
++			pwent->pw_passwd[i] = pwent->pw_passwd[i + 1];
++		pwent->pw_passwd[i] = '\0';
++	}
+ 	if (pflg) {
+ 		SYSLOG((LOG_INFO, "change user `%s' password\n",
+ 			pwent->pw_name));
+@@ -386,6 +406,24 @@
+ 			spent->sp_namp, spent->sp_expire, user_expire));
+ 		spent->sp_expire = user_expire;
+ 	}
++	if (Lflg && spent->sp_pwdp[0] != '!') {
++		char *newpw = xmalloc(strlen(spent->sp_pwdp) + 2);
++
++		SYSLOG((LOG_INFO, "lock user `%s' password\n",
++			spent->sp_namp));
++		strcpy(newpw, "!");
++		strcat(newpw, spent->sp_pwdp);
++		spent->sp_pwdp = xstrdup(newpw);
++	}
++	if (Uflg && spent->sp_pwdp[0] == '!') {
++		int i;
++
++		SYSLOG((LOG_INFO, "unlock user `%s' password\n",
++			spent->sp_namp));
++		for (i = 0; spent->sp_pwdp[i + 1] != '\0'; i ++)
++			spent->sp_pwdp[i] = spent->sp_pwdp[i + 1];
++		spent->sp_pwdp[i] = '\0';
++	}
+ 	if (pflg) {
+ 		SYSLOG((LOG_INFO, "change user `%s' password\n",
+ 			spent->sp_namp));
+@@ -986,9 +1024,9 @@
+ 	}
+ #endif
+ #ifdef	SHADOWPWD
+-#define FLAGS "A:u:og:G:d:s:c:mf:e:l:p:"
++#define FLAGS "A:u:og:G:d:s:c:mf:e:l:p:LU"
+ #else
+-#define FLAGS "A:u:og:G:d:s:c:ml:p:"
++#define FLAGS "A:u:og:G:d:s:c:ml:p:LU"
+ #endif
+ 	while ((arg = getopt(argc, argv, FLAGS)) != EOF) {
+ #undef FLAGS
+@@ -1080,6 +1118,12 @@
+ 
+ 			user_newname = optarg;
+ 			break;
++		case 'L':
++			if (Uflg || pflg)
++				usage ();
++
++			Lflg++;
++			break;
+ 		case 'm':
+ 			if (! dflg)
+ 				usage ();
+@@ -1093,6 +1137,9 @@
+ 			oflg++;
+ 			break;
+ 		case 'p':
++			if (Lflg || Uflg)
++				usage ();
++
+ 			user_pass = optarg;
+ 			pflg++;
+ 			break;
+@@ -1110,6 +1157,12 @@
+ 			user_newid = get_number(optarg);
+ 			uflg++;
+ 			break;
++		case 'U':
++			if (Lflg && pflg)
++				usage ();
++
++			Uflg++;
++			break;
+ 		default:
+ 			usage ();
+ 		}
+@@ -1326,7 +1379,7 @@
+ 			pwent.pw_passwd = user_auth;
+ 	}
+ #endif  /* AUTH_METHODS */
+-	if (lflg || uflg || gflg || cflg || dflg || sflg || Aflg || pflg) {
++	if (lflg || uflg || gflg || cflg || dflg || sflg || Aflg || pflg || Lflg || Uflg) {
+ 		if (! pw_update (&pwent)) {
+ 			fprintf(stderr, "%s: error changing password entry\n",
+ 				Prog);
+@@ -1356,7 +1409,7 @@
+ #endif
+ 	}
+ #ifdef	SHADOWPWD
+-	if (spwd && (lflg || eflg || fflg || Aflg || pflg)) {
++	if (spwd && (lflg || eflg || fflg || Aflg || pflg || Lflg || Uflg)) {
+ 		if (! spw_update (&spent)) {
+ 			fprintf(stderr,
+ 				"%s: error adding new shadow password entry\n",

@@ -1,0 +1,10 @@
+--- shadow-980403/configure.in~	Thu Apr  2 16:27:37 1998
++++ shadow-980403/configure.in	Wed Dec 30 17:49:08 1998
+@@ -31,7 +31,6 @@
+ AC_CHECK_HEADERS(gshadow.h shadow.h lastlog.h)
+ 
+ AC_EGREP_HEADER(ut_host, utmp.h, AC_DEFINE(UT_HOST))
+-AC_EGREP_HEADER(ut_name, utmp.h, AC_DEFINE(UT_USER, ut_name))
+ AC_EGREP_HEADER(ll_host, lastlog.h, AC_DEFINE(HAVE_LL_HOST))
+ 
+ dnl Checks for typedefs, structures, and compiler characteristics.
