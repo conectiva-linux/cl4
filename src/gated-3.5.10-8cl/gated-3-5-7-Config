@@ -1,0 +1,54 @@
+protocols bgp icmp ospf rip egp
+
+yacc                 bison
+cc                   gcc
+lex                  flex
+ranlib               ranlib
+
+cflags               -O6 -Wall -Wno-unused -Dlinux
+yflags               -d -y -v
+lflags               -p -s -C
+ldflags              -ldb
+
+
+signal_h             /usr/include/sys/signal.h
+sbindir              /usr/sbin
+bindir               /usr/bin
+objdir               
+
+gdc_group            root
+
+path_unix            /usr/src/linux/vmlinux
+path_pid             /var/run/%s.pid
+path_dumpdir         /tmp
+path_version         /var/run/%s.version
+path_dump            /tmp/gated_dump
+path_config          /etc/gated.conf
+
+options POSIX_SIGNALS
+options KRT_SYMBOLS_PROC
+options NO_STDDEF_H
+options VARIABLE_MASKS
+options USE_SYSCTL
+options tzsetwall()={unsetenv("TZ");tzset();}
+options KVM_TYPE_NONE
+options NEED_SIGNAME
+options ROUTES_WO_MBUFS
+options KRT_RTREAD_PROC
+options KRT_RT_IOCTL
+options INCLUDE_IOCTL
+options NO_MBUF_H
+options USE_SETPGRP
+options KRT_LLADDR_LINUX
+options INCLUDE_TYPES
+options KRT_SOCKET_TYPE=PF_INET,SOCK_DGRAM,AF_UNSPEC
+options KRT_IFREAD_IOCTL
+options HAVE_WAITPID
+options KRT_IPMULTI_TTL0
+options HAVE_DIRENT
+options sigmask(m)="(1 << ((m)-1))"
+options SHADOW_PASSWD
+options INCLUDE_PATHS
+options INCLUDE_UNISTD
+options	PROTO_ICMP
+options GID_T=gid_t

@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# gated		This script is used to start/stop the gated routing
+#		daemon
+#
+# chkconfig: - 32 75
+# description: Starts and stops gated (routing daemon). GateD is a modular \
+#	software program consisting of core services, a routing database, \
+#	and protocol modules supporting multiple routing protocols (RIP \
+#	versions 1 and 2, DCN HELLO, OSPF version 2, EGP version 2 and BGP \
+#	version 2 through 4)
+# description(pt_BR): Inicializa/para o gated (servidor de roteamento). O GateD é um \
+#       software modular que consiste de um núcleo, um banco de dados de \
+#       roteamento e módulos suportando múltiplos prococolos de \
+#       roteamento (versões 1 e 2 do RIP, DCN HELLO, OSPF versão 2, EGP versão \
+#       2 e as versões de 2 a 4 do BGP)
+# processname: gated
+# pidfile: /var/run/gated.pid
+# config: /etc/gated.conf
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -f /etc/gated.conf ] || exit 0
+[ -f /usr/bin/gdc ] || exit 0
+
+PATH=$PATH:/usr/bin:/usr/sbin
+
+# See how we were called.
+case "$1" in
+  start)
+        gprintf "Starting %s: " "gated"
+        daemon gated
+        touch /var/lock/subsys/gated
+	echo
+        ;;
+  stop)
+        # Stop daemons.
+        gprintf "Shutting down %s: " "gated"
+        gdc stop
+        gprintf "gated done\n"
+        rm -f /var/lock/subsys/gated
+        ;;
+  status)
+	gdc status
+	;;
+  restart|reload)
+	gdc restart
+	;;
+  *)
+        gprintf "Usage: %s {start|stop|status|restart|reload}\n" "gated"
+        exit 1
+esac
+
+exit 0

@@ -1,0 +1,12 @@
+diff -Nur gated-3-5-10.orig/src/trace.c gated-3-5-10/src/trace.c
+--- gated-3-5-10.orig/src/trace.c	Sun Nov 16 22:36:47 1997
++++ gated-3-5-10/src/trace.c	Wed Nov 18 03:05:28 1998
+@@ -1005,7 +1005,7 @@
+ #ifndef	NO_STAT
+ 	struct stat stbuf;
+ 
+-	if (stat(path_dump, &stbuf) < 0) {
++	if (lstat(path_dump, &stbuf) < 0) {
+ 	    switch (errno) {
+ 	    case ENOENT:
+ 		break;
