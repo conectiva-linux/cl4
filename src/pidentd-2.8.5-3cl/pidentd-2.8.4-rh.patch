@@ -1,0 +1,64 @@
+--- pidentd-2.8.4/Makefile.rh	Tue Nov  3 17:33:31 1998
++++ pidentd-2.8.4/Makefile	Thu Nov 12 12:47:01 1998
+@@ -15,11 +15,13 @@
+ TAR=tar
+ MAKE=make
+ PGPSIGN=pgps
++CC=egcs
++CFLAGS=${RPM_OPT_FLAGS}
+ 
+ # set this to 'in.' if you like Sun's prefix on internet daemons
+ PREFIX=in.
+  
+-DESTROOT=/usr/local
++DESTROOT=
+ 
+ # set this to '/share' if your man pages are in /usr/share
+ #SHARE=/share
+@@ -27,10 +29,10 @@
+ # set this to your favourite secure bin under DESTROOT (eg, etc)
+ SBIN=sbin
+ 
+-DESTDIR=$(DESTROOT)/$(SBIN)
++DESTDIR=$(DESTROOT)/usr/$(SBIN)
+ CONFDIR=$(DESTROOT)/etc
+ 
+-MANROOT=$(DESTROOT)$(SHARE)/man
++MANROOT=$(DESTROOT)/usr/$(SHARE)/man
+ MANSECT=8
+ MANDIR=$(MANROOT)/man$(MANSECT)
+ 
+@@ -569,7 +571,7 @@
+ 	chmod 644 $@
+ 
+ identconn: identconn.sh
+-	sed -e 's,xDESTROOTx,$(DESTROOT),g' $? > $@-t
++	sed -e 's,xDESTROOTx,$(DESTROOT)/usr,g' $? > $@-t
+ 	rm -f $@
+ 	mv $@-t $@
+ 	chmod 755 $@
+@@ -581,11 +583,11 @@
+ 		echo ".so `basename $(MANDIR)`/identd.$(MANSECT)" > $(MANDIR)/$(PREFIX)identd.$(MANSECT) ; \
+ 	fi
+ 	$(INSTALL) -m 755 $(PREFIX)identd $(DESTDIR)
+-	$(INSTALL) -m 755 identconn $(DESTROOT)/bin
++	$(INSTALL) -m 755 identconn $(DESTROOT)/usr/bin
+ 	$(INSTALL) -m 644 idecrypt.man  $(MANDIR)/idecrypt.$(MANSECT)
+ 	$(INSTALL) -m 755 idecrypt $(DESTDIR)/idecrypt
+ 	@echo "The following command will fail it you are not Root."
+-	-$(INSTALL) -o root -g kmem -m 2555 itest $(DESTROOT)/bin
++	-$(INSTALL) itest $(DESTROOT)/usr/sbin
+ 
+ 
+ tests:
+--- pidentd-2.8.4/identconn.sh.rh	Thu Nov 12 13:01:25 1998
++++ pidentd-2.8.4/identconn.sh	Thu Nov 12 13:01:50 1998
+@@ -1,6 +1,6 @@
+ #! /bin/sh
+ :
+-PATH=/usr/sbin:/usr/etc:/usr/bin:/usr/ucb:xDESTROOTx/bin ; export PATH
++PATH=/usr/sbin:/usr/etc:/usr/bin:/usr/ucb:/bin ; export PATH
+ 
+-netstat -f inet -n | grep ESTAB | itest
++netstat -A inet -n | grep ESTAB | itest
+ 
