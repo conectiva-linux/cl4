@@ -1,0 +1,61 @@
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/alpha/gnu/types.h.kfd	Wed Sep 30 02:16:38 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/alpha/gnu/types.h	Wed Sep 30 02:17:11 1998
+@@ -74,7 +74,7 @@
+ #undef __FDMASK
+ 
+ /* Number of descriptors that can fit in an `fd_set'.  */
+-#define __FD_SETSIZE	1024
++#define __FD_SETSIZE	4096
+ 
+ /* It's easier to assume 8-bit bytes than to get CHAR_BIT.  */
+ #define __NFDBITS	(8 * sizeof (__fd_mask))
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/gnu/types.h.kfd	Wed Sep 30 02:16:17 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/gnu/types.h	Wed Sep 30 02:17:30 1998
+@@ -69,7 +69,7 @@
+ typedef unsigned long int __fd_mask;
+ 
+ /* Number of descriptors that can fit in an `fd_set'.  */
+-#define __FD_SETSIZE	1024
++#define __FD_SETSIZE	4096
+ 
+ /* It's easier to assume 8-bit bytes than to get CHAR_BIT.  */
+ #define __NFDBITS	(8 * sizeof (__fd_mask))
+--- glibc-2.0.7/linux/include/linux/fs.h.kfd	Tue Dec 23 18:51:43 1997
++++ glibc-2.0.7/linux/include/linux/fs.h	Wed Sep 30 02:15:14 1998
+@@ -34,7 +34,7 @@
+ 
+ /* Fixed constants first: */
+ #undef NR_OPEN
+-#define NR_OPEN 1024
++#define NR_OPEN 3000
+ 
+ #define NR_SUPER 64
+ #define BLOCK_SIZE 1024
+--- glibc-2.0.7/linux/include/linux/limits.h.kfd	Tue Dec  2 16:44:40 1997
++++ glibc-2.0.7/linux/include/linux/limits.h	Wed Sep 30 02:15:14 1998
+@@ -1,12 +1,12 @@
+ #ifndef _LINUX_LIMITS_H
+ #define _LINUX_LIMITS_H
+ 
+-#define NR_OPEN		1024
++#define NR_OPEN		3000
+ 
+ #define NGROUPS_MAX       32	/* supplemental group IDs are available */
+ #define ARG_MAX       131072	/* # bytes of args + environ for exec() */
+ #define CHILD_MAX        999    /* no limit :-) */
+-#define OPEN_MAX         256	/* # open files a process may have */
++#define OPEN_MAX        3000	/* # open files a process may have */
+ #define LINK_MAX         127	/* # links a file may have */
+ #define MAX_CANON        255	/* size of the canonical input queue */
+ #define MAX_INPUT        255	/* size of the type-ahead buffer */
+--- glibc-2.0.7/linux/include/linux/posix_types.h.kfd	Tue Dec  9 03:07:19 1997
++++ glibc-2.0.7/linux/include/linux/posix_types.h	Wed Sep 30 02:15:14 1998
+@@ -30,7 +30,7 @@
+ #define __NFDBITS	(8 * sizeof(unsigned long))
+ 
+ #undef __FD_SETSIZE
+-#define __FD_SETSIZE	1024
++#define __FD_SETSIZE	4096
+ 
+ #undef __FDSET_LONGS
+ #define __FDSET_LONGS	(__FD_SETSIZE/__NFDBITS)

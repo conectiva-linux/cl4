@@ -1,0 +1,71 @@
+--- glibc-2.0.7/intl/locale.alias.localedata	Fri Jan 30 22:16:04 1998
++++ glibc-2.0.7/intl/locale.alias	Fri May  1 15:14:10 1998
+@@ -44,8 +44,8 @@
+ norwegian       no_NO.ISO-8859-1
+ polish          pl_PL.ISO-8859-2
+ portuguese      pt_PT.ISO-8859-1
+-rumanian        ro_RO.ISO-8859-2
+-russian         ru_SU.ISO-8859-5
++romanian        ro_RO.ISO-8859-2
++russian         ru_RU.ISO-8859-5
+ slovak          sk_SK.ISO-8859-2
+ slovene         sl_CS.ISO-8859-2
+ spanish         es_ES.ISO-8859-1
+--- glibc-2.0.7/localedata/locales/ru_SU.localedata	Fri May  1 15:16:12 1998
++++ glibc-2.0.7/localedata/locales/ru_SU	Fri May  1 15:17:44 1998
+@@ -0,0 +1,45 @@
++comment_char %
++escape_char  /
++%
++% Russian Language Locale for Russia
++% Source: RAP
++% Address: Sankt Jo//rgens Alle 8
++%    DK-1615 Ko//benhavn V, Danmark
++% Contact: Keld Simonsen
++% Email: Keld.Simonsen@dkuug.dk
++% Tel: +45 - 31226543
++% Fax: +45 - 33256543
++% Language: ru
++% Territory: RU
++% Revision: 4.3
++% Date: 1996-10-15
++% Application: general
++% Users: general
++% Repertoiremap: mnemonic,ds
++% Charset: KOI8-R
++% Distribution and use is free, also
++% for commercial purposes.
++
++LC_CTYPE
++copy "ru_RU"
++END LC_CTYPE
++
++LC_COLLATE
++copy "ru_RU"
++END LC_COLLATE
++
++LC_MESSAGES
++copy "ru_RU"
++END LC_MESSAGES
++
++LC_MONETARY
++copy "ru_RU"
++END LC_MONETARY
++
++LC_NUMERIC
++copy "ru_RU"
++END LC_NUMERIC
++
++LC_TIME
++copy "ru_RU"
++END LC_TIME
+--- glibc-2.0.7/localedata/SUPPORTED.localedata	Tue Mar 24 15:22:16 1998
++++ glibc-2.0.7/localedata/SUPPORTED	Fri May  1 15:14:11 1998
+@@ -41,6 +41,7 @@
+ pt_PT ISO-8859-1
+ ro_RO ISO-8859-2
+ ru_RU ISO-8859-5
++ru_SU KOI8-R
+ sl_SI ISO-8859-2
+ sv_FI ISO-8859-1
+ sv_SE ISO-8859-1

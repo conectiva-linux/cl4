@@ -1,0 +1,25 @@
+
+Sat Dec 13 11:14:48 1997  H.J. Lu  <hjl@gnu.org>
+
+	* libio/libio.h (_IO_getc, _IO_peekc, _IO_putc, _IO_feof,
+	_IO_ferror): Use unlocked version for non-MT programs.
+
+Index: libio/libio.h
+===================================================================
+RCS file: /home/work/cvs/gnu/glibc-2.0/libio/libio.h,v
+retrieving revision 1.1.1.1
+diff -u -r1.1.1.1 libio.h
+--- libio/libio.h	1997/09/19 18:10:38	1.1.1.1
++++ libio/libio.h	1998/02/02 18:36:43
+@@ -294,10 +294,7 @@
+ # define _IO_cleanup_region_end(_Doit) /**/
+ #endif /* !_IO_MTSAFE_IO */
+ 
+-/* XXX Should we allow a symbol to be defined which selects the efficient
+-  implementation when the user is really sure no threaded functions ever
+-  will be used?  */
+-#if 1
++#if defined(_LIBC) || defined(_REENTRANT) || defined(_IO_MTSAFE_IO)
+ # define _IO_getc(_fp) _IO_getc (_fp)
+ # define _IO_peekc(_fp) _IO_peekc_locked (_fp)
+ # define _IO_putc(_ch, _fp) _IO_putc (_ch, _fp)

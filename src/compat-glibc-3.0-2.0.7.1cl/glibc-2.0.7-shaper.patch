@@ -1,0 +1,67 @@
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/net/if_shaper.h.shaper	Tue Sep 29 18:41:44 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/net/if_shaper.h	Tue Sep 29 18:50:15 1998
+@@ -0,0 +1,42 @@
++#ifndef _NET_IF_SHAPER_H
++#define _NET_IF_SHAPER_H 1
++
++#include <sys/types.h>
++#include <sys/cdefs.h>
++
++#include <net/if.h>
++#include <sys/ioctl.h>
++
++__BEGIN_DECLS
++
++#define SHAPER_QLEN	10
++/*
++ *	This is a bit speed dependant (read it shouldnt be a constant!)
++ *
++ *	5 is about right for 28.8 upwards. Below that double for every
++ *	halving of speed or so. - ie about 20 for 9600 baud.
++ */
++#define SHAPER_LATENCY	(5*HZ)
++#define SHAPER_MAXSLIP	2
++#define SHAPER_BURST	(HZ/50)		/* Good for >128K then */
++
++#define SHAPER_SET_DEV		0x0001
++#define SHAPER_SET_SPEED	0x0002
++#define SHAPER_GET_DEV		0x0003
++#define SHAPER_GET_SPEED	0x0004
++
++struct shaperconf
++{
++    u_int16_t	ss_cmd;
++    union {
++	char 	  ssu_name[14];
++	u_int32_t ssu_speed;
++    } ss_u;
++#define ss_speed ss_u.ssu_speed
++#define ss_name ss_u.ssu_name
++};
++
++__END_DECLS
++
++#endif /* net/if_shaper.h */
++
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/Dist.shaper	Tue Sep 29 20:33:19 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/Dist	Tue Sep 29 20:33:44 1998
+@@ -13,6 +13,7 @@
+ net/if_arp.h
+ net/if_packet.h
+ net/if_ppp.h
++net/if_shaper.h
+ net/if_slip.h
+ net/ppp-comp.h
+ net/ppp_defs.h
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/Makefile.shaper	Fri Aug 21 15:22:23 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/Makefile	Tue Sep 29 20:34:48 1998
+@@ -36,7 +36,8 @@
+ 
+ ifeq ($(subdir),socket)
+ sysdep_headers += sys/socketcall.h net/if.h net/if_ppp.h net/ppp-comp.h \
+-		  net/ppp_defs.h net/if_arp.h net/route.h net/ethernet.h
++		  net/ppp_defs.h net/if_arp.h net/route.h net/ethernet.h \
++		  net/if_shaper.h
+ sysdep_routines += cmsg_nxthdr
+ endif
+ 

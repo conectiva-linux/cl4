@@ -1,0 +1,15 @@
+--- glibc-2.0.7/time/tzset.c.gafton	Fri Jun 26 10:38:59 1998
++++ glibc-2.0.7/time/tzset.c	Fri Jun 26 11:01:05 1998
+@@ -168,6 +168,12 @@
+ 
+   /* Examine the TZ environment variable.  */
+   tz = getenv ("TZ");
++  if (tz != NULL) 
++      if (__libc_enable_secure) { /* if uid != euid || gid != egid */
++	  if (*tz == '/') /* a path... */
++	      tz = NULL; /* do not allow in setu/g-id apps */
++      }
++        
+   if (tz == NULL)
+     /* No user specification; use the site-wide default.  */
+     tz = TZDEFAULT;

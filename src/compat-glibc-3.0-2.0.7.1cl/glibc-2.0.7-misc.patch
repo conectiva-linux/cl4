@@ -1,0 +1,26 @@
+--- glibc-2.0.7/elf/dl-open.c.misc	Tue Mar 31 14:24:02 1998
++++ glibc-2.0.7/elf/dl-open.c	Thu May  7 16:46:54 1998
+@@ -142,6 +142,12 @@
+ 	}
+     }
+ 
++  if (_dl_loaded == new)
++    /* We are put at the first place on the global scope list, one way
++       or the other. We may be used by other shared objects. We have to
++       make sure that it stays in memory for them. Increment the open
++       count. */
++    new->l_opencount++;
+ 
+   /* Notify the debugger we have added some objects.  We need to call
+      _dl_debug_initialize in a static program in case dynamic linking has
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/gethostid.c.misc	Fri Jan 30 22:35:01 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/gethostid.c	Thu May  7 16:47:41 1998
+@@ -20,7 +20,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
+-#define HOSTIDFILE "/var/adm/hostid"
++#define HOSTIDFILE "/var/run/hostid"
+ 
+ #ifdef SET_PROCEDURE
+ int

@@ -1,0 +1,23 @@
+Jeff Johnson	ARS N3NPQ
+jbj@redhat.com (jbj@jbj.org)
+Chapel Hill, NC
+========================================================================
+--- glibc-2.0.7/sysdeps/sparc/sparc32/__longjmp.S.jbj	Fri Oct  2 14:23:08 1998
++++ glibc-2.0.7/sysdeps/sparc/sparc32/__longjmp.S	Fri Oct  2 14:26:38 1998
+@@ -70,15 +70,7 @@
+ 
+ LOC(found):
+ 	/* We have unwound register windows so %fp matches the target.  */
+-	cmp %o0, %sp		/* Check jmp_buf SP vs register window.  */
+-	bge,a LOC(sp_ok)	/* Saved must not be deeper than register.  */
+-	 mov %o0, %sp		/* OK, install new SP.  */
+-
+-LOC(bogus):
+-	/* Get here only if the jmp_buf or stack is clobbered.  */
+-	call C_SYMBOL_NAME(abort)
+-	 nop
+-	unimp 0
++	mov %o0, %sp		/* OK, install new SP.  */
+ 
+ LOC(sp_ok):
+ 	ld ENV(g1,JB_PC), %o0	/* Extract target return PC.  */

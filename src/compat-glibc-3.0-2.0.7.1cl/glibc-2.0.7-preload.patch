@@ -1,0 +1,21 @@
+--- glibc-2.0.7/elf/rtld.c.preload	Wed Aug 12 20:01:49 1998
++++ glibc-2.0.7/elf/rtld.c	Mon Aug 17 12:38:25 1998
+@@ -148,7 +148,7 @@
+   enum { normal, list, verify, trace } mode;
+   struct link_map **preloads;
+   unsigned int npreloads;
+-  const char *preloadlist;
++  const char *preloadlist = NULL;
+   size_t file_size;
+   char *file;
+ 
+@@ -358,7 +358,8 @@
+   preloads = NULL;
+   npreloads = 0;
+ 
+-  preloadlist = getenv ("LD_PRELOAD");
++  if (!__libc_enable_secure)
++      preloadlist = getenv ("LD_PRELOAD");
+   if (preloadlist && *preloadlist != '\0')
+     {
+       /* The LD_PRELOAD environment variable gives list of libraries

@@ -1,0 +1,54 @@
+--- glibc-2.0.7/elf/dl-load.c.dlopen	Thu Feb 18 12:23:22 1999
++++ glibc-2.0.7/elf/dl-load.c	Thu Feb 18 12:23:23 1999
+@@ -97,6 +97,7 @@
+   struct link_map *l = NULL;
+   void *file_mapping = NULL;
+   size_t mapping_size = 0;
++  struct stat statb;
+ 
+ #define LOSE(s) lose (0, (s))
+   void lose (int code, const char *msg)
+@@ -153,9 +154,12 @@
+   const ElfW(Phdr) *ph;
+   int type;
+ 
++  fstat (fd, &statb);
++
+   /* Look again to see if the real name matched another already loaded.  */
+   for (l = _dl_loaded; l; l = l->l_next)
+-    if (! strcmp (realname, l->l_name))
++    if (! strcmp (realname, l->l_name)
++	|| (l->l_dev == statb.st_dev && l->l_ino == statb.st_ino))
+       {
+ 	/* The object is already loaded.
+ 	   Just bump its reference count and return it.  */
+@@ -221,6 +225,8 @@
+     lose (ENOMEM, "cannot create shared object descriptor");
+   l->l_opencount = 1;
+   l->l_loader = loader;
++  l->l_dev = statb.st_dev;
++  l->l_ino = statb.st_ino;
+ 
+   /* Extract the remaining details we need from the ELF header
+      and then map in the program header table.  */
+--- glibc-2.0.7/elf/link.h.dlopen	Tue Mar 24 14:23:40 1998
++++ glibc-2.0.7/elf/link.h	Thu Feb 18 17:25:39 1999
+@@ -26,6 +26,8 @@
+ #include <stddef.h>
+ 
+ #include <elf.h>
++#include <sys/stat.h>
++#include <sys/types.h>
+ 
+ __BEGIN_DECLS
+ 
+@@ -97,6 +99,9 @@
+ 
+     /* All following members are internal to the dynamic linker.
+        They may change without notice.  */
++
++    dev_t l_dev;
++    ino_t l_ino;
+ 
+     const char *l_libname;	/* Name requested (before search).  */
+     /* Indexed pointers to dynamic section.

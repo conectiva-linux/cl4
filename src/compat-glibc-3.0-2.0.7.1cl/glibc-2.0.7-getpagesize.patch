@@ -1,0 +1,52 @@
+--- glibc-2.0.7/elf/dl-runtime.c.gafton	Mon Aug 24 14:05:30 1998
++++ glibc-2.0.7/elf/dl-runtime.c	Tue Aug 25 04:02:07 1998
+@@ -83,17 +83,6 @@
+ #undef elf_machine_rel
+ #undef elf_machine_rela
+ 
+-/* We need to define the function as a local symbol so that the reference
+-   in the trampoline code will be a local PC-relative call.  Tell the
+-   compiler not to worry that the function appears not to be called.  */
+-
+-static ElfW(Addr) fixup (
+-#ifdef ELF_MACHINE_RUNTIME_FIXUP_ARGS
+-			 ELF_MACHINE_RUNTIME_FIXUP_ARGS,
+-#endif
+-			 struct link_map *l, ElfW(Word) reloc_offset)
+-     __attribute__ ((unused));
+-
+ /* This function is called through a special trampoline from the PLT the
+    first time each PLT entry is called.  We must perform the relocation
+    specified in the PLT of the given shared object, and return the resolved
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/sparc/sparc32/getpagesize.c.gafton	Tue Aug 25 19:06:30 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/sparc/sparc32/getpagesize.c	Wed Aug 26 11:02:21 1998
+@@ -22,17 +22,15 @@
+ /* Return the system page size.  This value will either be 4k or 8k depending
+    on whether or not we are running on Sparc v9 machine.  */
+ 
+-/* If we are not a static program, this value is collected from the system
+-   via the AT_PAGESZ auxiliary argument.  If we are a static program, we
+-   have to guess.  We should _really_ get Linux a proper sysconf()...  */
+-
+ extern size_t _dl_pagesize;
+ 
++extern size_t __syscall_getpagesize(void);
++
+ int
+ __getpagesize ()
+ {
+-  if (_dl_pagesize == 0)
+-    _dl_pagesize = EXEC_PAGESIZE;
++  if (_dl_pagesize == 0) 
++    _dl_pagesize = __syscall_getpagesize();
+   return _dl_pagesize;
+ }
+ 
+--- glibc-2.0.7/sysdeps/unix/sysv/linux/sparc/sparc32/syscalls.list.gafton	Wed Aug 26 10:31:22 1998
++++ glibc-2.0.7/sysdeps/unix/sysv/linux/sparc/sparc32/syscalls.list	Wed Aug 26 10:32:25 1998
+@@ -3,3 +3,5 @@
+ s_getgroups	getgroups getgroups	2	__syscall_getgroups
+ s_llseek	llseek	_llseek		5	__sys_llseek
+ s_setgroups	setgroups setgroups	2	__syscall_setgroups
++s_getpagesize	getpagesize getpagesize	0	__syscall_getpagesize
++
