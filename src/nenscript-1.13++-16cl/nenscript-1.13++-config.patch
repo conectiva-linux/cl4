@@ -1,0 +1,20 @@
+--- nenscript-1.13++/makefile.orig	Tue Nov 24 04:56:48 1992
++++ nenscript-1.13++/makefile	Wed Oct 11 13:48:48 1995
+@@ -11,7 +11,7 @@
+ SOURCES		=	main.c postscri.c print.c fontwidt.c font_lis.c paper.c
+ OBJECTS		=	$(SOURCES:.c=.o)
+ 
+-INSTALLDIR	=	/usr/local
++INSTALLDIR	=	/usr
+ BININSTALLDIR	=	$(INSTALLDIR)/bin
+ MANINSTALLDIR	=	$(INSTALLDIR)/man/man1
+ 
+@@ -26,7 +26,7 @@
+ #
+ # US_VERSION selects default US paper format as well as selecting US format date
+ #
+-CFLAGS	=	-O $(DEBUG) #-DUS_VERSION
++CFLAGS	=	$(RPM_OPT_FLAGS) $(DEBUG) -DUS_VERSION
+ LFLAGS	=	
+ 
+ CHMOD	=	chmod
