@@ -1,0 +1,21 @@
+--- util-linux-2.9o/mount/mntent.c.fix	Tue Apr 13 00:35:33 1999
++++ util-linux-2.9o/mount/mntent.c	Tue Apr 13 00:36:34 1999
+@@ -158,7 +158,7 @@ my_getmntent (mntFILE *mfp) {
+ 
+ 		mfp->mntent_lineno++;
+ 		s = index (buf, '\n');
+-		if (s == NULL) {
++		if (s == NULL && (strlen(buf) >= sizeof(buf) - 1)) {
+ 			/* Missing final newline?  Otherwise extremely */
+ 			/* long line - assume file was corrupted */
+ 			if (feof(mfp->mntent_fp)) {
+@@ -171,7 +171,8 @@ my_getmntent (mntFILE *mfp) {
+ 				goto err;
+ 			}
+ 		}
+-		*s = 0;
++		if (s != NULL)
++		    *s = 0;
+ 		s = skip_spaces(buf);
+ 	} while (*s == '\0' || *s == '#');
+ 

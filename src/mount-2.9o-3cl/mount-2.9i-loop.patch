@@ -1,0 +1,14 @@
+diff -upr util-linux-2.9i.orig/mount/mk_loop_h util-linux-2.9i/mount/mk_loop_h
+--- util-linux-2.9i.orig/mount/mk_loop_h	Sun Oct 11 08:50:45 1998
++++ util-linux-2.9i/mount/mk_loop_h	Thu Feb 11 11:40:22 1999
+@@ -14,8 +14,10 @@ rm -f loop.h
+ 
+ if [ -f /usr/include/linux/posix_types.h ]; then
+    echo '#include <linux/posix_types.h>' >> loop.h
++   echo '#undef dev_t' >> loop.h
+    echo '#define dev_t __kernel_dev_t' >> loop.h
+ else
++   echo '#undef dev_t' >> loop.h
+    echo '#define dev_t unsigned short' >> loop.h
+ fi
+ 

@@ -1,0 +1,33 @@
+--- util-linux-2.9o/mount/umount.c.orig	Wed Feb 24 11:24:54 1999
++++ util-linux-2.9o/mount/umount.c	Tue Apr 13 00:39:30 1999
+@@ -49,15 +49,16 @@
+ #include <arpa/inet.h>
+ #endif
+ 
+-#ifdef MNT_FORCE
++#if defined(MNT_FORCE) && !defined(__sparc__) && !defined(__arm__)
+ /* Interesting ... it seems libc knows about MNT_FORCE and presumably
+    about umount2 as well -- need not do anything */
+ #else /* MNT_FORCE */
+-static int umount2(const char *path, int flags);
+-
+ /* Does the present kernel source know about umount2? */
+ #include <linux/unistd.h>
+ #ifdef __NR_umount2
++
++static int umount2(const char *path, int flags);
++
+ _syscall2(int, umount2, const char *, path, int, flags);
+ #else /* __NR_umount2 */
+ static int
+@@ -68,8 +69,10 @@ umount2(const char *path, int flags) {
+ }
+ #endif /* __NR_umount2 */
+ 
++#if !defined(MNT_FORCE)
+ /* dare not try to include <linux/mount.h> -- lots of errors */
+ #define MNT_FORCE 1
++#endif
+ 
+ #endif /* MNT_FORCE */
+ 

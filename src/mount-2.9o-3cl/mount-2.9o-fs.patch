@@ -1,0 +1,12 @@
+--- util-linux-2.9o/mount/mount.c.fs	Tue Apr 13 00:41:50 1999
++++ util-linux-2.9o/mount/mount.c	Tue Apr 13 00:42:08 1999
+@@ -518,8 +518,7 @@ try_mount_one (const char *spec0, const 
+   if (type)
+ #ifndef ALWAYS_STAT
+   if (streq (type, "smb") || streq (type, "ncp")
+-      /* || streq (type, "smbfs") || streq (type, "ncpfs") */
+-      )
++      || streq (type, "smbfs") || streq (type, "ncpfs"))
+ #else
+   if (strlen (type) < 100)
+ #endif

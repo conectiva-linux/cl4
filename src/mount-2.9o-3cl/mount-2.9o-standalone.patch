@@ -1,0 +1,10 @@
+--- mount-2.9o/Makefile.standalone	Thu Apr 15 03:18:52 1999
++++ mount-2.9o/Makefile	Thu Apr 15 03:19:59 1999
+@@ -1,5 +1,5 @@
+-include ../make_include
+-include ../MCONFIG
++-include ../make_include
++-include ../MCONFIG
+ 
+ CC = gcc
+ CFLAGS = -I$(LIB) $(OPT)
