@@ -1,0 +1,6 @@
+#!/bin/sh
+
+umask 022
+if [ -d /var/spool/slrnpull ]; then
+	exec su news -c 'slrnpull --expire'
+fi

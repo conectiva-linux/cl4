@@ -1,0 +1,4 @@
+slrn name "slrn"
+slrn description "Usenet News Reader"
+slrn exec "xterm -e slrn &"
+slrn group "Utilities/Misc"

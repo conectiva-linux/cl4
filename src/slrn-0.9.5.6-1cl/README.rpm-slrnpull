@@ -1,0 +1,14 @@
+This package is designed to let you run a mini-newsspool as user
+"news". The spool directory is /var/spool/slrnpull. The system will
+automatically expire old articles once per day, and rotate your
+slrnpull log (/var/spool/slrnpull/log).
+
+The log is not put in /var/log, to make it possible for users to run
+mini-spools out of their own home directories (they would not have
+permission to write the log file).
+
+This package does not set up automatic sucking of articles; look at
+slrnpull.sh in this directory for an example of how to set this up for
+a dialup link
+
+Manoj Kasichainula <manojk@io.com>

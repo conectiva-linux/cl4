@@ -1,0 +1,11 @@
+--- slrn/configure.str	Tue Sep  8 08:59:16 1998
++++ slrn/configure	Tue Sep  8 20:26:43 1998
+@@ -2540,7 +2540,7 @@
+ 
+ if test -n "$GCC"
+ then
+-  CFLAGS="$CFLAGS -fno-strength-reduce"
++  CFLAGS="$CFLAGS"
+   if test -n "$gcc_warnings"
+   then
+     CFLAGS="$CFLAGS -Wall \

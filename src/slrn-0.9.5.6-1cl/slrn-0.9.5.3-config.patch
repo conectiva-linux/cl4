@@ -1,0 +1,66 @@
+--- slrn/src/slrnfeat.h.orig	Tue Sep  8 20:22:34 1998
++++ slrn/src/slrnfeat.h	Tue Sep  8 20:23:05 1998
+@@ -36,13 +36,13 @@
+  * This will not work under VMS because sltcp.c will not work with VMS.
+  * Also make sure NNTP support is enabled.
+  */
+-#define SLRN_HAS_GROUPLENS	0
++#define SLRN_HAS_GROUPLENS	1
+ 
+ /* If set to 1, slrn will cache message-ids during a session and use those
+  * to eliminate cross-posts.  This should not be necessary if the server 
+  * supports Xref in its overview database.
+  */
+-#define SLRN_HAS_MSGID_CACHE	0
++#define SLRN_HAS_MSGID_CACHE	1
+ 
+ /* Set this to 0 if you do not want the slang interpreter made available. */
+ #define SLRN_HAS_SLANG		1
+@@ -109,7 +109,7 @@
+   /* Note the -S flag.  slrn appends the signature to the file to be posted and
+    * the -S flag tells inews not to also do this.  The -h flag must be used.
+    */
+-# define SLRN_INEWS_PROGRAM      "/usr/local/bin/inews -S -h"
++# define SLRN_INEWS_PROGRAM      "/usr/bin/inews -S -h"
+ #endif
+ 
+ #if SLRN_HAS_SPOOL_SUPPORT || defined(SLRNPULL_CODE)
+@@ -196,9 +196,9 @@
+ #   define SLRN_ARTICLE_FILENAME	".article"
+ #   define SLRN_FOLLOWUP_FILENAME	".followup"
+ #   define SLRN_SIGNATURE_FILE		".signature"
+-#   define SLRN_SENDMAIL_COMMAND	"/usr/lib/sendmail -oi -t -oem -odb"
++#   define SLRN_SENDMAIL_COMMAND	"/usr/sbin/sendmail -oi -t -oem -odb"
+ #   ifndef SLRN_LIB_DIR
+-#    define SLRN_LIB_DIR		"/usr/local/lib/slrn"
++#    define SLRN_LIB_DIR		"/usr/lib/slrn"
+ #   endif
+ #  endif			       /* unix */
+ # endif				       /* os2 */
+@@ -207,7 +207,7 @@
+ /* #define OUR_ORGANIZATION "organization-name" */
+ /* #define OUR_HOSTNAME "host.name.here" */
+ /* #define NNTPSERVER_NAME  "my.server.name" */
+-/* #define NNTPSERVER_FILE		"/usr/local/lib/news/nntp_server" */
++#define NNTPSERVER_FILE		"/usr/lib/news/nntp_server"
+ 
+ #if SLRN_HAS_GROUPLENS
+ # undef SLRN_USE_SLTCP
+@@ -217,7 +217,7 @@
+ /* The rest of the files apply to slrnpull. */
+ 
+ /* This must be set to an absolute pathname. */
+-#define SLRNPULL_ROOT_DIR	"/var/spool/news/slrnpull"
++#define SLRNPULL_ROOT_DIR	"/var/spool/slrnpull"
+ 
+ /* The remaing variables are specified as relative names with respect to the
+  * SLRNPULL_ROOT_DIR.
+@@ -234,7 +234,7 @@
+  * created with the setgid bit enabled, which slrnpull will do if this is
+  * set to 1.  See slrn/slrnpull/setgid.txt for more information.
+  */
+-#define SLRNPULL_USE_SETGID_POSTS	0
++#define SLRNPULL_USE_SETGID_POSTS	1
+ 
+ /* The file that will be used for killing articles as they are fetched. */
+ #define SLRNPULL_SCORE_FILE	"score"
