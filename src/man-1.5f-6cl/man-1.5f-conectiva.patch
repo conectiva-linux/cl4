@@ -1,0 +1,22 @@
+--- conf_script.orig	Fri Sep  4 14:15:41 1998
++++ conf_script	Fri Sep  4 14:21:12 1998
+@@ -47,7 +47,7 @@
+ s,@cmp@,/usr/bin/cmp -s,
+ s,@cat@,/bin/cat,
+ s,@bindir@,/usr/bin,
+-s,@mandir@,/usr/share/man,
++s,@mandir@,/usr/man,
+ s,@locale@,,
+ s,@fhs@,,
+ s,@fsstnd@,# ,
+@@ -60,8 +60,8 @@
+ s,@apropos@,/usr/bin/apropos,
+ s,@whatis@,/usr/bin/whatis,
+ s,@makewhatis@,/usr/sbin/makewhatis,
+-s,@man_config_dir@,/usr/share/misc,
+-s,@man_config_file@,/usr/share/misc/man.conf,
++s,@man_config_dir@,/etc,
++s,@man_config_file@,/etc/man.config,
+ s,@manpathoption@,--path,
+ s,@grepsilent@,q,
+ s/@sections@/1:8:2:3:4:5:6:7:9:tcl:n:l:p:o/

@@ -1,0 +1,11 @@
+--- man-1.5f/src/man.conf.in.acme	Fri Sep  4 14:14:13 1998
++++ man-1.5f/src/man.conf.in	Fri Sep  4 14:14:39 1998
+@@ -36,7 +36,7 @@
+ MANPATH	/usr/man
+ MANPATH	/usr/local/man
+ MANPATH	/usr/X11R6/man
+-# MANPATH /usr/lib/perl5/man
++MANPATH /usr/lib/perl5/man
+ #
+ # Set up PATH to MANPATH mapping
+ #
