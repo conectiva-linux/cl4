@@ -1,0 +1,99 @@
+--- autofs-3.1.1/man/auto.master.5.orig	Thu Apr  9 19:34:04 1998
++++ autofs-3.1.1/man/auto.master.5	Tue Oct  6 10:38:40 1998
+@@ -32,7 +32,7 @@
+ tabs. Lines beginning with # are comments. The first field is the mount
+ point. Second field is the map file to be consulted for this mount-point.
+ The third field is optional and can contain options to be applied to all
+-entries in the map. Options are cumulative which is a difference to the
++entries in the map. Options are cumulative, which is a difference from the
+ behavior of the SunOS automounter.
+ 
+ The format of the map file and the options are described in
+--- autofs-3.1.1/man/autofs.5.orig	Thu Apr  9 19:34:04 1998
++++ autofs-3.1.1/man/autofs.5	Tue Oct  6 10:38:40 1998
+@@ -79,7 +79,7 @@
+ is expanded to the value of the 
+ .B key
+ field that matched the line (which probably only makes sense together with
+-a wildchard key).
++a wildcard key).
+ .SS Wildcard Key
+ A * in the
+ .B key
+--- autofs-3.1.1/man/autofs.8.orig	Thu Apr  9 19:34:04 1998
++++ autofs-3.1.1/man/autofs.8	Tue Oct  6 10:38:40 1998
+@@ -1,10 +1,10 @@
+ .\" $Id: autofs.8,v 1.2 1997/10/06 21:52:01 hpa Exp $
+ .TH AUTOFS 8 "9 Sep 1997"
+ .SH NAME
+-/etc/init.d/autofs \- Control Script for automounter
++/etc/rc.d/init.d/autofs \- Control Script for automounter
+ .SH SYNOPSIS
+-.B /etc/init.d/autofs
+-.I start|stop|reload
++.B /etc/rc.d/init.d/autofs
++.I start|stop|reload|status
+ .SH "DESCRIPTION"
+ .B autofs
+ control the operation of the
+@@ -30,7 +30,7 @@
+ .BR automount (8)
+ process is started with the appropriate parameters. You can check the
+ active mount points for the automounter with the
+-.B /etc/init.d/autofs status
++.B /etc/rc.d/init.d/autofs status
+ command. After the
+ .I auto.master
+ configuration file is processed the
+@@ -39,7 +39,7 @@
+ then that map will be processed in the same way as the auto.master map. The
+ NIS map will be processed last.
+ .P
+-.B /etc/init.d/autofs reload
++.B /etc/rc.d/init.d/autofs reload
+ will check the current auto.master map against running daemons. It will kill
+ those daemons whose entries have changed and then start daemons for new or  
+ changed entries.
+@@ -51,7 +51,7 @@
+ .B autofs
+ script must be rerun to activate the changes.
+ .P
+-.B /etc/init.d/autofs status
++.B /etc/rc.d/init.d/autofs status
+ will display the current configuration and a list of currently running
+ automount daemons.
+ .SH "SEE ALSO"
+@@ -61,4 +61,5 @@
+ .SH AUTHOR
+ This manual page was written by Christoph Lameter <chris@waterf.org>,
+ for the Debian GNU/Linux system.  Edited by H. Peter Anvin
+-<hpa@transmeta.com>.
++<hpa@transmeta.com>.  Edited by Michael K. Johnson <johnsonm@redhat.com>
++to match Red Hat Linux.
+--- autofs-3.1.1/samples/auto.misc.orig	Thu Apr  9 19:34:04 1998
++++ autofs-3.1.1/samples/auto.misc	Tue Oct  6 10:38:40 1998
+@@ -3,8 +3,11 @@
+ # key [ -mount-options-separated-by-comma ] location
+ # Details may be found in the autofs(5) manpage
+ 
+-kernel		-ro			ftp.kernel.org:/pub/linux
+-boot		-fstype=ext2		:/dev/hda1
+-removable	-fstype=ext2		:/dev/hdd
+-cd		-fstype=iso9660,ro	:/dev/hdc
+-floppy		-fstype=auto		:/dev/fd0
++kernel		-ro,soft,intr		ftp.kernel.org:/pub/linux
++cd		-fstype=iso9660,ro	:/dev/cdrom
++
++# the following entries are samples to pique your imagination
++#floppy		-fstype=auto		:/dev/fd0
++#floppy		-fstype=ext2		:/dev/fd0
++#e2floppy	-fstype=ext2		:/dev/fd0
++#jaz		-fstype=ext2		:/dev/sdc1
+--- autofs-3.1.1/samples/auto.master.orig	Thu Apr  9 19:34:04 1998
++++ autofs-3.1.1/samples/auto.master	Tue Oct  6 10:38:40 1998
+@@ -3,4 +3,4 @@
+ # Format of this file:
+ # mountpoint map options
+ # For details of the format look at autofs(8).
+-/misc	/etc/auto.misc
++/misc	/etc/auto.misc	--timeout 60
