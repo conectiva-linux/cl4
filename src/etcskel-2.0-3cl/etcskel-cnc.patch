@@ -1,0 +1,53 @@
+diff -Nur skel/.Xdefaults skel.cnc/.Xdefaults
+--- skel/.Xdefaults	Mon Mar 29 13:08:21 1999
++++ skel.cnc/.Xdefaults	Tue Jun 22 21:42:06 1999
+@@ -15,34 +15,34 @@
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ ! xterm (and friends)
+ 
+-XTerm*highlightSelection:  true
++!XTerm*highlightSelection:  true
+ ! Uncomment this to use color for the bold attribute
+-XTerm*VT100*colorBDMode:  on
+-XTerm*VT100*colorBD:  blue
++!XTerm*VT100*colorBDMode:  on
++!XTerm*VT100*colorBD:  blue
+ ! Uncomment this to use color for underline attribute
+-XTerm.VT100*colorULMode:  on
+-XTerm.VT100*underLine:  off
+-XTerm*VT100*colorUL:  magenta
++!XTerm.VT100*colorULMode:  on
++!XTerm.VT100*underLine:  off
++!XTerm*VT100*colorUL:  magenta
+ ! Uncomment this to display the scrollbar 
+-XTerm*scrollBar:  true
++!XTerm*scrollBar:  true
+ 
+ ! This resource specifies whether or not to ignore the 'alternate screen'
+ ! of applications such as vi.  When it is on, these applications will restore
+ ! the contents of the screen when they are exited to what they were before
+ ! they were started.  When it is off, the contents of vi will remain on the
+ ! screen after the program is quit.
+-XTerm.VT100.titeInhibit:  true
++!XTerm.VT100.titeInhibit:  true
+ 
+ ! Uncomment this to turn off color mode in your xterms
+ !XTerm.VT100*colorMode:  off
+-XTerm.VT100*dynamicColors:  on
++!XTerm.VT100*dynamicColors:  on
+ 
+ ! Number of lines of scrollback to save
+-XTerm*saveLines:	1500
++!XTerm*saveLines:	1500
+ 
+-xterm*reverseWrap:	true
++!xterm*reverseWrap:	true
+ 
+-*visualBell:		true
+-*scrollTtyOutput:	False
+-*scrollKey:		True
+-Scrollbar.JumpCursor:	True
++!*visualBell:		true
++!*scrollTtyOutput:	False
++!*scrollKey:		True
++!Scrollbar.JumpCursor:	True
