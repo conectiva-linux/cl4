@@ -1,0 +1,735 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"POT-Creation-Date: 1998-11-21 02:31+0100\n"
+"PO-Revision-Date: 1999-06-21 02:31+0100\n"
+"Last-Translator: Elvis Pfützenreuter <epx@netville.com.br>\n"
+"Language-Team: pt_BR <pt_BR@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO9859-1\n"
+"Content-Transfer-Encoding: ISO9859-1\n"
+
+#: koffice/KIllustrator_shell.cc:213 koffice/KIllustrator_shell.cc:225
+#: koffice/KIllustrator_shell.cc:240 koffice/KIllustrator_shell.cc:247
+msgid "KIllustrator Error"
+msgstr "Erro do KIllustrator"
+
+#: koffice/KIllustrator_shell.cc:214
+msgid "Could not create new document"
+msgstr "Não pôde criar novo documento"
+
+#: koffice/KIllustrator_shell.cc:215
+msgid "Ok"
+msgstr "Ok"
+
+#: koffice/KIllustrator_shell.cc:226
+msgid "Could not open file"
+msgstr "Não pôde abrir arquivo"
+
+#: koffice/KIllustrator_shell.cc:241 koffice/KIllustrator_shell.cc:248
+msgid "Could not save file"
+msgstr "Não pôde salvar arquivo"
+
+#: koffice/KIllustrator_shell.cc:287
+msgid ""
+"The document has been modified\n"
+"Do you want to save it ?"
+msgstr "O documento foi modificado\n"
+"Deseja salvá-lo ?"
+
+#: koffice/KIllustrator_view.cc:197 standalone/KIllustrator.cc:491
+msgid "&Select All"
+msgstr "&Selecionar Tudo"
+
+#: koffice/KIllustrator_view.cc:201
+msgid "&Insert Object..."
+msgstr "&Inserir Objeto..."
+
+#: koffice/KIllustrator_view.cc:204 standalone/KIllustrator.cc:493
+msgid "Pr&operties"
+msgstr "Pr&opriedades"
+
+#: koffice/KIllustrator_view.cc:210 share/PropertyEditor.cc:111
+#: standalone/KIllustrator.cc:496
+msgid "Outline"
+msgstr "Vazado"
+
+#: koffice/KIllustrator_view.cc:213 share/FontSelector.cc:377
+#: standalone/KIllustrator.cc:498
+msgid "Normal"
+msgstr "Normal"
+
+#: koffice/KIllustrator_view.cc:216
+msgid "Ruler"
+msgstr "Régua"
+
+#: koffice/KIllustrator_view.cc:219 share/GridDialog.cc:46
+msgid "Grid"
+msgstr "Grade"
+
+#: koffice/KIllustrator_view.cc:223 standalone/KIllustrator.cc:565
+msgid "&Layout"
+msgstr "&Disposição"
+
+#: koffice/KIllustrator_view.cc:225 share/koPageLayoutDia.cc:100
+msgid "Page Layout"
+msgstr "Disposição da Página"
+
+#: koffice/KIllustrator_view.cc:228 share/GDocument.cc:979
+#: share/LayerDialog.cc:49
+msgid "Layers"
+msgstr "Camadas"
+
+#: koffice/KIllustrator_view.cc:231
+msgid "Setup Grid"
+msgstr "Configurar Grade"
+
+#: koffice/KIllustrator_view.cc:233
+msgid "Align to Grid"
+msgstr "Alinhar à Grade"
+
+#: koffice/KIllustrator_view.cc:238 standalone/KIllustrator.cc:566
+msgid "&Arrange"
+msgstr "&Organizar"
+
+#: koffice/KIllustrator_view.cc:239 share/TransformationDialog.cc:54
+#: standalone/KIllustrator.cc:526
+msgid "Transform"
+msgstr "Transformar"
+
+#: koffice/KIllustrator_view.cc:240 share/AlignCmd.cc:30
+#: share/AlignmentDialog.cc:61 standalone/KIllustrator.cc:527
+#: standalone/KIllustrator.cc:578
+msgid "Align"
+msgstr "Alinhar"
+
+#: koffice/KIllustrator_view.cc:242 standalone/KIllustrator.cc:529
+#: standalone/KIllustrator.cc:580
+msgid "To Front"
+msgstr "Trazer à frente"
+
+#: koffice/KIllustrator_view.cc:245 standalone/KIllustrator.cc:531
+#: standalone/KIllustrator.cc:581
+msgid "To Back"
+msgstr "Mandar para trás"
+
+#: koffice/KIllustrator_view.cc:248 standalone/KIllustrator.cc:533
+#: standalone/KIllustrator.cc:582
+msgid "Forward One"
+msgstr "Um adiante"
+
+#: koffice/KIllustrator_view.cc:250 standalone/KIllustrator.cc:536
+#: standalone/KIllustrator.cc:583
+msgid "Back One"
+msgstr "Um para trás"
+
+#: koffice/KIllustrator_view.cc:253 share/GGroup.cc:64
+#: standalone/KIllustrator.cc:540
+msgid "Group"
+msgstr "Agrupar"
+
+#: koffice/KIllustrator_view.cc:255 share/UngroupCmd.cc:28
+#: standalone/KIllustrator.cc:542
+msgid "Ungroup"
+msgstr "Desagrupar"
+
+#: koffice/KIllustrator_view.cc:261 share/TransformationDialog.cc:57
+#: standalone/KIllustrator.cc:515
+msgid "Position"
+msgstr "Posição"
+
+#: koffice/KIllustrator_view.cc:264 share/TransformationDialog.cc:60
+#: standalone/KIllustrator.cc:517
+msgid "Dimension"
+msgstr "Dimensão"
+
+#: koffice/KIllustrator_view.cc:267 share/TransformationDialog.cc:63
+#: standalone/KIllustrator.cc:519
+msgid "Rotation"
+msgstr "Rotação"
+
+#: koffice/KIllustrator_view.cc:270 share/TransformationDialog.cc:66
+#: standalone/KIllustrator.cc:521
+msgid "Mirror"
+msgstr "Espelho"
+
+#: koffice/KIllustrator_view.cc:274
+msgid "&Extras"
+msgstr "E&xtras"
+
+#: koffice/KIllustrator_view.cc:392
+msgid "Colors"
+msgstr "Cores"
+
+#: koffice/KIllustrator_view.cc:432
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: koffice/KIllustrator_view.cc:436 share/SelectionTool.cc:596
+#: standalone/KIllustrator.cc:331
+msgid "Selection Mode"
+msgstr "Modo de Seleção"
+
+#: koffice/KIllustrator_view.cc:438 share/EditPointCmd.cc:29
+#: share/EditPointTool.cc:147 standalone/KIllustrator.cc:337
+msgid "Edit Point"
+msgstr "Editar Ponto"
+
+#: koffice/KIllustrator_view.cc:440 share/FreeHandTool.cc:172
+#: standalone/KIllustrator.cc:343
+msgid "Create FreeHand Line"
+msgstr "Criar linha a mão livre"
+
+#: koffice/KIllustrator_view.cc:442 share/CreatePolylineCmd.cc:29
+#: share/CreatePolylineCmd.cc:39 share/PolylineTool.cc:214
+#: standalone/KIllustrator.cc:349
+msgid "Create Polyline"
+msgstr "Criar linha múltipla"
+
+#: koffice/KIllustrator_view.cc:444 share/BezierTool.cc:288
+#: standalone/KIllustrator.cc:355
+msgid "Create Bezier Curve"
+msgstr "Criar Curva Bezier"
+
+#: koffice/KIllustrator_view.cc:446 share/CreateRectangleCmd.cc:29
+#: share/CreateRectangleCmd.cc:38 share/RectangleTool.cc:85
+#: standalone/KIllustrator.cc:361
+msgid "Create Rectangle"
+msgstr "Criar Retângulo"
+
+#: koffice/KIllustrator_view.cc:448 share/CreatePolygonCmd.cc:29
+#: share/CreatePolygonCmd.cc:39 share/PolygonTool.cc:116
+#: standalone/KIllustrator.cc:367
+msgid "Create Polygon"
+msgstr "Criar Polígono"
+
+#: koffice/KIllustrator_view.cc:450 standalone/KIllustrator.cc:373
+msgid "Create Ellipse"
+msgstr "Criar Elipse"
+
+#: koffice/KIllustrator_view.cc:452
+msgid "Create/Edit Text"
+msgstr "Criar/Editar texto"
+
+#: koffice/KIllustrator_view.cc:453 share/ZoomTool.cc:46
+#: standalone/KIllustrator.cc:385
+msgid "Zoom In"
+msgstr "Ampliar"
+
+#: koffice/KIllustrator_view.cc:622 koffice/KIllustrator_view.cc:731
+#: koffice/KIllustrator_view.cc:756 standalone/KIllustrator.cc:706
+#: standalone/KIllustrator.cc:1002 standalone/KIllustrator.cc:1028
+msgid ""
+"This action will set the default\n"
+"properties for new objects !\n"
+"Would you like to do it ?"
+msgstr "Esta ação configurará as\n"
+"propriedades padrões para os\n"
+"objetos novos !\n"
+"Deseja fazer isso ?"
+
+#: share/AboutDialog.cc:46
+msgid    "About KIllustrator"
+msgstr "Sobre o KIllustrator"
+
+#: share/AddLineSegmentCmd.cc:29
+msgid "Add Line Segment"
+msgstr "Adicionar segmento de linha"
+
+#: share/AlignmentDialog.cc:50
+msgid "Alignment"
+msgstr "Alinhamento"
+
+#: share/AlignmentDialog.cc:64 share/DistributeCmd.cc:31
+msgid "Distribute"
+msgstr "Distribuir"
+
+#: share/AlignmentDialog.cc:104 share/AlignmentDialog.cc:180
+#: share/GridDialog.cc:99
+msgid "Vertically"
+msgstr "Verticalmente"
+
+#: share/AlignmentDialog.cc:129 share/AlignmentDialog.cc:210
+#: share/GridDialog.cc:88
+msgid "Horizontally"
+msgstr "Horizontalmente"
+
+#: share/AlignmentDialog.cc:154
+msgid "To Grid"
+msgstr "À grade"
+
+#: share/AlignmentDialog.cc:159
+msgid "Align To Center of Page"
+msgstr "Alinhar no centro da página"
+
+#: share/AlignmentDialog.cc:240
+msgid "Distribute at"
+msgstr "Distribuir em"
+
+#: share/AlignmentDialog.cc:243
+msgid "Selection"
+msgstr "Seleção"
+
+#: share/AlignmentDialog.cc:247
+msgid "Page"
+msgstr "Página"
+
+#: share/CreateBezierCmd.cc:29
+msgid "Create Bezier"
+msgstr "Criar Bezier"
+
+#: share/CreateOvalCmd.cc:29 share/CreateOvalCmd.cc:38 share/OvalTool.cc:82
+msgid "Create Oval"
+msgstr "Criar Oval"
+
+#: share/CreateTextCmd.cc:29 share/CreateTextCmd.cc:38
+#: standalone/KIllustrator.cc:379
+msgid "Create Text"
+msgstr "Criar Texto"
+
+#: share/DocumentInfo.cc:42 standalone/KIllustrator.cc:468
+msgid "Document Info"
+msgstr "Informações do Documento"
+
+#: share/DocumentInfo.cc:56
+msgid "Done"
+msgstr "Pronto"
+
+#: share/FontSelector.cc:85
+msgid "Requested Font"
+msgstr "Fonte Requisitada"
+
+#: share/FontSelector.cc:90
+msgid "Actual Font"
+msgstr "Fonte Real"
+
+#: share/FontSelector.cc:94 share/FontSelector.cc:98
+msgid "Family:"
+msgstr "Família:"
+
+#: share/FontSelector.cc:118 share/FontSelector.cc:123
+msgid "Size:"
+msgstr "Tamanho:"
+
+#: share/FontSelector.cc:132 share/FontSelector.cc:137
+msgid "Weight:"
+msgstr "Peso:"
+
+#: share/FontSelector.cc:146 share/FontSelector.cc:154
+#: share/PropertyEditor.cc:253 share/PropertyEditor.cc:457
+msgid "Style:"
+msgstr "Estilo:"
+
+#: share/FontSelector.cc:189
+msgid "Charset"
+msgstr "Conjunto de caracteres"
+
+#: share/FontSelector.cc:201
+msgid "Size"
+msgstr "Tamanho"
+
+#: share/FontSelector.cc:240
+msgid "Weight"
+msgstr "Peso"
+
+#: share/FontSelector.cc:241 share/FontSelector.cc:339
+msgid "normal"
+msgstr "normal"
+
+#: share/FontSelector.cc:242 share/FontSelector.cc:341
+msgid "bold"
+msgstr "negrito"
+
+#: share/FontSelector.cc:251
+msgid "Style"
+msgstr "Estilo"
+
+#: share/FontSelector.cc:252 share/FontSelector.cc:352
+#: share/FontSelector.cc:382
+msgid "roman"
+msgstr "romano"
+
+#: share/FontSelector.cc:253 share/FontSelector.cc:354
+#: share/FontSelector.cc:380
+msgid "italic"
+msgstr "itálico"
+
+#: share/FontSelector.cc:375
+msgid "Bold"
+msgstr "Negrito"
+
+#: share/GBezier.cc:212
+msgid "Bezier curve"
+msgstr "Curva Bezier"
+
+#: share/GClipart.cc:74
+msgid "Clipart object"
+msgstr "Objeto clipart:"
+
+#: share/GDocument.cc:978
+msgid "Document"
+msgstr "Documento"
+
+#: share/GDocument.cc:980
+msgid "Objects"
+msgstr "Objetos"
+
+#: share/GLayer.cc:48
+msgid "Layer"
+msgstr "Camada"
+
+#: share/GOval.cc:93
+msgid "Circle"
+msgstr "Círculo"
+
+#: share/GOval.cc:95
+msgid "Ellipse"
+msgstr "Elipse"
+
+#: share/GPolygon.cc:156 share/PolygonConfigDialog.cc:86
+msgid "Polygon"
+msgstr "Polígono"
+
+#: share/GPolygon.cc:158
+msgid "Rectangle"
+msgstr "Retângulo"
+
+#: share/GPolygon.cc:160
+msgid "Square"
+msgstr "Quadrado"
+
+#: share/GPolyline.cc:124
+msgid "Polyline"
+msgstr "Linha múltipla"
+
+#: share/GText.cc:114
+msgid "Text"
+msgstr "Texto"
+
+#: share/GridDialog.cc:83
+msgid "Distance"
+msgstr "Distância"
+
+#: share/GridDialog.cc:109
+msgid "Snap To Grid"
+msgstr "Alinhar à Grade"
+
+#: share/GridDialog.cc:113 standalone/KIllustrator.cc:505
+msgid "Show Grid"
+msgstr "Mostrar grade"
+
+#: share/GroupCmd.cc:28
+msgid "Group Objects"
+msgstr "Agrupar objetos"
+
+#: share/InsertClipartCmd.cc:30
+msgid "Insert Clipart"
+msgstr "Inserir clipart"
+
+#: share/InsertObjCmd.cc:29
+msgid "Insert Object"
+msgstr "Inserir objeto"
+
+#: share/OptionDialog.cc:40
+msgid "Option"
+msgstr "Opção"
+
+#: share/OptionDialog.cc:44
+msgid "General"
+msgstr "Geral"
+
+#: share/OptionDialog.cc:66
+msgid "Unit:"
+msgstr "Unidade:"
+
+#: share/PolygonConfigDialog.cc:47
+msgid "Setup Polygon Tool"
+msgstr "Configurar Ferramenta Polígono"
+
+#: share/PolygonConfigDialog.cc:92
+msgid "Concave Polygon"
+msgstr "Polígono Côncavo"
+
+#: share/PolygonConfigDialog.cc:99
+msgid "Corners:"
+msgstr "Cantos:"
+
+#: share/PolygonConfigDialog.cc:109
+msgid "Sharpness:"
+msgstr "Exatidão:"
+
+#: share/PropertyEditor.cc:108
+msgid "Info"
+msgstr "Info"
+
+#: share/PropertyEditor.cc:114
+msgid "Fill"
+msgstr "Preencher"
+
+#: share/PropertyEditor.cc:158
+msgid "Type:"
+msgstr "Tipo:"
+
+#: share/PropertyEditor.cc:170
+msgid "Bounding Box"
+msgstr "Caixa de Borda"
+
+#: share/PropertyEditor.cc:176
+msgid "X Position:"
+msgstr "Posição X:"
+
+#: share/PropertyEditor.cc:188
+msgid "Y Position:"
+msgstr "Posição Y:"
+
+#: share/PropertyEditor.cc:200 share/PropertyEditor.cc:233
+msgid "Width:"
+msgstr "Largura:"
+
+#: share/PropertyEditor.cc:212
+msgid "Height:"
+msgstr "Altura:"
+
+#: share/PropertyEditor.cc:244 share/PropertyEditor.cc:395
+#: share/PropertyEditor.cc:408 share/PropertyEditor.cc:437
+#: share/PropertyEditor.cc:447
+msgid "Color:"
+msgstr "Cor:"
+
+#: share/PropertyEditor.cc:268
+msgid "Arrows:"
+msgstr "Flechas:"
+
+#: share/PropertyEditor.cc:290
+msgid "Shape:"
+msgstr "Formato:"
+
+#: share/PropertyEditor.cc:321
+msgid "Roundness:"
+msgstr "Arredondamento:"
+
+#: share/PropertyEditor.cc:332
+msgid "Alignment:"
+msgstr "Alinhamento:"
+
+#: share/PropertyEditor.cc:390
+msgid "Solid Fill"
+msgstr "Linha sólida"
+
+#: share/PropertyEditor.cc:404
+msgid "Pattern Fill"
+msgstr "Preencher com padrão"
+
+#: share/PropertyEditor.cc:419
+msgid "No Fill"
+msgstr "Sem preenchimento"
+
+#: share/PropertyEditor.cc:426
+msgid "Tile Fill"
+msgstr "Preencher com mosaico"
+
+#: share/PropertyEditor.cc:433
+msgid "Gradient Fill"
+msgstr "Preencher com gradiente"
+
+#: share/PropertyEditor.cc:461
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: share/PropertyEditor.cc:462
+msgid "Vertical"
+msgstr "Vertical"
+
+#: share/PropertyEditor.cc:463
+msgid "Radial"
+msgstr "Radial"
+
+#: share/PropertyEditor.cc:464
+msgid "Rectangular"
+msgstr "Retangular"
+
+#: share/PropertyEditor.cc:690
+msgid "no selection"
+msgstr "sem seleção"
+
+#: share/PropertyEditor.cc:692
+msgid "multiple selection"
+msgstr "seleção múltipla"
+
+#: share/ReorderCmd.cc:28
+msgid "Reorder"
+msgstr "Reordenar"
+
+#: share/RotateCmd.cc:29
+msgid "Rotate"
+msgstr "Girar"
+
+#: share/ScaleCmd.cc:29 share/ScaleCmd.cc:37
+msgid "Scale"
+msgstr "Escalonar"
+
+#: share/ScriptConsole.cc:43
+msgid "Scripting Console"
+msgstr "Console de Programação"
+
+#: share/ScriptConsole.cc:56
+msgid "Evaluate"
+msgstr "Avaliar"
+
+#: share/ScriptDialog.cc:45
+msgid "Scripts"
+msgstr "Programas"
+
+#: share/ScriptDialog.cc:60
+msgid "Execute"
+msgstr "Executar"
+
+#: share/SetPropertyCmd.cc:30 share/SetPropertyCmd.cc:40
+msgid "Set property"
+msgstr "Configurar propriedade"
+
+#: share/SetTextCmd.cc:28 share/SetTextCmd.cc:37
+msgid "Change Text"
+msgstr "Mudar Texto"
+
+#: share/ShearCmd.cc:29
+msgid "Shear"
+msgstr "Perfilar"
+
+#: share/TransformationDialog.cc:81 share/TransformationDialog.cc:147
+#: share/TransformationDialog.cc:215
+msgid "Horizontal:"
+msgstr "Horizontal:"
+
+#: share/TransformationDialog.cc:92 share/TransformationDialog.cc:158
+#: share/TransformationDialog.cc:226
+msgid "Vertical:"
+msgstr "Vertical:"
+
+#: share/TransformationDialog.cc:102 share/TransformationDialog.cc:236
+msgid "Relative Position"
+msgstr "Posição Relativa"
+
+#: share/TransformationDialog.cc:110 share/TransformationDialog.cc:176
+#: share/TransformationDialog.cc:245 share/TransformationDialog.cc:287
+msgid "Apply To Duplicate"
+msgstr "Aplicar para duplicar"
+
+#: share/TransformationDialog.cc:137
+msgid "Absolute"
+msgstr "Absoluto"
+
+#: share/TransformationDialog.cc:141
+msgid "Percentage"
+msgstr "Porcentagem"
+
+#: share/TransformationDialog.cc:168
+msgid "Proportional"
+msgstr "Proporcional"
+
+#: share/TransformationDialog.cc:199
+msgid "Angle:"
+msgstr "Ângulo:"
+
+#: share/TransformationDialog.cc:210
+msgid "Center"
+msgstr "Centro"
+
+#: share/TranslateCmd.cc:28
+msgid "Translate"
+msgstr "Traduzir"
+
+#: standalone/KIllustrator.cc:271
+msgid "New Document"
+msgstr "Novo documento"
+
+#: standalone/KIllustrator.cc:275
+msgid "Open Document"
+msgstr "Abrir Documento"
+
+#: standalone/KIllustrator.cc:279
+msgid "Save Document"
+msgstr "Salvar Documento"
+
+#: standalone/KIllustrator.cc:285
+msgid "Print Document"
+msgstr "Imprimir Documento"
+
+#: standalone/KIllustrator.cc:426
+msgid "&New..."
+msgstr "&Novo..."
+
+#: standalone/KIllustrator.cc:434
+msgid "Open Recent"
+msgstr "Abrir Recente"
+
+#: standalone/KIllustrator.cc:462
+msgid "Import"
+msgstr "Importar"
+
+#: standalone/KIllustrator.cc:463
+msgid "Export"
+msgstr "Exportar"
+
+#: standalone/KIllustrator.cc:466
+msgid "&Print"
+msgstr "&Imprimir"
+
+#: standalone/KIllustrator.cc:470
+msgid "New &Window"
+msgstr "Nova &Janela"
+
+#: standalone/KIllustrator.cc:501
+msgid "Layers..."
+msgstr "Camadas..."
+
+#: standalone/KIllustrator.cc:503
+msgid "Show Ruler"
+msgstr "Mostrar Régua"
+
+#: standalone/KIllustrator.cc:509
+msgid "&Page"
+msgstr "&Página"
+
+#: standalone/KIllustrator.cc:511
+msgid "&Grid"
+msgstr "&Grade"
+
+#: standalone/KIllustrator.cc:546
+msgid "&Options..."
+msgstr "&Opções..."
+
+#: standalone/KIllustrator.cc:548
+msgid "&Clipart..."
+msgstr "&Clipart..."
+
+#: standalone/KIllustrator.cc:549
+msgid "&Scripts..."
+msgstr "&Programas..."
+
+#: standalone/KIllustrator.cc:552
+msgid "&Help..."
+msgstr "A&juda..."
+
+#: standalone/KIllustrator.cc:554
+msgid "About..."
+msgstr "Sobre ..."
+
+#: standalone/KIllustrator.cc:567
+msgid "Ex&tras"
+msgstr "E&xtras"
+
+#: standalone/KIllustrator.cc:925
+msgid ""
+"This Document has been modified.\n"
+"Would you like to save it ?"
+msgstr "Este documento foi modificado.\n"
+"Você gostaria de salvá-lo ?"
+
+#: standalone/KIllustrator.cc:961
+msgid ""
+"This Document already exists.\n"
+"Would you like to override it ?"
+msgstr "Este documento já existe.\n"
+"Você gostaria de sobreescrevê-lo ?"
+
