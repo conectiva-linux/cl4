@@ -1,0 +1,4 @@
+xmixer name "XMixer"
+xmixer description "Misturador para Placas de Som"
+xmixer exec "xmixer &"
+xmixer group Utilitários/Som

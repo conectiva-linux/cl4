@@ -1,0 +1,4 @@
+xplaycd name "XPlayCD"
+xplaycd description "Reprodutor de CDs"
+xplaycd exec "xplaycd &"
+xplaycd group Utilitários/Som
