@@ -1,0 +1,11 @@
+--- ucd-snmp-3.5/agent/mibgroup/misc/ipfwacc.h.ipfwacc	Sun Jun 21 08:59:40 1998
++++ ucd-snmp-3.5/agent/mibgroup/misc/ipfwacc.h	Sun Jun 21 09:02:38 1998
+@@ -87,7 +87,7 @@
+ 
+ /* now load this mib into the agents mib table */
+ 
+-config_load_mib(1.3.6.1.4.1.2021.13.1.1, 9 , ipfwacc_variables)
++config_load_mib(1.3.6.1.4.1.2021.13.1, 9 , ipfwacc_variables)
+ 
+ #endif /* IN_SNMP_VARS_C */
+ #endif /* _MIBGROUP_IPFWACC_H */

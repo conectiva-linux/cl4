@@ -1,0 +1,13 @@
+--- ucd-snmp-3.5.3/agent/mibgroup/ucd-snmp/vmstat.c.glibc21	Mon Dec  7 17:24:57 1998
++++ ucd-snmp-3.5.3/agent/mibgroup/ucd-snmp/vmstat.c	Mon Dec  7 17:26:44 1998
+@@ -96,6 +96,10 @@
+ # endif
+ #endif
+ 
++#if HAVE_LIMITS_H
++#include <limits.h>
++#endif
++
+ #include "mibincl.h"
+ #include "mibdefs.h"
+ #include "struct.h"

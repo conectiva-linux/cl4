@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# ucd-snmp init file for snmpd
+#
+# chkconfig: - 50 50
+# description: Simple Network Management Protocol (SNMP) Daemon
+#
+# processname: snmpd
+# config: /etc/snmp/snmpd.local.conf
+# config: /etc/snmp/snmpd.conf
+# config: /usr/share/snmp/snmpd.local.conf
+# config: /usr/share/snmp/snmpd.conf
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+case "$1" in
+  start)
+	gprintf "Starting %s: " "snmpd"
+        daemon /usr/sbin/snmpd
+	touch /var/lock/subsys/snmpd
+	echo
+	;;
+  stop)
+	gprintf "Stopping %s: " "snmpd"
+	killproc snmpd
+	rm -f /var/lock/subsys/snmpd
+	echo
+	;;
+  restart)
+        $0 stop
+        $0 start
+        ;;
+  status)
+        status snmpd
+        ;;
+  *)
+	echo "Usage: snmpd {start|stop|restart|status}"
+	exit 1
+esac
+
+exit 0

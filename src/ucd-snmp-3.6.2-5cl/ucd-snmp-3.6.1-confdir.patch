@@ -1,0 +1,134 @@
+--- ucd-snmp-3.6.1/agent/snmp2p.c.confdir	Fri Mar 19 17:35:49 1999
++++ ucd-snmp-3.6.1/agent/snmp2p.c	Fri Mar 19 17:36:23 1999
+@@ -348,22 +348,22 @@
+     char miscfile[300];
+     int ret;
+     
+-    sprintf(miscfile,"%s/party.conf",SNMPSHAREPATH);
++    sprintf(miscfile,"%s/party.conf",SNMPCONFDIR);
+     if (read_party_database(miscfile) > 0){
+ 	fprintf(stderr, "Couldn't read party database from %s\n",miscfile);
+ 	exit(0);
+     }
+-    sprintf(miscfile,"%s/context.conf",SNMPSHAREPATH);
++    sprintf(miscfile,"%s/context.conf",SNMPCONFDIR);
+     if (read_context_database(miscfile) > 0){
+ 	fprintf(stderr, "Couldn't read context database from %s\n",miscfile);
+ 	exit(0);
+     }
+-    sprintf(miscfile,"%s/acl.conf",SNMPSHAREPATH);
++    sprintf(miscfile,"%s/acl.conf",SNMPCONFDIR);
+     if (read_acl_database(miscfile) > 0){
+ 	fprintf(stderr, "Couldn't read acl database from %s\n",miscfile);
+ 	exit(0);
+     }
+-    sprintf(miscfile,"%s/view.conf",SNMPSHAREPATH);
++    sprintf(miscfile,"%s/view.conf",SNMPCONFDIR);
+     if (read_view_database(miscfile) > 0){
+ 	fprintf(stderr, "Couldn't read view database from %s\n",miscfile);
+ 	exit(0);
+--- ucd-snmp-3.6.1/apps/snmpnetstat/main.c.confdir	Fri Mar 19 17:37:56 1999
++++ ucd-snmp-3.6.1/apps/snmpnetstat/main.c	Fri Mar 19 17:38:17 1999
+@@ -281,17 +281,17 @@
+                    && community == NULL){
+ 	    community = argv[arg]; 
+ 	} else if (version == SNMP_VERSION_2p && srclen == 0 && !trivialSNMPv2){
+-	    sprintf(ctmp, "%s/party.conf", SNMPSHAREPATH);
++	    sprintf(ctmp, "%s/party.conf", SNMPCONFDIR);
+ 	    if (read_party_database(ctmp) > 0){
+ 		snmp_perror(argv[0]);
+ 		exit(1);
+ 	    }
+-	    sprintf(ctmp, "%s/context.conf", SNMPSHAREPATH);
++	    sprintf(ctmp, "%s/context.conf", SNMPCONFDIR);
+ 	    if (read_context_database(ctmp) > 0){
+ 		snmp_perror(argv[0]);
+ 		exit(1);
+ 	    }
+-	    sprintf(ctmp, "%s/acl.conf", SNMPSHAREPATH);
++	    sprintf(ctmp, "%s/acl.conf", SNMPCONFDIR);
+ 	    if (read_acl_database(ctmp) > 0){
+ 		snmp_perror(argv[0]);
+ 		exit(1);
+--- ucd-snmp-3.6.1/apps/snmp_parse_args.c.confdir	Fri Mar 19 17:36:42 1999
++++ ucd-snmp-3.6.1/apps/snmp_parse_args.c	Fri Mar 19 17:37:08 1999
+@@ -366,17 +366,17 @@
+                     session->context, &(session->contextLen));
+       arg++;
+     } else {
+-      sprintf(ctmp,"%s/party.conf",SNMPSHAREPATH);
++      sprintf(ctmp,"%s/party.conf",SNMPCONFDIR);
+       if (read_party_database(ctmp) != 0){
+ 	snmp_perror(argv[0]);
+         exit(1);
+       }
+-      sprintf(ctmp,"%s/context.conf",SNMPSHAREPATH);
++      sprintf(ctmp,"%s/context.conf",SNMPCONFDIR);
+       if (read_context_database(ctmp) != 0){
+ 	snmp_perror(argv[0]);
+         exit(1);
+       }
+-      sprintf(ctmp,"%s/acl.conf",SNMPSHAREPATH);
++      sprintf(ctmp,"%s/acl.conf",SNMPCONFDIR);
+       if (read_acl_database(ctmp) != 0){
+ 	snmp_perror(argv[0]);
+         exit(1);
+--- ucd-snmp-3.6.1/apps/snmptrapd.c.confdir	Fri Mar 19 17:37:24 1999
++++ ucd-snmp-3.6.1/apps/snmptrapd.c	Fri Mar 19 17:37:46 1999
+@@ -676,15 +676,15 @@
+     srclen = dstlen = contextlen = MAX_OID_LEN;
+     ms_party_init(myaddr, src, &srclen, dst, &dstlen, context, &contextlen);
+ 
+-    sprintf(ctmp,"%s/party.conf",SNMPSHAREPATH);
++    sprintf(ctmp,"%s/party.conf",SNMPCONFDIR);
+     if (read_party_database(ctmp) != 0){
+ 	fprintf(stderr, "Warning: Couldn't read v2party database from %s\n",ctmp);
+     }
+-    sprintf(ctmp,"%s/context.conf",SNMPSHAREPATH);
++    sprintf(ctmp,"%s/context.conf",SNMPCONFDIR);
+     if (read_context_database(ctmp) != 0){
+ 	fprintf(stderr, "Warning: Couldn't read v2party's context database from %s\n",ctmp);
+     }
+-    sprintf(ctmp,"%s/acl.conf",SNMPSHAREPATH);
++    sprintf(ctmp,"%s/acl.conf",SNMPCONFDIR);
+     if (read_acl_database(ctmp) != 0){
+ 	fprintf(stderr,
+ 		"Warning: Couldn't read v2party's access control database from %s\n",ctmp);
+--- ucd-snmp-3.6.1/snmplib/read_config.c.confdir	Fri Mar 19 17:38:37 1999
++++ ucd-snmp-3.6.1/snmplib/read_config.c	Fri Mar 19 17:39:19 1999
+@@ -310,7 +310,7 @@
+     /* read the config files */
+     if ((envconfpath = getenv("SNMPCONFPATH")) == NULL) {
+       homepath=getenv("HOME");
+-      sprintf(defaultPath,"%s:%s%s%s%s",SNMPSHAREPATH,SNMPLIBPATH,
++      sprintf(defaultPath,"%s:%s%s%s%s",SNMPCONFDIR,SNMPLIBPATH,
+               ((homepath == NULL) ? "" : ":"),
+               ((homepath == NULL) ? "" : homepath),
+               ((homepath == NULL) ? "" : "/.snmp"));
+--- ucd-snmp-3.6.1/configure.in.confdir	Fri Mar 19 17:32:28 1999
++++ ucd-snmp-3.6.1/configure.in	Fri Mar 19 17:32:27 1999
+@@ -315,6 +315,14 @@
+   AC_DEFINE_UNQUOTED(DEFAULT_MIBDIRS,"$SNMPSHAREPATH/mibs")
+ fi
+ 
++SNMPCONFDIR=""
++tmpset="$sysconfdir/snmp"
++while test "x$tmpset" != "x$SNMPCONFDIR"; do
++    SNMPCONFDIR="$tmpset"
++    eval tmpset="$tmpset"
++done
++AC_DEFINE_UNQUOTED(SNMPCONFDIR,"$SNMPCONFDIR")
++
+ dnl
+ dnl Figure out appropriate shared libraries extensions if necessary.
+ dnl
+--- ucd-snmp-3.6.1/config.h.in.confdir	Fri Mar 19 17:32:28 1999
++++ ucd-snmp-3.6.1/config.h.in	Fri Mar 19 17:32:26 1999
+@@ -110,6 +110,7 @@
+ 
+ #undef SNMPLIBPATH
+ #undef SNMPSHAREPATH
++#undef SNMPCONFDIR
+ 
+ /* LOGFILE:  If defined it closes stdout/err/in and opens this in out/err's
+    place.  (stdin is closed so that sh scripts won't wait for it) */
