@@ -1,0 +1,23 @@
+#!/bin/sh
+# quake
+# Arnaldo Carvalho de Melo <acme@conectiva.com.br>
+# ter mai  5 05:57:31 EST 1998
+
+if [ -f /etc/sysconfig/quake ]
+  then
+    . /etc/sysconfig/quake
+fi
+
+cd /usr/lib/quake
+
+if [ "$SOUND" = "yes" -a "$CDAUDIO" = "yes" ]
+  then
+    /usr/bin/squake
+  else
+    if [ "$SOUND" = "yes" ]
+      then
+        /usr/bin/squake -nocdaudio
+      else
+        /usr/bin/squake -nocdaudio -nosound
+    fi
+fi

@@ -1,0 +1,5 @@
+# quake
+# Arquivo de configuração do quake
+
+SOUND=no
+CDAUDIO=no
