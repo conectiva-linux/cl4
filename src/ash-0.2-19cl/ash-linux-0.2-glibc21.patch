@@ -1,0 +1,21 @@
+--- ash-linux-0.2/mknodes.c~	Mon Sep  6 05:04:23 1993
++++ ash-linux-0.2/mknodes.c	Tue Jan 12 17:09:06 1999
+@@ -89,7 +89,7 @@
+ struct str *curstr;		/* current structure */
+ 
+ 
+-FILE *infp = stdin;
++FILE *infp;
+ char line[1024];
+ int linno;
+ char *linep;
+@@ -106,6 +106,9 @@
+ 		error("usage: mknodes file\n");
+ 		return(1);
+ 	}
++
++	infp = stdin;
++	
+ 	if ((infp = fopen(argv[1], "r")) == NULL) {
+ 		error("Can't open %s", argv[1]);
+ 		return(1);
