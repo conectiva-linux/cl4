@@ -1,0 +1,29 @@
+--- mpage-2.4/Makefile.msf	Thu Mar 20 14:31:55 1997
++++ mpage-2.4/Makefile	Thu Mar 20 14:33:04 1997
+@@ -38,7 +38,7 @@
+ #          PAGE_LEGAL for legal
+ #          PAGE_A4 for European A4
+ #
+-PAGESIZE=PAGE_A4
++PAGESIZE=PAGE_LETTER
+ 
+ #
+ # Define your spooler type
+@@ -48,7 +48,7 @@
+ SPOOL_TYPE=BSD_SPOOLER
+ 
+ # PREFIX=e:/usr		# OS/2 type
+-PREFIX=/usr/local
++PREFIX=/usr
+ BINDIR=$(PREFIX)/bin
+ LIBDIR=$(PREFIX)/lib
+ MANDIR=$(PREFIX)/man/man1
+@@ -75,7 +75,7 @@
+ #
+ # Set the default sheet margin in 1/72 inches. 
+ #
+-SHEETMARGIN=20 
++SHEETMARGIN=18
+ 
+ 
+ DEFS = -DPAGE_DEF=${PAGESIZE} -DLIBDIR=\"${LIBDIR}/mpage\" -DDEFAULT_ENCODING=${ENCODING} -DDEFAULTSMARGIN=${SHEETMARGIN} -DSPOOLER=${SPOOL_TYPE}
