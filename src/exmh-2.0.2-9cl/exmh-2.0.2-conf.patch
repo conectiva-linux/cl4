@@ -1,0 +1,92 @@
+--- exmh-2.0alpha/exmh-async.marc	Tue Dec 17 17:37:47 1996
++++ exmh-2.0alpha/exmh-async	Tue Dec 17 18:01:10 1996
+@@ -1,4 +1,4 @@
+-#!wish -f
++#!/usr/bin/wish -f
+ #
+ # async editor frontend for exmh
+ # Arg1: invoking interpreter's name (from [winfo name .])
+--- exmh-2.0alpha/exmh-bg.marc	Tue Dec 17 17:38:05 1996
++++ exmh-2.0alpha/exmh-bg	Tue Dec 17 18:01:09 1996
+@@ -1,4 +1,4 @@
+-#!wish -f
++#!/usr/bin/wish -f
+ #
+ # Background processing script for exmh.
+ # This does stuff and then sends messages to the background module
+@@ -16,6 +16,29 @@
+ # any specification.
+ 
+ #CONFIGURATION
++set wish /usr/bin/wish
++set exmh(version) {version 2.0.2}
++set exmh(name) exmh
++set exmh(maintainer) welch@acm.org
++set mh_path /usr/bin/mh
++set exmh(slocal) /usr/lib/mh/slocal
++set mime(dir) /usr/bin
++set mailcap_default /etc/mailcap
++set exmh(expect) /usr/bin/expect
++set exmh(expectk) /usr/bin/expectk
++set faces(dir) /usr/local/faces/faces
++set faces(set,user) {local users usenix misc}
++set faces(set,unknown) {domains unknown}
++set faces(defaultDomain) eng.sun.com
++set faces(suffix) {xpm gif xbm}
++set pgp(path) /usr/bin
++set glimpse(path) /usr/bin
++set sound(cmd) {/usr/demo/SOUND/play -v 38}
++set exmh(library) /usr/lib/exmh-2.0.2
++set install(dir,bin) /usr/bin
++set install(dir,man) /usr/man/man1
++set install(dir,lib) /usr/lib/exmh-2.0.2
++
+ #END CONFIGURATION
+ 
+ wm withdraw .
+--- exmh-2.0alpha/exmh.marc	Tue Dec 17 17:39:05 1996
++++ exmh-2.0alpha/exmh	Tue Dec 17 18:01:09 1996
+@@ -1,4 +1,4 @@
+-#!wish -f
++#!/usr/bin/wish -f
+ #
+ # TK interface to the MH Mail utility
+ # Brent Welch <brent.welch@eng.sun.com>
+@@ -16,6 +16,29 @@
+ 
+ # The following lines are patched by exmh.install
+ #CONFIGURATION
++set wish /usr/bin/wish
++set exmh(version) {version 2.0.2}
++set exmh(name) exmh
++set exmh(maintainer) welch@acm.org
++set mh_path /usr/bin/mh
++set exmh(slocal) /usr/lib/mh/slocal
++set mime(dir) /usr/bin
++set mailcap_default /etc/mailcap
++set exmh(expect) /usr/bin/expect
++set exmh(expectk) /usr/bin/expectk
++set faces(dir) /usr/local/faces/faces
++set faces(set,user) {local users usenix misc}
++set faces(set,unknown) {domains unknown}
++set faces(defaultDomain) eng.sun.com
++set faces(suffix) {xpm gif xbm}
++set pgp(path) /usr/bin
++set glimpse(path) /usr/bin
++set sound(cmd) {/usr/demo/SOUND/play -v 38}
++set exmh(library) /usr/lib/exmh-2.0.2
++set install(dir,bin) /usr/bin
++set install(dir,man) /usr/man/man1
++set install(dir,lib) /usr/lib/exmh-2.0.2
++
+ #END CONFIGURATION
+ 
+ if {$tk_version < 4.1} {
+--- exmh-2.0alpha/ftp.expect.marc	Tue Dec 17 17:40:55 1996
++++ exmh-2.0alpha/ftp.expect	Tue Dec 17 18:01:10 1996
+@@ -1,4 +1,4 @@
+-#!expect -f
++#!/usr/bin/expect -f
+ 
+ set site [lindex $argv 0]
+ set dir [lindex $argv 1]
