@@ -1,0 +1,22 @@
+--- findutils-4.1/find/defs.h.orig	Thu Oct  5 18:52:51 1995
++++ findutils-4.1/find/defs.h	Thu Oct  5 18:53:03 1995
+@@ -301,7 +301,7 @@
+ boolean mark_stat P_((struct predicate *tree));
+ 
+ /* util.c */
+-char *basename P_((char *fname));
++char *basename P_((const char *fname));
+ struct predicate *get_new_pred P_((void));
+ struct predicate *get_new_pred_chk_op P_((void));
+ struct predicate *insert_primary P_((boolean (*pred_func )()));
+--- findutils-4.1/find/util.c.orig	Thu Oct  5 18:53:15 1995
++++ findutils-4.1/find/util.c	Thu Oct  5 18:53:22 1995
+@@ -26,7 +26,7 @@
+ 
+ char *
+ basename (fname)
+-     char *fname;
++     const char *fname;
+ {
+   char *p;
+ 

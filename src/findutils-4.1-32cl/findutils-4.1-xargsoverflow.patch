@@ -1,0 +1,18 @@
+--- findutils-4.1/xargs/xargs.c.xargsoverflow	Mon Mar 29 17:00:48 1999
++++ findutils-4.1/xargs/xargs.c	Mon Mar 29 17:02:29 1999
+@@ -624,6 +624,7 @@
+       strncpy (p, arg, len);
+       p += len;
+       arg += len;
++      arglen -= len;
+ 
+       if (s)
+ 	{
+@@ -632,6 +633,7 @@
+ 	    break;
+ 	  strcpy (p, linebuf);
+ 	  arg += rplen;
++          arglen -= rplen;
+ 	  p += lblen;
+ 	}
+     }

@@ -1,0 +1,28 @@
+--- findutils-4.1/lib/nextelem.c.glibc21	Tue Sep 27 09:02:45 1994
++++ findutils-4.1/lib/nextelem.c	Fri Mar 19 15:13:02 1999
+@@ -32,9 +32,6 @@
+ #endif
+ #endif
+ 
+-char *strdup ();
+-void free ();
+-
+ /* Return the next element of a colon-separated path.
+    A null entry in the path is equivalent to "." (the current directory).
+ 
+--- findutils-4.1/lib/savedir.c.glibc21	Fri Mar 19 15:14:23 1999
++++ findutils-4.1/lib/savedir.c	Fri Mar 19 15:15:12 1999
+@@ -57,12 +57,11 @@
+ #else
+ char *malloc ();
+ char *realloc ();
++char *stpcpy ();
+ #endif
+ #ifndef NULL
+ #define NULL 0
+ #endif
+-
+-char *stpcpy ();
+ 
+ /* Return a freshly allocated string containing the filenames
+    in directory DIR, separated by '\0' characters;

@@ -1,0 +1,18 @@
+diff -ur findutils-4.1.orig/locate/Makefile.in findutils-4.1/locate/Makefile.in
+--- findutils-4.1.orig/locate/Makefile.in	Sat Nov  5 09:44:08 1994
++++ findutils-4.1/locate/Makefile.in	Thu May 25 13:59:24 1995
+@@ -25,11 +25,11 @@
+ 
+ bindir = $(exec_prefix)/bin
+ sbindir = $(exec_prefix)/sbin
+-libexecdir = $(exec_prefix)/libexec
++libexecdir = $(exec_prefix)/lib/findutils
+ datadir = $(prefix)/share
+ sysconfdir = $(prefix)/etc
+ sharedstatedir = $(prefix)/com
+-localstatedir = $(prefix)/var
++localstatedir = /var/lib
+ libdir = $(exec_prefix)/lib
+ infodir = $(prefix)/info
+ mandir = $(prefix)/man
+Only in findutils-4.1/locate: Makefile.in.orig
