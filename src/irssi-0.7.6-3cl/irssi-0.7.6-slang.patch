@@ -1,0 +1,12 @@
+*** irssi-0.7.6/src/gui-text/con_lnx.c.orig	Mon Mar 29 14:55:45 1999
+--- irssi-0.7.6/src/gui-text/con_lnx.c	Mon Mar 29 14:55:58 1999
+***************
+*** 29,34 ****
+--- 29,35 ----
+  #include <slang.h>
+  #elif defined (HAVE_SLANG_SLANG_H)
+  #include <slang/slang.h>
++ #define HAVE_SLANG
+  #elif defined (HAVE_CURSES)
+  #include <curses.h>
+  #else
