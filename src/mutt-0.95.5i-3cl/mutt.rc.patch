@@ -1,0 +1,11 @@
+diff -ur mutt-0.95.5.old/Muttrc.in mutt-0.95.5/Muttrc.in
+--- mutt-0.95.5.old/Muttrc.in	Sat Dec 12 06:05:33 1998
++++ mutt-0.95.5/Muttrc.in	Fri May  7 14:40:30 1999
+@@ -182,6 +182,7 @@
+ ## The following options are only valid if you have 
+ ## compiled in PGP support
+ 
++set pgp_default_version=gpg
+ # unset pgp_autosign
+ # unset pgp_autoencrypt
+ # set pgp_encryptself
