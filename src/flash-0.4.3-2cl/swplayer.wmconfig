@@ -1,0 +1,8 @@
+swplayer name "swplayer"
+swplayer description "Flash Player"
+swplayer exec "swplayer &"
+swplayer group Utilities/Animation
+swplayer description(pt_BR) "Reprodutor de Animações Flash"
+swplayer group(pt_BR) Utilitários/Animação
+swplayer description(es) "Reprodutor Flash"
+swplayer group(es) Utilitarios/Animacion
