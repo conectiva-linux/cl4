@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# xntpd         This shell script takes care of starting and stopping
+#               xntpd (NTPv3 daemon).
+#
+# chkconfig: - 55 10
+# description: xntpd is the NTPv3 daemon.
+# description(pt_BR): servidor NTPv3
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -x /usr/sbin/xntpd -a -f /etc/ntp.conf ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	# Adjust time to make life easy for xntpd
+	if [ -f /etc/ntp/step-tickers ]; then
+		gprintf "Syncing time for xntpd\n"
+		/usr/sbin/ntpdate -b -p 8 -u `cat /etc/ntp/step-tickers`
+	        echo
+	fi
+        # Start daemons.
+        gprintf "Starting %s: " "xntpd"
+        daemon xntpd -A
+        echo
+        touch /var/lock/subsys/xntpd
+        ;;
+  stop)
+        # Stop daemons.
+        gprintf "Shutting down %s: " "xntpd"
+	killproc xntpd
+        echo
+        rm -f /var/lock/subsys/xntpd
+        ;;
+  status)
+	status xntpd
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+        gprintf "Usage: %s {start|stop|status|restart}\n" "xntpd"
+        exit 1
+esac
+
+exit 0
