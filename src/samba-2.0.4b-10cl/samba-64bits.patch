@@ -1,0 +1,12 @@
+--- samba-2.0.4b/source/lib/system.c.64bits	Tue May 18 11:45:37 1999
++++ samba-2.0.4b/source/lib/system.c	Wed Jun 16 19:05:16 1999
+@@ -23,6 +24,9 @@
+ 
+ extern int DEBUGLEVEL;
+ 
++/* Ladies and gentlemen, we have a hack */
++extern __off64_t ftello64 __P ((FILE *__stream));
++
+ /*
+    The idea is that this file will eventually have wrappers around all
+    important system calls in samba. The aims are:

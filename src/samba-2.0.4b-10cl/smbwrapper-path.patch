@@ -1,0 +1,11 @@
+--- source/smbwrapper/smbsh.c.orig	Mon Dec  7 18:15:10 1998
++++ source/smbwrapper/smbsh.c	Mon Dec  7 18:15:48 1998
+@@ -36,7 +36,7 @@
+ int main(int argc, char *argv[])
+ {
+ 	char *p, *u;
+-	char *libd = BINDIR;	
++	char *libd = "/usr/lib/";	
+ 	pstring line, wd;
+ 	int opt;
+ 	extern char *optarg;

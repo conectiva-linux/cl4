@@ -1,0 +1,11 @@
+--- samba-2.0.4b/packaging/RedHat/smb.conf.printfoo	Thu May 20 23:39:30 1999
++++ samba-2.0.4b/packaging/RedHat/smb.conf	Thu May 20 23:39:41 1999
+@@ -35,7 +35,7 @@
+ # It should not be necessary to spell out the print system type unless
+ # yours is non-standard. Currently supported print systems include:
+ # bsd, sysv, plp, lprng, aix, hpux, qnx
+-;   printing = bsd
++   printing = bsd
+ 
+ # Uncomment this if you want a guest account, you must add this to /etc/passwd
+ # otherwise the user "nobody" is used

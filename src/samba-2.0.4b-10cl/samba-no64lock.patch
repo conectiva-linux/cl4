@@ -1,0 +1,11 @@
+--- samba-2.0.4a/source/include/config.h.foo	Mon May 24 17:47:56 1999
++++ samba-2.0.4a/source/include/config.h	Mon May 24 17:48:59 1999
+@@ -140,7 +140,7 @@
+ #define HAVE_SETRESUID 1
+ /* #undef WITH_NETATALK */
+ /* #undef HAVE_INO64_T */
+-#define HAVE_STRUCT_FLOCK64 1
++/* #undef HAVE_STRUCT_FLOCK64 1 */
+ /* #undef SIZEOF_INO_T */
+ /* #undef SIZEOF_OFF_T */
+ #define STAT_STATVFS64 1
