@@ -1,0 +1,25 @@
+--- readline-2.2/Makefile.in.orig	Fri Apr  3 11:23:01 1998
++++ readline-2.2/Makefile.in	Tue Apr 21 17:16:46 1998
+@@ -69,7 +69,7 @@
+ # these two options need tweaking for compiler/OS versions other than gcc
+ # and SunOS4
+ PICFLAG=        -fpic    # -pic for some versions of cc
+-SHLIB_OPTS=	-assert pure-text -ldl	# -Bshareable for some versions of gcc
++SHLIB_OPTS=	-shared
+ 
+ MAJOR=		3
+ # shared library systems like SVR4's do not use minor versions
+@@ -157,11 +157,11 @@
+ 
+ $(SHARED_READLINE):	$(SHARED_OBJ)
+ 	$(RM) $@
+-	$(LD) ${SHLIB_OPTS} -o $@ $(SHARED_OBJ)
++	$(CC) $(SHLIB_OPTS) -o $@ $(SHARED_OBJ) -ltermcap -lc -Wl,-soname,libreadline.so.3
+ 
+ $(SHARED_HISTORY):	$(SHARED_HISTOBJ) xmalloc.so
+ 	$(RM) $@
+-	$(LD) ${SHLIB_OPTS} -o $@ $(SHARED_HISTOBJ) xmalloc.so
++	$(CC) $(SHLIB_OPTS) -o $@ $(SHARED_HISTOBJ) xmalloc.so -lc -Wl,-soname,libhistory.so.3
+ 
+ readline: $(OBJECTS) readline.h rldefs.h chardefs.h
+ 	$(CC) $(CCFLAGS) -o $@ ./examples/rl.c ./libreadline.a -ltermcap
