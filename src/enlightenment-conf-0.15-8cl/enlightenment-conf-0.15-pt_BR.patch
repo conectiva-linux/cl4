@@ -1,0 +1,12 @@
+diff -uNr enlightenment-conf-0.15/configure.in enlightenment-conf-0.15-pt_BR/configure.in
+--- enlightenment-conf-0.15/configure.in	Thu Mar 11 17:20:13 1999
++++ enlightenment-conf-0.15-pt_BR/configure.in	Fri Jun 25 16:01:12 1999
+@@ -19,7 +19,7 @@
+ GNOME_X_CHECKS
+ dnl utility conditional
+ AM_CONDITIONAL(FALSE, test "x" = "y")
+-ALL_LINGUAS="cs da de es fi fr ga hu it ja ko no pl pt ru sv"
++ALL_LINGUAS="cs da de es fi fr ga hu it ja ko no pl pt pt_BR ru sv"
+ AM_GNOME_GETTEXT
+ 
+ CAPPLET_INCLUDES=`gnome-config --cflags capplet`
