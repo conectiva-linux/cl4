@@ -1,0 +1,11 @@
+--- tcpdump-3.4a5/tcpdump-3.4a5/tcpdump.1.orig	Mon Jun 30 19:32:09 1997
++++ tcpdump-3.4a5/tcpdump-3.4a5/tcpdump.1	Tue Oct 21 12:20:33 1997
+@@ -20,7 +20,7 @@
+ .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ .\" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ .\"
+-.TH TCPDUMP 1  "30 June 1997"
++.TH TCPDUMP 8  "30 June 1997"
+ .SH NAME
+ tcpdump \- dump traffic on a network
+ .SH SYNOPSIS
