@@ -1,0 +1,18 @@
+--- vixie-cron-3.0.1/crontab.5.dst	Wed Apr 14 13:24:29 1999
++++ vixie-cron-3.0.1/crontab.5	Wed Apr 14 13:24:32 1999
+@@ -84,8 +84,15 @@
+ .I and
+ when at least one of the two day fields (day of month, or day of week)
+ match the current time (see ``Note'' below).
++Note that this means that non-existant times, such as "missing hours"
++during daylight savings conversion, will never match, causing jobs
++scheduled during the "missing times" not to be run.  Similarly, times
++that occur more than once (again, during daylight savings conversion)
++will cause matching jobs to be run twice.
++.PP
+ .IR cron (8)
+ examines cron entries once every minute.
++.PP
+ The time and date fields are:
+ .IP
+ .ta 1.5i

@@ -1,0 +1,7 @@
+/var/log/cron {
+    missingok
+    notifempty
+    postrotate
+	/usr/bin/killall -HUP crond
+    endscript
+}
