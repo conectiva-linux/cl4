@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# chkconfig: 2345 05 92
+# description: apmd is used for monitoring batery status and logging it via \
+#	syslog(8). It can also be used for shutting down the machine when \
+#	the battery is low.
+# processname: apmd
+# config: /etc/sysconfig/apmd
+# clock: /etc/sysconfig/clock
+
+# Don't bother if /proc/apm doesn't exist, kernel has not support for APM.
+[ -e /proc/apm ] || exit 0
+
+CONFIG=/etc/sysconfig/apmd
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source time clock options
+CLOCK=/etc/sysconfig/clock
+
+# See how we were called.
+case "$1" in
+  start)
+	echo -n "Starting up APM daemon: "
+	test -r "$CONFIG" && . "$CONFIG"
+
+        test -r "$CLOCK" &&  . "$CLOCK" 
+        if [ X"${UTC}" = Xtrue ]; then
+        	APMD_OPTIONS="$APMD_OPTIONS -u"
+        fi
+
+	daemon /usr/sbin/apmd "$APMD_OPTIONS"
+	touch /var/lock/subsys/apmd
+	echo
+	;;
+  stop)
+	echo -n "Shutting down APM daemon: "
+	killproc apmd
+	rm -f /var/lock/subsys/apmd
+	echo
+	;;
+  status)
+	status apmd
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+	
+  *)
+	echo "Usage: apmd.init {start|stop|status|restart|reload}"
+	exit 1
+esac

@@ -1,0 +1,29 @@
+--- apmd/Makefile.buildroot	Mon Mar  8 14:57:35 1999
++++ apmd/Makefile	Mon Mar  8 14:59:45 1999
+@@ -75,16 +75,16 @@
+ 	rcs2log > ChangeLog
+ 
+ install: $(EXES)
+-	install        apm          /usr/bin
+-	install -m 644 apm.1        /usr/man/man1
+-	install        apmd         /usr/sbin
+-	install -m 644 apmd.8       /usr/man/man8
+-	install        xapm         /usr/X11R6/bin
+-	install -m 644 xapm.1       /usr/X11R6/man/man1/xapm.1x
+-	install        tailf        /usr/bin
+-	install -m 644 tailf.1      /usr/man/man1
+-	install -m 644 libapm.a     /usr/lib
+-	install -m 644 apm.h        /usr/include
++	install        apm          $(RPM_BUILD_ROOT)/usr/bin
++	install -m 644 apm.1        $(RPM_BUILD_ROOT)/usr/man/man1
++	install        apmd         $(RPM_BUILD_ROOT)/usr/sbin
++	install -m 644 apmd.8       $(RPM_BUILD_ROOT)/usr/man/man8
++	install        xapm         $(RPM_BUILD_ROOT)/usr/X11R6/bin
++	install -m 644 xapm.1       $(RPM_BUILD_ROOT)/usr/X11R6/man/man1/xapm.1x
++	install        tailf        $(RPM_BUILD_ROOT)/usr/bin
++	install -m 644 tailf.1      $(RPM_BUILD_ROOT)/usr/man/man1
++	install -m 644 libapm.a     $(RPM_BUILD_ROOT)/usr/lib
++	install -m 644 apm.h        $(RPM_BUILD_ROOT)/usr/include
+ 
+ .PHONY:	clean distclean
+ distclean clean:
