@@ -1,0 +1,522 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sndconfig 0.28\n"
+"POT-Creation-Date: 1998-12-02 10:32-0200\n"
+"PO-Revision-Date: 1998-12-02 10:32-0200\n"
+"Last-Translator: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
+"Language-Team: pt_BR <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: ../sndconfig.c:47
+msgid "ACER Notebook sound"
+msgstr "Sonido en Notebooks ACER"
+
+#: ../sndconfig.c:50
+msgid "AdLib"
+msgstr "AdLib"
+
+#: ../sndconfig.c:54
+msgid "Advance Logic ALS-007"
+msgstr "Advance Logic ALS-007"
+
+#: ../sndconfig.c:58
+msgid "Compaq Deskpro XL Sound"
+msgstr "Sonido en el Compaq Deskpro XL"
+
+#: ../sndconfig.c:62
+msgid "Crystal CS423x sound chip"
+msgstr "Chip de Sonido Crystal CS423x"
+
+#: ../sndconfig.c:65
+msgid "Ensoniq AudioPCI 1370 (SoundBlaster 64/128 PCI)"
+msgstr "Ensoniq AudioPCI 1370 (SoundBlaster 64/128 PCI)"
+
+#: ../sndconfig.c:68
+msgid "Creative/Ensoniq AudioPCI 1371"
+msgstr "Creative/Ensoniq AudioPCI 1371"
+
+#: ../sndconfig.c:72
+msgid "Ensoniq SoundScape"
+msgstr "Ensoniq SoundScape"
+
+#: ../sndconfig.c:76
+msgid "ESS688 AudioDrive"
+msgstr "ESS688 AudioDrive"
+
+#: ../sndconfig.c:80
+msgid "ESS1688 AudioDrive"
+msgstr "ESS1688 AudioDrive"
+
+#: ../sndconfig.c:84
+msgid "ESS1868 AudioDrive"
+msgstr "ESS1868 AudioDrive"
+
+#: ../sndconfig.c:88
+msgid "Gravis UltraSound"
+msgstr "Gravis UltraSound"
+
+#: ../sndconfig.c:92
+msgid "Gravis UltraSound MAX"
+msgstr "Gravis UltraSound MAX"
+
+#: ../sndconfig.c:96
+msgid "Gravis UltraSound PnP"
+msgstr "Gravis UltraSound PnP"
+
+#: ../sndconfig.c:100
+msgid "Logitech SoundMan Games (not SM16 or SM Wave!)"
+msgstr "Logitech SoundMan Games (¡no SM16 o SM Wave!)"
+
+#: ../sndconfig.c:104
+msgid "MediaTrix AudioTrix Pro"
+msgstr "MediaTrix AudioTrix Pro"
+
+#: ../sndconfig.c:108
+msgid "MediaVision Jazz16 (ProSonic, SoundMan Wave)"
+msgstr "MediaVision Jazz16 (ProSonic, SoundMan Wave)"
+
+#: ../sndconfig.c:112
+msgid "Mozart/MAD16 (OPTi 82C928)"
+msgstr "Mozart/MAD16 (OPTi 82C928)"
+
+#: ../sndconfig.c:116
+msgid "MAD16 Pro (OPTi 82C929/82C930)"
+msgstr "MAD16 Pro (OPTi 82C929/82C930)"
+
+#: ../sndconfig.c:120
+msgid "miroSOUND PCM12"
+msgstr "miroSOUND PCM12"
+
+#: ../sndconfig.c:124
+msgid "OPL3-SA1 sound chip"
+msgstr "Chip de Sonido OPL3-SA1"
+
+#: ../sndconfig.c:128
+msgid "OPL3-SA2/3/x sound chip"
+msgstr "Chip de Sonido OPL3-SA2/3/x"
+
+#: ../sndconfig.c:132
+msgid "Pro Audio Spectrum/Studio 16, Logitech SoundMan 16"
+msgstr "Pro Audio Spectrum/Studio 16, Logitech SoundMan 16"
+
+#: ../sndconfig.c:136
+msgid "PSS (Orchid SW32, Cardinal DSP16)"
+msgstr "PSS (Orchid SW32, Cardinal DSP16)"
+
+#: ../sndconfig.c:139
+msgid "S3 SonicVibes"
+msgstr "S3 SonicVibes"
+
+#: ../sndconfig.c:143
+msgid "Sound Blaster"
+msgstr "Sound Blaster"
+
+#: ../sndconfig.c:147
+msgid "Sound Blaster Pro"
+msgstr "Sound Blaster Pro"
+
+#: ../sndconfig.c:151
+msgid "Sound Blaster 16"
+msgstr "Sound Blaster 16"
+
+#: ../sndconfig.c:155
+msgid "Sound Blaster AWE32/64"
+msgstr "Sound Blaster AWE32/64"
+
+#: ../sndconfig.c:159
+msgid "Turtle Beach MultiSound Classic/Monterey/Tahiti"
+msgstr "Turtle Beach MultiSound Classic/Monterey/Tahiti"
+
+#: ../sndconfig.c:163
+msgid "Turtle Beach MultiSound Pinnacle/Fiji"
+msgstr "Turtle Beach MultiSound Pinnacle/Fiji"
+
+#: ../sndconfig.c:173
+msgid "Windows Sound System (AD1848/CS4248/CS4231)"
+msgstr "Windows Sound System (AD1848/CS4248/CS4231)"
+
+#: ../sndconfig.c:177
+msgid "AMD7930 (sun4c)"
+msgstr "AMD7930 (sun4c)"
+
+#: ../sndconfig.c:181
+msgid "CS4231 (sonidoe sun4m, sun4u)"
+msgstr "CS4231 (algunas sun4m, sun4u)"
+
+#: ../sndconfig.c:260
+msgid "  <Tab>/<Alt-Tab> between elements  |  Use <Enter> to edit a selection"
+msgstr " <Tab>/<Alt-Tab> entre elementos | Usa <Intro> para editar una entrada"
+
+#: ../sndconfig.c:264
+#, c-format
+msgid ""
+"Sound Configuration Utility %s                   (C) 1998 Red Hat Software"
+msgstr ""
+"Utilitario de Configuración de Sonido %s           (C) 1998 Red Hat Software"
+
+#. file format is pretty static, if you change then
+#. this program wont read it right.
+#: ../sndconfig.c:504
+msgid "# THIS FILE IS WRITTEN BY SNDCONFIG\n"
+msgstr "# ESTE ARCHIVO FUE GENERADO POR SNDCONFIG\n"
+
+#: ../sndconfig.c:505
+msgid "# PLEASE USE SNDCONFIG TO MODIFY\n"
+msgstr "# ¡POR FAVOR USA EL SNDCONFIG PARA MODIFICAR\n"
+
+#: ../sndconfig.c:506
+msgid "# TO CHANGE THIS FILE!\n"
+msgstr "# ESTE ARCHIVO!\n"
+
+#: ../sndconfig.c:507
+msgid "# There should be no spaces at the start of a line\n"
+msgstr "# No deben haber espacios en el inicio de una línea\n"
+
+#: ../sndconfig.c:508
+msgid "# or around the '=' sign\n"
+msgstr "# o antes/después de la señal '='\n"
+
+#: ../sndconfig.c:519
+msgid "Card Type"
+msgstr "Tipo de Tarjeta"
+
+#: ../sndconfig.c:523
+msgid "Please select your card:"
+msgstr "Por favor Elige tu tarjeta:"
+
+#: ../pnpconf.c:612 ../sndconfig.c:554 ../sndconfig.c:744 ../sndconfig.c:906
+#: ../sndconfig.c:1048 ../sndconfig.c:1062 ../sndconfig.c:1076
+#: ../sndconfig.c:1091 ../sndconfig.c:1101 ../sndconfig.c:1107
+#: ../sndconfig.c:1198 ../sndconfig.c:1216 ../sndconfig.c:1236
+#: ../sndconfig.c:1262 ../sndconfig.c:1271 ../sndconfig.c:1301
+#: ../sndconfig.c:1326 ../sndconfig.c:1346
+msgid "Ok"
+msgstr "Ok"
+
+#: ../sndconfig.c:555 ../sndconfig.c:744
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../sndconfig.c:613
+msgid "I/O PORT"
+msgstr "PORTA E/S"
+
+#: ../sndconfig.c:627
+msgid "IRQ"
+msgstr "IRQ"
+
+#: ../sndconfig.c:643
+msgid "8-bit DMA"
+msgstr "DMA 8 bits"
+
+#: ../sndconfig.c:645
+msgid "DMA 1"
+msgstr "DMA 1"
+
+#: ../sndconfig.c:647
+msgid "DMA"
+msgstr "DMA"
+
+#: ../sndconfig.c:666
+msgid "16-bit DMA"
+msgstr "DMA 16 bits"
+
+#: ../sndconfig.c:668
+msgid "DMA 2"
+msgstr "DMA 2"
+
+#: ../sndconfig.c:687
+msgid "MPU I/O"
+msgstr "E/S de la MPU"
+
+#: ../sndconfig.c:705
+msgid "MPU IRQ"
+msgstr "IRQ de la MPU"
+
+#: ../sndconfig.c:724
+msgid "BASE MEMORY"
+msgstr "MEMORIA BASE"
+
+#: ../sndconfig.c:747
+msgid ""
+"Your sound card is a PnP device, so its settings can be configured w/o "
+"setting any dip switches.  Choose the values you would like to use from the "
+"menus below."
+msgstr ""
+"Tu tarjeta de sonido es un dispositivo PnP, de esta forma tu configuración se puede "
+"hacer sin alterar dip switch alguno. Elige los valores que quieras usar "
+"en los menús abajo."
+
+#: ../sndconfig.c:754
+msgid ""
+"Please adjust the settings below to match the dip switch settings on your "
+"sound card."
+msgstr ""
+"Por favor ajusta las configuraciones abajo, como las de los dip "
+"switchs en tu tarjeta de sonido."
+
+#: ../sndconfig.c:799
+msgid "Card Settings"
+msgstr "Configuraciones de la Tarjeta"
+
+#: ../pnpconf.c:612 ../sndconfig.c:906
+msgid "File Exists"
+msgstr "Archivo ya existente"
+
+#: ../sndconfig.c:907
+msgid ""
+"There is already a file called /etc/conf.modules. The existing file will be "
+"renamed /etc/conf.modules.bak and a new file will be written."
+msgstr ""
+"Ya existe un archivo /etc/conf.modules. El archivo existente será renombrado "
+"para /etc/conf.modules.bak y se creará uno nuevo archivo."
+
+#: ../sndconfig.c:1048
+msgid "SoundCard Test"
+msgstr "Prueba de la Tarjeta de Sonido"
+
+#: ../sndconfig.c:1048
+msgid ""
+"A sound sample will now be played to determine if your sound card has been "
+"correctly configured."
+msgstr ""
+"Un archivo de sonido se reproducirá para determinar si tu tarjeta de sonido fue "
+"configurada correctamente."
+
+#: ../sndconfig.c:1058
+msgid ""
+"The following error occurred running the isapnp program:\n"
+"\n"
+msgstr ""
+"El siguiente error ocurrió durante la ejecución del programa isapnp:\n"
+"\n"
+
+#: ../sndconfig.c:1062
+msgid "isapnp error"
+msgstr "Error en el isapnp"
+
+#: ../sndconfig.c:1072
+msgid ""
+"The following error occurred running the modprobe program:\n"
+"\n"
+msgstr ""
+" El siguiente error ocurrió durante la ejecución del programa modprobe:\n"
+"\n"
+
+#: ../sndconfig.c:1076
+msgid "modprobe error"
+msgstr "Error en el modprobe"
+
+#: ../sndconfig.c:1087
+msgid ""
+"The following error occurred playing the sample:\n"
+"\n"
+msgstr ""
+" El siguiente error ocurrió durante la reproducción del archivo de sonido:\n"
+"\n"
+
+#: ../sndconfig.c:1091 ../sndconfig.c:1107
+msgid "Unable To Play Audio"
+msgstr "No fue posible reproducir el audio"
+#: ../sndconfig.c:1101
+msgid "Sample Not Found"
+msgstr "No se ha encontrado el Archivo de Sonido"
+
+#: ../sndconfig.c:1102
+msgid "The sound sample does not appear to be installed."
+msgstr "El archivo de prueba de sonido parece que no está instalado."
+
+#: ../sndconfig.c:1108
+msgid "An error occurred opening /dev/audio"
+msgstr "Ocurrió un error en la apertura del /dev/audio"
+
+#: ../sndconfig.c:1125
+msgid "Test Result"
+msgstr "Resultado de la Prueba"
+
+#: ../sndconfig.c:1125
+msgid "Yes"
+msgstr "Sí"
+
+#: ../sndconfig.c:1125
+msgid "No"
+msgstr "No"
+
+#: ../sndconfig.c:1126
+msgid "Were you able to hear the sample?"
+msgstr "¿Has oído la prueba de sonido?"
+
+#: ../sndconfig.c:1148
+msgid ""
+"\n"
+"ERROR - You must be root to run sndconfig.\n"
+msgstr ""
+"\n"
+"ERRO - Debes ser root para ejecutar el sndconfig.\n"
+
+#: ../sndconfig.c:1155
+msgid ""
+"Usage: sndconfig [--help] [--noprobe] [--autoconfig]\n"
+"     --noprobe    do not probe for PnP sound cards.\n"
+"     --noautoconfig do not autoconfigure any probed PnP sound cards.\n"
+"\n"
+msgstr ""
+"Uso: sndconfig [--help] [--noprobe] [--autoconfig]\n"
+"     --noprobe       no intente detectar tarjetas de sonido PnP.\n"
+"     --noautoconfig  no configure automáticamente tarjetas de sonido\n"
+"                     PnP detectadas.\n"
+
+#: ../sndconfig.c:1179
+msgid ""
+"Usage: sndconfig [--help]\n"
+"\n"
+msgstr ""
+"Uso: sndconfig [--help]\n"
+"\n"
+
+#: ../sndconfig.c:1198
+msgid "Introduction"
+msgstr "Introducción"
+
+#: ../sndconfig.c:1199
+#, c-format
+msgid ""
+"sndconfig is a configuration tool for sound cards.\n"
+"\n"
+"%s%s\n"
+"\n"
+"Report bugs to sound-list@redhat.com"
+msgstr ""
+"sndconfig es una herramienta de configuración para tarjetas de sonido.\n"
+"\n"
+"%s%s\n"
+"\n"
+"Relate bugs para sound-list@redhat.com"
+
+#: ../sndconfig.c:1203
+msgid "The automatic probing for PnP cards has been DISABLED"
+msgstr "La detección automática de tarjetas PnP fue DESHABILITADA"
+
+#: ../sndconfig.c:1205
+msgid "A probe will now be performed for any PnP cards"
+msgstr "Se hará un intento de detección para tarjetas PnP"
+
+#: ../sndconfig.c:1207
+msgid " that can be automatically configured."
+msgstr " que automáticamente serán configuradas."
+
+#: ../sndconfig.c:1216
+msgid "ERROR: No Sound Modules found"
+msgstr "ERROR: No se ha encontrado módulo de Sonido alguno"
+
+#: ../sndconfig.c:1217
+msgid ""
+"You don't seem to be running a kernel with modular sound enabled. To use "
+"sndconfig, you must be running a kernel with the new modular sound, such as "
+"the kernel shipped with Red Hat Linux or a 2.1.x kernel, and sound must be "
+"compiled as a module. Patches for the 2.0.3x series of kernels are available "
+"at:\n"
+"\n"
+"ftp://ftp.redhat.com/pub/sound/patches-current/"
+msgstr ""
+"Parece que no estás usando un kernel con soporte a sonido modular. Para "
+"usar sndconfig debes estar usando un kernel con el nuevo sonido modular, "
+"como el kernel que se pone a disposición con Conectiva Linux/Red Hat Linux o un "
+"kernel 2.1.* y el sonido debe estar compilado como módulo. Los patches están "
+"disponibles para la serie 2.0.3x de kernels en:\n"
+"\n"
+"ftp://ftp.redhat.com/pub/sound/patches-current/"
+
+#: ../sndconfig.c:1236
+msgid "PnP Probe Results"
+msgstr "Resultado de la Detección PnP"
+
+#: ../sndconfig.c:1236
+#, c-format
+msgid ""
+"A PnP sound card was found in your system. The details are:\n"
+"\n"
+"     Model: %s"
+msgstr ""
+"Se ha encontrado una tarjeta de sonido PnP en tu sistema. Detalles:\n"
+"\n"
+"    Modelo: %s"
+
+#: ../sndconfig.c:1262
+msgid "Probe Error"
+msgstr "Error en la Detección"
+
+#: ../sndconfig.c:1263
+msgid ""
+"A PnP card has been detected, but the model identifier is unclear. You will "
+"need to select the exact model from the next screen."
+msgstr ""
+"Fue detectada una tarjeta PnP, pero el identificador del modelo no está claro."
+"Debes elegir el modelo exacto en la próxima pantalla."
+
+#: ../sndconfig.c:1271
+msgid "PCI Probe Results"
+msgstr "Resultado de la Detección PCI"
+
+#: ../sndconfig.c:1271
+#, c-format
+msgid ""
+"A PCI sound card was found in your system. The details are:\n"
+"\n"
+"     Model: %s"
+msgstr ""
+"Fue encontrada una tarjeta de sonido PCI en tu sistema. Detalles:\n"
+"\n"
+"    Modelo: %s"
+
+#: ../sndconfig.c:1301
+msgid "Probe Results"
+msgstr "Resultado de la Detección PnP"
+
+#: ../sndconfig.c:1302
+msgid ""
+"No PnP or PCI sound cards were found in your system. Please select your card "
+"type from the following list."
+msgstr ""
+"No fue encontrada tarjeta Pnp o PCI alguna, en tu sistema. Por favor selecciona "
+"una, en la lista a continuación."
+
+#: ../sndconfig.c:1326
+msgid "Card Information"
+msgstr "Información de la Tarjeta"
+
+#: ../sndconfig.c:1346
+msgid "Autoconfiguration failed!"
+msgstr "Configuración Automática falló"
+
+#: ../sndconfig.c:1347
+msgid ""
+"Autoconfiguration of your sound card failed. Now proceeding with manual "
+"configuration."
+msgstr ""
+"Hubo un fallo en la configuración automática de tu tarjeta de sonido. Continuando con la "
+"configuración manual."
+
+#: ../pnpconf.c:77
+msgid "Sonidoething is wrong\n"
+msgstr "Hay algo que no está bien\n"
+
+#: ../pnpconf.c:613
+msgid ""
+"There is already a file called /etc/isapnp.conf. The existing file will be "
+"renamed /etc/isapnp.conf.bak and a new file will be written."
+msgstr ""
+"Ya existe un archivo /etc/isapnp.conf. El archivo existente será renombrado "
+"para /etc/isapnp.conf.bak y se creará un nuevo archivo."
+
+#: ../pnpconf.c:714
+msgid "No cards found, or error probing for pnp cards\n"
+msgstr ""
+"No fue encontrada tarjeta alguna o ocurrió un error en la detección de tarjetas PnP\n"
+
+#: ../pnpconf.c:717
+#, c-format
+msgid "Found PnP Card ->%s<- ->%s<-\n"
+msgstr "Se ha encontrado una tarjeta PnP ->%s<- ->%s<-\n"
