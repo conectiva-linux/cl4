@@ -1,0 +1,17 @@
+--- netkit-telnet-0.10/telnetd/Makefile.utmp	Thu Apr 15 14:19:49 1999
++++ netkit-telnet-0.10/telnetd/Makefile	Thu Apr 15 14:24:18 1999
+@@ -17,12 +17,12 @@
+ LIBS += $(LIBTERMCAP) -lutil
+ 
+ OBJS = telnetd.o state.o termstat.o slc.o sys_term.o utility.o \
+-	global.o authenc.o logwtmp.o logout.o
++	global.o authenc.o # logwtmp.o logout.o
+ 
+ telnetd: $(OBJS)
+ 	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@
+ 
+-$(OBJS): defs.h ext.h pathnames.h telnetd.h logwtmp.h logout.h
++$(OBJS): defs.h ext.h pathnames.h telnetd.h # logwtmp.h logout.h
+ 
+ install: telnetd
+ 	install -s -m$(DAEMONMODE) telnetd $(INSTALLROOT)$(SBINDIR)/in.telnetd

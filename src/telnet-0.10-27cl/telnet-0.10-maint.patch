@@ -1,0 +1,9 @@
+--- netkit-telnet-0.10/README.maint	Wed Apr  7 16:45:48 1999
++++ netkit-telnet-0.10/README	Wed Apr  7 16:46:21 1999
+@@ -76,5 +76,5 @@
+ 	are including fixes. :-)
+ 
+ 
+-David A. Holland	dholland@hcs.harvard.edu
++David A. Holland	netbug@ftp.uk.linux.org
+ 								8-Mar-1997

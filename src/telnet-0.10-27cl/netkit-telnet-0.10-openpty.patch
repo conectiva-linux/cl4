@@ -1,0 +1,50 @@
+--- netkit-telnet-0.10/telnetd/Makefile.ewt	Thu Mar 25 11:17:55 1999
++++ netkit-telnet-0.10/telnetd/Makefile	Thu Mar 25 11:19:08 1999
+@@ -13,8 +13,8 @@
+ # take out -DPARANOID_TTYS.
+ 
+ CFLAGS += '-DISSUE_FILE="/etc/issue.net"' -DPARANOID_TTYS \
+-	-DTERMCAP -DUSE_TERMIO -DKLUDGELINEMODE -DDIAGNOSTICS
+-LIBS += $(LIBTERMCAP)
++	-DTERMCAP -DUSE_TERMIO -DKLUDGELINEMODE -DDIAGNOSTICS -DHAVE_OPENPTY
++LIBS += $(LIBTERMCAP) -lutil
+ 
+ OBJS = telnetd.o state.o termstat.o slc.o sys_term.o utility.o \
+ 	global.o authenc.o logwtmp.o logout.o
+--- netkit-telnet-0.10/telnetd/sys_term.c.ewt	Thu Mar 25 11:20:31 1999
++++ netkit-telnet-0.10/telnetd/sys_term.c	Thu Mar 25 11:21:32 1999
+@@ -42,6 +42,10 @@
+ #include "logout.h"
+ #include "logwtmp.h"
+ 
++#if defined(HAVE_OPENPTY)
++#include <pty.h>
++#endif
++
+ #if defined(AUTHENTICATE)
+ #include <libtelnet/auth.h>
+ #endif
+@@ -424,6 +428,15 @@
+ char *myline = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+ #endif	/* CRAY */
+ 
++#ifdef HAVE_OPENPTY
++int getpty(void) {
++    int m, s;
++
++    if (openpty(&m, &s, line, NULL, NULL))
++	return -1;
++    return m;
++}
++#else
+ int getpty(void) {
+     int p;
+ #ifndef CRAY
+@@ -489,6 +502,7 @@
+ #endif	/* CRAY */
+     return(-1);
+ }
++#endif /* HAVE_OPENPTY */
+ #endif	/* convex */
+ 
+ #ifdef	LINEMODE
