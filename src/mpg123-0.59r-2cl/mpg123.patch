@@ -1,0 +1,68 @@
+--- mpg123-0.59q/Makefile.mike	Tue Jan 26 09:35:18 1999
++++ mpg123-0.59q/Makefile	Fri Feb 26 16:08:18 1999
+@@ -4,7 +4,7 @@
+ 
+ # Where to install binary and manpage on "make install":
+ 
+-PREFIX=/usr/local
++PREFIX=$(INSTALL)/usr/
+ BINDIR=$(PREFIX)/bin
+ MANDIR=$(PREFIX)/man
+ SECTION=1
+@@ -116,7 +116,7 @@
+ 			-finline-functions -ffast-math' \
+ 		mpg123-make
+ 
+-linux-i486:
++linux-i386:
+ 	$(MAKE) CC=gcc LDFLAGS= \
+ 		OBJECTS='decode_i386.o dct64_i386.o getbits.o decode_i586.o decode_i486.o dct64_i486.o \
+ 			audio_oss.o' \
+@@ -127,7 +127,7 @@
+ 			-finline-functions -ffast-math' \
+ 		mpg123-make
+ 
+-linux-esd:
++linux-i386-esd:
+ 	$(MAKE) CC=gcc LDFLAGS= \
+ 		AUDIO_LIB='-lesd -laudiofile' \
+ 		OBJECTS='decode_i386.o dct64_i386.o getbits.o decode_i586.o \
+@@ -188,6 +188,25 @@
+ 		CFLAGS='-DREAL_IS_FLOAT -DUSE_MMAP -DSPARCLINUX -Wall -O2 \
+ 			-fomit-frame-pointer -funroll-all-loops \
+ 			-finline-functions -ffast-math' \
++		mpg123-make
++
++linux-sparc-esd:
++	$(MAKE) CC=gcc  LDFLAGS= \
++		AUDIO_LIB='-lesd -laudiofile' \
++		OBJECTS='decode.o dct64.o audio_esd.o' \
++		CFLAGS='-DREAL_IS_FLOAT -DUSE_MMAP -DSPARCLINUX -Wall -O2 \
++			-fomit-frame-pointer -funroll-all-loops \
++			-finline-functions -ffast-math $(RPM_OPT_FLAGS)' \
++		mpg123-make
++
++
++linux-armv4l:
++	$(MAKE) CC=gcc LDFLAGS= OBJECTS='decode.o dct64.o audio_oss.o' \
++		CFLAGS='-DLINUX -DOSS -Wall -O2 \
++			-fomit-frame-pointer -funroll-all-loops \
++			-finline-functions -ffast-math \
++			-Wall -O6 -DUSE_MMAP \
++			$(RPM_OPT_FLAGS)' \
+ 		mpg123-make
+ 
+ linux-ppc-esd:
+--- mpg123-0.59q/audio_sun.c.mike	Mon Jan 11 10:54:46 1999
++++ mpg123-0.59q/audio_sun.c	Fri Feb 26 15:59:38 1999
+@@ -4,6 +4,10 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ 
++/* for Ultrapenguin... */
++#include <audiofile.h>
++#include <linux/soundcard.h>
++
+ #ifdef SOLARIS
+ #include <stropts.h>
+ #include <sys/conf.h>
