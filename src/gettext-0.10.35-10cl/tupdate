@@ -1,0 +1,259 @@
+#! /usr/bin/perl --					# -*-Perl-*-
+eval "exec /usr/bin/perl -S $0 $*"
+    if $running_under_some_shell;
+
+# Combine a new .po file and an old translated .po file to a new translation.
+# Copyright (C) 1995 Free Software Foundation, Inc.
+# Ulrich Drepper <drepper@gnu.ai.mit.edu>, May 1995.
+#
+
+# To be compatible with Perl4 we don't use localtime here.
+;# ctime.pl is a simple Perl emulation for the well known ctime(3C) function.
+;#
+;# Waldemar Kebsch, Federal Republic of Germany, November 1988
+;# kebsch.pad@nixpbe.UUCP
+;# Modified March 1990, Feb 1991 to properly handle timezones
+;#  $Id: tupdate.in,v 1.20 1995/08/23 21:13:11 drepper Exp $
+;#   Marion Hakanson (hakanson@cse.ogi.edu)
+;#   Oregon Graduate Institute of Science and Technology
+;#
+;# usage:
+;#
+;#     #include <ctime.pl>          # see the -P and -I option in perl.man
+;#     $Date = &ctime(time);
+
+CONFIG: {
+    package ctime;
+
+    @DoW = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+    @MoY = ('Jan','Feb','Mar','Apr','May','Jun',
+	    'Jul','Aug','Sep','Oct','Nov','Dec');
+}
+
+sub ctime {
+    package ctime;
+
+    local($time) = @_;
+    local($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst);
+
+    # Determine what time zone is in effect.
+    # Use GMT if TZ is defined as null, local time if TZ undefined.
+    # There's no portable way to find the system default timezone.
+
+    $TZ = defined($ENV{'TZ'}) ? ( $ENV{'TZ'} ? $ENV{'TZ'} : 'GMT' ) : '';
+    ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) =
+        ($TZ eq 'GMT') ? gmtime($time) : localtime($time);
+
+    # Hack to deal with 'PST8PDT' format of TZ
+    # Note that this can't deal with all the esoteric forms, but it
+    # does recognize the most common: [:]STDoff[DST[off][,rule]]
+
+    if($TZ=~/^([^:\d+\-,]{3,})([+-]?\d{1,2}(:\d{1,2}){0,2})([^\d+\-,]{3,})?/){
+        $TZ = $isdst ? $4 : $1;
+    }
+    $TZ .= ' ' unless $TZ eq '';
+
+    $year += ($year < 70) ? 2000 : 1900;
+    sprintf("%s %s %2d %2d:%02d:%02d %s%4d\n",
+      $DoW[$wday], $MoY[$mon], $mday, $hour, $min, $sec, $TZ, $year);
+}
+1;
+
+# Check for --help and --version first.
+#
+for ($cnt = 0; $cnt <= $#ARGV; $cnt++)
+{
+    if ($ARGV[$cnt] eq "--v"
+	|| $ARGV[$cnt] eq "--ve"
+	|| $ARGV[$cnt] eq "--ver"
+	|| $ARGV[$cnt] eq "--vers"
+	|| $ARGV[$cnt] eq "--versi"
+	|| $ARGV[$cnt] eq "--versio"
+	|| $ARGV[$cnt] eq "--version")
+    {
+	print "tupdate - gettext 0.10\n";
+	exit 0;
+    }
+    if ($ARGV[$cnt] eq "--h"
+	|| $ARGV[$cnt] eq "--he"
+	|| $ARGV[$cnt] eq "--hel"
+	|| $ARGV[$cnt] eq "--help")
+    {
+	print "tupdate [--help | --version | NEW OLD]\n";
+	print "  --help      give this help message and exit\n";
+	print "  --version   display version information and exit\n";
+	print "\n";
+	print "NEW is the last created PO file (generally by xgettext).\n";
+	print "It need not contain any translations.  OLD is the PO file\n";
+	print "including the old translations which will be taken over to\n";
+	print "the newly created file as long as they still match.\n";
+	exit 0;
+    }
+}
+
+# We take exactly two arguments.
+#
+if ($#ARGV != 1)
+{
+    die "Try `tupdate --help' for more information.\n";
+}
+
+unless (open(OLD, "$ARGV[1]"))
+{
+    die "Cannot open old translated .po file '$ARGV[1]'\n";
+}
+
+$last_was_special = 0;
+$have_special = 0;
+$last_comment = "";
+$comment_special = "";
+
+while (<OLD>)
+{
+    if (/^msgid[ \t]*/)
+    {
+	$_ =~ s/^msgid[ \t]*//;
+	$msgid = $_;
+
+	$_ = <OLD>;
+	$last_was_special = 1
+	    unless ($msgid ne "\"\"\n" || /^"/);
+
+        while (/^"/)
+        {
+	    $msgid = "$msgid$_";
+            $_ = <OLD>;
+        }
+    }
+    if (/^msgstr/)
+    {
+        $_ =~ s/^msgstr[ \t]*//;
+        $msgstr = $_;
+
+        $_ = <OLD>;
+        while (/^"/)
+        {
+	    $msgstr = "$msgstr$_";
+            $_ = <OLD>;
+        }
+
+	if ($last_was_special == 0)
+	{
+	    # It makes no sense to keep entries without translations.
+            $translate{$msgid} = $msgstr
+                if ($msgstr ne "\"\"\n");
+            $comment{$msgid} = $last_comment
+                if ($last_comment ne "");
+            $last_comment = "";
+	}
+	else
+	{
+	    $special_entry = $msgstr;
+	    $have_special = 1;
+	    $last_was_special = 0;
+            $comment_special = $last_comment;
+            $last_comment = "";
+	}
+    }
+    $last_comment = "$last_comment$_"
+	if (/^#[ \n\t]/);
+}
+
+close (OLD);
+
+unless (open (NEW, "$ARGV[0]"))
+{
+    die "Cannot open new .po file '$ARGV[0]'\n";
+}
+
+# to be sure
+$last_was_special = 0;
+$first_msgstr_output = 1;
+
+while (<NEW>)
+{
+    if (/^msgid[ \t]*/)
+    {
+	$_ =~ s/^msgid[ \t]*//;
+	$msgid = $_;
+
+	$_ = <NEW>;
+	$last_was_special = 1
+	    unless ($msgid ne "\"\"\n" || /^"/);
+
+        while (/^"/)
+        {
+	    $msgid = "$msgid$_";
+            $_ = <NEW>;
+        }
+    }
+    if (/^msgstr/)
+    {
+        $_ =~ s/^msgstr[ \t]*//;
+        $msgstr = $_;
+
+        $_ = <NEW>;
+        while (/^"/)
+        {
+	    $msgstr = "$msgstr$_";
+            $_ = <NEW>;
+        }
+
+	if ($last_was_special != 0)
+	{
+	    # The new translated .po file should contain the special
+	    # information entry of the old translated file.  But if
+	    # later does not contain one we generate it by copying
+	    # from the new .po file.
+	    print $comment_special;
+
+            print "msgid $msgid";
+
+	    $special_entry = $msgstr
+		if ($have_special == 0);
+
+	    $today = &ctime (time);
+	    chop $today;
+	    $special_entry =~
+	       s/Updated: .*/Updated: $today\\n"/;
+	    printf "msgstr $special_entry";
+
+	    $last_was_special = 0;
+	}
+	elsif (defined $translate{$msgid})
+	{
+            print $comment{$msgid}
+		if (defined ($comment{$msgid}));
+
+	    print "msgid $msgid";
+
+            print "msgstr $translate{$msgid}";
+	    delete $translate{$msgid}
+	}
+        else
+        {
+	    print "msgid $msgid";
+            print "msgstr $msgstr";
+        }
+    }
+
+    print;
+}
+
+foreach $key (keys %translate)
+{
+    print $comment{$key}
+	if (defined ($comment{$key}));
+    $escaped = $key;
+    chop $escape;
+    $escaped =~ s/\n/\n# /g;
+    print "# msgid $escaped";
+    $escaped = $translate{$key};
+    $escaped =~ s/\n/\n# /g;
+    print "msgstr $escaped\n";
+}
+
+# This variable is still set from processing the old .po file.
+print $last_comment;
+
+exit 0;

@@ -1,0 +1,11 @@
+--- gettext-0.10/Makefile.in.misc	Sun Nov  2 17:48:59 1997
++++ gettext-0.10/Makefile.in	Sun Nov  2 17:49:11 1997
+@@ -35,7 +35,7 @@
+ README THANKS TODO acconfig.h aclocal.m4 config.h.in configure configure.in \
+ install-sh mkinstalldirs stamp-h.in AUTHORS @DIST_ALPHA@ BUGS
+ 
+-SUBDIRS = doc lib intl src @POSUB@ misc checks
++SUBDIRS = doc lib intl src @POSUB@ checks
+ 
+ all: all-local all-recursive
+ 
