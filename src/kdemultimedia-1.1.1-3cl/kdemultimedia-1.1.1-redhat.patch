@@ -1,0 +1,36 @@
+diff -uNr kdemultimedia-1.1.1/kmidi/Makefile.am kdemultimedia-1.1.1-redhat/kmidi/Makefile.am
+--- kdemultimedia-1.1.1/kmidi/Makefile.am	Sun Feb 14 14:45:51 1999
++++ kdemultimedia-1.1.1-redhat/kmidi/Makefile.am	Tue Apr 27 02:18:29 1999
+@@ -9,7 +9,7 @@
+ VERSION = 0.2i
+ 
+ INCLUDES = $(all_includes)
+-AM_CFLAGS = -DDEFAULT_PATH=\"$(TIMID_DIR)\" -DKMIDI
++AM_CFLAGS = -DDEFAULT_PATH=\"\" -DKMIDI
+ LDFLAGS = $(all_libraries) $(KDE_RPATH)
+ LDADD = $(LIB_KFM) $(LIB_KDEUI) $(LIBALIB) $(LIBAUDIO) $(LIBMME) 
+ 
+diff -uNr kdemultimedia-1.1.1/kmidi/Makefile.in kdemultimedia-1.1.1-redhat/kmidi/Makefile.in
+--- kdemultimedia-1.1.1/kmidi/Makefile.in	Sat Apr 24 16:38:51 1999
++++ kdemultimedia-1.1.1-redhat/kmidi/Makefile.in	Tue Apr 27 02:18:29 1999
+@@ -176,7 +176,7 @@
+ VERSION = 0.2i
+ 
+ INCLUDES = $(all_includes)
+-AM_CFLAGS = -DDEFAULT_PATH=\"$(TIMID_DIR)\" -DKMIDI
++AM_CFLAGS = -DDEFAULT_PATH=\"\" -DKMIDI
+ LDFLAGS = $(all_libraries) $(KDE_RPATH)
+ LDADD = $(LIB_KFM) $(LIB_KDEUI) $(LIBALIB) $(LIBAUDIO) $(LIBMME) 
+ 
+diff -uNr kdemultimedia-1.1.1/kmidi/config.h kdemultimedia-1.1.1-redhat/kmidi/config.h
+--- kdemultimedia-1.1.1/kmidi/config.h	Mon Mar 29 07:24:38 1999
++++ kdemultimedia-1.1.1-redhat/kmidi/config.h	Tue Apr 27 02:18:29 1999
+@@ -348,7 +348,7 @@
+ #define CONFIG_FILE	TIMID_DIR##"/timidity.cfg"
+ #else
+ #ifndef CONFIG_FILE
+-#define CONFIG_FILE DEFAULT_PATH##"/timidity.cfg"
++#define CONFIG_FILE DEFAULT_PATH##"timidity.cfg"
+ #endif
+ #endif
+ 
