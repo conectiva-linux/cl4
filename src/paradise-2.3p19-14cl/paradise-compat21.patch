@@ -1,0 +1,22 @@
+diff -Nur client.2.3p19.orig/gameconf.c client.2.3p19/gameconf.c
+--- client.2.3p19.orig/gameconf.c	Thu Jun 10 16:11:06 1999
++++ client.2.3p19/gameconf.c	Thu Jun 10 16:11:20 1999
+@@ -10,7 +10,6 @@
+ #include "data.h"
+ #include "gppackets.h"
+ 
+-extern char *strdup();
+ 
+ int     number_of_teams;
+ 
+diff -Nur client.2.3p19.orig/x11window.c client.2.3p19/x11window.c
+--- client.2.3p19.orig/x11window.c	Thu Jun 10 16:11:06 1999
++++ client.2.3p19/x11window.c	Thu Jun 10 16:12:03 1999
+@@ -109,7 +109,6 @@
+ W_Color W_Yellow = YELLOW, W_Cyan = CYAN, W_Grey = GREY;
+ int     W_Textwidth, W_Textheight;
+ char   *getdefault();
+-char   *strdup();
+ 
+ int     W_in_message = 0;	/* jfy -- for Jerry's warp message hack */
+ 

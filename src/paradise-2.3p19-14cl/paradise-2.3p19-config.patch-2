@@ -1,0 +1,30 @@
+--- client.2.3p19/Makefile.tmp	Thu Jul 13 12:13:03 1995
++++ client.2.3p19/Makefile	Tue Aug 27 21:57:19 1996
+@@ -28,13 +28,13 @@
+ SCRAMBLER=echo
+ 
+ # Modify the following to reflect where your libgz.a and zlib.h files live.
+-GZLIBDIR = /home/msi-s1c/glamm/zlib
+-GZLIB = -lgz
+-GZINCLUDEDIR = /home/msi-s1c/glamm/zlib
++GZLIBDIR = 
++GZLIB = /usr/lib/libz.a
++GZINCLUDEDIR = 
+ 
+ # system paths.  
+-#X11HOME = -L${OPENWINHOME}/lib
+-INCLUDEDIRS = -I$(GZINCLUDEDIR) -L$(GZLIBDIR)
++X11HOME = -L/usr/X11R6/lib
++INCLUDEDIRS = 
+ 
+ # Compiling this client with any flags other than the ones supplied can
+ # cause problems. Sorry.
+@@ -236,7 +236,7 @@
+ X10LIB = -lX
+ X10OBJS = x10window.o
+ 
+-X11LIB = $(X11HOME) -lX11 -lXmu
++X11LIB = $(X11HOME) -lX11 -lXmu -lXt -lSM -lICE -lXext
+ X11SRC = x11window.c
+ X11OBJS = x11window.o
+ 
