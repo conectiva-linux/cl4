@@ -1,0 +1,11 @@
+--- Makefile.orig	Mon Oct 21 17:18:27 1996
++++ Makefile	Tue Sep 15 15:44:42 1998
+@@ -16,7 +16,7 @@
+ CFILES		= xtruco.c bitmap.c cursor.c display.c event.c gc.c pixmap.c\
+ 		  topwind.c window.c color.c button.c font.c read.c
+ 
+-CC		= gcc -O2 -g -Dlinux -DX11R6 $(INCLUDES) $(OPC)
++CC		= egcs -O2 -Dlinux -DX11R6 $(INCLUDES) $(OPC)
+ 
+ PROG=xtruco
+ 
