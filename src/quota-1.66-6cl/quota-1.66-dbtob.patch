@@ -1,0 +1,95 @@
+--- ./utils/Makefile.jj2	Fri Mar 27 08:54:07 1998
++++ ./utils/Makefile	Fri Mar 27 08:56:37 1998
+@@ -1,5 +1,5 @@
+ PROGS         = quotacheck quotaon quota repquota warnquota quotastats edquota rpc.rquotad 
+-CFLAGS       += $(RPM_OPT_FLAGS) -I . -DRPC -DEXT2_DIRECT
++CFLAGS       += $(RPM_OPT_FLAGS) -I . -DRPC -DEXT2_DIRECT "-Ddbtok(foo)=(foo)"
+ EXT2LIBS      = -lext2fs -lcom_err
+ BSDLIBS       = -lbsd
+ RPCSRC        = rquota.h rquota_xdr.c rquota_clnt.c
+--- ./utils/edquota.c.jj2	Sat Mar 21 18:20:07 1998
++++ ./utils/edquota.c	Fri Mar 27 08:57:14 1998
+@@ -384,9 +384,9 @@ writeprivs(struct quotause *quplist, int
+    for (qup = quplist; qup; qup = qup->next) {
+       fprintf(fd, "  %-12s %10d %10d %10d %10d %8d %8d\n",
+               qup->fsname,
+-              dbtob(qup->dqblk.dqb_curblocks) / 1024,
+-              dbtob(qup->dqblk.dqb_bsoftlimit) / 1024,
+-              dbtob(qup->dqblk.dqb_bhardlimit) / 1024,
++              dbtok(qup->dqblk.dqb_curblocks),
++              dbtok(qup->dqblk.dqb_bsoftlimit),
++              dbtok(qup->dqblk.dqb_bhardlimit),
+               qup->dqblk.dqb_curinodes,
+               qup->dqblk.dqb_isoftlimit, 
+ 	      qup->dqblk.dqb_ihardlimit);
+@@ -396,9 +396,9 @@ writeprivs(struct quotause *quplist, int
+    for (qup = quplist; qup; qup = qup->next) {
+       fprintf(fd, "%s: %s %d, limits (soft = %d, hard = %d)\n",
+               qup->fsname, "blocks in use:",
+-              dbtob(qup->dqblk.dqb_curblocks) / 1024,
+-              dbtob(qup->dqblk.dqb_bsoftlimit) / 1024,
+-              dbtob(qup->dqblk.dqb_bhardlimit) / 1024);
++              dbtok(qup->dqblk.dqb_curblocks),
++              dbtok(qup->dqblk.dqb_bsoftlimit),
++              dbtok(qup->dqblk.dqb_bhardlimit));
+       fprintf(fd, "%s %d, limits (soft = %d, hard = %d)\n",
+               "\tinodes in use:", qup->dqblk.dqb_curinodes,
+               qup->dqblk.dqb_isoftlimit, qup->dqblk.dqb_ihardlimit);
+--- ./utils/quota.c.jj2	Sun Nov 30 15:10:01 1997
++++ ./utils/quota.c	Fri Mar 27 08:57:58 1998
+@@ -347,19 +347,19 @@ showquotas(int type, int id, char *name)
+             printf("%s\n", qup->fsname);
+             printf("%15s%8d%c%7d%8d%8s"
+                 ,""
+-                ,dbtob(qup->dqblk.dqb_curblocks) / 1024
++                ,dbtok(qup->dqblk.dqb_curblocks)
+                 ,(msgb == (char *) 0) ? ' ' : '*'
+-                ,dbtob(qup->dqblk.dqb_bsoftlimit) / 1024
+-                ,dbtob(qup->dqblk.dqb_bhardlimit) / 1024
++                ,dbtok(qup->dqblk.dqb_bsoftlimit)
++                ,dbtok(qup->dqblk.dqb_bhardlimit)
+                 ,(msgb == (char *) 0) ? ""
+                 : timeprt(qup->dqblk.dqb_btime));
+          } else {
+             printf("%15s%8d%c%7d%8d%8s"
+                    ,qup->fsname
+-                   ,dbtob(qup->dqblk.dqb_curblocks) / 1024
++                   ,dbtok(qup->dqblk.dqb_curblocks)
+                    ,(msgb == (char *) 0) ? ' ' : '*'
+-                   ,dbtob(qup->dqblk.dqb_bsoftlimit) / 1024
+-                   ,dbtob(qup->dqblk.dqb_bhardlimit) / 1024
++                   ,dbtok(qup->dqblk.dqb_bsoftlimit)
++                   ,dbtok(qup->dqblk.dqb_bhardlimit)
+                    ,(msgb == (char *) 0) ? ""
+                    : timeprt(qup->dqblk.dqb_btime));
+          }
+--- ./utils/repquota.c.jj2	Sun Nov 30 15:10:28 1997
++++ ./utils/repquota.c	Fri Mar 27 08:58:23 1998
+@@ -216,9 +216,9 @@ repquota(struct mntent *mnt, int type, c
+              fup->fu_dqblk.dqb_isoftlimit &&
+              fup->fu_dqblk.dqb_curinodes >=
+              fup->fu_dqblk.dqb_isoftlimit ? '+' : '-',
+-             dbtob(fup->fu_dqblk.dqb_curblocks) / 1024,
+-             dbtob(fup->fu_dqblk.dqb_bsoftlimit) / 1024,
+-             dbtob(fup->fu_dqblk.dqb_bhardlimit) / 1024,
++             dbtok(fup->fu_dqblk.dqb_curblocks),
++             dbtok(fup->fu_dqblk.dqb_bsoftlimit),
++             dbtok(fup->fu_dqblk.dqb_bhardlimit),
+              fup->fu_dqblk.dqb_bsoftlimit &&
+              fup->fu_dqblk.dqb_curblocks >=
+              fup->fu_dqblk.dqb_bsoftlimit ?
+--- ./utils/warnquota.c.jj2	Sun Jan 25 15:31:18 1998
++++ ./utils/warnquota.c	Fri Mar 27 08:59:01 1998
+@@ -210,9 +210,9 @@ void mail_user(struct offenderlist *offe
+                 lptr->dq_isoftlimit &&
+                 lptr->dq_curinodes >=
+                 lptr->dq_isoftlimit ? '+' : '-',
+-                dbtob(lptr->dq_curblocks) / 1024,
+-                dbtob(lptr->dq_bsoftlimit) / 1024,
+-                dbtob(lptr->dq_bhardlimit) / 1024,
++                dbtok(lptr->dq_curblocks),
++                dbtok(lptr->dq_bsoftlimit),
++                dbtok(lptr->dq_bhardlimit),
+                 lptr->dq_bsoftlimit &&
+                 lptr->dq_curblocks >=
+                 lptr->dq_bsoftlimit ?

@@ -1,0 +1,118 @@
+--- ./utils/edquota.c.glibc	Fri Mar 27 08:57:14 1998
++++ ./utils/edquota.c	Fri Mar 27 09:03:21 1998
+@@ -49,8 +49,7 @@ static char rcsid[] = "$Id: edquota.c,v 
+ #include <sys/param.h>
+ #include <sys/stat.h>
+ #include <sys/file.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <errno.h>
+ #include <mntent.h>
+ #include <pwd.h>
+--- ./utils/hasquota.c.glibc	Sun Nov 30 15:08:08 1997
++++ ./utils/hasquota.c	Fri Mar 27 09:03:37 1998
+@@ -21,8 +21,7 @@
+  */
+ #include <sys/types.h>
+ #include <limits.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <string.h>
+ #include <mntent.h>
+ 
+--- ./utils/quota.c.glibc	Fri Mar 27 08:57:58 1998
++++ ./utils/quota.c	Fri Mar 27 09:03:50 1998
+@@ -49,8 +49,7 @@ static char rcsid[] = "$Id: quota.c,v 1.
+ #include <sys/param.h>
+ #include <sys/file.h>
+ #include <sys/stat.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <stdio.h>
+ #include <mntent.h>
+ #include <ctype.h>
+--- ./utils/quotacheck.c.glibc	Fri Mar 27 08:50:51 1998
++++ ./utils/quotacheck.c	Fri Mar 27 09:04:02 1998
+@@ -24,8 +24,7 @@
+ #include <sys/stat.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <stdarg.h>
+ #include <sys/file.h>
+ #include <mntent.h>
+--- ./utils/quotaon.c.glibc	Sun Nov 30 15:09:45 1997
++++ ./utils/quotaon.c	Fri Mar 27 09:04:25 1998
+@@ -48,8 +48,7 @@ static char rcsid[] = "$Id: quotaon.c,v 
+ #include <sys/param.h>
+ #include <sys/file.h>
+ #include <sys/mount.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <mntent.h>
+--- ./utils/quotastats.c.glibc	Sun Nov 30 15:11:01 1997
++++ ./utils/quotastats.c	Fri Mar 27 09:04:36 1998
+@@ -19,8 +19,7 @@
+  */
+ 
+ #include <sys/types.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ 
+--- ./utils/repquota.c.glibc	Fri Mar 27 08:58:23 1998
++++ ./utils/repquota.c	Fri Mar 27 09:04:57 1998
+@@ -47,8 +47,7 @@ static char rcsid[] = "$Id: repquota.c,v
+  */
+ #include <sys/param.h>
+ #include <sys/stat.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <mntent.h>
+ #include <pwd.h>
+ #include <grp.h>
+--- ./utils/warnquota.c.glibc	Fri Mar 27 08:59:01 1998
++++ ./utils/warnquota.c	Fri Mar 27 09:05:10 1998
+@@ -21,8 +21,7 @@
+ #include <sys/types.h>
+ #include <sys/param.h>
+ #include <stdio.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <stdarg.h>
+ #include <fcntl.h>
+ #include <mntent.h>
+--- ./utils/set_limits_example.c.glibc	Sat Oct 11 09:57:43 1997
++++ ./utils/set_limits_example.c	Fri Mar 27 09:05:28 1998
+@@ -1,6 +1,5 @@
+ #include <sys/types.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <errno.h>
+ #include <stdio.h>
+ 
+--- ./utils/rquota_server.c.glibc	Sun Nov 30 15:07:41 1997
++++ ./utils/rquota_server.c	Fri Mar 27 09:05:47 1998
+@@ -23,8 +23,7 @@
+ #include <sys/file.h>
+ #include <sys/stat.h>
+ #include <sys/param.h>
+-#include <asm/types.h>
+-#include <linux/quota.h>
++#include <sys/quota.h>
+ #include <dirent.h>
+ #include <paths.h>
+ #include <mntent.h>
