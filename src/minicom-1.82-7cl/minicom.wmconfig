@@ -1,0 +1,4 @@
+minicom name "Minicom"
+minicom description "Terminal Emulator"
+minicom group Networking
+minicom exec "xterm -e minicom &"

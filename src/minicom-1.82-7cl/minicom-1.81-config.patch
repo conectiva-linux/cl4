@@ -1,0 +1,13 @@
+--- minicom-1.81/src/config.h.orig	Fri Oct 31 14:48:00 1997
++++ minicom-1.81/src/config.h	Mon May  4 20:44:51 1998
+@@ -25,8 +25,8 @@
+ 
+ /* Operating system dependant parameters, per OS. A few samples are given. */
+ #if defined(__linux__)
+-#  define DFL_PORT "/dev/ttyS1"		/* Which tty to use */
+-#  define DEF_BAUD "57600"		/* Default baud rate */
++#  define DFL_PORT "/dev/modem"		/* Which tty to use */
++#  define DEF_BAUD "38400"		/* Default baud rate */
+ #  define CALLOUT  ""			/* Gets run to get into dial out mode */
+ #  define CALLIN   ""			/* Gets run to get into dial in mode */
+ #  undef  UUCPLOCK

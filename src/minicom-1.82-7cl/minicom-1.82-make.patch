@@ -1,0 +1,74 @@
+--- minicom-1.82/src/Makefile.make	Sat Jul 25 15:05:46 1998
++++ minicom-1.82/src/Makefile	Thu Oct  1 00:10:48 1998
+@@ -60,7 +60,7 @@
+ # MANDIR	= /usr/local/man/man1
+ 
+ # Take these compilation flags for Linux with libncurses.
+-FLAGS	= -Wall -D_POSIX -D_SYSV -D_SELECT -pipe # -I/usr/include/ncurses
++FLAGS	= -Wall -D_POSIX -D_SYSV -D_SELECT -pipe -I/usr/include/ncurses
+ PROGS	= minicom runscript ascii-xfr
+ LFLAGS	= -s
+ LIBS	= -lncurses #-lintl
+--- minicom-1.82/src/install.sh.make	Tue Apr 21 13:45:42 1998
++++ minicom-1.82/src/install.sh	Thu Oct  1 00:07:54 1998
+@@ -15,27 +15,15 @@
+ 	exit 1
+ fi
+ 
+-if test ! -d $1
+-then
+-	mkdir $1
+-	if [ $? != 0 ]
+-	then
+-		echo "$1: No such directory"
++for dir in $1 $2 $3 $4 ; do
++  if [ ! -d $dir ] ; then
++	mkdir -p $dir
++	if [ $? != 0 ];	then
++		echo "$dir: No such directory"
+ 		exit 1
+ 	fi
+-fi
+-
+-if test ! -d $2
+-then
+-	echo "$2: No such directory"
+-	exit 1
+-fi
+-
+-if test ! -d $3
+-then
+-	echo "$3: No such directory"
+-	exit 1
+-fi
++   fi
++done
+ 
+ if test -f minicom
+ then
+@@ -87,16 +75,15 @@
+ 
+ mkdir -p $4 2>/dev/null
+ 
+-if test -d $4
+-then
+-		echo "Installing script demos, docs, & character tables in $4"
+-		cp ../doc/* $4
+-		cp -r ../demos $4
+-		cp -r ../tables $4
+-		chmod -f 644 $4/* $4/demos/* $4/tables/*
+-		chmod -f a+x $4/demos $4/tables
+-		chown -f root $4/* $4/demos/* $4/tables/*
+-		chgrp -f root $4/* $4/demos/* $4/tables/*
++if test -d $4 ; then
++	echo "Installing script demos, docs, & character tables in $4"
++	cp ../doc/* $4
++	cp -r ../demos $4
++	cp -r ../tables $4
++	chmod -f 644 $4/* $4/demos/* $4/tables/*
++	chmod -f a+x $4/demos $4/tables
++	chown -f root $4/* $4/demos/* $4/tables/*
++	chgrp -f root $4/* $4/demos/* $4/tables/*
+ else
+ 	echo "You don't have a $4 directory - script examples not installed."
+ fi
