@@ -1,0 +1,22 @@
+--- dump-0.4b4/dump/Makefile.in.mike	Wed Mar 17 12:46:04 1999
++++ dump-0.4b4/dump/Makefile.in	Wed Mar 17 12:46:18 1999
+@@ -14,7 +14,7 @@
+ OBJS=		itime.o main.o optr.o tape.o traverse.o unctime.o \
+ 		../common/dumprmt.o
+ MAN8=		dump.8
+-MLINKS=		$(MANDIR)/dump.8 $(MANDIR)/rdump.8
++MLINKS=		dump.8 $(MANDIR)/rdump.8
+ 
+ all::		$(PROG)
+ 
+--- dump-0.4b4/restore/Makefile.in.mike	Wed Mar 17 12:47:11 1999
++++ dump-0.4b4/restore/Makefile.in	Wed Mar 17 12:48:31 1999
+@@ -15,7 +15,7 @@
+ OBJS=		dirs.o interactive.o main.o restore.o symtab.o tape.o \
+ 		utilities.o ../common/dumprmt.o
+ MAN8=		restore.8
+-MLINKS=		$(MANDIR)/restore.8 $(MANDIR)/rrestore.8
++MLINKS=		restore.8 $(MANDIR)/rrestore.8
+ 
+ all::		$(PROG)
+ 

@@ -1,0 +1,46 @@
+--- dump-0.3.orig/dump/traverse.c	Tue Feb  2 11:51:12 1999
++++ dump-0.3/dump/traverse.c	Tue Feb  2 11:39:00 1999
+@@ -50,7 +50,9 @@
+ #include <bsdcompat.h>
+ #include <err.h>
+ #include <stdlib.h>
++#define swab32(x) ext2fs_swab32(x)
+ #else	/* __linux__ */
++#define swab32(x) x
+ #ifdef sunos
+ #include <sys/vnode.h>
+ 
+@@ -818,10 +820,31 @@
+ 	fsizeT *size;
+ {
+ 	int i, cnt;
++#ifdef __linux__
++       int max;
++       blk_t *swapme;
++#endif
+ 	daddr_t idblk[MAXNINDIR];
+ 
+-	if (blk != 0)
+-		bread(fsbtodb(sblock, blk), (char *)idblk, (int) sblock->fs_bsize);
++	if (blk != 0) {
++	 bread(fsbtodb(sblock, blk), (char *)idblk, (int) sblock->fs_bsize);
++#ifdef __linux__
++         /* My RedHat 4.0 system doesn't have these flags; I haven't
++          *  upgraded e2fsprogs yet
++          */
++#if defined(EXT2_FLAG_SWAP_BYTES)
++         if ((fs->flags & EXT2_FLAG_SWAP_BYTES) ||
++             (fs->flags & EXT2_FLAG_SWAP_BYTES_READ)) {
++#endif
++           max = sblock->fs_bsize >> 2;
++           swapme = (blk_t *) idblk;
++           for (i = 0; i < max; i++, swapme++)
++             *swapme = swab32(*swapme);
++#if defined(EXT2_FLAG_SWAP_BYTES)
++          }
++#endif
++#endif
++	}
+ 	else
+ 		bzero((char *)idblk, (int)sblock->fs_bsize);
+ 	if (ind_level <= 0) {

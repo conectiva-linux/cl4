@@ -1,0 +1,22 @@
+--- dump-0.3/common/dumprmt.c~	Wed Jun 14 16:15:48 1995
++++ dump-0.3/common/dumprmt.c	Thu Apr 30 11:58:03 1998
+@@ -42,6 +42,8 @@
+ static char sccsid[] = "@(#)dumprmt.c	8.1 (Berkeley) 6/5/93";
+ #endif /* not lint */
+ 
++#include <sys/types.h>
++#include <linux/types.h>
+ #include <sys/param.h>
+ #include <sys/mtio.h>
+ #include <sys/ioctl.h>
+--- dump-0.3/dump/tape.c~	Thu Apr 30 11:11:18 1998
++++ dump-0.3/dump/tape.c	Thu Apr 30 12:00:06 1998
+@@ -42,6 +42,8 @@
+ static char sccsid[] = "@(#)tape.c	8.2 (Berkeley) 3/17/94";
+ #endif /* not lint */
+ 
++#include <sys/types.h>
++#include <linux/types.h>
+ #include <sys/param.h>
+ #include <sys/socket.h>
+ #include <sys/time.h>

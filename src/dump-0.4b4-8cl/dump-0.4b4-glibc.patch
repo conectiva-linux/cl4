@@ -1,0 +1,29 @@
+--- dump-0.4b4/dump/traverse.c.glibc	Fri Feb 19 12:34:24 1999
++++ dump-0.4b4/dump/traverse.c	Fri Feb 19 12:35:31 1999
+@@ -99,6 +99,8 @@
+ static	int searchdir __P((ino_t ino, daddr_t blkno, long size, long filesize));
+ #endif
+ 
++long long llseek(int fildes, long long offset, int whence);
++
+ /*
+  * This is an estimation of the number of TP_BSIZE blocks in the file.
+  * It estimates the number of blocks in files with holes by assuming
+@@ -1036,7 +1038,7 @@
+ 
+ loop:
+ #ifdef	__linux__
+-	if (ext2_llseek(diskfd, ((ext2_loff_t)blkno << dev_bshift), 0) !=
++	if (llseek(diskfd, ((ext2_loff_t)blkno << dev_bshift), 0) !=
+ 			((ext2_loff_t)blkno << dev_bshift))
+ #else
+ 	if ((int)lseek(diskfd, ((off_t)blkno << dev_bshift), 0) == -1)
+@@ -1081,7 +1083,7 @@
+ 	memset(buf, 0, size);
+ 	for (i = 0; i < size; i += dev_bsize, buf += dev_bsize, blkno++) {
+ #ifdef	__linux__
+-		if (ext2_llseek(diskfd, ((ext2_loff_t)blkno << dev_bshift), 0) !=
++		if (llseek(diskfd, ((ext2_loff_t)blkno << dev_bshift), 0) !=
+ 				((ext2_loff_t)blkno << dev_bshift))
+ #else
+ 		if ((int)lseek(diskfd, ((off_t)blkno << dev_bshift), 0) == -1)
