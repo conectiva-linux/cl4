@@ -1,0 +1,10 @@
+--- cdecl-2.5/cdecl.c.ewt	Fri Aug  9 15:46:58 1996
++++ cdecl-2.5/cdecl.c	Fri Aug  9 15:47:06 1996
+@@ -63,6 +63,7 @@
+ #include <stdio.h>
+ #include <ctype.h>
+ #if __STDC__ || defined(DOS)
++#include <errno.h>
+ # include <stdlib.h>
+ # include <stddef.h>
+ # include <string.h>
