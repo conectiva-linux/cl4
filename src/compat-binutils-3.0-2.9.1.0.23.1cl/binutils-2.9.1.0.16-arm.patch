@@ -1,0 +1,22 @@
+--- binutils-2.9.1.0.16/bfd/config.bfd.arm	Mon Nov 30 15:35:29 1998
++++ binutils-2.9.1.0.16/bfd/config.bfd	Mon Nov 30 15:36:18 1998
+@@ -112,7 +112,7 @@
+     targ_defvec=armlinux_vec
+     targ_underscore=yes
+     ;;
+-  arm-*-elf* | arm-*-linux*)
++  arm*-*-elf* | arm*-*-linux*)
+     targ_defvec=bfd_elf32_arm_vec
+     ;;
+   thumb-*-coff)
+--- binutils-2.9.1.0.16/config.sub.arm	Mon Nov 30 15:34:50 1998
++++ binutils-2.9.1.0.16/config.sub	Mon Nov 30 15:35:14 1998
+@@ -222,7 +222,7 @@
+ 		;;
+ 	# Recognize the basic CPU types with company name.
+ 	vax-* | tahoe-* | i[3456]86-* | i860-* | m32r-* | m68k-* | m68000-* \
+-	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm-* | c[123]* \
++	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm*-* | c[123]* \
+ 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* \
+ 	      | power-* | none-* | 580-* | cray2-* | h8300-* | i960-* \
+ 	      | xmp-* | ymp-* | hppa-* | hppa1.0-* | hppa1.1-* \
