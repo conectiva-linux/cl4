@@ -1,0 +1,11 @@
+--- rdate/Makefile.ewt	Sun Sep 29 14:52:52 1996
++++ rdate/Makefile	Sun Sep 29 14:53:00 1996
+@@ -4,7 +4,7 @@
+ 
+ BINDIR = /usr/bin
+ 
+-CFLAGS = -O
++CFLAGS = $(RPM_OPT_FLAGS)
+ LDFLAGS =
+ 
+ all: rdate
