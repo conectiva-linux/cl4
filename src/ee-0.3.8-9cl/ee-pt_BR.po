@@ -1,0 +1,563 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Electric Eyes\n"
+"POT-Creation-Date: 1999-02-10 17:08-0500\n"
+"PO-Revision-Date: 1999-04-07 11:45-0300\n"
+"Last-Translator: Rogério de Leon Pereira <joshua@wnet.com.br>\n"
+"Language-Team: Português-Brasil <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso8859-1\n"
+"Content-Transfer-Encoding: base64\n"
+
+#: Revisão
+msgid ""
+msgstr "Revisão: Sandro Henrique <sandro@conectiva.com.br>\n" 
+
+#: ee_edit.c:1090
+msgid "Electric Eyes - Edit Controls"
+msgstr "Electric Eyes - Controles de Edição"
+
+#: ee_edit.c:1101
+msgid "Colour Settings"
+msgstr "Configurações de Cores"
+
+#: ee_edit.c:1207
+msgid "Gray Controls"
+msgstr "Controles de Cinza"
+
+#: ee_edit.c:1235
+msgid "Red Controls"
+msgstr "Controles de Vermelho"
+
+#: ee_edit.c:1263
+msgid "Green Controls"
+msgstr "Controles de Verde"
+
+#: ee_edit.c:1291
+msgid "Blue Controls"
+msgstr "Controles de Azul"
+
+#: ee_edit.c:1320
+msgid "Colour Modifications:"
+msgstr "Modificações nas Cores:"
+
+#: ee_edit.c:1328
+msgid "Apply"
+msgstr "Aplicar"
+
+#: ee_edit.c:1329 ee_edit.c:1330
+msgid "Apply the current color changes to the main image"
+msgstr "Aplicar a mudança nas cores na imagem principal"
+
+#: ee_edit.c:1332
+msgid "Keep"
+msgstr "Manter"
+
+#: ee_edit.c:1333 ee_edit.c:1334
+msgid "Apply the current color changes to the image data, and reset"
+msgstr "Aplicar a mudança nas cores na imagem principal e retornar para os padrões"
+
+#: ee_edit.c:1336
+msgid "Reset"
+msgstr "Retornar aos padrões"
+
+#: ee_edit.c:1337 ee_edit.c:1338
+msgid "Reset all the color changes to normal values"
+msgstr "Cancelar todas as modificações de cores e retornar para os valores normais"
+
+#: ee_edit.c:1340
+msgid "Always Apply"
+msgstr "Sempre Aplicar"
+
+#: ee_edit.c:1346 ee_edit.c:1347
+msgid "Always apply any changes to the main image"
+msgstr "Sempre aplicar qualquer mudança na imagem corrente"
+
+#: ee_edit.c:1349
+msgid "Geometry Settings"
+msgstr "Configurações Geométricas"
+
+#: ee_edit.c:1361
+msgid "Image Size:"
+msgstr "Tamanho da Imagem:"
+
+#: ee_edit.c:1366
+msgid "Crop:"
+msgstr "Cortar:"
+
+#: ee_edit.c:1380 ee_edit.c:1381
+msgid "Halve the size of the image"
+msgstr "Dividir o tamanho da imagem ao meio"
+
+#: ee_edit.c:1385 ee_edit.c:1386
+#, c-format
+msgid "Reduce the image size by 10%"
+msgstr "Reduzir o tamanho da imagem em 10%"
+
+#: ee_edit.c:1389
+msgid "Normal"
+msgstr "Normal"
+
+#: ee_edit.c:1390 ee_edit.c:1391
+msgid "Set the image size to its normal size"
+msgstr "Configurar o tamanho da imagem para seu tamanho normal"
+
+#: ee_edit.c:1395 ee_edit.c:1396
+#, c-format
+msgid "Increase the image size by 10%"
+msgstr "Aumentar o tamanho da imagem em 10%"
+
+#: ee_edit.c:1400 ee_edit.c:1401
+msgid "Double the size of the image"
+msgstr "Dobrar o tamanho da imagem"
+
+#: ee_edit.c:1404
+msgid "Max Aspect"
+msgstr "Aspecto Máximo"
+
+#: ee_edit.c:1405 ee_edit.c:1406
+msgid "Maximize image size retaining aspect"
+msgstr "Maximizar o tamanho da imagem mantendo o aspecto"
+
+#: ee_edit.c:1409
+msgid "Max"
+msgstr "Máximo"
+
+#: ee_edit.c:1410 ee_edit.c:1411
+msgid "Maximize image size"
+msgstr "Maximizar o tamanho da imagem"
+
+#: ee_edit.c:1418
+msgid "Set Size"
+msgstr "Configurar Tamanho"
+
+#: ee_edit.c:1419 ee_edit.c:1420
+msgid "Set a custom size for the image"
+msgstr "Configurar um tamanho personalizado para a imagem"
+
+#: ee_edit.c:1423
+msgid "Apply Size"
+msgstr "Aplicar Tamanho"
+
+#: ee_edit.c:1424 ee_edit.c:1425
+msgid "Apply the current view size to the image"
+msgstr "Aplicar o tamanho atual de visualização na imagem"
+
+#: ee_edit.c:1429 ee_edit.c:1430
+msgid "Flip image horizontally"
+msgstr "Inverter a imagem no sentido horizontal"
+
+#: ee_edit.c:1434 ee_edit.c:1435
+msgid "Flip image vertically"
+msgstr "Inverter a imagem no sentido vertical"
+
+#: ee_edit.c:1439 ee_edit.c:1440
+msgid "Rotate image"
+msgstr "Girar a imagem"
+
+#: ee_edit.c:1443
+msgid "Snapshot Screen Now"
+msgstr "Visualização Imediata "
+
+#: ee_edit.c:1444 ee_edit.c:1445
+msgid "Grab the contents of the entire screen now"
+msgstr "Capturar toda a tela "
+
+#: ee_edit.c:1448
+msgid "Snapshot Custom"
+msgstr "Personalizar Visualização Instantânea"
+
+#: ee_edit.c:1449 ee_edit.c:1450
+msgid "Select a custom window on the screen to snapshot"
+msgstr "Selecionar uma janela personalizada para visualização instantânea"
+
+#: ee_edit.c:1456 ee_image.c:127 ee_image.c:445
+#, c-format
+msgid "Image Size: (%i x %i)"
+msgstr "Tamanho da Imagem: (%i x %i)"
+
+#: ee_filesel.c:62
+msgid "Select a file to save"
+msgstr "Selecione um arquivo para salvar"
+
+#: ee_filesel.c:75 ee_filesel.c:127 ee_filesel.c:571
+msgid "Select a file to load"
+msgstr "Selecione um arquivo para carregar"
+
+#: ee_filesel.c:102
+msgid "Set Printout settings"
+msgstr "Configurar saída de impressão"
+
+#: ee_filesel.c:598
+msgid "Saved Image Settings"
+msgstr "Configurações Salvas"
+
+#: ee_filesel.c:605
+msgid "Print Command:"
+msgstr "Comando de Impressão:"
+
+#: ee_filesel.c:618 ee_menu.c:28 ee_toolbar.c:57
+msgid "Print"
+msgstr "Imprimir"
+
+#: ee_filesel.c:624
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ee_filesel.c:636
+msgid "Image Format:"
+msgstr "Formato da Imagem:"
+
+#: ee_filesel.c:707
+msgid "Quality Settings"
+msgstr "Configurações da Qualidade"
+
+#: ee_filesel.c:719
+msgid "Page Settings"
+msgstr "Configurações de Página"
+
+#: ee_filesel.c:792
+msgid "Color"
+msgstr "Cor"
+
+#: ee_filesel.c:805
+msgid "Scaling Factor:"
+msgstr "Fator de Escala de Tamanho:"
+
+#: ee_filesel.c:834
+msgid "Select a file"
+msgstr "Selecione um arquivo"
+
+#: ee_filesel.c:845
+msgid "Load all files in directory"
+msgstr "Carregar todos os arquivos no diretório"
+
+#: ee_filesel.c:859
+msgid "Use Previews"
+msgstr "Usar Visualizações Prévias"
+
+#: ee_filesel.c:869
+msgid "Image Information"
+msgstr "Informação da Imagem"
+
+#: ee_grab.c:361
+msgid "Grab Options"
+msgstr "Opções de Captura"
+
+#: ee_grab.c:373
+msgid "Number of seconds to wait:"
+msgstr "Número de segundos de espera:"
+
+#: ee_grab.c:384
+msgid "Hide EE windows"
+msgstr "Esconder janela do EE"
+
+#: ee_grab.c:390
+msgid "Selected window hierachy depth:"
+msgstr "Profundidade de hierarquia da janela selecionada:"
+
+#: ee_image.c:382 ee_image.c:536 ee_image.c:873
+#, c-format
+msgid "Crop: (%i, %i) (%i x %i)"
+msgstr "Cortar: (%i, %i) (%i x %i)"
+
+#: ee_image.c:914
+msgid "Electric Eyes"
+msgstr "Olhos Elétricos"
+
+#: ee_list.c:346
+msgid "Do you wish to delete the file on disk?"
+msgstr "Você deseja apagar o arquivo do disco?"
+
+#: ee_list.c:350
+msgid "Do you wish to delete the disk file:"
+msgstr "Você deseja apagar o arquivo:"
+
+#: ee_list.c:486
+msgid "Electric Eyes - Images"
+msgstr "Olhos Elétricos - Imagens"
+
+#: ee_list.c:502 ee_menu.c:55 ee_menu.c:132
+msgid "Quit"
+msgstr "Sair"
+
+#: ee_list.c:503 ee_list.c:504 ee_menu.c:56 ee_menu.c:133
+msgid "Exit this program"
+msgstr "Finalizar este programa"
+
+#: ee_list.c:510 ee_menu.c:15 ee_toolbar.c:33
+msgid "Open"
+msgstr "Abrir"
+
+#: ee_list.c:511 ee_list.c:512 ee_toolbar.c:34 ee_toolbar.c:35
+msgid "Open a new file"
+msgstr "Abrir um novo arquivo"
+
+#: ee_list.c:518 ee_toolbar.c:65
+msgid "First"
+msgstr "Primeiro"
+
+#: ee_list.c:519 ee_list.c:520
+msgid "Select first item in list"
+msgstr "Selecionar o primeiro item na lista"
+
+#: ee_list.c:526 ee_toolbar.c:73
+msgid "Previous"
+msgstr "Anterior"
+
+#: ee_list.c:527 ee_list.c:528
+msgid "Select previous item in list"
+msgstr "Selecionar o item anterior na lista"
+
+#: ee_list.c:534 ee_toolbar.c:81
+msgid "Next"
+msgstr "Próximo"
+
+#: ee_list.c:535 ee_list.c:536
+msgid "Select next item in list"
+msgstr "Selecionar o próximo item na lista"
+
+#: ee_list.c:542
+msgid "Last Item"
+msgstr "Último Item"
+
+#: ee_list.c:543 ee_list.c:544
+msgid "Select last item in list"
+msgstr "Selecionar o último item na lista"
+
+#: ee_list.c:560
+msgid "Remove"
+msgstr "Remover"
+
+#: ee_list.c:561 ee_list.c:562
+msgid "Remove filename from list"
+msgstr "Remove o arquivo da lista"
+
+#: ee_list.c:568
+msgid "Delete"
+msgstr "Apagar"
+
+#: ee_list.c:569 ee_list.c:570
+msgid "Delete file on disk and remove from the list"
+msgstr "Apagar o arquivo do disco e removê-lo da lista"
+
+#: ee_list.c:597
+msgid "Use Large Thumbnails"
+msgstr "Usar Miniaturas Grandes"
+
+#: ee_list.c:605
+msgid "Generate Thumbnails"
+msgstr "Gerar Miniaturas"
+
+#: ee_menu.c:16
+msgid "Open up a new image file"
+msgstr "Abrir um novo arquivo de imagem"
+
+#: ee_menu.c:19 ee_toolbar.c:41
+msgid "Save"
+msgstr "Salvar"
+
+#: ee_menu.c:20
+msgid "Save this image"
+msgstr "Salvar esta imagem"
+
+#: ee_menu.c:23 ee_toolbar.c:49
+msgid "Save As"
+msgstr "Salvar Como"
+
+#: ee_menu.c:24
+msgid "Save this image as a new file"
+msgstr "Salvar esta imagem como um novo arquivo"
+
+#: ee_menu.c:29
+msgid "Print this Image"
+msgstr "Imprimir esta Imagem"
+
+#: ee_menu.c:33
+msgid "Last Image"
+msgstr "Última Imagem"
+
+#: ee_menu.c:34
+msgid "Display the last image in the image list"
+msgstr "Mostrar a última imagem na lista de imagens"
+
+#: ee_menu.c:37
+msgid "Next Image"
+msgstr "Próxima Imagem"
+
+#: ee_menu.c:38
+msgid "Display the next image in the image list"
+msgstr "Mostrar a próxima imagem na lista de imagens"
+
+#: ee_menu.c:41
+msgid "Previous Image"
+msgstr "Imagem Anterior"
+
+#: ee_menu.c:42
+msgid "Display the previous image in the image list"
+msgstr "Mostrar a imagem anterior na lista de imagens"
+
+#: ee_menu.c:45
+msgid "First Image"
+msgstr "Primeira Imagem"
+
+#: ee_menu.c:46
+msgid "Display the first image in the image list"
+msgstr "Mostrar a primeira imagem na lista de imagens"
+
+#: ee_menu.c:50 ee_menu.c:51
+msgid "Set as Desktop Background"
+msgstr "Configurar como fundo da Área de Trabalho"
+
+#: ee_menu.c:64
+msgid "Top"
+msgstr "Topo"
+
+#: ee_menu.c:65
+msgid "Add Toolbar To Top"
+msgstr "Adicionar Barra de Ferramentas ao Topo"
+
+#: ee_menu.c:68
+msgid "Bottom"
+msgstr "Fundo"
+
+#: ee_menu.c:69
+msgid "Add Toolbar To Bottom"
+msgstr "Adicionar Barra de Ferramentas ao Fundo"
+
+#: ee_menu.c:72
+msgid "Left"
+msgstr "Esquerda"
+
+#: ee_menu.c:73
+msgid "Add Toolbar To Left"
+msgstr "Adicionar Barra de Ferramenta à Esquerda"
+
+#: ee_menu.c:76
+msgid "Right"
+msgstr "Direita"
+
+#: ee_menu.c:77
+msgid "Add Toolbar To Right"
+msgstr "Adicionar Barra de Ferramenta à Direita"
+
+#: ee_menu.c:81
+msgid "Hide"
+msgstr "Esconder"
+
+#: ee_menu.c:82
+msgid "Hide the Toolbar"
+msgstr "Esconder a Barra de Ferramenta"
+
+#: ee_menu.c:90
+msgid "Show/Hide Edit Window"
+msgstr "Mostrar/Esconder a Janela de Edição"
+
+#: ee_menu.c:91
+msgid "Toggle Edit Window visability"
+msgstr "Alternar visibilidade da Janela de Edição"
+
+#: ee_menu.c:94
+msgid "Show/Hide List Window"
+msgstr "Mostrar/Esconder a Janela de Lista"
+
+#: ee_menu.c:95
+msgid "Toggle List Window visability"
+msgstr "Alternar a visibilidade da Janela de Lista"
+
+#: ee_menu.c:98
+msgid "Toggle Scrolled View"
+msgstr "Alternar Visualização com Rolagem"
+
+#: ee_menu.c:99
+msgid "Toggle Scrollbars in a scrolled view"
+msgstr "Alternar Barras de Rolagem numa visualização com rolagem"
+
+#: ee_menu.c:102
+msgid "Tool Bar"
+msgstr "Barra de Ferramenta"
+
+#: ee_menu.c:115
+msgid "File"
+msgstr "Arquivo"
+
+#: ee_menu.c:117
+msgid "View"
+msgstr "Visualizar"
+
+#: ee_menu.c:120
+msgid "Crop Selection"
+msgstr "Seleção de Corte"
+
+#: ee_menu.c:121
+msgid "Crop the current crop selection"
+msgstr "Cortar a seleção de corte corrente"
+
+#: ee_menu.c:124
+msgid "Save Settings"
+msgstr "Salvar Configurações"
+
+#: ee_menu.c:125
+msgid "Save the current settings"
+msgstr "Salvar as Configurações Correntes"
+
+#: ee_toolbar.c:25
+msgid "Exit"
+msgstr "Sair"
+
+#: ee_toolbar.c:26 ee_toolbar.c:27
+msgid "Exit Electric Eyes"
+msgstr "Sair do Electric Eyes"
+
+#: ee_toolbar.c:42 ee_toolbar.c:43
+msgid "Save as original filename"
+msgstr "Salvar com o nome original"
+
+#: ee_toolbar.c:50 ee_toolbar.c:51
+msgid "Save as new file"
+msgstr "Salvar como novo arquivo"
+
+#: ee_toolbar.c:58 ee_toolbar.c:59
+msgid "Print image"
+msgstr "Imprimir Imagem"
+
+#: ee_toolbar.c:66 ee_toolbar.c:67
+msgid "View the first image in the list"
+msgstr "Visualizar a primeira imagem na lista"
+
+#: ee_toolbar.c:74 ee_toolbar.c:75
+msgid "View the previous image in the list"
+msgstr "Visualizar a imagem anterior na lista"
+
+#: ee_toolbar.c:82 ee_toolbar.c:83
+msgid "View the next image in the list"
+msgstr "Visualizar a próxima imagem na lista"
+
+#: ee_toolbar.c:89
+msgid "Last"
+msgstr "Última"
+
+#: ee_toolbar.c:90 ee_toolbar.c:91
+msgid "View the last image in the list"
+msgstr "Visualizar a última imagem da lista"
+
+#: ee_toolbar.c:97
+msgid "Crop"
+msgstr "Cortar"
+
+#: ee_toolbar.c:98 ee_toolbar.c:99
+msgid "Crop the current selection"
+msgstr "Cortar a seleção corrente"
+
+#: functions.c:652
+msgid "Select a window"
+msgstr "Selecionar uma janela"
+
+#: functions.c:655
+msgid "Please press OK then click on a window to grab"
+msgstr "Por favor pressione OK e depois clique na janela a ser capturada"
+
+#: main.c:19
+msgid "Set root window image and leave"
+msgstr "Configurar a janela principal de imagem e sair"
+

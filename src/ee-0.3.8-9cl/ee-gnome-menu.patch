@@ -1,0 +1,10 @@
+--- ./ee.desktop~	Mon Feb  8 16:14:37 1999
++++ ./ee.desktop	Tue Jun 29 23:17:08 1999
+@@ -8,6 +8,7 @@
+ Name[pt]=Electric Eyes
+ Name[ru]=Electric Eyes
+ Comment=Image display program
++Comment[pt_BR]=Programa de visualização de imagens
+ Comment[es]=Programa para visualizar imágenes
+ Comment[fr]=Programme de visualisation d'images
+ Comment[de]=Bildbetrachter

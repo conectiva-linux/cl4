@@ -1,0 +1,12 @@
+diff -uNr ee-0.3.8/configure.in ee-0.3.8-pt_BR/configure.in
+--- ee-0.3.8/configure.in	Fri Feb 12 19:01:28 1999
++++ ee-0.3.8-pt_BR/configure.in	Fri Jun 25 18:13:57 1999
+@@ -16,7 +16,7 @@
+ 
+ GNOME_X_CHECKS
+ 
+-ALL_LINGUAS="de es fi fr ga it ja ko no pt sv ru"
++ALL_LINGUAS="de es fi fr ga it ja ko no pt pt_BR sv ru"
+ AM_GNU_GETTEXT
+ 
+ AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)

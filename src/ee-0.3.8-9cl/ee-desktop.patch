@@ -1,0 +1,11 @@
+--- ee-0.3.8/Makefile.in.msf	Fri Feb 26 00:41:39 1999
++++ ee-0.3.8/Makefile.in	Fri Feb 26 00:41:47 1999
+@@ -114,7 +114,7 @@
+ XPM_LIBS = @XPM_LIBS@
+ l = @l@
+ 
+-Graphicsdir = $(datadir)/apps/Graphics
++Graphicsdir = $(datadir)/gnome/apps/Graphics
+ 
+ SUBDIRS = doc macros po intl
+ 
