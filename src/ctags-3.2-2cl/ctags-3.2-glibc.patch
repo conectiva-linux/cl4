@@ -1,0 +1,12 @@
+--- ctags-3.2/configure.in~	Wed Mar  3 23:16:38 1999
++++ ctags-3.2/configure.in	Sun Mar 21 15:20:40 1999
+@@ -225,9 +225,6 @@
+ CHECK_PROTO(strstr,	string.h)
+ CHECK_PROTO(stat,	sys/stat.h)
+ CHECK_PROTO(lstat,	sys/stat.h)
+-if test "$have_fgetpos" = yes; then
+-	CHECK_PROTO(fgetpos, stdio.h)
+-fi
+ if test "$have_truncate" = yes; then
+ 	CHECK_PROTO(truncate, unistd.h)
+ fi
