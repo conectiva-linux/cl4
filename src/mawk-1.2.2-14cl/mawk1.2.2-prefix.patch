@@ -1,0 +1,18 @@
+--- mawk-1.2.2/Makefile.in.orig	Mon Feb  5 19:56:10 1996
++++ mawk-1.2.2/Makefile.in	Mon Feb  5 19:56:52 1996
+@@ -11,11 +11,13 @@
+ 
+ YACC = @YACC@ 
+ 
++prefix = @prefix@
++
+ # where to put mawk
+-BINDIR = @BINDIR@
++BINDIR = $(prefix)/bin
+ # where to put the man pages
+-MANDIR = @MANDIR@
+ MANEXT = @MANEXT@
++MANDIR = $(prefix)/man/man$(MANEXT)
+ #######################################
+ 
+ 
