@@ -1,0 +1,10 @@
+diff -uNr intl.old/Makefile intl/Makefile
+--- intl.old/Makefile	Thu Jan 16 23:08:48 1997
++++ intl/Makefile	Tue Jun 22 16:56:51 1999
+@@ -1,5 +1,5 @@
+ DEFINES= -DHAVE_WCHAR
+-CFLAGS= $(DEFINES) -Wall -g -fPIC -shared -I /usr/local/include/python1.4 -I /usr/local/lib/python1.4/config
++CFLAGS= $(DEFINES) -Wall -g -fPIC -shared -I /usr/include/python1.5 -I /usr/lib/python1.5/config
+ 
+ all:	wstrop.so intl.so de/LC_MESSAGES/test1.mo
+ 
