@@ -1,0 +1,144 @@
+diff -uNr managerpm-1.11_1.13r12.orig/conectiva/managerpm.daemons managerpm-1.11_1.13r12.diff/conectiva/managerpm.daemons
+--- managerpm-1.11_1.13r12.orig/conectiva/managerpm.daemons	Wed Dec 31 21:00:00 1969
++++ managerpm-1.11_1.13r12.diff/conectiva/managerpm.daemons	Fri Feb 26 10:54:31 1999
+@@ -0,0 +1 @@
++rpm	/bin/rpm
+diff -uNr managerpm-1.11_1.13r12.orig/help.files/pt/LEIAME managerpm-1.11_1.13r12.diff/help.files/pt/LEIAME
+--- managerpm-1.11_1.13r12.orig/help.files/pt/LEIAME	Thu Dec  3 23:24:30 1998
++++ managerpm-1.11_1.13r12.diff/help.files/pt/LEIAME	Fri Feb 26 11:03:09 1999
+@@ -12,6 +12,6 @@
+ 
+ -----------------------------------------------------------------
+ Autor:		aurélio marinho jargas <aurelio@conectiva.com.br>
+-Versão:		managerpm-1.9_1.13r6
+-Data:		sex nov 27 15:44:43 EDT 1998
++Versão:		managerpm-1.11_1.13r12
++Data:		sex fev 26 11:03:04 EST 1999
+ -----------------------------------------------------------------
+diff -uNr managerpm-1.11_1.13r12.orig/help.files/pt/README managerpm-1.11_1.13r12.diff/help.files/pt/README
+--- managerpm-1.11_1.13r12.orig/help.files/pt/README	Thu Dec  3 23:24:30 1998
++++ managerpm-1.11_1.13r12.diff/help.files/pt/README	Fri Feb 26 11:02:42 1999
+@@ -11,6 +11,6 @@
+ 
+ -----------------------------------------------------------------
+ Author:		aurelio marinho jargas <aurelio@conectiva.com.br>
+-Version:	managerpm-1.9_1.13r6
+-Date:		Fri Nov 27 15:45:11 EDT 1998
++Version:	managerpm-1.11_1.13r12
++Date:		Fri Feb 26 11:02:26 EST 1999
+ -----------------------------------------------------------------
+diff -uNr managerpm-1.11_1.13r12.orig/messages/pt.dic managerpm-1.11_1.13r12.diff/messages/pt.dic
+--- managerpm-1.11_1.13r12.orig/messages/pt.dic	Thu Dec  3 23:24:30 1998
++++ managerpm-1.11_1.13r12.diff/messages/pt.dic	Wed Mar  3 18:10:01 1999
+@@ -2,7 +2,26 @@
+ # sex nov  6 11:02 1998 tradução, revisão e testes <aurelio@conectiva.com.br>
+ # sex nov 20 08:18 1998 - atualização 1.8_1.13r5 - <aurelio@conectiva.com.br>
+ # sex nov 27 15:50 1998 - atualização 1.9_1.13r6 - <aurelio@conectiva.com.br>
++# sex fev 26 10:28 1999 - atualização 1.11_1.13r12 - <aurelio@conectiva.com.br>
+ #
++!F_INPROVIDES
++    :E Search in \"provides\"
++    :T pesquise em \"Provê\"
++!I_managerpm
++    :Z You can update package on your system either\none by one or in batch.\n
++    :T Você pode checar/atualizar os pacotes em sua máquina\nou um a um ou por lote.\n
++    :E You can inspect/update packages on your system either\n
++      +one by one or in batch.\n
++!I_GROUPS
++    :Z Here ie the list of package categories.\n
++      +Pick one to see the associated packages
++    :T Aqui está uma lista dos grupos dos pacotes.\n
++      +Escolha um grupo para ver seus membros.
++    :E Here is the list of package categories.\n
++      +Pick one to see the associated packages
++!F_INREQUIRES
++    :E Search in \"requires\"
++    :T pesquise em \"Requer\"
+ !I_MOUNT
+     :E The directory %s\nis part of an unmounted filesystem\nDo you want to mount it ?
+     :T \ \ O diretório %s\n
+@@ -19,31 +38,29 @@
+     :T %s existe, mas não é um diretório
+ !P_MOUNT
+     :E mount file systems
+-    :T montar de sistemas de arquivos
++    :T montar sistema de arquivos
+ !I_PUTCD
+     :E \n(Do not forget to put the CDrom in)
+-    :T \n(não se esqueça de colocar o CDROM)
++    :T \n(Não esqueça de colocar o CDROM no leitor)
+ !M_managerpm
+     :E Package management (RPM)
+     :T Gerenciamento de pacotes RPM
+ !T_USAGE
+-    :E managerpm usage\n\nmanagerpm --option ...\n
+-    :T managerpm uso:\n\n
+-      +managerpm --opção ...\n
++    :Z managerpm usage\n\nmanagerpm --option ...\n
++    :E Module managerpm\n\n    Without argument, start the main menu\n
++    :T Módulo managerpm\n\n    Sem argumentos, inicia o menu principal\n
+ !E_CANTEXEC
+     :E Can't execute the command\nrpm %s
+     :T Impossível executar o comando\nrpm %s
+ !N_NOUPDATENEEDED
+     :E No package to update. %d packages compared
+-    :T Nenhum pacote a atualizar.\n
+-      +  %d pacotes comparados.
++    :T Nenhum pacote a atualizar.\n  %d pacotes comparados.
+ !T_LISTUPDATE
+     :E List of package to update
+     :T Lista de pacotes a atualizar
+ !I_LISTUPDATE
+     :E Uncheck the packages you do not wish to update
+-    :T Deixe selecionado apenas os pacotes os quais\n
+-      +você quer atualizar.
++    :T Deixe selecionado apenas os pacotes os quais\nvocê quer atualizar.
+ !F_UPDATEDIR
+     :E Directory containing rpms
+     :T Diretório com os RPMs
+@@ -68,12 +85,6 @@
+ !M_SNAPSHOT
+     :E Take a snapshot of the packages
+     :T Ver o estado dos pacotes
+-!I_managerpm
+-    :Z You can update package on your system either\none by one or in batch.\n
+-    :T Você pode checar/atualizar os pacotes em sua\n
+-      +máquina ou um a um ou por lote.\n
+-    :E You can inspect/update packages on your system either\n
+-     +one by one or in batch.\n
+ !P_MNGPKG
+     :E to manage packages
+     :T para gerenciar pacotes
+@@ -127,8 +138,7 @@
+     :T Saída de \"rpm %s\"
+ !E_NOOUTPUT
+     :E The command rpm %s\ndid not produced any output
+-    :T O comando rpm %s\n
+-      +não produziu saída alguma.
++    :T O comando rpm %s\nnão produziu saída alguma.
+ !M_BROWEINS
+     :E Browse installed packages
+     :T Consultar os pacotes instalados
+@@ -144,11 +154,6 @@
+ !T_GROUPS
+     :E Package categories
+     :T Grupos dos pacotes
+-!I_GROUPS
+-    :E Here ie the list of package categories.\n
+-      +Pick one to see the associated packages
+-    :T Aqui está uma lista dos grupos dos pacotes.\n
+-      +Escolha um grupo para ver seus membros.
+ !T_SOURCE
+     :E Package source
+     :T Fonte do pacote
+@@ -170,10 +175,6 @@
+ !F_INSUMMARY
+     :E Search in summary
+     :T pesquise em \"Sumário\"
+-!F_INREQUIRES
+-    :E pesquise em \"Requer\"
+-!F_INPROVIDES
+-    :E pesquise em \"Provê\"
+ !T_SEARCH
+     :E Searching packages
+     :T Pesquisando pacotes

@@ -1,0 +1,56 @@
+--- mngrpm.cc.orig	Fri Jun 25 15:40:42 1999
++++ mngrpm.cc	Fri Jun 25 16:47:29 1999
+@@ -1,3 +1,7 @@
++/*  Changes :
++Marcelo Tosatti <marcelo@conectiva.com.br> : Fixed a bug which calls the mount window in a mounted directory
++*/
++
+ #include <stdlib.h>
+ #include <string.h>
+ #include "managerpm.h"
+@@ -754,6 +758,7 @@
+ */
+ bool mngrpm_ismounted (const char *path, SSTRING &mpoint)
+ {
++	char *tmp;
+ 	bool ret = true;
+ 	FSTAB fstab;
+ 	int lenpath = strlen (path);
+@@ -774,19 +779,24 @@
+ 		}
+ 	}
+ 	if (found != NULL && !found->is_mounted()){
+-		char buf[2000];
+-		snprintf (buf,sizeof(buf)-1
+-			,MSG_U(I_MOUNT,"The directory %s\n"
+-				"is part of an unmounted filesystem\n"
+-				"Do you want to mount it ?"),path);
+-		if (strcmp(found->getfs(),"iso9660")==0){
+-			strcat (buf,MSG_U(I_PUTCD,"\n(Do not forget to put the CDrom in)"));
+-		}
+-		if (xconf_yesno (MSG_U(Q_MOUNT,"Mounting file system")
+-			,buf,help_mount)==MENU_YES
+-			&& perm_rootaccess(MSG_U(P_MOUNT,"mount file systems"))){
+-			ret = found->domount() != -1;
+-			if (ret) mpoint.setfrom (found->getmpoint());
++		char *tmp = found->getmpoint();
++
++		if(strlen(tmp) != 0) {
++			char buf[2000];
++			snprintf (buf,sizeof(buf)-1
++				,MSG_U(I_MOUNT,"The directory %s\n"
++					"is part of an unmounted filesystem\n"
++					"Do you want to mount it ?"),path);
++			if (strcmp(found->getfs(),"iso9660")==0){
++				strcat (buf,MSG_U(I_PUTCD,
++					"\n(Do not forget to put the CDrom in)"));
++			}
++			if (xconf_yesno (MSG_U(Q_MOUNT,"Mounting file system")
++				,buf,help_mount)==MENU_YES
++				&& perm_rootaccess(MSG_U(P_MOUNT,"mount file systems"))){
++				ret = found->domount() != -1;
++				if (ret) mpoint.setfrom (found->getmpoint());
++			}
+ 		}
+ 	}
+ 	if (ret){
