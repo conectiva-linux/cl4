@@ -1,0 +1,4 @@
+spider name "spider - jogo de cartas"
+spider description "Jogo de cartas do tipo paciência"
+spider group Jogos/Estratégia
+spider exec "spideR &"
