@@ -1,0 +1,97 @@
+--- xfishtank/xfish.c.orig	Tue Dec 15 19:07:18 1992
++++ xfishtank/xfish.c	Wed Dec 11 16:45:26 1996
+@@ -46,7 +46,7 @@
+ 
+ /* constants are based on rand(3C) returning an integer between 0 and 32767 */
+ 
+-#if defined(ultrix) || defined(sun)
++#if defined(ultrix) || defined(sun) || defined(linux)
+ #define  RAND_I_1_16   134217728
+ #define  RAND_F_1_8    268435455.875
+ #define  RAND_I_1_4    536870911
+@@ -982,7 +982,7 @@
+ 	XColor hdef, edef;
+ 	struct colr_data *cdp;
+ 	struct colr_data colrs[256];
+-	extern char *malloc();
++	extern void *malloc(int);
+ 
+ 	colormap = XDefaultColormap(Dpy, screen);
+ 
+@@ -1164,7 +1164,7 @@
+ 		shiftinc = -depth;
+ 	}
+ 	linepad = 8 - (width % 8);
+-	bit_data = (unsigned char *)malloc(((width + linepad) * height) + 1);
++	bit_data = (void *)malloc(((width + linepad) * height) + 1);
+ 	bitp = bit_data;
+ 	datap = data;
+ 	*bitp = 0;
+@@ -1218,7 +1218,7 @@
+ 	unsigned char *data;
+ 	register int i, j, k;
+ 	int cnt, wcnt;
+-	extern char *malloc();
++	extern void *malloc();
+ 
+ 	cnt = 1;
+ 	cnt += Pcnt;
+@@ -1453,6 +1453,9 @@
+     else
+ 	XRaiseWindow(Dpy, wid);
+     XFlush(Dpy);
++
++    signal(SIGUSR1, toggle_secure);
++
+ #ifdef sgi
+     return(1);
+ #endif
+@@ -1466,6 +1469,7 @@
+ init_signals()
+ {
+ 	int ret;
++#if 0
+ #if defined(MOTOROLA) || defined(SCO)
+     sigset(SIGUSR1, toggle_secure);
+ #else
+@@ -1489,6 +1493,9 @@
+     sigvector(SIGUSR1, &vec, &vec);
+ #endif
+ #endif /* MOTOROLA */
++#endif
++
++    signal(SIGUSR1, toggle_secure);
+ }
+ 
+ 
+@@ -1501,7 +1508,7 @@
+     XWindowAttributes winfo;
+     XSetWindowAttributes attr;
+     XGCValues   vals;
+-    extern char *malloc();
++    extern void *malloc();
+     XSizeHints  xsh;
+     XImage *pimage;
+     int i, size, cnt;
+@@ -1511,6 +1518,11 @@
+     XGetWindowAttributes(Dpy, DefaultRootWindow(Dpy), &winfo);
+     width = winfo.width;
+     height = winfo.height;
++
++    if (winfo.depth != 8) {
++	fprintf(stderr, "xfishtank only supports 8 bit displays\n");
++	exit(1);
++    }
+ 
+     init_colormap();
+ 
+--- xfishtank/Imakefile.orig	Tue Dec 15 19:04:35 1992
++++ xfishtank/Imakefile	Wed Dec 11 16:44:58 1996
+@@ -2,7 +2,6 @@
+ LOCAL_LIBRARIES = $(XLIB)
+         DEPLIBS = $(DEPXLIB)
+   SYS_LIBRARIES = -lm
+-    CDEBUGFLAGS = -g
+ 
+            SRCS = xfish.c medcut.c read.c gifread.c
+            OBJS = xfish.o medcut.o read.o gifread.o
