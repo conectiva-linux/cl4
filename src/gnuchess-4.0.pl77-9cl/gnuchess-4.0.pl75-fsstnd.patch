@@ -1,0 +1,11 @@
+--- gnuchess-4.0.pl77/src/Makefile.in.djb	Tue Aug 13 14:49:12 1996
++++ gnuchess-4.0.pl77/src/Makefile.in	Tue Aug 13 14:49:45 1996
+@@ -127,7 +127,7 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-LIBDIR = $(prefix)/lib
++LIBDIR = $(prefix)/lib/games/gnuchess
+ BINDIR = $(exec_prefix)/bin
+ MANDIR = $(prefix)/man/man6
+ MANEXT = .6

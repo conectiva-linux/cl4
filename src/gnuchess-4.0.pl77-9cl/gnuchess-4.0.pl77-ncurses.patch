@@ -1,0 +1,34 @@
+--- gnuchess-4.0.pl77/src/configure.djb	Tue May 14 22:19:22 1996
++++ gnuchess-4.0.pl77/src/configure	Fri Oct 17 22:36:36 1997
+@@ -760,13 +760,13 @@
+   echo "$ac_t""no" 1>&6
+ fi
+ 
+-echo $ac_n "checking for -lcurses""... $ac_c" 1>&6
+-ac_lib_var=`echo curses | tr '.-/+' '___p'`
++echo $ac_n "checking for -lncurses""... $ac_c" 1>&6
++ac_lib_var=`echo ncurses | tr '.-/+' '___p'`
+ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   ac_save_LIBS="$LIBS"
+-LIBS="-lcurses  $LIBS"
++LIBS="-lncurses  $LIBS"
+ cat > conftest.$ac_ext <<EOF
+ #line 772 "configure"
+ #include "confdefs.h"
+@@ -789,12 +789,12 @@
+ fi
+ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+   echo "$ac_t""yes" 1>&6
+-    ac_tr_lib=HAVE_LIB`echo curses | tr 'abcdefghijklmnopqrstuvwxyz' 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'`
++    ac_tr_lib=HAVE_LIB`echo ncurses | tr 'abcdefghijklmnopqrstuvwxyz' 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'`
+   cat >> confdefs.h <<EOF
+ #define $ac_tr_lib 1
+ EOF
+ 
+-  LIBS="-lcurses $LIBS"
++  LIBS="-lncurses $LIBS"
+ 
+ else
+   echo "$ac_t""no" 1>&6
