@@ -1,0 +1,49 @@
+diff -urN --exclude CVS /usr/src/cvs/glibc/nscd/connections.c nscd/connections.c
+--- /usr/src/cvs/glibc/nscd/connections.c	Thu Feb 11 17:17:55 1999
++++ nscd/connections.c	Fri Apr  9 00:47:52 1999
+@@ -442,3 +442,17 @@
+ 
+   nscd_run ((void *) 0);
+ }
++
++/* Handle the HUP signal which will force a dump of the cache */
++void
++sighup_handler (int signum)
++{
++    /* Prune the password database */
++    prune_cache (&dbs[pwddb], LONG_MAX);
++    
++    /* Prune the group database */
++    prune_cache (&dbs[grpdb], LONG_MAX);
++
++    /* Prune the host database */
++    prune_cache (&dbs[hstdb], LONG_MAX);
++}
+diff -urN --exclude CVS /usr/src/cvs/glibc/nscd/nscd.c nscd/nscd.c
+--- /usr/src/cvs/glibc/nscd/nscd.c	Tue Jan  5 15:05:14 1999
++++ nscd/nscd.c	Fri Apr  9 00:48:09 1999
+@@ -96,6 +96,9 @@
+   options, parse_opt, NULL, doc,
+ };
+ 
++/* The SIGHUP handler is extern to this file */
++extern void sighup_handler(int signum);
++
+ int
+ main (int argc, char **argv)
+ {
+@@ -144,12 +147,13 @@
+       /* Ignore job control signals.  */
+       signal (SIGTTOU, SIG_IGN);
+       signal (SIGTTIN, SIG_IGN);
+-      signal (SIGTSTP, SIG_IGN);
++      signal (SIGTSTP, SIG_IGN);      
+     }
+ 
+   signal (SIGINT, termination_handler);
+   signal (SIGQUIT, termination_handler);
+   signal (SIGTERM, termination_handler);
++  signal (SIGHUP, sighup_handler);
+   signal (SIGPIPE, SIG_IGN);
+ 
+   /* Cleanup files created by a previous `bind'.  */

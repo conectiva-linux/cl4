@@ -1,0 +1,36 @@
+--- glibc/sysdeps/unix/sysv/linux/sparc/ldd-rewrite.sed.libc4	Wed Mar 31 23:39:25 1999
++++ glibc/sysdeps/unix/sysv/linux/sparc/ldd-rewrite.sed	Wed Mar 31 23:40:02 1999
+@@ -0,0 +1,2 @@
++/LD_TRACE_LOADED_OBJECTS=1/a\
++add_env="$add_env LD_LIBRARY_VERSION=\\$verify_out"
+--- glibc/sysdeps/unix/sysv/linux/configure.libc4	Wed Mar 31 23:42:13 1999
++++ glibc/sysdeps/unix/sysv/linux/configure	Wed Mar 31 23:42:51 1999
+@@ -109,8 +109,11 @@
+ # We need some extensions to the `ldd' script.
+ 
+ case "$machine" in
+-  i[3456]86* | m68* | sparc/sparc32)
++  i[3456]86* | m68*)
+     ldd_rewrite_script=../sysdeps/unix/sysv/linux/ldd-rewrite.sed
++    ;;
++  sparc/sparc32)
++    ldd_rewrite_script=../sysdeps/unix/sysv/linux/sparc/ldd-rewrite.sed
+     ;;
+   *)
+     ;;
+--- glibc/sysdeps/unix/sysv/linux/configure.in.libc4	Sat Dec  5 00:03:17 1998
++++ glibc/sysdeps/unix/sysv/linux/configure.in	Wed Mar 31 23:41:18 1999
+@@ -94,9 +94,12 @@
+ # We need some extensions to the `ldd' script.
+ changequote(,)
+ case "$machine" in
+-  i[3456]86* | m68* | sparc/sparc32)
++  i[3456]86* | m68*)
+     ldd_rewrite_script=../sysdeps/unix/sysv/linux/ldd-rewrite.sed
+     ;;
++  sparc/sparc32)
++    ldd_rewrite_script=../sysdeps/unix/sysv/linux/sparc/ldd-rewrite.sed
++    ;;    
+   *)
+     ;;
+ esac

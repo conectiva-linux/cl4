@@ -1,0 +1,33 @@
+1999-03-28  Andreas Jaeger  <aj@arthur.rhein-neckar.de>
+
+	* libio/iopopen.c (_IO_fork): Use fork instead of vfork since
+	vfork doesn't allow e.g. closing dup2 and close calls.
+        Fixes PR libc/966+967.
+
+--- libio/iopopen.c.~1~	Mon Nov 23 19:58:12 1998
++++ libio/iopopen.c	Sun Mar 28 12:01:11 1999
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 1993, 1997, 1998 Free Software Foundation, Inc.
++/* Copyright (C) 1993, 1997, 1998, 1999 Free Software Foundation, Inc.
+    This file is part of the GNU IO Library.
+    Written by Per Bothner <bothner@cygnus.com>.
+ 
+@@ -42,9 +42,9 @@
+ 
+ #ifndef _IO_fork
+ #ifdef _LIBC
+-#define _IO_fork __vfork
++#define _IO_fork __fork
+ #else
+-#define _IO_fork vfork /* defined in libiberty, if needed */
++#define _IO_fork fork /* defined in libiberty, if needed */
+ #endif
+ extern _IO_pid_t _IO_fork __P ((void));
+ #endif
+
+
+-- 
+ Andreas Jaeger   aj@arthur.rhein-neckar.de    jaeger@informatik.uni-kl.de
+  for pgp-key finger ajaeger@aixd1.rhrk.uni-kl.de
+
+

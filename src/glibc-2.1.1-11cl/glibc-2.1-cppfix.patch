@@ -1,0 +1,25 @@
+--- glibc/resolv/arpa/nameser.h.cppfix	Sat Mar 20 01:13:25 1999
++++ glibc/resolv/arpa/nameser.h	Sat Mar 20 01:16:22 1999
+@@ -293,6 +293,11 @@
+ 	unsigned	arcount :16;	/* number of resource entries */
+ } HEADER;
+ 
++#ifdef __cplusplus
++extern "C" {
++#endif
++    
++
+ /*
+  * Defines for handling compressed domain names
+  */
+@@ -342,5 +347,10 @@
+ 	*t_cp   = t_l; \
+ 	(cp) += INT32SZ; \
+ }
++
++#ifdef __cplusplus
++}
++#endif
++    
+ 
+ #endif /* arpa/nameser.h */

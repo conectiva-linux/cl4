@@ -1,0 +1,56 @@
+From hjl@varesearch.com Fri Apr  9 20:47:42 1999
+Date: Fri, 9 Apr 1999 15:10:38 -0700 (PDT)
+From: H.J. Lu <hjl@varesearch.com>
+To: gafton@redhat.com
+Cc: GNU C Library <libc-hacker@cygnus.com>
+Subject: A new patch for sysdeps/unix/sysv/linux/fstatvfs.c
+
+Does this patch look ok?
+
+Thanks.
+
+
+-- 
+H.J. Lu (hjl@gnu.org)
+--
+Fri Apr  9 15:08:25 1999  H.J. Lu  <hjl@gnu.org>
+
+	* sysdeps/unix/sysv/linux/fstatvfs.c (fstatvfs): Set the
+	"f_frsize" field to 0.
+
+Index: sysdeps/unix/sysv/linux/fstatvfs.c
+===================================================================
+RCS file: /local/work/cvs/gnu/glibc/sysdeps/unix/sysv/linux/fstatvfs.c,v
+retrieving revision 1.1.1.4
+diff -u -p -r1.1.1.4 fstatvfs.c
+--- sysdeps/unix/sysv/linux/fstatvfs.c	1998/10/23 21:15:21	1.1.1.4
++++ sysdeps/unix/sysv/linux/fstatvfs.c	1999/04/09 22:08:15
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 1998 Free Software Foundation, Inc.
++/* Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+    This file is part of the GNU C Library.
+    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998.
+ 
+@@ -55,10 +55,6 @@ fstatvfs (int fd, struct statvfs *buf)
+   switch (fsbuf.f_type)
+     {
+     case EXT2_SUPER_MAGIC:
+-      /* This is not really correct since the fragment size can vary.  */
+-      buf->f_frsize = 1024;
+-      break;
+-
+     case ADFS_SUPER_MAGIC:
+     case AFFS_SUPER_MAGIC:
+     case CODA_SUPER_MAGIC:
+@@ -80,8 +76,9 @@ fstatvfs (int fd, struct statvfs *buf)
+     case UFS_MAGIC:
+     case UFS_CIGAM:
+     default:
+-      /* I hope it's safe to assume no fragmentation.  */
+-      buf->f_frsize = buf->f_bsize;
++      /* Since Linux doesn't support f_frsize, we set it to 0. "df"
++	 will be happy with it. */
++      buf->f_frsize = 0;
+       break;
+     }
+ 

@@ -1,0 +1,11 @@
+--- glibc/login/openpty.c~	Thu Sep 24 17:09:07 1998
++++ glibc/login/openpty.c	Thu Apr  1 11:31:59 1999
+@@ -108,7 +108,7 @@
+   if (pts_name (master, &buf, sizeof (_buf)))
+     goto fail;
+ 
+-  slave = open (buf, O_RDWR);
++  slave = open (buf, O_RDWR | O_NOCTTY);
+   if (slave == -1)
+     {
+       if (buf != _buf)
