@@ -1,0 +1,33 @@
+--- eject-2.0.2/Makefile.buildroot	Sun Feb 14 15:49:02 1999
++++ eject-2.0.2/Makefile	Tue Feb 16 13:06:52 1999
+@@ -6,19 +6,15 @@
+ 
+ # Location to install binary. Default is /usr/local/bin. You may
+ # prefer to install it in /usr/bin or /sbin
+-BINDIR	= /usr/local/bin
+-#BINDIR=/usr/bin
+-#BINDIR=/usr/sbin
++BINDIR	= $(RPM_BUILD_ROOT)/usr/bin
+ 
+ # Location to install man page. Default is /usr/local/man. You may
+ # prefer to install it in /usr/man
+-MANDIR	= /usr/local/man
+-#MANDIR	= /usr/man
++MANDIR	= $(RPM_BUILD_ROOT)/usr/man
+ 
+ # File permissions for binary. Use MODE=4555 if you want to install it
+ # setuid root (see man page).
+ MODE	= 555
+-#MODE	= 4555
+ 
+ # Compiler to use
+ CC	= gcc
+@@ -35,7 +31,7 @@
+ # On a.out systems you might want to add -N when linking
+ # RPM_OPT_FLAGS can be set by rpm tool
+ # ...For production code
+-CFLAGS	= -Wall -O3 $(RPM_OPT_FLAGS)
++CFLAGS	= -Wall $(RPM_OPT_FLAGS)
+ LDFLAGS = -s
+ # ...For debug
+ #CFLAGS	= -Wall -g
