@@ -1,0 +1,20 @@
+--- gnome-libs-1.0.10/gnome-data/gnome.soundlist.rhsnddefs	Mon May 31 07:04:03 1999
++++ gnome-libs-1.0.10/gnome-data/gnome.soundlist	Mon Jun  7 11:57:18 1999
+@@ -8,7 +8,7 @@
+ description[it]=Eventi di sistema GNOME
+ 
+ [login]
+-file=login.wav
++file=
+ description=Login
+ description[ca]=Entrada al sistema
+ description[es]=Apertura de sesión
+@@ -18,7 +18,7 @@
+ description[it]=Login
+ 
+ [logout]
+-file=logout.wav
++file=
+ description=Logout
+ description[ca]=Eixida del sistema
+ description[es]=Salida de sesión

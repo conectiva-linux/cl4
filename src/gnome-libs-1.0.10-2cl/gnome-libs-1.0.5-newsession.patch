@@ -1,0 +1,18 @@
+--- gnome-libs-1.0.5/libgnomeui/gnome-client.c.newsession	Thu Apr  1 14:36:05 1999
++++ gnome-libs-1.0.5/libgnomeui/gnome-client.c	Thu Apr  1 14:41:48 1999
+@@ -2467,6 +2467,7 @@
+       return;
+     }
+   
++#if 0 /* Now in save-session */
+   if (shutdown) 
+     {
+       static GtkWidget *box = NULL;
+@@ -2508,6 +2509,7 @@
+ 	  gnome_config_pop_prefix ();
+ 	}
+     }
++#endif /* 0 */
+   if (GNOME_CLIENT_CONNECTED (client))
+     {
+ #ifdef HAVE_LIBSM

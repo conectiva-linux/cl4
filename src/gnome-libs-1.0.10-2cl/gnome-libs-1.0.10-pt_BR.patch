@@ -1,0 +1,12 @@
+diff -uNr gnome-libs-1.0.10/configure.in gnome-libs-1.0.10-pt_BR/configure.in
+--- gnome-libs-1.0.10/configure.in	Tue Jun  1 16:24:45 1999
++++ gnome-libs-1.0.10-pt_BR/configure.in	Sun Jun 27 21:44:56 1999
+@@ -93,7 +93,7 @@
+   AC_DEFINE(GNOME_ENABLE_DEBUG)
+ fi
+ 
+-ALL_LINGUAS="ca cs da de en_GB es eu fi fr ga hr hu it ja ko nl no pl pt ru sk sv wa"
++ALL_LINGUAS="ca cs da de en_GB es eu fi fr ga hr hu it ja ko nl no pl pt pt_BR ru sk sv wa"
+ 	
+ AM_GNOME_GETTEXT
+ # AM_GNOME_GETTEXT above substs $DATADIRNAME

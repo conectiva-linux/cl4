@@ -1,0 +1,11 @@
+--- gnome-libs-1.0.8/libgnomeui/gnome-font-picker.c.nullfont	Tue Apr 20 03:48:34 1999
++++ gnome-libs-1.0.8/libgnomeui/gnome-font-picker.c	Tue Apr 20 03:52:05 1999
+@@ -795,6 +795,8 @@
+     /* Load font */
+     font=gdk_font_load(pStr);
+ 
++    g_return_if_fail( font != NULL );
++
+     /* Change label style */
+     gtk_widget_ensure_style(gfp->font_label);
+     style=gtk_style_copy(gfp->font_label->style);

@@ -1,0 +1,18 @@
+--- gnome-libs-1.0.5/libgnome/gnomelib-init.c.sndon	Wed Mar 17 12:37:36 1999
++++ gnome-libs-1.0.5/libgnome/gnomelib-init.c	Fri Apr  2 12:38:48 1999
+@@ -87,10 +87,14 @@
+ 		   void *data)
+ {
+ 	gboolean real_enable_sound;
++	gboolean  sndon;
+ 	
+ 	switch(reason) {
+ 	case POPT_CALLBACK_REASON_POST:
+-		real_enable_sound = disable_sound ? FALSE : TRUE;
++	        /* msf - check to see if user has configured sound on for GNOME or not */
++                /*       but if they enable it on the command line we do it            */
++                sndon = gnome_config_get_bool("/sound/system/settings/start_esd=false");
++		real_enable_sound = (enable_sound || sndon) && !disable_sound;
+ 		
+ 		if (real_enable_sound){
+ 			if (esound_host)

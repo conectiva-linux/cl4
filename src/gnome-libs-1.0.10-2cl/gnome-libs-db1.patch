@@ -1,0 +1,60 @@
+--- gnome-libs-1.0.2/libgnome/gnome-metadata.c.db1	Wed Mar 10 17:54:04 1999
++++ gnome-libs-1.0.2/libgnome/gnome-metadata.c	Wed Mar 10 17:54:56 1999
+@@ -52,10 +52,14 @@
+ #include <ctype.h>
+ #include <errno.h>
+ 
++#ifdef HAVE_DB1_DB_H
++#include <db1/db.h>
++#else
+ #ifdef HAVE_DB_185_H
+ # include <db_185.h>
+ #else
+ # include <db.h>
++#endif
+ #endif
+ 
+ #include "libgnomeP.h"
+--- gnome-libs-1.0.2/libgnome/gnome-dump.c.db1	Wed Mar 10 17:55:31 1999
++++ gnome-libs-1.0.2/libgnome/gnome-dump.c	Wed Mar 10 17:56:00 1999
+@@ -25,11 +25,16 @@
+ #endif
+ #include <sys/types.h>
+ 
++#ifdef HAVE_DB1_DB_H
++# include <db1/db.h>
++#else
+ #ifdef HAVE_DB_185_H
+ # include <db_185.h>
+ #else
+ # include <db.h>
+ #endif
++#endif
++
+ #include <string.h>
+ #include <unistd.h>
+ #include <sys/types.h>
+--- gnome-libs-1.0.2/configure.in.db1	Wed Mar 10 17:04:09 1999
++++ gnome-libs-1.0.2/configure.in	Wed Mar 10 17:14:49 1999
+@@ -251,14 +251,14 @@
+ dnl Check for db stuff (gnome-metadata)
+ dnl
+ DB_LIB=
+-AC_CHECK_FUNC(dbopen,,[
+-  AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",[
+-    AC_CHECK_LIB(db, db_open, [
+-      AC_MSG_ERROR([Your db library is missing db 1.85 compatibility mode])], [
+-      AC_MSG_ERROR([Berkeley db library required for Gnome])])])])
++AC_CHECK_FUNC(dbopen, [],
++ AC_CHECK_LIB(db1, dbopen, DB_LIB="-ldb1",
++ AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",
++  AC_MSG_ERROR([Your db library is missing db 1.85 compatibility mode]))))
+ 
+-dnl the SleepyCat db2 library has a compatibility header for db 1.85.
+-AC_CHECK_HEADERS(db_185.h db.h)
++
++dnl look for db1 headers
++AC_CHECK_HEADERS(db_185.h db1/db.h)
+ 
+ if test x$ac_cv_header_db_185_h = xno && test x$ac_cv_header_db_h = xno; then
+   AC_MSG_ERROR([Berkeley db library required for Gnome])
