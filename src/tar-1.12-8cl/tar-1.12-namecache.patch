@@ -1,0 +1,25 @@
+--- tar-1.12/src/names.c.mike	Mon Mar  8 12:53:27 1999
++++ tar-1.12/src/names.c	Mon Mar  8 12:58:38 1999
+@@ -66,7 +66,10 @@
+ 	  strncpy (cached_uname, passwd->pw_name, UNAME_FIELD_SIZE);
+ 	}
+       else
+-	*uname = '\0';
++	{
++		*uname = '\0';
++		*cached_uname = '\0';
++	}
+     }
+   strncpy (uname, cached_uname, UNAME_FIELD_SIZE);
+ }
+@@ -90,7 +93,10 @@
+ 	  strncpy (cached_gname, group->gr_name, GNAME_FIELD_SIZE);
+ 	}
+       else
++	{
+ 	*gname = '\0';
++	*cached_gname = '\0';
++	}
+     }
+   strncpy (gname, cached_gname, GNAME_FIELD_SIZE);
+ }

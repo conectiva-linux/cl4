@@ -1,0 +1,80 @@
+From ppe@pa.uky.edu  Sun Mar 28 13:38:30 1999
+Return-Path: <ppe@pa.uky.edu>
+Received: from lacrosse.redhat.com (root@lacrosse.redhat.com [207.175.42.154])
+	by devserv.devel.redhat.com (8.8.7/8.8.7) with ESMTP id NAA08073
+	for <jbj@devserv.devel.redhat.com>; Sun, 28 Mar 1999 13:38:29 -0500
+Received: from mail.redhat.com (mail.redhat.com [199.183.24.239])
+	by lacrosse.redhat.com (8.8.7/8.8.7) with ESMTP id NAA06103
+	for <jbj@lacrosse.redhat.com>; Sun, 28 Mar 1999 13:38:28 -0500
+Received: from server1.pa.uky.edu (server1.pa.uky.edu [128.163.161.40])
+	by mail.redhat.com (8.8.7/8.8.7) with SMTP id NAA28286
+	for <jbj@redhat.com>; Sun, 28 Mar 1999 13:38:27 -0500
+Received: from node-03-05.dialin.uky.edu by server1.pa.uky.edu (5.65v4.0/1.1.10.5/27Dec96-0538PM)
+	id AA05317; Sun, 28 Mar 1999 13:38:25 -0500
+Received: (from ppe@localhost)
+	by pa.uky.edu (8.8.7/8.8.7) id NAA05145
+	for jbj@redhat.com; Sun, 28 Mar 1999 13:38:22 -0500
+From: Peter Englmaier <ppe@pa.uky.edu>
+Message-Id: <199903281838.NAA05145@pa.uky.edu>
+Subject: [Bug 390] Changed - tar with compression over pipe produces error
+To: jbj@redhat.com
+Date: Sun, 28 Mar 1999 13:38:22 -0500 (EST)
+X-Mailer: ELM [version 2.4ME+ PL32 (25)]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Status: RO
+Content-Length: 1669
+Lines: 50
+
+----- Forwarded message from bugzilla@redhat.com -----
+
++------- Additional Comments From jbj@redhat.com  03/27/99 18:17 -------
++If I apply your patch, does that also fix the original problem (
++using tar z within ftp)?
+
+----- End of forwarded message from bugzilla@redhat.com -----
+
+Hi,
+
+yes, I think it will solve the original problem as well. However,
+I could net yet test it under the same conditions (with slow remote
+ftp server). When I do it locally, the error shows up when ftp is
+suspended (ctrl-Z) for a few seconds and than restarted (fg). With
+the new tar version the error does not show up and the transfer
+is just fine. Here is an improved patch, which also tests for possible
+real errors with the pipe (e.g. EPIPE). Error handling is done
+by jumping out of the loop with status!=record_size.
+
+Cheers, Peter.
+---------
+
+diff -rC 2 tar-1.12.orig/src/buffer.c tar-1.12/src/buffer.c
+*** tar-1.12.orig/src/buffer.c	Fri Apr 25 09:48:46 1997
+--- tar-1.12/src/buffer.c	Sun Mar 28 13:22:32 1999
+***************
+*** 876,879 ****
+--- 876,880 ----
+    int copy_back;
+    int status;
++   int written;
+  
+    if (checkpoint_option && !(++checkpoint % 10))
+***************
+*** 888,891 ****
+--- 889,901 ----
+    else if (dev_null_output)
+      status = record_size;
++   else if (S_ISFIFO(archive_stat.st_mode)) {/*ppe: fix writing over a pipe */
++     status=0;
++     written=0;
++     while (status != record_size && written >=0 ) {
++       written=rmtwrite (archive, record_start->buffer+status,
++ 		       (unsigned int) (record_size-status));
++       if (written>=0) status += written;
++     }
++   }
+    else
+      status = rmtwrite (archive, record_start->buffer,
+
+

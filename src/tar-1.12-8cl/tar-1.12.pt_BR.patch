@@ -1,0 +1,11 @@
+--- configure.orig	Sun Apr 19 12:22:25 1998
++++ configure	Sun Apr 19 12:21:32 1998
+@@ -772,7 +772,7 @@
+ #define _GNU_SOURCE 1
+ EOF
+ 
+-ALL_LINGUAS="de fr it ko nl no pl pt sl sv"
++ALL_LINGUAS="de fr it ko nl no pl pt pt_BR sl sv"
+ 
+ echo $ac_n "checking how to suppress newlines using echo""... $ac_c" 1>&6
+ echo "configure:779: checking how to suppress newlines using echo" >&5
