@@ -1,0 +1,10 @@
+--- textutils-1.22/src/tr.c.ewt	Thu Oct 23 18:21:23 1997
++++ textutils-1.22/src/tr.c	Thu Oct 23 18:22:12 1997
+@@ -231,7 +231,6 @@
+ 
+ 
+ char *xmalloc ();
+-char *stpcpy ();
+ int safe_read ();
+ 
+ /* The name by which this program was run.  */

@@ -1,0 +1,2140 @@
+diff -uNr textutils-1.22/configure textutils-1.22.acme/configure
+--- textutils-1.22/configure	Sun Jan 26 17:03:52 1997
++++ textutils-1.22.acme/configure	Thu Oct 29 14:33:44 1998
+@@ -713,8 +713,8 @@
+   fi
+   
+ 
+-
+-ALL_LINGUAS="de es fr ko nl pl"
++ALL_LINGUAS="de es fr ko nl pl pt_BR"
++LINGUAS="de es fr ko nl pl pt_BR"
+ 
+ # Extract the first word of "perl", so it can be a program name with args.
+ set dummy perl; ac_word=$2
+diff -uNr textutils-1.22/configure.in textutils-1.22.acme/configure.in
+--- textutils-1.22/configure.in	Sun Jan 26 17:03:06 1997
++++ textutils-1.22.acme/configure.in	Thu Oct 29 14:30:50 1998
+@@ -9,7 +9,8 @@
+ 
+ AM_MAINTAINER_MODE
+ 
+-ALL_LINGUAS="de es fr ko nl pl"
++ALL_LINGUAS="de es fr ko nl pl pt_BR"
++LINGUAS="de es fr ko nl pl pt_BR"
+ 
+ dnl Checks for programs.
+ AC_PATH_PROG(PERL, perl)
+diff -uNr textutils-1.22/po/pt_BR.po textutils-1.22.acme/po/pt_BR.po
+--- textutils-1.22/po/pt_BR.po	Wed Dec 31 21:00:00 1969
++++ textutils-1.22.acme/po/pt_BR.po	Thu Oct 29 21:38:45 1998
+@@ -0,0 +1,2109 @@
++# Brazilian Portuguese translation of the "textutils" messages
++# Copyright (C) 1998 Free Software Foundation, Inc.
++# First Translator:
++# Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>, 1998.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: GNU textutils 1.22\n"
++"POT-Creation-Date: 1997-01-26 20:32-0600\n"
++"PO-Revision-Date: 1998-10-29 12:00-0300\n"
++"Last-Translator: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
++"Language-Team: Portuguese <pt@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=iso-8859-1\n"
++"Content-Transfer-Encoding: 8-bit\n"
++
++# , c-format
++#: src/cat.c:81 src/cksum.c:264 src/comm.c:64 src/csplit.c:1557 src/cut.c:193
++#: src/expand.c:111 src/fmt.c:281 src/fold.c:80 src/head.c:84 src/join.c:167
++#: src/md5sum.c:100 src/nl.c:190 src/od.c:327 src/paste.c:409 src/pr.c:2411
++#: src/sort.c:209 src/split.c:97 src/sum.c:59 src/tac.c:129 src/tail.c:154
++#: src/tr.c:354 src/unexpand.c:369 src/uniq.c:110 src/wc.c:70
++#, c-format
++msgid "Try `%s --help' for more information.\n"
++msgstr "Tente `%s --help' para mais informação.\n"
++
++# , c-format
++#: src/cat.c:85
++#, c-format
++msgid "Usage: %s [OPTION] [FILE]...\n"
++msgstr "Uso: %s [OPÇÃO] [ARQUIVO]...\n"
++
++#: src/cat.c:89
++msgid ""
++"Concatenate FILE(s), or standard input, to standard output.\n"
++"\n"
++"  -A, --show-all           equivalent to -vET\n"
++"  -b, --number-nonblank    number nonblank output lines\n"
++"  -e                       equivalent to -vE\n"
++"  -E, --show-ends          display $ at end of each line\n"
++"  -n, --number             number all output lines\n"
++"  -s, --squeeze-blank      never more than one single blank line\n"
++"  -t                       equivalent to -vT\n"
++"  -T, --show-tabs          display TAB characters as ^I\n"
++"  -u                       (ignored)\n"
++"  -v, --show-nonprinting   use ^ and M- notation, except for LFD and TAB\n"
++"      --help               display this help and exit\n"
++"      --version            output version information and exit\n"
++"\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++msgstr ""
++"Concatena ARQUIVO(s), ou a entrada padrão, na saída padrão.\n"
++"\n"
++"  -A, --show-all          o mesmo que -vET\n"
++"  -b, --number-nonblank   numera as linhas que não estão vazias\n"
++"  -e                      o mesmo que -vE\n"
++"  -E, --show-ends         mostra '$' no final de cada linha\n"
++"  -n, --number            numera todas as linhas\n"
++"  -s, --squeeze-blank     nunca mostra mais de uma linha vazia,\n"
++"  -t                      equivalente a -vT\n"
++"  -T, --show-tabs         mostra os caracteres de tabulação como ^I\n"
++"  -u                      (sem efeito)\n"
++"  -v, --show-nonprinting  utiliza a notação ^ e M-, salvo para LFD y TAB\n"
++"      --help              mostra esta ajuda e finaliza\n"
++"      --version           informa a versão e finaliza\n"
++"\n"
++"Sem 'ARQUIVO', ou quando ARQUIVO é -, lê a entrada padrão.\n"
++"\n"
++
++#: src/cat.c:107 src/cksum.c:278 src/comm.c:81 src/csplit.c:1588 src/cut.c:223
++#: src/expand.c:131 src/fmt.c:302 src/fold.c:96 src/head.c:108 src/join.c:201
++#: src/md5sum.c:126 src/nl.c:232 src/od.c:391 src/paste.c:428 src/pr.c:2469
++#: src/sort.c:249 src/split.c:120 src/sum.c:77 src/tac.c:147 src/tail.c:183
++#: src/tr.c:416 src/unexpand.c:389 src/uniq.c:137 src/wc.c:88
++msgid ""
++"\n"
++"Report bugs to textutils-bugs@gnu.ai.mit.edu"
++msgstr ""
++"\n"
++"Comunicar `bugs' para textutils-bugs@gnu.ai.mit.edu"
++
++#: src/cat.c:167 src/cat.c:248 src/cat.c:301 src/cat.c:723 src/comm.c:209
++#: src/cut.c:772 src/expand.c:399 src/fold.c:242 src/fold.c:329 src/head.c:179
++#: src/head.c:207 src/head.c:382 src/join.c:892 src/md5sum.c:617 src/nl.c:632
++#: src/od.c:1975 src/paste.c:495 src/pr.c:902 src/sort.c:393 src/tac.c:217
++#: src/tac.c:684 src/tail.c:1139 src/tr.c:1703 src/tr.c:1950 src/tr.c:2058
++#: src/tr.c:2065 src/unexpand.c:474
++msgid "write error"
++msgstr "erro de escrita"
++
++# , c-format
++#: src/cat.c:289
++#, c-format
++msgid "cannot do ioctl on `%s'"
++msgstr "não pode executar a função 'ioctl' sobre `%s'"
++
++#: src/cat.c:596 src/od.c:1182
++msgid "standard output"
++msgstr "saída padrão"
++
++# , c-format
++#: src/cat.c:664
++#, c-format
++msgid "%s: input file is output file"
++msgstr "%s: os arquivos de entrada e saída são os mesmos"
++
++# , c-format
++#: src/cksum.c:268 src/cut.c:197 src/expand.c:115 src/fold.c:84 src/head.c:88
++#: src/nl.c:194 src/paste.c:413 src/pr.c:2415 src/sort.c:213 src/sum.c:63
++#: src/tac.c:133 src/tail.c:158 src/unexpand.c:373 src/wc.c:74
++#, c-format
++msgid "Usage: %s [OPTION]... [FILE]...\n"
++msgstr "Uso: %s [OPÇÃO]... [ARQUIVO]...\n"
++
++#: src/cksum.c:272
++msgid ""
++"Print CRC checksum and byte counts of each FILE.\n"
++"\n"
++"  --help      display this help and exit\n"
++"  --version   output version information and exit\n"
++msgstr ""
++"Mostra o CRC e o número de bytes de cada ARQUIVO.\n"
++"\n"
++"  --help      mostra esta ajuda e finaliza\n"
++"  --version   informa a versão e finaliza\n"
++
++# , c-format
++#: src/comm.c:68
++#, c-format
++msgid "Usage: %s [OPTION]... LEFT_FILE RIGHT_FILE\n"
++msgstr "Uso: %s [OPÇÃO]... ARQUIVO1 ARQUIVO2\n"
++
++#: src/comm.c:72
++msgid ""
++"Compare sorted files LEFT_FILE and RIGHT_FILE line by line.\n"
++"\n"
++"  -1              suppress lines unique to left file\n"
++"  -2              suppress lines unique to right file\n"
++"  -3              suppress lines unique to both files\n"
++"      --help      display this help and exit\n"
++"      --version   output version information and exit\n"
++msgstr ""
++"Compara os arquivos ordenados ARQUIVO1 e ARQUIVO2, linha por linha.\n"
++"\n"
++"  -1              suprime as linhas que só estão em ARQUIVO1\n"
++"  -2              suprime as linhas que só estão em ARQUIVO2\n"
++"  -3              mostra as linhas que só estão em um deles\n"
++"      --help      mostra esta ajuda e finaliza\n"
++"      --version   informa a versão e finaliza\n"
++
++#: src/csplit.c:292 src/csplit.c:316 src/sort.c:286 src/sort.c:311
++#: src/tac.c:192 src/tac.c:206
++msgid "virtual memory exhausted"
++msgstr "memória esgotada"
++
++#: src/csplit.c:355 src/csplit.c:1546 src/sort.c:503 src/tac.c:484
++#: src/tr.c:1652 src/tr.c:1749 src/tr.c:1793
++msgid "read error"
++msgstr "erro de leitura"
++
++#: src/csplit.c:649
++msgid "input disappeared"
++msgstr "a entrada deixou de existir"
++
++# , c-format
++#: src/csplit.c:771 src/csplit.c:782
++#, c-format
++msgid "%s: line number out of range"
++msgstr "%s: número de linha fora de tamanho"
++
++# , c-format
++#: src/csplit.c:807
++#, c-format
++msgid "%s: `%d': line number out of range"
++msgstr "%s: `%d': número de linha fora de tamanho"
++
++# , c-format
++#: src/csplit.c:810 src/csplit.c:862
++#, c-format
++msgid " on repetition %d\n"
++msgstr " repetido %d\n"
++
++# , c-format
++#: src/csplit.c:858
++#, c-format
++msgid "%s: `%s': match not found"
++msgstr "%s: `%s': ocorrência não encontrada"
++
++#: src/csplit.c:919 src/csplit.c:959 src/tac.c:324
++msgid "error in regular expression search"
++msgstr "erro na busca da expressão  regular"
++
++# , c-format
++#: src/csplit.c:1062
++#, c-format
++msgid "write error for `%s'"
++msgstr "erro em escrever `%s'"
++
++# , c-format
++#: src/csplit.c:1130
++#, c-format
++msgid "%s: `+' or `-' expected after delimeter"
++msgstr "%s: se esperava um `+' ou  um  `-' depois do delimitador"
++
++# , c-format
++#: src/csplit.c:1134
++#, c-format
++msgid "%s: integer expected after `%c'"
++msgstr "%s: espera-se um número inteiro depois de `%c'"
++
++# , c-format
++#: src/csplit.c:1154
++#, c-format
++msgid "%s: `}' is required in repeat count"
++msgstr "%s: requer-se um `}' depois do número de repetições"
++
++# , c-format
++#: src/csplit.c:1165
++#, c-format
++msgid "%s}: integer required between `{' and `}'"
++msgstr "%s}: entre `{' e `}' deve se especificar  um número inteiro"
++
++# , c-format
++#: src/csplit.c:1192
++#, c-format
++msgid "%s: closing delimeter `%c' missing"
++msgstr "%s: falta o delimitador de fechar `%c'"
++
++# , c-format
++#: src/csplit.c:1211
++#, c-format
++msgid "%s: invalid regular expression: %s"
++msgstr "%s: a expressão  regular não é válida: %s"
++
++# , c-format
++#: src/csplit.c:1245
++#, c-format
++msgid "%s: invalid pattern"
++msgstr "%s: padrão inválido"
++
++# , c-format
++#: src/csplit.c:1248
++#, c-format
++msgid "%s: line number must be greater than zero"
++msgstr "%s: o número de linha deve ser maior que zero"
++
++# , c-format
++#: src/csplit.c:1252
++#, c-format
++msgid "line number `%s' is smaller than preceding line number, %lu"
++msgstr "o número de linha `%s' é menor que o número de linha anterior, %lu"
++
++# , c-format
++#: src/csplit.c:1257
++#, c-format
++msgid "warning: line number `%s' is the same as preceding line number"
++msgstr "atenção: o número de linha `%s' é o mesmo que o anterior"
++
++#: src/csplit.c:1378
++msgid "missing conversion specifier in suffix"
++msgstr "falta o especificador de conversão no sufixo"
++
++#
++# , c-format
++#: src/csplit.c:1384
++#, c-format
++msgid "invalid conversion specifier in suffix: %c"
++msgstr "o especificador de conversão indicado no sufixo não é válido: %c"
++
++# , c-format
++#: src/csplit.c:1387
++#, c-format
++msgid "invalid conversion specifier in suffix: \\%.3o"
++msgstr "o especificador de conversão indicado no sufixo não é válido: \\%.3o"
++
++#: src/csplit.c:1419
++msgid "missing %% conversion specification in suffix"
++msgstr "falta o especificador de conversão %% no sufixo"
++
++#: src/csplit.c:1422
++msgid "too many %% conversion specifications in suffix"
++msgstr "muitos especificadores de conversão %% no sufixo"
++
++# , c-format
++#: src/csplit.c:1501
++#, c-format
++msgid "%s: invalid number"
++msgstr "%s: número não válido"
++
++#: src/csplit.c:1529
++msgid "too few arguments"
++msgstr "faltam argumentos"
++
++# , c-format
++#: src/csplit.c:1561
++#, c-format
++msgid "Usage: %s [OPTION]... FILE PATTERN...\n"
++msgstr "Uso: %s [OPÇÃO]... ARQUIVO PADRÃO...\n"
++
++#: src/csplit.c:1565
++msgid ""
++"Output pieces of FILE separated by PATTERN(s) to files `xx01', `xx02', ...,\n"
++"and output byte counts of each piece to standard output.\n"
++"\n"
++"  -b, --suffix-format=FORMAT use sprintf FORMAT instead of %%d\n"
++"  -f, --prefix=PREFIX        use PREFIX instead of `xx'\n"
++"  -k, --keep-files           do not remove output files on errors\n"
++"  -n, --digits=DIGITS        use specified number of digits instead of 2\n"
++"  -s, --quiet, --silent      do not print counts of output file sizes\n"
++"  -z, --elide-empty-files    remove empty output files\n"
++"      --help                 display this help and exit\n"
++"      --version              output version information and exit\n"
++"\n"
++"Read standard input if FILE is -.  Each PATTERN may be:\n"
++"\n"
++"  INTEGER            copy up to but not including specified line number\n"
++"  /REGEXP/[OFFSET]   copy up to but not including a matching line\n"
++"  %%REGEXP%%[OFFSET]   skip to, but not including a matching line\n"
++"  {INTEGER}          repeat the previous pattern specified number of times\n"
++"  {*}                repeat the previous pattern as many times as possible\n"
++"\n"
++"A line OFFSET is a required `+' or `-' followed by a positive integer.\n"
++msgstr ""
++"Escreve os pedaços de ARQUIVO que estão separados por PADRÃO(s) em arquivos "
++"\n"
++" `xx01', `xx02' e mostra o tamanho de cada pedaço na saída padrão.\n"
++"\n"
++"  -b, --suffix-format=FORMATO usa formato `sprintf' em vez de %%d\n"
++"  -f, --prefix=PREFIXO        usa PREFIXO em vez de `xx'\n"
++"  -k, --keep-files            não remove os arquivos de saída se existem "
++"erros\n"
++"  -n, --digits=DÍGITOS        usa o número especificado em DÍGITOS\n"
++"                              em vez de 2\n"
++"  -s, --quiet, --silent       não mostra o tamanho dos arquivos criados\n"
++"  -z, --elide-empty-files     remove os arquivos de saída vazios\n"
++"      --help                  mostra esta ajuda e finaliza\n"
++"      --version               informa a versão e finaliza\n"
++"\n"
++"Lê a entrada padrão se ARQUIVO é `-'. Cada PADRÃO pode ser:\n"
++"\n"
++" NÚMERO_LINHA        copia a partir deste número de linha excluída ela\n"
++" /EXPREG/[OFFSET]    copia sem incluir as linhas que coincidem com EXPREG\n"
++" %%EXPREG%%[OFFSET]    começa a partir da linha que coincida com EXPREG\n"
++" {NÚMERO INTEIRO}    repete o padrão especificado um certo número de vezes\n"
++" {*}                 repete o padrão especificado tanto quanto possível\n"
++"\n"
++"Um OFFSET de linha é um número inteiro precedido de `+' o de `-'.\n"
++
++#: src/cut.c:201
++msgid ""
++"Print selected parts of lines from each FILE to standard output.\n"
++"\n"
++"  -b, --bytes=LIST        output only these bytes\n"
++"  -c, --characters=LIST   output only these characters\n"
++"  -d, --delimiter=DELIM   use DELIM instead of TAB for field delimiter\n"
++"  -f, --fields=LIST       output only these fields\n"
++"  -n                      (ignored)\n"
++"  -s, --only-delimited    do not print lines not containing delimiters\n"
++"      --help              display this help and exit\n"
++"      --version           output version information and exit\n"
++"\n"
++"Use one, and only one of -b, -c or -f.  Each LIST is made up of one\n"
++"range, or many ranges separated by commas.  Each range is one of:\n"
++"\n"
++"  N     N'th byte, character or field, counted from 1\n"
++"  N-    from N'th byte, character or field, to end of line\n"
++"  N-M   from N'th to M'th (included) byte, character or field\n"
++"  -M    from first to M'th (included) byte, character or field\n"
++"\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++msgstr ""
++"Extrai as partes selecionadas de cada ARQUIVO na saída padrão:\n"
++"\n"
++"  -b, --bytes=LISTA           mostra somente estes bytes\n"
++"  -c, --characters=LISTA      mostra somente estes caracteres\n"
++"  -d, --delimiter=DELIM       usa DELIM em vez de caracteres de tabulação\n"
++"                              para delimitar os campos\n"
++"  -f, --fields=LISTA          mostra somente estes campos\n"
++"  -n                          (não tem efeito)\n"
++"  -s, --only-delimited        não mostra as linhas que não contém\n"
++"                              delimitadores\n"
++"      --help                  mostra esta ajuda e finaliza\n"
++"      --version               informa a versão e finaliza\n"
++"\n"
++"Use uma e somente uma das opções -b, -c ou -f. Cada LISTA se compõem\n"
++"de uma ou de mais faixas separados por vírgula. Cada faixa pode  ser:\n"
++"\n"
++"   N    o eNésimo byte, caractere ou campo contado desde 1\n"
++"   N-   A partir do eNésimo byte, caractere ou campo até o final da linha\n"
++"   N-M  Desde o byte, caractere ou campo N até o byte M\n"
++"   -M   desde o primeiro byte, caractere ou campo até  a posição M\n"
++"\n"
++"Se não for passado ARQUIVO, ou quando ARQUIVO é `-', lê-se da entrada "
++"padrão.\n"
++
++#: src/cut.c:361 src/cut.c:392 src/cut.c:452
++msgid "invalid byte or field list"
++msgstr "a lista de bytes ou campos não é válida"
++
++#: src/cut.c:703 src/cut.c:712
++msgid "only one type of list may be specified"
++msgstr "somente um tipo de lista pode ser especificado"
++
++#: src/cut.c:706
++msgid "missing list of positions"
++msgstr "faltando a lista de posições"
++
++#: src/cut.c:715
++msgid "missing list of fields"
++msgstr "faltando a lista de campos"
++
++#: src/cut.c:722
++msgid "the delimiter must be a single character"
++msgstr "o delimitador deve ser um só caractere"
++
++#: src/cut.c:748
++msgid "you must specify a list of bytes, characters, or fields"
++msgstr "Deve-se indicar uma lista de bytes, caracteres ou campos"
++
++#: src/cut.c:751
++msgid "a delimiter may be specified only when operating on fields"
++msgstr ""
++"Um delimitador pode ser especificado somente quando se processam campos"
++
++#: src/cut.c:754
++msgid ""
++"suppressing non-delimited lines makes sense\n"
++"\tonly when operating on fields"
++msgstr ""
++"suprimir as linhas não delimitadas somente tem sentido\n"
++"\tquando se processam campos"
++
++#: src/expand.c:119
++msgid ""
++"Convert tabs in each FILE to spaces, writing to standard output.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -i, --initial       do not convert TABs after non whitespace\n"
++"  -t, --tabs=NUMBER   have tabs NUMBER characters apart, not 8\n"
++"  -t, --tabs=LIST     use comma separated list of explicit tab positions\n"
++"      --help          display this help and exit\n"
++"      --version       output version information and exit\n"
++"\n"
++"Instead of -t NUMBER or -t LIST, -NUMBER or -LIST may be used.\n"
++msgstr ""
++"Converte as tabulações de cada ARQUIVO em espaços, escrevendo o\n"
++"resultado na saída padrão. Se não for informado ARQUIVO ou quando \n"
++"ARQUIVO é  `-', lê-se da entrada padrão.\n"
++"\n"
++"  -i, --initial       só converte as tabulações iniciais de cada linha\n"
++"  -t, --tabs=NÚMERO   usa N espaços em cada tabulação, em vez de 8\n"
++"  -t, --tabs=LISTA    usa a LISTA de posições separadas por vírgula para\n"
++"                      definir as posições de tabulação\n"
++"      --help          mostra esta ajuda e finaliza\n"
++"      --version       informa a versão e finaliza\n"
++"\n"
++"Em vez de `-t N' ou `-t LISTA' pode usar-se -N ou -LISTA.\n"
++
++#: src/expand.c:172 src/unexpand.c:157
++msgid "tab size contains an invalid character"
++msgstr "o tamanho de tabulação contém um caractere não válido"
++
++#: src/expand.c:190 src/unexpand.c:175
++msgid "tab size cannot be 0"
++msgstr "o tamanho de tabulação não pode ser 0"
++
++#: src/expand.c:192 src/unexpand.c:177
++msgid "tab sizes must be ascending"
++msgstr "as posições de tabulação devem ir em ordem crescente"
++
++# , c-format
++#: src/fmt.c:285
++#, c-format
++msgid "Usage: %s [-DIGITS] [OPTION]... [FILE]...\n"
++msgstr "Uso: %s [-DÍGITOS] [OPÇÃO]... [ARQUIVO]...\n"
++
++#: src/fmt.c:286
++msgid ""
++"Reformat each paragraph in the FILE(s), writing to standard output.\n"
++"If no FILE or if FILE is `-', read standard input.\n"
++"\n"
++"Mandatory arguments to long options are mandatory for short options too.\n"
++"  -c, --crown-margin        preserve indentation of first two lines\n"
++"  -p, --prefix=STRING       combine only lines having STRING as prefix\n"
++"  -s, --split-only          split long lines, but do not refill\n"
++"  -t, --tagged-paragraph    indentation of first line different from second\n"
++"  -u, --uniform-spacing     one space between words, two after sentences\n"
++"  -w, --width=NUMBER        maximum line width (default of 75 columns)\n"
++"      --help                display this help and exit\n"
++"      --version             output version information and exit\n"
++"\n"
++"In -wNUMBER, the letter `w' may be omitted.\n"
++msgstr ""
++"Reformata cada parágrafo do ARQUIVO(s), escrevendo na saída padrão.\n"
++"Se não se especificar um ARQUIVO ou ARQUIVO é `-', lê a entrada padrão.\n"
++"\n"
++"Os argumentos obrigatórios para as opções largas são também obrigatórios "
++"para as opções curtas.\n"
++"  -c, --crown-margin        mantém a indentação nas primeiras duas linhas\n"
++"  -p, --prefix=CADEIA       associa somente as linhas que comecem com "
++"CADEIA\n"
++"  -s, --split-only          divide as linhas largas, mas sem quebrá-las\n"
++"  -t, --tagged-paragraph    identificação da primeira linha diferente\n"
++"                            da segunda linha\n"
++"  -u, --uniform-spacing     coloca um espaço entre palavras, dois entre      "
++"                       frases\n"
++"  -w, --width=NÚMERO        estabelece o largura de linha máximo (por        "
++"                     default,\n"
++"                            75 colunas)\n"
++"      --help                mostra esta ajuda e finaliza\n"
++"      --version             informa a versão e finaliza\n"
++"\n"
++"No `-wNÚMERO' pode-se omitir a letra `w'.\n"
++"\n"
++
++# , c-format
++#: src/fmt.c:386 src/nl.c:511
++#, c-format
++msgid "invalid line number increment: `%s'"
++msgstr "incremento de linha não válido: `%s'"
++
++#: src/fold.c:88
++msgid ""
++"Wrap input lines in each FILE (standard input by default), writing to\n"
++"standard output.\n"
++"\n"
++"  -b, --bytes         count bytes rather than columns\n"
++"  -s, --spaces        break at spaces\n"
++"  -w, --width=WIDTH   use WIDTH columns instead of 80\n"
++msgstr ""
++"Ajusta o largura das linhas em cada ARQUIVO (entrada padrão por default),\n"
++"escrevendo o resultado na saída padrão\n"
++"\n"
++"  -b, --bytes         conta bytes em vez de colunas\n"
++"  -s, --spaces        quebra nos espaços\n"
++"  -w, --width=WIDTH   utiliza WIDTH colunas em vez de 80\n"
++
++# , c-format
++#: src/fold.c:301
++#, c-format
++msgid "invalid number of columns: `%s'"
++msgstr "o número de colunas não é válido: `%s'"
++
++#: src/head.c:92
++msgid ""
++"Print first 10 lines of each FILE to standard output.\n"
++"With more than one FILE, precede each with a header giving the file name.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -c, --bytes=SIZE         print first SIZE bytes\n"
++"  -n, --lines=NUMBER       print first NUMBER lines instead of first 10\n"
++"  -q, --quiet, --silent    never print headers giving file names\n"
++"  -v, --verbose            always print headers giving file names\n"
++"      --help               display this help and exit\n"
++"      --version            output version information and exit\n"
++"\n"
++"SIZE may have a multiplier suffix: b for 512, k for 1K, m for 1 Meg.\n"
++"If -VALUE is used as first OPTION, read -c VALUE when one of\n"
++"multipliers bkm follows concatenated, else read -n VALUE.\n"
++msgstr ""
++"Mostra as primeiras 10 linhas de cada ARQUIVO na saída padrão.\n"
++"Se especificados vários ARQUIVO(s), mostra o nome de cada um.\n"
++"Sem ARQUIVO especificado, ou ARQUIVO é `-', lê da entrada padrão.\n"
++"\n"
++"  -c, --bytes=TAMANHO     mostra os primeiros TAMANHO bytes\n"
++"  -n, --lines=N           mostra as N primeiras linhas em vez de 10\n"
++"  -q, --quiet, --silent   no mostra as início com o nome do arquivo\n"
++"  -v, --verbose           mostra sempre os inícios com nomes dos arquivos\n"
++"      --help              mostra esta ajuda e finaliza\n"
++"      --version           informa a versão e finaliza\n"
++"\n"
++"TAMANHO pode ter um sufixo: `b' para 512, `k' para 1K, `m' para 1Meg.\n"
++"Se -VALOR for informado como primeira opção, lê -c VALOR se um dos \n"
++"sufixo bkm seguir concatenado a VALOR, ou lê -n VALOR\n"
++
++#: src/head.c:229 src/md5sum.c:296 src/md5sum.c:620 src/od.c:980 src/od.c:1230
++#: src/od.c:1303 src/od.c:1972 src/pr.c:900 src/pr.c:1083 src/pr.c:1205
++#: src/tac.c:510 src/tac.c:514 src/tail.c:776 src/tail.c:784 src/tr.c:2068
++msgid "standard input"
++msgstr "entrada padrão"
++
++# , c-format
++#: src/head.c:309
++#, c-format
++msgid "unrecognized option `-%c'"
++msgstr "opção não reconhecida '-%c'"
++
++# , c-format
++#: src/head.c:338
++#, c-format
++msgid "invalid number `%s'"
++msgstr "número inválido '%s'"
++
++# , c-format
++#: src/join.c:171
++#, c-format
++msgid "Usage: %s [OPTION]... FILE1 FILE2\n"
++msgstr "Uso: %s [OPÇÃO]... ARQUIVO1 ARQUIVO2\n"
++
++#: src/join.c:175
++msgid ""
++"For each pair of input lines with identical join fields, write a line to\n"
++"standard output.  The default join field is the first, delimited\n"
++"by whitespace.  When FILE1 or FILE2 (not both) is -, read standard input.\n"
++"\n"
++"  -a SIDE           print unpairable lines coming from file SIDE\n"
++"  -e EMPTY          replace missing input fields with EMPTY\n"
++"  -i, --ignore-case ignore differences in case when comparing fields\n"
++"  -j FIELD          (obsolescent) equivalent to `-1 FIELD -2 FIELD'\n"
++"  -j1 FIELD         (obsolescent) equivalent to `-1 FIELD'\n"
++"  -j2 FIELD         (obsolescent) equivalent to `-2 FIELD'\n"
++"  -o FORMAT         obey FORMAT while constructing output line\n"
++"  -t CHAR           use CHAR as input and output field separator\n"
++"  -v SIDE           like -a SIDE, but suppress joined output lines\n"
++"  -1 FIELD          join on this FIELD of file 1\n"
++"  -2 FIELD          join on this FIELD of file 2\n"
++"      --help        display this help and exit\n"
++"      --version     output version information and exit\n"
++"\n"
++"Unless -t CHAR is given, leading blanks separate fields and are ignored,\n"
++"else fields are separated by CHAR.  Any FIELD is a field number counted\n"
++"from 1.  FORMAT is one or more comma or blank separated specifications,\n"
++"each being `SIDE.FIELD' or `0'.  Default FORMAT outputs the join field,\n"
++"the remaining fields from FILE1, the remaining fields from FILE2, all\n"
++"separated by CHAR.\n"
++msgstr ""
++"Mostra uma linha na saída padrão por cada par de linhas que contenham \n"
++"campos idênticos. O campo a comparar por default é o primeiro, delimitado\n"
++"por um espaço em branco. Se ARQUIVO1 o ARQUIVO2 é `-' (nunca ambos),\n"
++"lê a entrada padrão.\n"
++"\n"
++"  -a ARQ            mostra linhas não concatenadas do arquivo ARQ\n"
++"  -e VAZIO          troca campos inexistentes por VAZIO\n"
++"  -i, --ignore-case ignora diferença entre maiúsculas e minúsculas\n"
++"  -j CAMPO          (Obsoleto) equivalente a '-1 CAMPO -2 CAMPO'\n"
++"  -j1 CAMPO         (Obsoleto) equivalente a '-1 CAMPO'\n"
++"  -j2 CAMPO         (Obsoleto) equivalente a '-2 CAMPO'\n"
++"  -o FORMATO        utiliza FORMATO para mostrar as linhas de saída\n"
++"  -t CHAR           Usa CHAR como delimitador de campos, na entrada e saída\n"
++"  -v ARQ            Como -a ARQ, só que mostra as linhas concatenadas\n"
++"  -1 CAMPO          concatena neste campo do arquivo 1\n"
++"  -2 CAMPO          concatena neste campo do arquivo 2\n"
++"      --help        mostra esta ajuda e finaliza\n"
++"      --version     informa versão e finaliza\n"
++"\n"
++"Delimitadores de campos deixados em branco são ignorados, a menos que \n"
++"especificado -t CHAR, então campos são delimitados por CHAR. CAMPO é o\n"
++"número de campo contado a partir de 1. FORMATO é uma lista de elementos da\n"
++"forma `LADO.CAMPO' ou `0', separada por vírgula o por espaços em branco.\n"
++"FORMATO por default mostra o campo concatenado, os restantes campos do\n"
++"ARQUIVO1 e do ARQUIVO2, todos delimitados por CARACTER.\n"
++
++# , c-format
++#. `0' must be all alone -- no `.FIELD'.
++#: src/join.c:670
++#, c-format
++msgid "invalid field specifier: `%s'"
++msgstr "especificação do campo é inválida: `%s'"
++
++# , c-format
++#: src/join.c:684 src/join.c:792 src/join.c:828
++#, c-format
++msgid "invalid field number: `%s'"
++msgstr "número de campo inválido: `%s'"
++
++# , c-format
++#: src/join.c:697
++#, c-format
++msgid "invalid file number in field spec: `%s'"
++msgstr "número de arquivo inválido na especificação do campo: `%s'"
++
++# , c-format
++#: src/join.c:812
++#, c-format
++msgid "invalid field number for file 1: `%s'"
++msgstr "número de campo inválido para o arquivo 1: `%s'"
++
++# , c-format
++#: src/join.c:821
++#, c-format
++msgid "invalid field number for file 2: `%s'"
++msgstr "número de campo inválido para o arquivo 2: `%s'"
++
++#: src/join.c:853
++msgid "too many non-option arguments"
++msgstr "muitos argumentos"
++
++#: src/join.c:871
++msgid "too few non-option arguments"
++msgstr "número de argumentos insuficiente"
++
++#: src/join.c:882
++msgid "both files cannot be standard input"
++msgstr "ambos os arquivos não podem ser a entrada padrão"
++
++# , c-format
++#: src/md5sum.c:104
++#, c-format
++msgid ""
++"Usage: %s [OPTION] [FILE]...\n"
++"  or:  %s [OPTION] --check [FILE]\n"
++"Print or check MD5 checksums.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -b, --binary            read files in binary mode\n"
++"  -c, --check             check MD5 sums against given list\n"
++"  -t, --text              read files in text mode (default)\n"
++"\n"
++"The following two options are useful only when verifying checksums:\n"
++"      --status            don't output anything, status code shows success\n"
++"  -w, --warn              warn about improperly formated MD5 checksum lines\n"
++"\n"
++"      --help              display this help and exit\n"
++"      --version           output version information and exit\n"
++"\n"
++"The sums are computed as described in RFC 1321.  When checking, the input\n"
++"should be a former output of this program.  The default mode is to print\n"
++"a line with checksum, a character indicating type (`*' for binary, ` ' for\n"
++"text), and name for each FILE.\n"
++msgstr ""
++"Uso: %s [OPÇÃO] [ARQUIVO]...\n"
++" ou: %s [OPÇÃO] --check [ARQUIVO]\n"
++"Mostra ou compara a soma de comprovação (checksum) MD5.\n"
++"Sem especificação do ARQUIVO ou ARQUIVO é `-', lê da entrada padrão.\n"
++"\n"
++"  -b, --binary           lê os arquivos em modo binário\n"
++"  -c, --check            compara as somas MD5 com a lista dada\n"
++"  -t, --text             lê os arquivos em modo de texto (por default)\n"
++"\n"
++"As duas opções seguintes são úteis apenas para verificar somas de\n"
++"comprovação (checksum):\n"
++"      --status           não mostra nada, o valor de retorno indica o\n"
++"                         resultado\n"
++"  -w, --warn             avisa sobre linhas de comprovação de somas MD5\n"
++"                         que não estão corretamente formatadas\n"
++"\n"
++"      --help             mostra esta ajuda e finaliza\n"
++"      --version          informa versão e finaliza\n"
++"\n"
++"As somas se calculam tal e como se descreve em RFC 1321. Na verificação, a\n"
++"entrada deve ser um resultado anterior de chamar a md5sum. Por default se\n"
++"mostra uma linha com a soma de comprovação, um caractere indicando o tipo\n"
++"do arquivo (`*' para binário, ` ' para texto), e o nome de cada ARQUIVO.\n"
++
++# , c-format
++#: src/md5sum.c:340
++#, c-format
++msgid "%s: %lu: improperly formatted MD5 checksum line"
++msgstr "%s: %lu: linha de soma de comprovação MD5 com formato errôneo"
++
++# , c-format
++#: src/md5sum.c:361
++#, c-format
++msgid "%s: FAILED open or read\n"
++msgstr "%s: FALHA na abertura ou na leitura\n"
++
++#: src/md5sum.c:383
++msgid "FAILED"
++msgstr "A soma não coincide"
++
++#: src/md5sum.c:383
++msgid "OK"
++msgstr "A soma coincide"
++
++# , c-format
++#: src/md5sum.c:396
++#, c-format
++msgid "%s: read error"
++msgstr "%s: erro de leitura"
++
++# , c-format
++#. Warn if no tests are found.
++#: src/md5sum.c:409
++#, c-format
++msgid "%s: no properly formatted MD5 checksum lines found"
++msgstr ""
++"%s: não foram encontradas linhas de checksum MD5 com formato correto"
++
++# , c-format
++#: src/md5sum.c:422
++#, c-format
++msgid "WARNING: %d of %d listed %s could not be read\n"
++msgstr "ATENÇÃO: não foi possível ler %d de um total de %d  em %s\n"
++
++#: src/md5sum.c:425
++msgid "file"
++msgstr "arquivo"
++
++#: src/md5sum.c:425
++msgid "files"
++msgstr "arquivos"
++
++# , c-format
++#: src/md5sum.c:431
++#, c-format
++msgid "WARNING: %d of %d computed %s did NOT match"
++msgstr "ATENÇÃO: calculado %d de %d %s não confere"
++
++#: src/md5sum.c:434
++msgid "checksum"
++msgstr "soma de comprovação (checksum)"
++
++#: src/md5sum.c:434
++msgid "checksums"
++msgstr "somas de comprovação (checksum)"
++
++#: src/md5sum.c:507
++msgid ""
++"the --binary and --text options are meaningless when verifying checksums"
++msgstr ""
++"as opções --binary e --text não tem sentido para verificar somas de "
++"comprovação"
++
++#: src/md5sum.c:515
++msgid "the --string and --check options are mutually exclusive"
++msgstr "as opções --string e --check são mutuamente excludentes"
++
++#: src/md5sum.c:522
++msgid "the --status option is meaningful only when verifying checksums"
++msgstr "a opção --status só tem sentido para verificar somas de comprovação"
++
++#: src/md5sum.c:529
++msgid "the --warn option is meaningful only when verifying checksums"
++msgstr "a opção --warn só tem sentido para verificar somas de comprovação"
++
++#: src/md5sum.c:537
++msgid "no files may be specified when using --string"
++msgstr "não é possível especificar arquivo quando se usa --string"
++
++#: src/md5sum.c:556
++msgid "only one argument may be specified when using --check"
++msgstr "quando se utiliza --check só se pode especificar um argumento"
++
++#: src/nl.c:198
++msgid ""
++"Write each FILE to standard output, with line numbers added.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -b, --body-numbering=STYLE      use STYLE for numbering body lines\n"
++"  -d, --section-delimiter=CC      use CC for separating logical pages\n"
++"  -f, --footer-numbering=STYLE    use STYLE for numbering footer lines\n"
++"  -h, --header-numbering=STYLE    use STYLE for numbering header lines\n"
++"  -i, --page-increment=NUMBER     line number increment at each line\n"
++"  -l, --join-blank-lines=NUMBER   group of NUMBER empty lines counted as "
++"one\n"
++"  -n, --number-format=FORMAT      insert line numbers according to FORMAT\n"
++"  -p, --no-renumber               do not reset line numbers at logical "
++"pages\n"
++"  -s, --number-separator=STRING   add STRING after (possible) line number\n"
++"  -v, --first-page=NUMBER         first line number on each logical page\n"
++"  -w, --number-width=NUMBER       use NUMBER columns for line numbers\n"
++"      --help                      display this help and exit\n"
++"      --version                   output version information and exit\n"
++"\n"
++"By default, selects -v1 -i1 -l1 -sTAB -w6 -nrn -hn -bt -fn.  CC are\n"
++"two delimiter characters for separating logical pages, a missing\n"
++"second character implies :.  Type \\\\ for \\.  STYLE is one of:\n"
++"\n"
++"  a         number all lines\n"
++"  t         number only nonempty lines\n"
++"  n         number no lines\n"
++"  pREGEXP   number only lines that contain a match for REGEXP\n"
++"\n"
++"FORMAT is one of:\n"
++"\n"
++"  ln   left justified, no leading zeros\n"
++"  rn   right justified, no leading zeros\n"
++"  rz   right justified, leading zeros\n"
++"\n"
++msgstr ""
++"Escreve cada ARQUIVO na saída padrão, com as linhas numeradas.\n"
++"Se não for especificado ARQUIVO ou ARQUIVO é `-', lê a entrada padrão.\n"
++"\n"
++"  -b, --body-numbering=ESTILO   usa ESTILO para a numeração das linhas\n"
++"  -d, --section-delimiter=CC    usa CC para separar páginas\n"
++"  -f, --footer-numbering=ESTILO usa ESTILO para numerar as linhas finais\n"
++"  -h, --header-numbering=ESTILO usa ESTILO para numerar as linhas de "
++"cabeçalho\n"
++"  -i, --page-increment=NÚMERO   incrementa número de linha em NÚMERO para\n"
++"                                cada linha\n"
++"  -l, --join-blank-lines=NÚMERO um grupo de NÚMERO linhas vazias se contam\n"
++"                                como uma só\n"
++"  -n, --number-format=FORMATO   inseri os números de linha com FORMATO\n"
++"  -p, --no-renumber             não reinicializa o número de linhas para     "
++"                            cada página\n"
++"  -s, --number-separator=STRING inclui STRING depois do número de linha\n"
++"  -v, --first-page=NÚMERO       primeiro número de linha para cada página\n"
++"  -w, --number-width=LARGURA    usa LARGURA colunas para números de linha\n"
++"      --help                    mostra esta ajuda e finaliza\n"
++"      --version                 informa versão e finaliza\n"
++"\n"
++"Por default é `-v1 -i1 -l1 -sTAB -w6 -nrn -hn -bt -fn'. `CC' são dois\n"
++"caracteres delimitadores para separar páginas; se só especificado um\n"
++"deles, o outro se supõe:`.'\n"
++"Utilize \\\\ para obter \\. ESTILO pode ser um de o seguintes:\n"
++"\n"
++"  a       numera todas as linhas\n"
++"  t       numera só as linhas não vazias\n"
++"  n       não numera nenhuma linha\n"
++"  pEXPREG numera só as linhas que coincidem com a expressão regular REGEXP\n"
++"\n"
++"FORMATO é um dos seguintes:\n"
++"\n"
++"  ln       justificação a esquerda, sem zeros a  esquerda\n"
++"  rn       justificação a direita, sem zeros a esquerda\n"
++"  rz       justificação a direita, com zeros a esquerda\n"
++"\n"
++
++# , c-format
++#: src/nl.c:501
++#, c-format
++msgid "invalid starting line number: `%s'"
++msgstr "número de começo de linha inválido: `%s'"
++
++# , c-format
++#: src/nl.c:524
++#, c-format
++msgid "invalid number of blank lines: `%s'"
++msgstr "número de linhas vazias inválido: `%s'"
++
++# , c-format
++#: src/nl.c:538
++#, c-format
++msgid "invalid line number field width: `%s'"
++msgstr "largura para o número de linha inválido: `%s'"
++
++# , c-format
++#: src/od.c:331
++#, c-format
++msgid ""
++"Usage: %s [OPTION]... [FILE]...\n"
++"  or:  %s --traditional [FILE] [[+]OFFSET [[+]LABEL]]\n"
++msgstr ""
++"Uso: %s [OPÇÃO]... [ARQUIVO]...\n"
++" ou: %s --traditional [ARQUIVO] [[+]OFFSET [[+]RÓTULO]\n"
++
++#: src/od.c:336
++msgid ""
++"Write an unambiguous representation, octal bytes by default, of FILE\n"
++"to standard output.  With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -A, --address-radix=RADIX   decide how file offsets are printed\n"
++"  -j, --skip-bytes=BYTES      skip BYTES input bytes first on each file\n"
++"  -N, --read-bytes=BYTES      limit dump to BYTES input bytes per file\n"
++"  -s, --strings[=BYTES]       output strings of at least BYTES graphic "
++"chars\n"
++"  -t, --format=TYPE           select output format or formats\n"
++"  -v, --output-duplicates     do not use * to mark line suppression\n"
++"  -w, --width[=BYTES]         output BYTES bytes per output line\n"
++"      --traditional           accept arguments in pre-POSIX form\n"
++"      --help                  display this help and exit\n"
++"      --version               output version information and exit\n"
++"\n"
++"Pre-POSIX format specifications may be intermixed, they accumulate:\n"
++"  -a   same as -t a,  select named characters\n"
++"  -b   same as -t oC, select octal bytes\n"
++"  -c   same as -t c,  select ASCII characters or backslash escapes\n"
++"  -d   same as -t u2, select unsigned decimal shorts\n"
++"  -f   same as -t fF, select floats\n"
++"  -h   same as -t x2, select hexadecimal shorts\n"
++"  -i   same as -t d2, select decimal shorts\n"
++"  -l   same as -t d4, select decimal longs\n"
++"  -o   same as -t o2, select octal shorts\n"
++"  -x   same as -t x2, select hexadecimal shorts\n"
++msgstr ""
++"Escreve uma representação inequívoca, por default em base octal, de ARQUIVO\n"
++"na saída padrão. Se não for especificado ARQUIVO ou ARQUIVO for `-', lê a\n"
++"entrada padrão.\n"
++"\n"
++"  -A, --address-radix=BASE    indica como mostrar as posições do arquivo\n"
++"  -N, --read-bytes=BYTES      restringe a saída a BYTES bytes por arquivo\n"
++"  -j, --skip-bytes=BYTES      descarta os primeiros BYTES bytes de cada "
++"arquivo\n"
++"  -s, --strings[=BYTES]       mostra strings de caracteres de pelo menos\n"
++"                              BYTES caracteres gráficos\n"
++"  -t, --format=TIPO           seleciona o formato de saída\n"
++"  -v, --output-duplicates     não usa * para indicar linhas repetidas\n"
++"  -w, --width[=BYTES]         mostra BYTES bytes por linha de saída\n"
++"      --traditional           aceita os argumentos em formato pre-POSIX\n"
++"      --help                  mostra esta ajuda e finaliza\n"
++"      --version               informa versão e finaliza\n"
++"\n"
++"As especificações de formato pre-POSIX podem estar intercalada e se "
++"acumularem:\n"
++"  -a   o mesmo que -t a,  seleciona os caracteres nomeados\n"
++"  -b   o mesmo que -t oC, seleciona bytes em base octal\n"
++"  -c   o mesmo que -t c,  seleciona caracteres ASCII ou sequências de\n"
++"                          escape\n"
++"  -d   o mesmo que -t u2, seleciona decimais curtos(shorts) sem sinal\n"
++"  -f   o mesmo que -t fF, seleciona números em ponto flutuante\n"
++"  -h   o mesmo que -t x2, seleciona hexadecimais curtos(shorts)\n"
++"  -i   o mesmo que -t d2, seleciona decimais curtos(shorts)\n"
++"  -l   o mesmo que -t d4, seleciona decimais longos(longs)\n"
++"  -o   o mesmo que -t o2, seleciona octais curtos(shorts)\n"
++"  -x   o mesmo que -t x2, seleciona hexadecimais curtos(shorts)\n"
++
++#: src/od.c:363
++msgid ""
++"\n"
++"For older syntax (second call format), OFFSET means -j OFFSET.  LABEL\n"
++"is the pseudo-address at first byte printed, incremented when dump is\n"
++"progressing.  For OFFSET and LABEL, a 0x or 0X prefix indicates\n"
++"hexadecimal, suffixes maybe . for octal and b multiply by 512.\n"
++"\n"
++"TYPE is made up of one or more of these specifications:\n"
++"\n"
++"  a          named character\n"
++"  c          ASCII character or backslash escape\n"
++"  d[SIZE]    signed decimal, SIZE bytes per integer\n"
++"  f[SIZE]    floating point, SIZE bytes per integer\n"
++"  o[SIZE]    octal, SIZE bytes per integer\n"
++"  u[SIZE]    unsigned decimal, SIZE bytes per integer\n"
++"  x[SIZE]    hexadecimal, SIZE bytes per integer\n"
++"\n"
++"SIZE is a number.  For TYPE in doux, SIZE may also be C for\n"
++"sizeof(char), S for sizeof(short), I for sizeof(int) or L for\n"
++"sizeof(long).  If TYPE is f, SIZE may also be F for sizeof(float), D\n"
++"for sizeof(double) or L for sizeof(long double).\n"
++"\n"
++"RADIX is d for decimal, o for octal, x for hexadecimal or n for none.\n"
++"BYTES is hexadecimal with 0x or 0X prefix, it is multiplied by 512\n"
++"with b suffix, by 1024 with k and by 1048576 with m.  -s without a\n"
++"number implies 3.  -w without a number implies 32.  By default, od\n"
++"uses -A o -t d2 -w 16.\n"
++msgstr ""
++"\n"
++"Na sintaxe antiga, OFFSET significa -j OFFSET. ROTULO\n"
++"é o pseudo endereço do primeiro byte mostrado, incrementado quando o "
++"\"dump\"\n"
++"está sendo processado. Para OFFSET e LABEL, o prefixo 0x ou 0X indica\n"
++"hexadecimal, os sufixos poden ser . para octal e b para blocos de 512 "
++"bytes.\n"
++"\n"
++"TIPO é feito com uma o mais de as seguintes especificações:\n"
++"\n"
++"  a           um determinado caracter\n"
++"  c           caracter ASCII ou sequência de escape\n"
++"  d[TAMANHO]  decimal com sinal, TAMANHO bytes por cada inteiro\n"
++"  f[TAMANHO]  ponto flutuante, TAMANHO bytes por cada inteiro\n"
++"  o[TAMANHO]  octal, TAMANHO bytes por cada inteiro\n"
++"  u[TAMANHO]  decimal sem sinal, TAMANHO bytes por cada inteiro\n"
++"  x[TAMANHO]  hexadecimal, TAMANHO bytes por cada inteiro\n"
++"\n"
++"TAMANHO é um número.\n"
++"Para os TIPOS d o u x, TAMANHO pode ser também:\n"
++" C para `sizeof(char)', S para `sizeof(short)', I para `sizeof(int)' ou\n"
++" L para `sizeof(long)'.\n"
++" Se o TIPO é f, TAMANHO pode ser também:\n"
++" F para `sizeof(float)', D para `sizeof(double)' ou\n"
++" L para `sizeof(long double)'.\n"
++"\n"
++"BASE é d para decimal, o para octal, x para hexadecimal o n para nenhuma.\n"
++"BYTES é hexadecimal com 0x ou 0X como prefixo, multiplicado por 512 se o\n"
++"prefixo é b, por 1024 se é k e por 1048576 se é m. -s sem um número\n"
++"implica 3. -w sem um número indica 32. Por default usa `-A o -t d2 -w 16'.\n"
++
++# , c-format
++#. The integer at P in S would overflow an unsigned long.
++#. A digit string that long is sufficiently odd looking
++#. that the following diagnostic is sufficient.
++#: src/od.c:723 src/od.c:836
++#, c-format
++msgid "invalid type string `%s'"
++msgstr "tipo de cadeia inválida `%s'"
++
++# , c-format
++#: src/od.c:733
++#, c-format
++msgid ""
++"invalid type string `%s';\n"
++"this system doesn't provide a %lu-byte integral type"
++msgstr ""
++"tipo de cadeia inválida `%s';\n"
++"este sistema não provê um tipo de %lu bytes"
++
++# , c-format
++#: src/od.c:846
++#, c-format
++msgid ""
++"invalid type string `%s';\n"
++"this system doesn't provide a %lu-byte floating point type"
++msgstr ""
++"tipo de cadeia inválida `%s';\n"
++"este sistema não dispõe de um tipo de ponto flutuante de %lu bytes"
++
++# , c-format
++#: src/od.c:907
++#, c-format
++msgid "invalid character `%c' in type string `%s'"
++msgstr "caracter inválido `%c' na cadeia `%s'"
++
++#: src/od.c:1071
++msgid "cannot skip past end of combined input"
++msgstr "impossível acessar além da entrada"
++
++# msgstr ""
++#: src/od.c:1371
++msgid "old-style offset"
++msgstr "estilo antigo de deslocamento"
++
++# , c-format
++#: src/od.c:1690
++#, c-format
++msgid "invalid output address radix `%c'; it must be one character from [doxn]"
++msgstr "endereço de saída inválido `%c'; deve ser um caracter de [doxn]"
++
++#: src/od.c:1701
++msgid "skip argument"
++msgstr "argumento ignorado"
++
++#: src/od.c:1712
++msgid "limit argument"
++msgstr "argumento limite"
++
++#: src/od.c:1716
++#, c-format
++msgid ""
++"specified number of bytes `%s' is larger than the maximum\n"
++"representable value of type `long'"
++msgstr ""
++" o número especificado de bytes `%s' é maior do que o máximo\n"
++"valor representado pelo tipo `long'"
++
++#: src/od.c:1727
++msgid "minimum string length"
++msgstr "tamanho mínimo de cadeia"
++
++#: src/od.c:1781
++msgid "width specification"
++msgstr "especificação de largura"
++
++#: src/od.c:1805
++msgid "no type may be specified when dumping strings"
++msgstr "o tipo não pode ser especificado quando se depura cadeias"
++
++# , c-format
++#: src/od.c:1850
++#, c-format
++msgid "invalid second operand in compatibility mode `%s'"
++msgstr "segundo operando inválido em modo de compatibilidade `%s'"
++
++#: src/od.c:1871
++msgid "in compatibility mode the last 2 arguments must be offsets"
++msgstr ""
++"em modo de compatibilidade os dois últimos argumentos devem ser "
++"deslocamentos (offsets)"
++
++#: src/od.c:1878
++msgid "in compatibility mode there may be no more than 3 arguments"
++msgstr "em modo de compatibilidade não deve haver mais de três argumentos"
++
++# , c-format
++#: src/od.c:1946
++#, c-format
++msgid "warning: invalid width %lu; using %d instead"
++msgstr "atenção: largura %lu inválida; será usado %d em seu lugar"
++
++# , c-format
++#: src/od.c:1962
++#, c-format
++msgid "%d: fmt=\"%s\" width=%d\n"
++msgstr "%d: fmt=\"%s\" largura=%d\n"
++
++#: src/paste.c:218
++msgid "standard input is closed"
++msgstr "a entrada padrão está fechada"
++
++#: src/paste.c:417
++msgid ""
++"Write lines consisting of the sequentially corresponding lines from\n"
++"each FILE, separated by TABs, to standard output.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -d, --delimiters=LIST   reuse characters from LIST instead of TABs\n"
++"  -s, --serial            paste one file at a time instead of in parallel\n"
++"      --help              display this help and exit\n"
++"      --version           output version information and exit\n"
++"\n"
++msgstr ""
++"Escreve seqüencialmente na saída padrão cada linha de cada ARQUIVO\n"
++"especificado, separadas por TABs.\n"
++"Se ARQUIVO não especificado ou ARQUIVO é `-', lê a entrada padrão.\n"
++"\n"
++"  -d, delimiters=LISTA   usa os caracteres indicados em LISTA no lugar de\n"
++"                         tabuladores\n"
++"  -s, --serial           usa um arquivo de cada vez, em lugar de fazê-los "
++"em\n"
++"                         paralelo\n"
++"      --help             mostra esta ajuda e finaliza\n"
++"      --version          informa a versão e finaliza\n"
++"\n"
++
++# , c-format
++#: src/pr.c:627
++#, c-format
++msgid "invalid range of page numbers: `%s'"
++msgstr "intervalo de número de páginas inválido: `%s'"
++
++# , c-format
++#: src/pr.c:639
++#, c-format
++msgid "invalid starting page number: `%s'"
++msgstr "número de página inicial inválido: `%s'"
++
++# , c-format
++#: src/pr.c:651
++#, c-format
++msgid "invalid ending page number: `%s'"
++msgstr "número de página final inválido: `%s'"
++
++#: src/pr.c:658
++msgid "starting page number is larger than ending page number"
++msgstr "número de página inicial é maior que o número de página final"
++
++# , c-format
++#: src/pr.c:782
++#, c-format
++msgid "`-l PAGE_LENGTH' invalid number of lines: `%s'"
++msgstr "`-l TAMANHO_DE_PÁGINA' número de linhas inválido: `%s'"
++
++# , c-format
++#: src/pr.c:806
++#, c-format
++msgid "`-N NUMBER' invalid starting line number: `%s'"
++msgstr "`-N NÚMERO' número de início de linha inválido: `%s'"
++
++# , c-format
++#: src/pr.c:818
++#, c-format
++msgid "`-o MARGIN' invalid line offset: `%s'"
++msgstr "`-o MARGEM' deslocamento (offset) de linha inválido: `%s'"
++
++# , c-format
++#: src/pr.c:848
++#, c-format
++msgid "`-w PAGE_WIDTH' invalid column number: `%s'"
++msgstr "`-w LARGURA_DE_PÁGINA' número de coluna inválido: `%s'"
++
++#: src/pr.c:869
++msgid "Cannot specify number of columns when printing in parallel."
++msgstr ""
++"Não é possível especificar o número de colunas quando imprimindo em paralelo."
++
++#: src/pr.c:873
++msgid "Cannot specify both printing across and printing in parallel."
++msgstr ""
++"Não é possível especificar impressão em paralelo e transversalmente ao mesmo "
++"tempo."
++
++# , c-format
++#: src/pr.c:926
++#, c-format
++msgid "`-%c' extra characters or invalid number in the argument: `%s'"
++msgstr ""
++"`-%c' caracteres extras, ou o argumento da opção `-s' não é válido : `%s'"
++
++#: src/pr.c:1014
++msgid "page width too narrow"
++msgstr "largura de página muito estreita"
++
++# , c-format
++#: src/pr.c:1418
++#, c-format
++msgid "%s%*s%s%*sPage"
++msgstr "%s%*s%s%*sPágina"
++
++#: src/pr.c:2420
++msgid ""
++"Paginate or columnate FILE(s) for printing.\n"
++"\n"
++"  +FIRST_PAGE[:LAST_PAGE]\n"
++"                    begin [stop] printing with page FIRST_[LAST_]PAGE\n"
++"  -COLUMN           produce COLUMN-column output and print columns down,\n"
++"                    unless -a is used. Balance number of lines in the\n"
++"                    columns on each page.\n"
++"  -a                print columns across rather than down, used together\n"
++"                    with -COLUMN\n"
++"  -c                use hat notation (^G) and octal backslash notation\n"
++"  -d                double space the output\n"
++"  -e[CHAR[WIDTH]]   expand input CHARs (TABs) to tab WIDTH (8)\n"
++"  -F, -f            use form feeds instead of newlines to separate pages\n"
++"                    (by a 3-line page header with -f or a 5-line header\n"
++"                    and trailer without -f)\n"
++"  -h HEADER         use a centered HEADER instead of filename in page "
++"headers\n"
++"                    with long headers left-hand-side truncation may occur\n"
++"                    -h \"\" prints a blank line. Don't use -h\"\"\n"
++"  -i[CHAR[WIDTH]]   replace spaces with CHARs (TABs) to tab WIDTH (8)\n"
++"  -j                merge full lines, turns off -w line truncation, no "
++"column\n"
++"                    alignment, -s[STRING] sets separators\n"
++"  -l PAGE_LENGTH    set the page length to PAGE_LENGTH (66) lines\n"
++"                    (default number of lines of text 56, with -f 63)\n"
++msgstr ""
++"Paginar ou colunar ARQUIVO(s) para impressão.\n"
++"\n"
++"  +PRIMERA_PAG[:ÚLTIMA_PAG]\n"
++"                    começa [termina] a imprimir por PRIMERA_[ÚLTIMA_]PAG\n"
++"  -COLUNAS          mostra a saída no número de colunas indicado(COLUNAS),\n"
++"                    a menos que se especifique -a. Equilibra o número de\n"
++"                     linhas de cada coluna em cada página.\n"
++"  -a                cria as colunas transversalmente em vez de em paralelo,\n"
++"                    usado em conjunto com -COLUNAS\n"
++"  -c                mostra os caracteres de controle com notação\n"
++"                    circunflexo (^G) ou sequências de escape octais\n"
++"  -d                saída com espaçamento duplo\n"
++"  -e[CHAR[LARG]]    expande o caractere de tabulação (ou o CHAR) para\n"
++"                    LARG (8) espaços\n"
++"  -F, -f            usa form feeds em vez de newlines para separar páginas\n"
++"                    (com um header de página de 3 linhas com -f ou\n"
++"                    de 5 linhas e trailer sem -f)\n"
++"  -h HEADER         usa HEADER centralizado em vez do nome de arquivo;\n"
++"                    se o header for muito largo será truncado à esquerda.\n"
++"                    -h \"\\\" mostra uma linha em branco. Não usar -h\"\\\"\n"
++"  -i[CHAR[LARG]]    substitui os espaços com tabulações (ou com CHAR)\n"
++"                    de largura LARG (8)\n"
++"  -j                mescla linhas completas, desativa o truncamento de\n"
++"                    linhas (-w), não alinha, -s[STRING] estabelece\n"
++"                    o separador\n"
++"  -l TAM_PÁGINA     estabelece o tamanho da página em TAM_PÁGINA linhas\n"
++"                    por default 66, ou 56 com -f 63\n"
++
++#: src/pr.c:2444
++msgid ""
++"  -m                print all files in parallel, one in each column,\n"
++"                    truncate lines, but join lines of full length with -j\n"
++"  -n[SEP[DIGITS]]   number lines, use DIGITS (5) digits, then SEP (TAB)\n"
++"                    default counting starts with 1st line of input file\n"
++"  -N NUMBER         start counting with NUMBER at 1st line of first\n"
++"                    page printed (see +FIRST_PAGE)\n"
++"  -o MARGIN         offset each line with MARGIN spaces (do not affect -w)\n"
++"  -r                inhibit warning when a file cannot be opened\n"
++"  -s[STRING]        separate columns by an optional STRING\n"
++"                    don't use -s \"STRING\" \n"
++"                    without -s: default sep. 'space' used, same as -s\" \"\n"
++"                    -s only: no separator used, same as -s\"\" \n"
++"  -t                inhibit page headers and trailers\n"
++"  -T                inhibit page headers and trailers, eliminate any page\n"
++"                    layout by form feeds set in input files\n"
++"  -v                use octal backslash notation\n"
++"  -w PAGE_WIDTH     set page width to PAGE_WIDTH (72) columns, truncate\n"
++"                    lines (see also -j option)\n"
++"  --help            display this help and exit\n"
++"  --version         output version information and exit\n"
++"\n"
++"-T implied by -l nn when nn <= 10 or <= 3 with -f. With no FILE, or when\n"
++"FILE is -, read standard input.\n"
++msgstr ""
++"  -m                imprime todos os ARQUIVOS em paralelo, um em cada "
++"coluna,\n"
++"                    trunca as linhas, mas junta as linhas de largura\n"
++"                    completa com -j\n"
++"  -n[SEP[DÍGITOS]]  numera linhas com DÍGITOS (5) número de dígitos, depois\n"
++"                    separa com SEP (TAB). O contador começa a contar pela    "
++"                 primeira linha, por default.\n"
++"  -N NÚMERO         começa a contar com NÚMERO a partir da primeira linha\n"
++"                    da primeira página (ver +PRIMERA_PÁGINA)\n"
++"  -o MARGEM         desloca cada linha MARGEM espaços (não afeta -w)\n"
++"  -r                evita aviso quando um arquivo não pode ser aberto\n"
++"  -s[STRING]        separa as colunas com STRING.\n"
++"                    Não usar -s \"STRING\"\n"
++"                    sem -s: o separador default é espaço,                    "
++"somente -s: nenhum separador é usado, mesmo que -s\"\"\n"
++"  -t                não mostra headers nem trailers\n"
++"  -T                não mostra headers nem trailers, descarta qualquer\n"
++"                    formato de página estabelecido com retornos de página\n"
++"                    nos arquivos de entrada\n"
++"  -v                usa a notação octal com barra invertida\n"
++"  -w LARG_PÁGINA    imprime com um largura LARG_PÁGINA, por default 72,\n"
++"                    trunca linhas (ver também opção -j)\n"
++"  --help            mostra esta ajuda e finaliza\n"
++"  --version         informa a versão e finaliza\n"
++"\n"
++"-l nn implica -T quando nn <=10 (ou <=3 com -f).\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++
++# , c-format
++#: src/sort.c:217
++#, c-format
++msgid ""
++"Write sorted concatenation of all FILE(s) to standard output.\n"
++"\n"
++"  +POS1 [-POS2]    start a key at POS1, end it before POS2\n"
++"  -b               ignore leading blanks in sort fields or keys\n"
++"  -c               check if given files already sorted, do not sort\n"
++"  -d               consider only [a-zA-Z0-9 ] characters in keys\n"
++"  -f               fold lower case to upper case characters in keys\n"
++"  -g               compare according to general numerical value, imply -b\n"
++"  -i               consider only [\\040-\\0176] characters in keys\n"
++"  -k POS1[,POS2]   same as +POS1 [-POS2], but all positions counted from 1\n"
++"  -m               merge already sorted files, do not sort\n"
++"  -M               compare (unknown) < `JAN' < ... < `DEC', imply -b\n"
++"  -n               compare according to string numerical value, imply -b\n"
++"  -o FILE          write result on FILE instead of standard output\n"
++"  -r               reverse the result of comparisons\n"
++"  -s               stabilize sort by disabling last resort comparison\n"
++"  -t SEP           use SEParator instead of non- to whitespace transition\n"
++"  -T DIRECT        use DIRECT for temporary files, not $TMPDIR or %s\n"
++"  -u               with -c, check for strict ordering;\n"
++"                   with -m, only output the first of an equal sequence\n"
++"  -z               end lines with 0 byte, not newline, for find -print0\n"
++"      --help       display this help and exit\n"
++"      --version    output version information and exit\n"
++"\n"
++"POS is F[.C][OPTS], where F is the field number and C the character\n"
++"position in the field, both counted from zero.  OPTS is made up of one\n"
++"or more of Mbdfinr, this effectively disable global -Mbdfinr settings\n"
++"for that key.  If no key given, use the entire line as key.  With no\n"
++"FILE, or when FILE is -, read standard input.\n"
++msgstr ""
++"Ordena e concatena os ARQUIVO(s) na saída padrão.\n"
++"\n"
++"  +POS1 [-POS2]    a chave para ordenar começa em POS1 e termina em POS2\n"
++"  -b               descarta espaços à esquerda nos campos ou chaves\n"
++"  -c               verifica se os arquivos já estão ordenados, e não ordena\n"
++"  -d               considera só os caracteres [a-zA-Z0-9] nas chaves\n"
++"  -f               converte as chaves em maiúsculas\n"
++"  -g               compara de acordo com o valor numérico, implica -b\n"
++"  -i               considera só os caracteres [\\040-\\0176] nas chaves\n"
++"  -k POS1[,POS2]   o mesmo que +POS1[-POS2], mas todas as posições são\n"
++"                   contadas a partir de 1\n"
++"  -m               mescla arquivos que já estão ordenados, não ordena\n"
++"  -M               compara (desconhecido) < 'JAN' < ... < `DEC', implica -b\n"
++"  -n               compara de acordo com o valor numérico da STRING,\n"
++"                   implica -b\n"
++"  -o ARQUIVO       escreve o resultado em ARQUIVO, em vez da saída padrão\n"
++"  -r               inverte o resultado das comparações\n"
++"  -s               desabilita a comparação como última reordenação byte a\n"
++"                   byte quando todos os campos resultarem iguais\n"
++"  -t SEPARADOR     usa SEPARADOR em vez de espaço para separar os campos\n"
++"  -T DIRETÓRIO     usa DIRETÓRIO para os arquivos temporários,\n"
++"                   não usa $TMPDIR nem %s\n"
++"  -u               com -c, verifica ordem estrita\n"
++"                   com -m, mostra somente a primeira repetição\n"
++"  -z               termina de comparar linhas com o byte 0, sem nova linha\n"
++"                   adequado para find -print()\n"
++"       --help      mostra esta ajuda e finaliza\n"
++"       --version   informa a versão e finaliza\n"
++"\n"
++"POS é da forma F[.C][OPÇÕES], onde F é o número do campo e C a posição do\n"
++"caractere no campo, ambos contados desde zero. OPÇÕES se compõem de um\n"
++"ou mais dos caracteres [Mbdfinr]; isto desabilita as opções globais\n"
++"-Mbdfinr para esta chave. Se a chave não é informada, usa a linha inteira\n"
++"como chave.\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++
++#: src/sort.c:372
++msgid "flushing file"
++msgstr "atualizando o arquivo"
++
++#: src/sort.c:381
++msgid "error closing file"
++msgstr "error fechando arquivo"
++
++# , c-format
++#: src/sort.c:1505
++#, c-format
++msgid "%s: disorder on %s\n"
++msgstr "%s: fora de sequência em %s\n"
++
++# , c-format
++#: src/sort.c:1638
++#, c-format
++msgid "invalid field specification `%s'"
++msgstr "especificação de campo inválida `%s'"
++
++#. Provoke with `sort -9'.
++#: src/sort.c:1814
++msgid ""
++"when using the old-style +POS and -POS key specifiers,\n"
++"the +POS specifier must come first"
++msgstr ""
++"quando usando o estilo antigo com +POS e -POS,\n"
++"o primeiro deles deve ser +POS"
++
++#: src/sort.c:1850
++msgid "option `-k' requires an argument"
++msgstr "opção `-k' requer um argumento"
++
++#. Provoke with `sort -k0'
++#: src/sort.c:1867
++msgid "the starting field number argument to the `-k' option must be positive"
++msgstr "o argumento numérico para o primeiro argumento de -k deve ser positivo"
++
++#. Provoke with `sort -k1.'
++#: src/sort.c:1878
++msgid "starting field spec has `.' but lacks following character offset"
++msgstr ""
++"especificação do campo chave inicial contém `.', e deve ser seguido\n"
++"do deslocamento em caracteres"
++
++#. Provoke with `sort -k1.0'
++#: src/sort.c:1887
++msgid ""
++"starting field character offset argument to the `-k' option\n"
++"must be positive"
++msgstr ""
++"argumento de deslocamento do campo chave inicial para a opção `-k'\n"
++"deve ser positivo."
++
++#. Provoke with `sort -k1,'
++#: src/sort.c:1915
++msgid "field specification has `,' but lacks following field spec"
++msgstr "especificação de campo tem `,' mas não é seguida da chave final"
++
++#. Provoke with `sort -k1,0'
++#: src/sort.c:1925
++msgid "ending field number argument to the `-k' option must be positive"
++msgstr "número de campo final para a opção `-k' deve ser positivo"
++
++#. Provoke with `sort -k1,1.'
++#: src/sort.c:1936
++msgid "ending field spec has `.' but lacks following character offset"
++msgstr ""
++"especificação do campo chave final contém `.', e deve ser seguido\n"
++"do deslocamento em caracteres"
++
++#: src/sort.c:1967
++msgid "option `-o' requires an argument"
++msgstr "opção `-o' requer um argumento"
++
++#: src/sort.c:1985
++msgid "option `-t' requires an argument"
++msgstr "opção `-t' requer um argumento"
++
++#: src/sort.c:1996
++msgid "option `-T' requires an argument"
++msgstr "opção `-T' requer um argumento"
++
++# , c-format
++#: src/sort.c:2011
++#, c-format
++msgid "%s: unrecognized option `-%c'\n"
++msgstr "%s: opção desconhecida `-%c'\n"
++
++# , c-format
++#: src/sort.c:2137 src/sort.c:2142
++#, c-format
++msgid "%s: write error"
++msgstr "%s: erro de escrita"
++
++# , c-format
++#: src/split.c:101
++#, c-format
++msgid "Usage: %s [OPTION] [INPUT [PREFIX]]\n"
++msgstr "Uso: %s [OPÇÃO] [ARQUIVO [PREFIXO]]\n"
++
++#: src/split.c:105
++msgid ""
++"Output fixed-size pieces of INPUT to PREFIXaa, PREFIXab, ...; default\n"
++"PREFIX is `x'.  With no INPUT, or when INPUT is -, read standard input.\n"
++"\n"
++"  -b, --bytes=SIZE        put SIZE bytes per output file\n"
++"  -C, --line-bytes=SIZE   put at most SIZE bytes of lines per output file\n"
++"  -l, --lines=NUMBER      put NUMBER lines per output file\n"
++"  -NUMBER                 same as -l NUMBER\n"
++"      --verbose           print a diagnostic to standard error just\n"
++"\t\t\t    before each output file is opened\n"
++"      --help              display this help and exit\n"
++"      --version           output version information and exit\n"
++"\n"
++"SIZE may have a multiplier suffix: b for 512, k for 1K, m for 1 Meg.\n"
++msgstr ""
++"Divide ARQUIVO em arquivos menores de tamanho fixo e os nomeia PREFIXOaa, "
++"PREFIXOab...\n"
++". O PREFIXO default é x.Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da "
++"entrada padrão\n"
++"\n"
++"  -b, --bytes=BYTES       escreve BYTES bytes em cada arquivo de saída\n"
++"  -C, --line-bytes=BYTES  escreve um máximo de BYTES bytes sem quebrar "
++"linhas\n"
++"  -l, --lines=NÚMERO      escreve NÚMERO linhas em cada arquivo de saída\n"
++"  -NÚMERO                 o mesmo que -l NÚMERO\n"
++"      --verbose           mostra um diagnóstico na saída de erro padrão\n"
++"                          antes de abrir cada arquivo\n"
++"       --help             mostra esta ajuda e finaliza\n"
++"       --version          informa a versão e finaliza\n"
++"\n"
++"BYTES pode ter um fator indicado com o sufixo: b para 512, k para 1K,\n"
++"m para 1 Meg.\n"
++
++# , c-format
++#: src/split.c:181
++#, c-format
++msgid "creating file `%s'\n"
++msgstr "criando arquivo `%s'\n"
++
++#: src/split.c:397 src/split.c:413 src/split.c:429 src/split.c:455
++msgid "cannot split in more than one way"
++msgstr "não é possível sub-dividir em mais de uma forma"
++
++# , c-format
++#: src/split.c:404 src/split.c:437
++#, c-format
++msgid "%s: invalid number of bytes"
++msgstr "%s: número de bytes inválido"
++
++# , c-format
++#: src/split.c:420
++#, c-format
++msgid "%s: invalid number of lines"
++msgstr "%s: número de linhas inválido"
++
++#: src/split.c:492
++msgid "invalid number"
++msgstr "número inválido"
++
++#: src/split.c:507 src/tr.c:1891
++msgid "too many arguments"
++msgstr "muitos argumentos"
++
++#: src/sum.c:67
++msgid ""
++"Print checksum and block counts for each FILE.\n"
++"\n"
++"  -r              defeat -s, use BSD sum algorithm, use 1K blocks\n"
++"  -s, --sysv      use System V sum algorithm, use 512 bytes blocks\n"
++"      --help      display this help and exit\n"
++"      --version   output version information and exit\n"
++"\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++msgstr ""
++"Mostra a soma de verificação (checksum) e o número de blocos para cada "
++"ARQUIVO.\n"
++"\n"
++"  -r            usar o algoritmo de BSD, com blocos de 1K\n"
++"  -s, --sysv    usar o algoritmo de System V, com blocos de 512 bytes\n"
++"      --help    mostrar esta ajuda e sair\n"
++"      --version informar a versão e sair\n"
++"\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++
++#: src/tac.c:137
++msgid ""
++"Write each FILE to standard output, last line first.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -b, --before             attach the separator before instead of after\n"
++"  -r, --regex              interpret the separator as a regular expression\n"
++"  -s, --separator=STRING   use STRING as the separator instead of newline\n"
++"      --help               display this help and exit\n"
++"      --version            output version information and exit\n"
++msgstr ""
++"Escreve cada ARQUIVO na saída padrão começando pela última linha\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++"\n"
++"  -b,  --before           colocar o separador antes de cada linha, em vez "
++"de\n"
++"                          colocar depois\n"
++"  -r,  --regex            interpretar o separador como uma expressão "
++"regular\n"
++"  -s,  --separator=STRING usar STRING como separador, em vez de um salto de\n"
++"                          linha\n"
++"       --help             mostrar esta ajuda e sair\n"
++"       --version          mostrar a versão e sair\n"
++"\n"
++
++#: src/tac.c:616
++msgid "separator cannot be empty"
++msgstr "o separador não pode ser nulo"
++
++#: src/tail.c:162
++msgid ""
++"Print last 10 lines of each FILE to standard output.\n"
++"With more than one FILE, precede each with a header giving the file name.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -c, --bytes=N            output the last N bytes\n"
++"  -f, --follow             output appended data as the file grows\n"
++"  -n, --lines=N            output the last N lines, instead of last 10\n"
++"  -q, --quiet, --silent    never output headers giving file names\n"
++"  -v, --verbose            always output headers giving file names\n"
++"      --help               display this help and exit\n"
++"      --version            output version information and exit\n"
++"\n"
++"If the first character of N (the number of bytes or lines) is a `+',\n"
++"print beginning with the Nth item from the start of each file, otherwise,\n"
++"print the last N items in the file.  N may have a multiplier suffix:\n"
++"b for 512, k for 1024, m for 1048576 (1 Meg).  A first OPTION of -VALUE\n"
++"or +VALUE is treated like -n VALUE or -n +VALUE unless VALUE has one of\n"
++"the [bkm] suffix multipliers, in which case it is treated like -c VALUE\n"
++"or -c +VALUE.\n"
++msgstr ""
++"Mostra as últimas 10 linhas de cada ARQUIVO na saída padrão.\n"
++"Com mais de um ARQUIVO, precede a cada grupo de linhas com um header.\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++"\n"
++"  -c, --bytes=N           mostrar os últimos N bytes\n"
++"  -f, --follow            mostrar os dados à medida que o arquivo cresce\n"
++"  -n, --lines             mostrar as últimas N linhas em vez de 10\n"
++"  -q, --quiet, --silent   não apresentar headers com o nome de cada arquivo\n"
++"  -v, --verbose           apresentar sempre os headers com nome de cada "
++"arquivo\n"
++"      --help              mostrar esta ajuda e sair\n"
++"      --version           mostrar a versão e sair\n"
++"\n"
++"Se o primeiro caractere de N é um `+', começa a mostrar no elemento\n"
++"número N contando desde o início de cada ARQUIVO, caso contrário, mostra\n"
++"os últimos N elementos do arquivo. N pode ter diferentes sufixos que\n"
++"indicam um fator: b para 512 bytes, k para 1024 bytes, m para 1 Megabyte.\n"
++"Se a primeira opção é -VALOR ou +VALOR trata-se como se fosse -n VALOR ou\n"
++"-n +VALOR, a menos que VALOR tenha um dos sufixos mencionados (bkm),\n"
++"caso que se trata como -c VALOR ou -c +VALOR.\n"
++
++#: src/tail.c:615
++msgid "file truncated"
++msgstr "arquivo truncado"
++
++#: src/tail.c:790
++msgid "standard input: cannot follow end of non-regular file"
++msgstr ""
++"entrada padrão: não é possível localizar o fim de um arquivo não regular"
++
++# , c-format
++#: src/tail.c:827
++#, c-format
++msgid "%s: cannot follow end of non-regular file"
++msgstr "%s: não é possível localizar o fim de um arquivo não regular"
++
++# , c-format
++#: src/tail.c:938
++#, c-format
++msgid "%c: invalid suffix character in obsolescent option"
++msgstr "%c: sufixo inválido em uma opção obsoleta"
++
++# , fuzzy, c-format
++#: src/tail.c:968 src/tail.c:1026
++#, c-format
++msgid "%s: `%s' is so large that it is not representable"
++msgstr "%s, `%s' é tão grande que não pode ser mostrado"
++
++#: src/tail.c:969 src/tail.c:1028
++msgid "number of lines"
++msgstr "número de linhas"
++
++#: src/tail.c:969 src/tail.c:1028
++msgid "number of bytes"
++msgstr "número de bytes"
++
++#: src/tail.c:1020
++msgid "invalid number of lines"
++msgstr "número de linhas inválido"
++
++#: src/tail.c:1021
++msgid "invalid number of bytes"
++msgstr "número de bytes inválido"
++
++# , c-format
++#: src/tr.c:358
++#, c-format
++msgid "Usage: %s [OPTION]... SET1 [SET2]\n"
++msgstr "Uso: %s [OPÇÃO]... CONJUNTO1 [CONJUNTO2]\n"
++
++#: src/tr.c:362
++msgid ""
++"Translate, squeeze, and/or delete characters from standard input,\n"
++"writing to standard output.\n"
++"\n"
++"  -c, --complement        first complement SET1\n"
++"  -d, --delete            delete characters in SET1, do not translate\n"
++"  -s, --squeeze-repeats   replace sequence of characters with one\n"
++"  -t, --truncate-set1     first truncate SET1 to length of SET2\n"
++"      --help              display this help and exit\n"
++"      --version           output version information and exit\n"
++msgstr ""
++"Traduz, comprime e/ou apaga caracteres da entrada padrão, escrevendo\n"
++"o resultado na saída padrão.\n"
++"\n"
++"  -c,  --complement        operar sobre o complemento (sobre cada caractere\n"
++"                           que no coincida) de CONJUNTO1\n"
++"  -d,  --delete            remover caracteres de CONJUNTO1, não traduzindo\n"
++"  -s,  --squeeze-repeats   substituir sequências de caracteres iguais por "
++"uma só\n"
++"  -t,  --truncate-set1     truncar CONJUNTO1 na largura de CONJUNTO2\n"
++"       --help              mostrar esta ajuda e sair\n"
++"       --version           mostrar a versão e sair\n"
++
++#: src/tr.c:373
++msgid ""
++"\n"
++"SETs are specified as strings of characters.  Most represent themselves.\n"
++"Interpreted sequences are:\n"
++"\n"
++"  \\NNN            character with octal value NNN (1 to 3 octal digits)\n"
++"  \\\\              backslash\n"
++"  \\a              audible BEL\n"
++"  \\b              backspace\n"
++"  \\f              form feed\n"
++"  \\n              new line\n"
++"  \\r              return\n"
++"  \\t              horizontal tab\n"
++"  \\v              vertical tab\n"
++"  CHAR1-CHAR2     all characters from CHAR1 to CHAR2 in ascending order\n"
++"  [CHAR1-CHAR2]   same as CHAR1-CHAR2, if both SET1 and SET2 use this\n"
++"  [CHAR*]         in SET2, copies of CHAR until length of SET1\n"
++"  [CHAR*REPEAT]   REPEAT copies of CHAR, REPEAT octal if starting with 0\n"
++"  [:alnum:]       all letters and digits\n"
++"  [:alpha:]       all letters\n"
++"  [:blank:]       all horizontal whitespace\n"
++"  [:cntrl:]       all control characters\n"
++"  [:digit:]       all digits\n"
++"  [:graph:]       all printable characters, not including space\n"
++"  [:lower:]       all lower case letters\n"
++"  [:print:]       all printable characters, including space\n"
++"  [:punct:]       all punctuation characters\n"
++"  [:space:]       all horizontal or vertical whitespace\n"
++"  [:upper:]       all upper case letters\n"
++"  [:xdigit:]      all hexadecimal digits\n"
++"  [=CHAR=]        all characters which are equivalent to CHAR\n"
++msgstr ""
++"\n"
++"Os CONJUNTOs são strings de caracteres.\n"
++"As sequências válidas são as seguintes:\n"
++"\n"
++"  \\NNN            caractere com valor octal NNN (de um a três dígitos)\n"
++"  \\\\              barra invertida\n"
++"  \\a              beep audível (BEL)\n"
++"  \\b              backspace\n"
++"  \\f              salto de página\n"
++"  \\n              salto de linha\n"
++"  \\r              retorno de carro\n"
++"  \\t              tabulação horizontal\n"
++"  \\v              tabulação vertical\n"
++"  CAR1-CAR2       todos os caracteres de CAR1 a CAR2 em ordem ascendente\n"
++"  [CAR1-CAR2]     o mesmo que CAR1-CAR2, se ambos CONJUNTO1 e CONJUNTO2\n"
++"                  usam estes\n"
++"  [CAR*]          em CONJUNTO2, copia de CAR até que se alcance a largura    "
++"              de CONJUNTO1\n"
++"  [CAR*REPETE]    copia REPETE vezes CAR; REPETE é octal se começa com 0\n"
++"  [:alnum:]       todas as letras e dígitos\n"
++"  [:alpha:]       todas as letras\n"
++"  [:blank:]       todos os espaços em branco horizontais\n"
++"  [:cntrl:]       todos os caracteres de control\n"
++"  [:digit:]       todos os dígitos\n"
++"  [:graph:]       todos os caracteres imprimíveis, sem incluir o espaço\n"
++"  [:lower:]       todas as letras minúsculas\n"
++"  [:print:]       todos os caracteres imprimíveis, incluindo o espaço\n"
++"  [:punct:]       todos os caracteres de pontuação\n"
++"  [:space:]       todos os espaços em branco horizontais e verticais\n"
++"  [:upper:]       todas as letras maiúsculas\n"
++"  [:xdigit:]      todos os números hexadecimais\n"
++"  [=CAR=]         todos os caracteres que são iguais a CAR\n"
++
++#: src/tr.c:405
++msgid ""
++"\n"
++"Translation occurs if -d is not given and both SET1 and SET2 appear.\n"
++"-t may be used only when translating.  SET2 is extended to length of\n"
++"SET1 by repeating its last character as necessary.  Excess characters\n"
++"of SET2 are ignored.  Only [:lower:] and [:upper:] are guaranteed to\n"
++"expand in ascending order; used in SET2 while translating, they may\n"
++"only be used in pairs to specify case conversion.  -s uses SET1 if not\n"
++"translating nor deleting; else squeezing uses SET2 and occurs after\n"
++"translation or deletion.\n"
++msgstr ""
++"\n"
++"A tradução é feita se -d não é dado e ambos os CONJUNTOs são informados.\n"
++"-t somente pode ser usado quando se estiver traduzindo.\n"
++"CONJUNTO2 é estendido à largura de CONJUNTO1, repetindo seus últimos\n"
++"caracteres tantas vezes como seja necessário. Os caracteres em excesso de\n"
++"CONJUNTO2 são ignorados. Somente se garante que [:lower:] e [:upper:]\n"
++"sejam expandidos em ordem ascendente; se se usa em CONJUNTO2 ao traduzir,\n"
++"somente se podem usar em pares, para especificar conversão para maiúsculas.\n"
++"-s usa CONJUNTO1 se não se está traduzindo nem apagando; caso contrário, a\n"
++"compressão usa CONJUNTO2 depois da tradução ou remoção.\n"
++
++#. Any octal number larger than 0377 won't
++#. fit in 8 bits.  So we stop when adding the
++#. next digit would put us over the limit and
++#. give a warning about the ambiguity.  POSIX
++#. isn't clear on this, but one person has said
++#. that in his interpretation, POSIX says tr
++#. can't even give a warning.
++#: src/tr.c:577
++#, c-format
++msgid ""
++"warning: the ambiguous octal escape \\%c%c%c is being\n"
++"\tinterpreted as the 2-byte sequence \\0%c%c, `%c'"
++msgstr ""
++"atenção: a sequência de escape octal ambígua \\%c%c%c\n"
++"está sendo interpretada como a sequência de 2 bytes \\0%c%c, `%c'"
++
++#: src/tr.c:586
++msgid "invalid backslash escape at end of string"
++msgstr "sequência de escape inválida no final da string"
++
++# , c-format
++#: src/tr.c:592
++#, c-format
++msgid "invalid backslash escape `\\%c'"
++msgstr "sequência de escape inválida `\\%c'"
++
++# , c-format
++#: src/tr.c:745
++#, c-format
++msgid "range-endpoints of `%s-%s' are in reverse collating sequence order"
++msgstr "os extremos do intervalo em `%s-%s' estão em ordem inversa"
++
++# , c-format
++#: src/tr.c:960
++#, c-format
++msgid "invalid repeat count `%s' in [c*n] construct"
++msgstr "número de repetições `%s' inválido na especificação [c*n]"
++
++# , c-format
++#: src/tr.c:1066
++#, c-format
++msgid "invalid character class `%s'"
++msgstr "classe de caracteres inválida `%s'"
++
++# , c-format
++#: src/tr.c:1091
++#, c-format
++msgid "%s: equivalence class operand must be a single character"
++msgstr "%s: o operador de equivalência de classe deve ser só um caractere"
++
++#: src/tr.c:1563
++msgid "the [c*] repeat construct may not appear in string1"
++msgstr "o operador de repetição [c*] não pode aparecer em string1"
++
++#: src/tr.c:1573
++msgid "only one [c*] repeat construct may appear in string2"
++msgstr "só um operador de repetição [c*] pode aparecer em string2"
++
++#: src/tr.c:1581
++msgid "[=c=] expressions may not appear in string2 when translating"
++msgstr "as expressões [=c=] não podem aparecer em string2 ao traduzir"
++
++#: src/tr.c:1594
++msgid "when not truncating set1, string2 must be non-empty"
++msgstr "se não se está truncando conjunto1, string2 deve ser não vazia"
++
++#: src/tr.c:1603
++msgid ""
++"when translating with complemented character classes,\n"
++"string2 must map all characters in the domain to one"
++msgstr ""
++"ao traduzir com classes de caracteres complementares (que não coincidem),\n"
++"string2 deve mapear todos os caracteres do domínio a um só"
++
++#: src/tr.c:1610
++msgid ""
++"when translating, the only character classes that may appear in\n"
++"string2 are `upper' and `lower'"
++msgstr ""
++"quando traduzindo, as únicas classes de caracteres que podem aparecer em\n"
++"string2 são 'upper' e 'lower'"
++
++#: src/tr.c:1619
++msgid "the [c*] construct may appear in string2 only when translating"
++msgstr "as expressões [c*] só podem aparecer em string2 quando traduzindo"
++
++#: src/tr.c:1896
++msgid "two strings must be given when translating"
++msgstr "duas strings devem ser fornecidas quando traduzindo"
++
++#: src/tr.c:1899
++msgid "two strings must be given when both deleting and squeezing repeats"
++msgstr ""
++"duas strings devem ser fornecidas quando removendo/deletando repetições"
++
++#: src/tr.c:1913
++msgid "only one string may be given when deleting without squeezing repeats"
++msgstr ""
++"somente uma string deve ser fornecida quando removendo sem\n"
++"comprimir repetições"
++
++#: src/tr.c:1919
++msgid "at least one string must be given when squeezing repeats"
++msgstr "pelo menos uma string deve ser fornecida quando se comprime repetições"
++
++#: src/tr.c:2005
++msgid "misaligned [:upper:] and/or [:lower:] construct"
++msgstr "as construções [:upper:] e/ou [:lower:] estão desalinhadas"
++
++#: src/tr.c:2028
++msgid ""
++"invalid identity mapping;  when translating, any [:lower:] or [:upper:]\n"
++"construct in string1 must be aligned with a corresponding construct\n"
++"([:upper:] or [:lower:], respectively) in string2"
++msgstr ""
++"correspondência inválida; quando se traduz, qualquer construção [:lower] ou\n"
++"[:upper:] na string1 deve estar alinhada com a correspondente\n"
++"construção ([:upper:] ou [:lower:], respectivamente) em string2"
++
++#: src/unexpand.c:377
++msgid ""
++"Convert spaces in each FILE to tabs, writing to standard output.\n"
++"With no FILE, or when FILE is -, read standard input.\n"
++"\n"
++"  -a, --all           convert all whitespace, instead of initial whitespace\n"
++"  -t, --tabs=NUMBER   have tabs NUMBER characters apart instead of 8\n"
++"  -t, --tabs=LIST     use comma separated list of explicit tab positions\n"
++"      --help          display this help and exit\n"
++"      --version       output version information and exit\n"
++"\n"
++"Instead of -t NUMBER or -t LIST, -NUMBER or -LIST may be used.\n"
++msgstr ""
++"Converte os espaços de cada ARQUIVO em tabulações, escrevendo o\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++"\n"
++"  -a, --all          converter todos os espaços em branco, não só os "
++"iniciais\n"
++"  -t, --tabs=NÚMERO  usar N espaços em cada tabulação, em vez de 8\n"
++"  -t, --tabs=LISTA   usar a LISTA de posições separadas por vírgulas para\n"
++"                     definir as posições de tabulação\n"
++"      --help         mostrar esta ajuda e sair\n"
++"      --version      mostrar a versão e sair\n"
++"\n"
++"Em vez de `-t NÚMERO' ou `-t LISTA' pode se usar -NÚMERO ou -LISTA.\n"
++
++# , c-format
++#: src/uniq.c:114
++#, c-format
++msgid "Usage: %s [OPTION]... [INPUT [OUTPUT]]\n"
++msgstr "Uso: %s [OPÇÃO]... [ENTRADA [SAÍDA]]\n"
++
++#: src/uniq.c:118
++msgid ""
++"Discard all but one of successive identical lines from INPUT (or\n"
++"standard input), writing to OUTPUT (or standard output).\n"
++"\n"
++"  -c, --count           prefix lines by the number of occurrences\n"
++"  -d, --repeated        only print duplicate lines\n"
++"  -f, --skip-fields=N   avoid comparing the first N fields\n"
++"  -i, --ignore-case     ignore differences in case when comparing\n"
++"  -s, --skip-chars=N    avoid comparing the first N characters\n"
++"  -u, --unique          only print unique lines\n"
++"  -w, --check-chars=N   compare no more than N characters in lines\n"
++"  -N                    same as -f N\n"
++"  +N                    same as -s N\n"
++"      --help            display this help and exit\n"
++"      --version         output version information and exit\n"
++"\n"
++"A field is a run of whitespace, than non-whitespace characters.\n"
++"Fields are skipped before chars.\n"
++msgstr ""
++"Descarta todas as linhas sucessivas idênticas, menos uma de ENTRADA (ou\n"
++"entrada padrão), escrevendo em SAÍDA (ou na saída padrão).\n"
++"\n"
++"   -c, --count          preceder as linhas com o número de ocorrências\n"
++"   -d, --repeated       mostrar só as linhas duplicadas\n"
++"   -f, --skip-fields=N  ignorar os primeiros N campos\n"
++"   -i, --ignore-case    ignorar as diferenças entre maiúsculas e\n"
++"                        minúsculas\n"
++"   -s, --skip-chars=N   ignorar os primeiros N caracteres\n"
++"   -u, --unique         mostrar só as linhas que são únicas\n"
++"   -w, --check-chars=N  só comparar os primeiros N caracteres da linha\n"
++"   -N                   o mesmo que -f N\n"
++"   +N                   o mesmo que -s N\n"
++"       --help           mostrar esta ajuda e sair\n"
++"       --version        mostrar a versão e sair\n"
++"\n"
++"Um campo é cada conjunto de caracteres separados por espaços.\n"
++"Com as opções -f e -s, os campos são ignorados antes dos caracteres.\n"
++
++# , c-format
++#: src/uniq.c:281
++#, c-format
++msgid "error reading %s"
++msgstr "erro lendo %s"
++
++# , c-format
++#: src/uniq.c:284
++#, c-format
++msgid "error writing %s"
++msgstr "erro escrevendo %s"
++
++# , c-format
++#: src/uniq.c:342
++#, c-format
++msgid "invalid number of fields to skip: `%s'"
++msgstr "número inválido de campos para ignorar: `%s'"
++
++# , c-format
++#: src/uniq.c:358
++#, c-format
++msgid "invalid number of bytes to skip: `%s'"
++msgstr "número inválido de caracteres para ignorar: `%s'"
++
++#: src/uniq.c:374 src/uniq.c:405
++#, c-format
++msgid "invalid number of bytes to compare: `%s'"
++msgstr "número inválido de bytes para comparar: `%s'"
++
++#: src/wc.c:78
++msgid ""
++"Print line, word, and byte counts for each FILE, and a total line if\n"
++"more than one FILE is specified.  With no FILE, or when FILE is -,\n"
++"read standard input.\n"
++"  -c, --bytes, --chars   print the byte counts\n"
++"  -l, --lines            print the newline counts\n"
++"  -w, --words            print the word counts\n"
++"      --help             display this help and exit\n"
++"      --version          output version information and exit\n"
++msgstr ""
++"Mostrar o número de linhas, palavras e bytes para cada ARQUIVO, e uma linha\n"
++"com o total se se especificar mais de um ARQUIVO.\n"
++"Sem informar ARQUIVO, ou se ARQUIVO é `-', lê da entrada padrão\n"
++"   -c, --bytes, --chars   mostrar o número de bytes\n"
++"   -l, --lines            mostrar o número de linhas\n"
++"   -w, --words            mostrar o número de palavras\n"
++"       --help             mostrar esta ajuda e sair\n"
++"       --version          mostrar a versão e sair\n"
++"\n"
++
++#: src/wc.c:319
++msgid "total"
++msgstr "total"
