@@ -1,0 +1,46 @@
+#!/bin/sh
+  # Remove PHP3 from modules list
+  if [ -f /usr/lib/apache/addons-list ] ; then
+    awk < /usr/lib/apache/addons-list > /usr/lib/apache/addons-list- '
+      { printed=0 }
+      /^php-doc$/ { printed=1 }
+      (printed==0) { print $0 }
+      '
+    mv -f /usr/lib/apache/addons-list- /usr/lib/apache/addons-list
+  fi
+  if [ -f /usr/lib/apache/addons-list -a \
+     ! -s /usr/lib/apache/addons-list ]; then
+    rm -f /usr/lib/apache/addons-list
+  fi
+  # Remove PHP3-doc link from index.html
+  if [ -f /home/httpd/html/index.html ] ; then
+    INDEX_SUFFIX=html
+  elif [ -f /home/httpd/html/index.shtml ] ; then
+    INDEX_SUFFIX=shtml
+  else
+    unset INDEX_SUFFIX
+  fi
+  if test $INDEX_SUFFIX ; then
+    awk < /home/httpd/html/index.$INDEX_SUFFIX > /home/httpd/html/index.$INDEX_SUFFIX- '
+      BEGIN { needprint=1 }
+      /<!-- PHP3 documentation link -->/ { needprint=0 }
+      /<!-- PHP3 documentation link end -->/ { needprint=2 }
+      (needprint==1) { print $0 }
+      (needprint==2) { needprint=1 }
+      '
+    mv -f /home/httpd/html/index.$INDEX_SUFFIX- /home/httpd/html/index.$INDEX_SUFFIX
+  fi
+
+  if [ -f /etc/httpd/conf/httpd.conf ] ; then
+    # Remove PHP3 icons & PHP3 extensions handling
+    if grep -q '^\# PHP3 support$' /etc/httpd/conf/httpd.conf ; then
+      awk < /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf- '
+        BEGIN { needprint=1 }
+        /\# PHP3-doc support/ { needprint=0 }
+        /\# End of PHP3-doc support/ { needprint=2 }
+        (needprint==1) { print $0 }
+        (needprint==2) { needprint=1 }
+        '
+      mv -f /etc/httpd/conf/httpd.conf- /etc/httpd/conf/httpd.conf
+    fi
+  fi

@@ -1,0 +1,41 @@
+#!/bin/sh
+  # Add PHP3-doc to modules list
+  if [ -f /usr/lib/apache/addons-list ] ; then
+    if ! grep -q '^php-doc$' /usr/lib/apache/addons-list ; then
+      echo php-doc >> /usr/lib/apache/addons-list
+    fi
+  else
+    echo php-doc > /usr/lib/apache/addons-list
+  fi
+  if [ -f /home/httpd/html/index.html ] ; then
+    INDEX_SUFFIX=html
+    INDEX_LINK=localhost
+  elif [ -f /home/httpd/html/index.shtml ] ; then
+    INDEX_SUFFIX=shtml
+    INDEX_LINK="<!--#echo var=\"SERVER_NAME\"-->"
+  else
+    unset INDEX_SUFFIX
+  fi
+  if test $INDEX_SUFFIX ; then
+    # Add PHP3 documenatition link in index.html
+    if grep -q '<!-- Links to addons documentation will be put here -->' /home/httpd/html/index.$INDEX_SUFFIX ; then
+      if ! grep -q '<!-- PHP3 documentation link -->' /home/httpd/html/index.$INDEX_SUFFIX ; then
+        sed "s|^<\!-- Links to addons documentation will be put here -->\$|<\!-- Links to addons documentation will be put here -->\\
+<\!-- PHP3 documentation link -->\\
+  <li>Local PHP3 documentation - <em><a href=\"php3-manual/manual.html\">http://$INDEX_LINK/php3-manual/manual.html</a></em>\\
+<\!-- PHP3 documentation link end -->|" < /home/httpd/html/index.$INDEX_SUFFIX > /home/httpd/html/index.$INDEX_SUFFIX- 
+        mv -f /home/httpd/html/index.$INDEX_SUFFIX- /home/httpd/html/index.$INDEX_SUFFIX
+      fi
+    fi
+  fi
+
+  if [ -f /etc/httpd/conf/httpd.conf ] ; then
+  # Add PHP3 icons, PHP3 extensions handling
+    if ! grep -q '^\# PHP3-doc support$' /etc/httpd/conf/httpd.conf ; then
+      cat >>/etc/httpd/conf/httpd.conf <<End
+# PHP3-doc support
+Alias /php3-manual/ /home/httpd/php/manual/
+# End of PHP3-doc support
+End
+    fi
+  fi

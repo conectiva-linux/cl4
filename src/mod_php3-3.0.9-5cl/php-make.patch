@@ -1,0 +1,12 @@
+diff -Nur php-3.0.8.orig/dl/Makefile php-3.0.8/dl/Makefile
+--- php-3.0.8.orig/dl/Makefile	Fri Jun  4 16:00:01 1999
++++ php-3.0.8/dl/Makefile	Fri Jun  4 16:00:46 1999
+@@ -44,7 +44,7 @@
+ 	$(CC) $(CFLAGS) -DCOMPILE_DL=1 -c -o $@ $<
+ 
+ imap.so: imap/imap.o
+-	$(LD) -o $@ imap/imap.o /usr/local/lib/c-client.a
++	$(LD) -o $@ imap/imap.o imap/lib/c-client.a
+ 
+ imap/%.o: imap/%.c
+ 	$(CC) $(CFLAGS) -DCOMPILE_DL=1 -c -o $@ $<

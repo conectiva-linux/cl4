@@ -1,0 +1,14 @@
+diff -Nur php-3.0.8.orig/functions/imap.c php-3.0.8/functions/imap.c
+--- php-3.0.8.orig/functions/imap.c	Fri Jun  4 16:00:03 1999
++++ php-3.0.8/functions/imap.c	Fri Jun  4 16:01:59 1999
+@@ -57,8 +57,8 @@
+ #include <signal.h>
+ #include "php3_list.h"
+ #include "imap.h"
+-#include "mail.h"
+-#include "rfc822.h"
++#include "../imap/include/mail.h"
++#include "../imap/include/rfc822.h"
+ #include "modules.h"
+ #if (WIN32|WINNT)
+ #include "winsock.h"

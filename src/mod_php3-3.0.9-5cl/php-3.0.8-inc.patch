@@ -1,0 +1,49 @@
+diff -Nur php-3.0.8.orig/functions/apache.c php-3.0.8/functions/apache.c
+--- php-3.0.8.orig/functions/apache.c	Wed Jun  2 19:25:21 1999
++++ php-3.0.8/functions/apache.c	Wed Jun  2 19:26:12 1999
+@@ -46,8 +46,8 @@
+ #include <ctype.h>
+ 
+ #if APACHE
+-#include "http_request.h"
+-#include "build-defs.h"
++#include "apache/http_request.h"
++#include "build-defs.h"
+ 
+ extern module *top_module;
+ 
+diff -Nur php-3.0.8.orig/php.h php-3.0.8/php.h
+--- php-3.0.8.orig/php.h	Wed Jun  2 19:25:21 1999
++++ php-3.0.8/php.h	Wed Jun  2 19:25:57 1999
+@@ -185,21 +185,21 @@
+ 
+ #if APACHE /* apache httpd */
+ # if HAVE_AP_CONFIG_H
+-#include "ap_config.h"
++#include "apache/ap_config.h"
+ # endif
+ # if HAVE_OLD_COMPAT_H
+-#include "compat.h"
++#include "apache/compat.h"
+ # endif
+ # if HAVE_AP_COMPAT_H
+-#include "ap_compat.h"
++#include "apache/ap_compat.h"
+ # endif
+-#include "httpd.h"
+-#include "http_main.h"
+-#include "http_core.h"
+-#include "http_request.h"
+-#include "http_protocol.h"
+-#include "http_config.h"
+-#include "http_log.h"
++#include "apache/httpd.h"
++#include "apache/http_main.h"
++#include "apache/http_core.h"
++#include "apache/http_request.h"
++#include "apache/http_protocol.h"
++#include "apache/http_config.h"
++#include "apache/http_log.h"
+ #define BLOCK_INTERRUPTIONS block_alarms()
+ #define UNBLOCK_INTERRUPTIONS unblock_alarms()
+ # ifndef THREAD_SAFE

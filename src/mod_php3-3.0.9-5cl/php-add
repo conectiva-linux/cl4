@@ -1,0 +1,58 @@
+#!/bin/sh
+  # Add PHP3 to modules list
+  if [ -f /usr/lib/apache/addons-list ] ; then
+    if ! grep -q '^php$' /usr/lib/apache/addons-list ; then
+      echo php >> /usr/lib/apache/addons-list
+    fi
+  else
+    echo php > /usr/lib/apache/addons-list
+  fi
+  if [ -f /home/httpd/html/index.html ] ; then
+    INDEX_SUFFIX=html
+  elif [ -f /home/httpd/html/index.shtml ] ; then
+    INDEX_SUFFIX=shtml
+  else
+    unset INDEX_SUFFIX
+  fi
+  if test $INDEX_SUFFIX ; then
+        mv -f /home/httpd/html/index.$INDEX_SUFFIX /home/httpd/html/index.$INDEX_SUFFIX-
+        mv -f /home/httpd/html/indexphp3.html /home/httpd/html/index.$INDEX_SUFFIX
+  fi
+
+  if [ -f /etc/httpd/conf/httpd.conf ] ; then
+  # Add PHP3 icons, PHP3 extensions handling
+    if ! grep -q '^\# PHP3 support$' /etc/httpd/conf/httpd.conf ; then
+      cat >>/etc/httpd/conf/httpd.conf <<End
+# PHP3 support
+<IfModule mod_php3.c>
+AddIcon /icons/php3.gif .php3
+AddIcon /icons/phps.gif .php3s .phps
+AddType application/x-httpd-php3-source .php3s .phps
+AddType application/x-httpd-php3 .php3
+</IfModule>
+# End of PHP3 support
+End
+    fi
+
+    # Now change DirectoryIndex -- include index.php3 there
+    if ! grep -q '^ *DirectoryIndex.*index\.php3' /etc/httpd/conf/httpd.conf ; then
+      sed 's/\(^ *DirectoryIndex\)\(.*$\)/\1\2 index.php3/' < /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf-
+      mv -f /etc/httpd/conf/httpd.conf- /etc/httpd/conf/httpd.conf
+    fi
+  fi
+
+  if [ -f /etc/httpd/conf/httpd.conf ] ; then
+    # Add LoadModule string
+    if ! grep -q '.*LoadModule *php3_module' /etc/httpd/conf/httpd.conf ; then
+      sed "s|^\LoadModule setenvif_module    /usr/lib/apache/mod_setenvif.so\$|LoadModule setenvif_module    /usr/lib/apache/mod_setenvif.so\\
+LoadModule php3_module        /usr/lib/apache/mod_php3.so|" < /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf-
+      mv -f /etc/httpd/conf/httpd.conf- /etc/httpd/conf/httpd.conf
+    fi
+
+    # Add AddModule string
+    if ! grep -q '.*AddModule *mod_php3\.c' /etc/httpd/conf/httpd.conf ; then
+      sed "s|^\AddModule mod_setenvif.c\$|AddModule mod_setenvif.c\\
+AddModule mod_php3.c|" < /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf-
+      mv -f /etc/httpd/conf/httpd.conf- /etc/httpd/conf/httpd.conf
+    fi
+  fi
