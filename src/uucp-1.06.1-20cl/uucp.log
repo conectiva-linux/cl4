@@ -1,0 +1,17 @@
+# We create the log files to keep logrotate quiet in the case where
+# uucico is not run at all between two log rotations. It would be nice if
+# logrotate could be configured to silently ignore the case of a log
+# file not existing
+/var/log/uucp/Log {
+    create 644 uucp uucp
+    nocompress
+}
+/var/log/uucp/Debug {
+    # must be not globally readable
+    create 600 uucp uucp
+    nocompress
+}
+/var/log/uucp/Stats {
+    create 644 uucp uucp
+    nocompress
+}
