@@ -1,0 +1,11 @@
+--- rundoom.orig	Wed Oct 25 17:43:52 1995
++++ rundoom	Fri Sep 18 10:03:11 1998
+@@ -18,5 +18,8 @@
+ then 
+   xdoom &
+ else
++  /etc/rc.d/init.d/gpm stop
+   sdoom
++  /etc/rc.d/init.d/gpm start
++  kbd_mode -a
+ fi
