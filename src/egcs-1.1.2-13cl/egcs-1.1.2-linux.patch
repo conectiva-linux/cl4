@@ -1,0 +1,4678 @@
+--- egcs-1.1.2/config/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/config/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,4 @@
++1999-01-07  Philip Blundell  <philb@gnu.org>
++
++	* mh-armpic: New file.  Patch from Jim Pick <jim@jimpick.com>.
++	* mt-armpic: Likewise.
+--- egcs-1.1.2/config/mh-armpic.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/config/mh-armpic	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1 @@
++PICFLAG=-fPIC
+--- egcs-1.1.2/config/mt-armpic.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/config/mt-armpic	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1 @@
++PICFLAG_FOR_TARGET=-fPIC
+--- egcs-1.1.2/gcc/cp/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/cp/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,3 @@
++Sat Jun 27 19:09:29 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (INTERFACE): New, set to 1.
+--- egcs-1.1.2/gcc/cp/Makefile.in.hjlu	Tue Jul 28 10:00:06 1998
++++ egcs-1.1.2/gcc/cp/Makefile.in	Mon Mar 15 17:59:55 1999
+@@ -34,6 +34,10 @@
+ # Suppress smart makes who think they know how to automake Yacc files
+ .y.c:
+ 
++# It defines the c++ interface name. It should be changed when the
++# c++ interface is changed.
++INTERFACE = 1
++
+ # Variables that exist for you to override.
+ # See below for how to change them for certain systems.
+ 
+--- egcs-1.1.2/gcc/config/arm/arm.c.hjlu	Mon Nov  9 17:08:52 1998
++++ egcs-1.1.2/gcc/config/arm/arm.c	Mon Mar 15 17:59:55 1999
+@@ -24,6 +24,7 @@
+ #include "config.h"
+ #include <stdio.h>
+ #include <string.h>
++#include <assert.h>
+ #include "rtl.h"
+ #include "regs.h"
+ #include "hard-reg-set.h"
+@@ -69,6 +70,9 @@
+ static void emit_sfm PROTO ((int, int));
+ static enum arm_cond_code get_arm_condition_code PROTO ((rtx));
+ 
++/* help with managing pic data labels */
++int bMakingConstTable = 0;
++
+ /*  Define the information needed to generate branch insns.  This is
+    stored from the compare operation. */
+ 
+@@ -297,6 +301,9 @@
+   if (TARGET_APCS_REENT && flag_pic)
+     fatal ("-fpic and -mapcs-reent are incompatible");
+ 
++  if (TARGET_APCS_FLOAT && TARGET_SOFT_FLOAT)
++    fatal ("-mapcs-float and -msoft-float are incompatible");
++
+   if (TARGET_APCS_REENT)
+     warning ("APCS reentrant code not supported.");
+ 
+@@ -309,11 +316,10 @@
+      with APCS reentrancy, since that requires too much support in the
+      assembler and linker, and the ARMASM assembler seems to lack some
+      required directives.  */
++#if 0
+   if (flag_pic)
+     warning ("Position independent code not supported");
+-
+-  if (TARGET_APCS_FLOAT)
+-    warning ("Passing floating point arguments in fp regs not yet supported");
++#endif
+ 
+   if (TARGET_APCS_STACK && ! TARGET_APCS)
+     {
+@@ -336,18 +342,28 @@
+   arm_arch4 = (flags & FL_ARCH4) != 0;
+   arm_thumb_aware = (flags & FL_THUMB) != 0;
+ 
+-  if (target_fp_name)
++  if (TARGET_APCS_FLOAT)
+     {
+-      if (strcmp (target_fp_name, "2") == 0)
+-	arm_fpu_arch = FP_SOFT2;
+-      else if (strcmp (target_fp_name, "3") == 0)
+-	arm_fpu_arch = FP_HARD;
+-      else
+-	fatal ("Invalid floating point emulation option: -mfpe=%s",
++      if (target_fp_name && strcmp (target_fp_name, "3"))
++	fatal ("-mapcs-float and -mfpe=%s are incompatible",
+ 	       target_fp_name);
++      arm_fpu_arch = FP_SOFT3;
+     }
+   else
+-    arm_fpu_arch = FP_DEFAULT;
++    {
++      if (target_fp_name)
++	{
++	  if (strcmp (target_fp_name, "2") == 0)
++	    arm_fpu_arch = FP_SOFT2;
++	  else if (strcmp (target_fp_name, "3") == 0)
++	    arm_fpu_arch = FP_HARD;
++	  else
++	    fatal ("Invalid floating point emulation option: -mfpe=%s",
++		   target_fp_name);
++	}
++      else
++	arm_fpu_arch = FP_DEFAULT;
++    }
+ 
+   if (TARGET_THUMB_INTERWORK && ! arm_thumb_aware)
+     {
+@@ -1182,7 +1198,7 @@
+      enum machine_mode mode;
+      rtx reg;
+ {
+-  if (GET_CODE (orig) == SYMBOL_REF)
++  if (GET_CODE (orig) == SYMBOL_REF || GET_CODE (orig) == LABEL_REF)
+     {
+       rtx pic_ref, address;
+       rtx insn;
+@@ -1210,9 +1226,14 @@
+ 	address = reg;
+ 
+       emit_insn (gen_pic_load_addr (address, orig));
++      
++      /* calulate the address */
++      pic_ref = gen_rtx (PLUS, Pmode, pic_offset_table_rtx, address);
++      
++      /* for global data (GOT based), we need to dereference this */
++      if (!SYMBOL_REF_LOCAL(orig) && GET_CODE(orig)!=LABEL_REF)
++	      pic_ref = gen_rtx (MEM, Pmode, pic_ref);
+ 
+-      pic_ref = gen_rtx (MEM, Pmode,
+-			 gen_rtx (PLUS, Pmode, pic_offset_table_rtx, address));
+       RTX_UNCHANGING_P (pic_ref) = 1;
+       insn = emit_move_insn (reg, pic_ref);
+ #endif
+@@ -1274,8 +1295,6 @@
+ 
+       return gen_rtx (PLUS, Pmode, base, offset);
+     }
+-  else if (GET_CODE (orig) == LABEL_REF)
+-    current_function_uses_pic_offset_table = 1;
+ 
+   return orig;
+ }
+@@ -1307,6 +1326,10 @@
+   start_sequence ();
+   l1 = gen_label_rtx ();
+ 
++  /* Mark the label as frame-related, to tell flow not to consider
++     it as starting a basic block.  This is a hack.  */
++  RTX_FRAME_RELATED_P (l1) = 1;
++
+   global_offset_table = gen_rtx (SYMBOL_REF, Pmode, "_GLOBAL_OFFSET_TABLE_");
+   /* The PC contains 'dot'+8, but the label L1 is on the next
+      instruction, so the offset is only 'dot'+4.  */
+@@ -1314,10 +1337,7 @@
+ 		     gen_rtx (PLUS, Pmode, 
+ 			      gen_rtx (LABEL_REF, VOIDmode, l1),
+ 			      GEN_INT (4)));
+-  pic_tmp2 = gen_rtx (CONST, VOIDmode,
+-		      gen_rtx (PLUS, Pmode,
+-			       global_offset_table,
+-			       pc_rtx));
++  pic_tmp2 = gen_rtx (CONST, VOIDmode, global_offset_table);
+ 
+   pic_rtx = gen_rtx (CONST, Pmode,
+ 		     gen_rtx (MINUS, Pmode, pic_tmp2, pic_tmp));
+@@ -3541,6 +3561,10 @@
+ 	  scan = emit_insn_after (gen_consttable_8 (p->value), scan);
+ 	  break;
+ 
++	case 12:
++	  scan = emit_insn_after (gen_consttable_12 (p->value), scan);
++	  break;
++
+ 	default:
+ 	  abort ();
+ 	  break;
+@@ -4747,7 +4771,10 @@
+ 
+       /* Otherwise, trap an attempted return by aborting. */
+       ops[0] = operand;
+-      ops[1] = gen_rtx (SYMBOL_REF, Pmode, "abort");
++      if (flag_pic) 
++      	ops[1] = gen_rtx(SYMBOL_REF, Pmode, "abort(PLT)");
++      else
++	ops[1] = gen_rtx (SYMBOL_REF, Pmode, "abort");
+       assemble_external_libcall (ops[1]);
+       output_asm_insn (reverse ? "bl%D0\t%a1" : "bl%d0\t%a1", ops);
+       return "";
+@@ -4941,7 +4968,11 @@
+   /* A volatile function should never return.  Call abort.  */
+   if (volatile_func)
+     {
+-      rtx op = gen_rtx (SYMBOL_REF, Pmode, "abort");
++      rtx op;
++      if (flag_pic)
++      	op = gen_rtx (SYMBOL_REF, Pmode, "abort(PLT)");
++      else
++      	op = gen_rtx (SYMBOL_REF, Pmode, "abort");
+       assemble_external_libcall (op);
+       output_asm_insn ("bl\t%a0", &op);
+       goto epilogue_done;
+@@ -5298,7 +5329,121 @@
+   if (profile_flag || profile_block_flag)
+     emit_insn (gen_blockage ());
+ }
++
++/* Define where to put the arguments to a function.
++   Value is zero to push the argument on the stack,
++   or a hard register in which to store the argument.
++
++   MODE is the argument's machine mode.
++   TYPE is the data type of the argument (as a tree).
++    This is null for libcalls where that information may
++    not be available.
++   CUM is a variable of type CUMULATIVE_ARGS which gives info about
++    the preceding args and about the function being called.
++   NAMED is nonzero if this argument is a named parameter
++    (otherwise it is an extra parameter matching an ellipsis).
++
++   On the ARM, normally the first 16 bytes are passed in registers r0-r3; all
++   other arguments are passed on the stack.  If (NAMED == 0) (which happens
++   only in assign_parms, since SETUP_INCOMING_VARARGS is defined), say it is
++   passed in the stack (function_prologue will indeed make it pass in the
++   stack if necessary).  
++
++   If APCS_FLOAT is enabled, we pass the first four floating-point args in 
++   registers f0-f3. */
++struct rtx_def *
++function_arg(cum, mode, type, named)
++     CUMULATIVE_ARGS *cum;
++     enum machine_mode mode;
++     tree type;
++     int named;
++{
++  if (! named)
++    return 0;
++
++  if (TARGET_APCS_FLOAT && (GET_MODE_CLASS (mode) == MODE_FLOAT))
++    {
++      return (cum->f >= 4) ? 0 
++	: gen_rtx (REG, mode, 16 + cum->f);
++    } 
++  else
++    {
++      return (cum->g >= 16) ? 0 
++	: gen_rtx (REG, mode, (cum->g / 4));
++    }
++}
++
++/* Update the data in CUM to advance over an argument
++   of mode MODE and data type TYPE.
++   (TYPE is null for libcalls where that information may not be available.)  */
++void
++function_arg_advance(cum, mode, type, named)
++     CUMULATIVE_ARGS *cum;
++     enum machine_mode mode;
++     tree type;
++     int named;
++{
++  if (TARGET_APCS_FLOAT && (GET_MODE_CLASS (mode) == MODE_FLOAT))
++    {
++      /* Say that one more floating point arg was passed.  */
++      cum->f ++;
++    }
++  else
++    {
++      cum->g += (mode != BLKmode
++		 ? (GET_MODE_SIZE (mode) + 3) & ~3
++		 : (int_size_in_bytes (type) + 3) & ~3);
++    }
++}
++
++/* For an arg passed partly in registers and partly in memory,
++   this is the number of registers used.
++   For args passed entirely in registers or entirely in memory, zero.  */
++int
++function_arg_partial_nregs(cum, mode, type, named)
++     CUMULATIVE_ARGS *cum;
++     enum machine_mode mode;
++     tree type;
++     int named;
++{
++  /* If we pass floating point args in regs, they always fit entirely. */
++  if (TARGET_APCS_FLOAT && (GET_MODE_CLASS (mode) == MODE_FLOAT))
++    return 0;
++
++  return (cum->g < 16 && 16 < cum->g + (mode != BLKmode
++				  ? GET_MODE_SIZE (mode)
++				  : int_size_in_bytes (type))
++	  ? 4 - cum->g / 4 : 0);
++}
+   
++/* Perform any actions needed for a function that is receiving a variable
++   number of arguments.  CUM is as above.  MODE and TYPE are the mode and type
++   of the current parameter.  PRETEND_SIZE is a variable that should be set to
++   the amount of stack that must be pushed by the prolog to pretend that our
++   caller pushed it.
++
++   Normally, this macro will push all remaining incoming registers on the
++   stack and set PRETEND_SIZE to the length of the registers pushed.
++
++   On the ARM, PRETEND_SIZE is set in order to have the prologue push the last
++   named arg and all anonymous args onto the stack.
++   XXX I know the prologue shouldn't be pushing registers, but it is faster
++   that way.  */
++int setup_incoming_varargs (cum, mode, type)
++     CUMULATIVE_ARGS *cum;
++     enum machine_mode mode;
++     tree type;
++{
++  int pretend;
++  extern int current_function_anonymous_args;
++  current_function_anonymous_args = 1;
++
++  if (cum->g < 16)
++    pretend = 16 - cum->g;
++
++  return pretend;
++}
++
+ 
+ /* If CODE is 'd', then the X is a condition operand and the instruction
+    should only be executed if the condition is true.
+--- egcs-1.1.2/gcc/config/arm/arm.h.hjlu	Mon Aug 17 15:45:14 1998
++++ egcs-1.1.2/gcc/config/arm/arm.h	Mon Mar 15 17:59:55 1999
+@@ -187,6 +187,7 @@
+   %{mhard-float:%e-msoft-float and -mhard_float may not be used together} \
+   -D__SOFTFP__} \
+ %{!mhard-float:%{!msoft-float:%(cpp_float_default)}} \
++%{mapcs-float:-D__APCS_FLOAT__} \
+ "
+ 
+ /* Default is hard float, which doesn't define anything */
+@@ -637,6 +638,8 @@
+ 
+ /* 1 for registers that have pervasive standard uses
+    and are not available for the register allocator.  */
++/* @@ Can we make R10 available when not using apcs-stack
++   or PIC?  --philb */
+ #define FIXED_REGISTERS  \
+ {                        \
+   0,0,0,0,0,0,0,0,	 \
+@@ -661,6 +664,13 @@
+   1,1,1			     \
+ }
+ 
++/* If we're making PIC, and if the SYMBOL_REF is global, we need to
++   mark it for inclusion in the GOT.  This is the default.  If the
++   SYMBOL_REF is pointing to static data/function, we can refer to it
++   without a GOT entry; this possibility is marked by setting the
++   rtx->jump bit (using the SYMBOL_REF_LOCAL macro).  */
++#define SYMBOL_REF_LOCAL(X) ((X)->jump)
++
+ /* If doing stupid life analysis, avoid a bug causing a return value r0 to be
+    trampled.  This effectively reduces the number of available registers by 1.
+    XXX It is a hack, I know.
+@@ -1021,64 +1031,56 @@
+    than a word, or if they contain elements offset from zero in the struct. */
+ #define DEFAULT_PCC_STRUCT_RETURN 0
+ 
+-/* Define where to put the arguments to a function.
+-   Value is zero to push the argument on the stack,
+-   or a hard register in which to store the argument.
+-
+-   MODE is the argument's machine mode.
+-   TYPE is the data type of the argument (as a tree).
+-    This is null for libcalls where that information may
+-    not be available.
+-   CUM is a variable of type CUMULATIVE_ARGS which gives info about
+-    the preceding args and about the function being called.
+-   NAMED is nonzero if this argument is a named parameter
+-    (otherwise it is an extra parameter matching an ellipsis).
+-
+-   On the ARM, normally the first 16 bytes are passed in registers r0-r3; all
+-   other arguments are passed on the stack.  If (NAMED == 0) (which happens
+-   only in assign_parms, since SETUP_INCOMING_VARARGS is defined), say it is
+-   passed in the stack (function_prologue will indeed make it pass in the
+-   stack if necessary).  */
+-#define FUNCTION_ARG(CUM, MODE, TYPE, NAMED)  \
+-  ((NAMED)						\
+-   ? ((CUM) >= 16 ? 0 : gen_rtx (REG, MODE, (CUM) / 4))	\
+-   : 0)
++/* Define where to put the arguments to a function.  */
++extern struct rtx_def *function_arg ();
++#define FUNCTION_ARG(CUM, MODE, TYPE, NAMED)			\
++  function_arg (&CUM, MODE, TYPE, NAMED)
+ 
+ /* For an arg passed partly in registers and partly in memory,
+    this is the number of registers used.
+    For args passed entirely in registers or entirely in memory, zero.  */
++extern int function_arg_partial_nregs ();
+ #define FUNCTION_ARG_PARTIAL_NREGS(CUM, MODE, TYPE, NAMED)  \
+-  ((CUM) < 16 && 16 < (CUM) + ((MODE) != BLKmode            \
+-			       ? GET_MODE_SIZE (MODE)       \
+-			       : int_size_in_bytes (TYPE))  \
+-   ? 4 - (CUM) / 4 : 0)
++  function_arg_partial_nregs(&CUM, MODE, TYPE, NAMED)
+ 
+ /* A C type for declaring a variable that is used as the first argument of
+    `FUNCTION_ARG' and other related values.  For some target machines, the
+    type `int' suffices and can hold the number of bytes of argument so far.
+ 
+-   On the ARM, this is the number of bytes of arguments scanned so far.  */
+-#define CUMULATIVE_ARGS  int
++   On the ARM, this is a two-element structure, one word for general
++   arguments and one for floating-point arguments.  If -mapcs-float is
++   not in effect then floating point arguments are passed in general
++   registers and the second element of the structure is ignored.  */
++struct arm_cumulative_args
++  {
++    int g;	/* bytes of general args */
++    int f;	/* number of floating-point args */
++  };
++#define CUMULATIVE_ARGS  struct arm_cumulative_args
+ 
+ /* Initialize a variable CUM of type CUMULATIVE_ARGS
+    for a call to a function whose data type is FNTYPE.
+    For a library call, FNTYPE is 0.
+    On the ARM, the offset starts at 0.  */
+ #define INIT_CUMULATIVE_ARGS(CUM, FNTYPE, LIBNAME, INDIRECT)  \
+-  ((CUM) = (((FNTYPE) && aggregate_value_p (TREE_TYPE ((FNTYPE)))) ? 4 : 0))
++  do { \
++  (CUM).g = (((FNTYPE) && aggregate_value_p (TREE_TYPE ((FNTYPE)))) ? 4 : 0); \
++  (CUM).f = 0; \
++  } while (0)
+ 
+ /* Update the data in CUM to advance over an argument
+    of mode MODE and data type TYPE.
+    (TYPE is null for libcalls where that information may not be available.)  */
++extern void function_arg_advance ();
+ #define FUNCTION_ARG_ADVANCE(CUM, MODE, TYPE, NAMED)  \
+-  (CUM) += ((MODE) != BLKmode                       \
+-	    ? (GET_MODE_SIZE (MODE) + 3) & ~3       \
+-	    : (int_size_in_bytes (TYPE) + 3) & ~3)  \
++  function_arg_advance (&CUM, MODE, TYPE, NAMED)
+ 
+ /* 1 if N is a possible register number for function argument passing.
+-   On the ARM, r0-r3 are used to pass args.  */
++   On the ARM, r0-r3 are used to pass args, as are f0-f3 when APCS_FLOAT
++   is enabled.  */
+ #define FUNCTION_ARG_REGNO_P(REGNO)  \
+-  ((REGNO) >= 0 && (REGNO) <= 3)
++  (((REGNO) >= 0 && (REGNO) <= 3)    \
++   || (TARGET_APCS_FLOAT && ((REGNO) >= 16 && (REGNO) <= 19)))
+ 
+ /* Perform any actions needed for a function that is receiving a variable
+    number of arguments.  CUM is as above.  MODE and TYPE are the mode and type
+@@ -1093,12 +1095,14 @@
+    named arg and all anonymous args onto the stack.
+    XXX I know the prologue shouldn't be pushing registers, but it is faster
+    that way.  */
++/* ?? Not sure what the implications are here for APCS_FLOAT.  For now,
++   do nothing.  */
+ #define SETUP_INCOMING_VARARGS(CUM, MODE, TYPE, PRETEND_SIZE, NO_RTL)  \
+ {									\
+   extern int current_function_anonymous_args;				\
+   current_function_anonymous_args = 1;					\
+-  if ((CUM) < 16)							\
+-    (PRETEND_SIZE) = 16 - (CUM);					\
++  if ((CUM).g < 16)							\
++    (PRETEND_SIZE) = 16 - (CUM).g;					\
+ }
+ 
+ /* Generate assembly output for the start of a function.  */
+@@ -1295,25 +1299,35 @@
+    On the ARM, allow any integer (invalid ones are removed later by insn
+    patterns), nice doubles and symbol_refs which refer to the function's
+    constant pool XXX.  */
+-#define LEGITIMATE_CONSTANT_P(X)	(! label_mentioned_p (X))
++#define LEGITIMATE_CONSTANT_P(X)	(flag_pic || ! label_mentioned_p (X))
+ 
+ /* Symbols in the text segment can be accessed without indirecting via the
+    constant pool; it may take an extra binary operation, but this is still
+    faster than indirecting via memory.  Don't do this when not optimizing,
+    since we won't be calculating al of the offsets necessary to do this
+    simplification.  */
++/* patb
++   In addition, for pic, we try to determine early whether the symbol is 
++   global or static. The former need a GOT entry, the latter can use
++   a GOTOFF. The latter are marked with SYMBOL_REF_LOCAL()
++*/
+ /* This doesn't work with AOF syntax, since the string table may be in
+    a different AREA.  */
+ #ifndef AOF_ASSEMBLER
+ #define ENCODE_SECTION_INFO(decl)					\
+ {									\
++  rtx rtl = (TREE_CODE_CLASS (TREE_CODE (decl)) != 'd'   		\
++                 ? TREE_CST_RTL (decl) : DECL_RTL (decl));		\
+   if (optimize > 0 && TREE_CONSTANT (decl)				\
+       && (!flag_writable_strings || TREE_CODE (decl) != STRING_CST))	\
+     {									\
+-      rtx rtl = (TREE_CODE_CLASS (TREE_CODE (decl)) != 'd'		\
+-                 ? TREE_CST_RTL (decl) : DECL_RTL (decl));		\
+       SYMBOL_REF_FLAG (XEXP (rtl, 0)) = 1;				\
+     }									\
++  if (flag_pic) 							\
++    {									\
++    SYMBOL_REF_LOCAL(XEXP(rtl,0))					\
++       = (TREE_CODE_CLASS(TREE_CODE(decl)) != 'd' || !TREE_PUBLIC(decl)); \
++    }									\
+ }
+ #endif
+ 
+@@ -1727,8 +1741,10 @@
+ 
+ #define FINALIZE_PIC arm_finalize_pic ()
+ 
+-#define LEGITIMATE_PIC_OPERAND_P(X) (! symbol_mentioned_p (X))
+- 
++#define LEGITIMATE_PIC_OPERAND_P(X) (! symbol_mentioned_p (X) && !label_mentioned_p (X))
++
++#define SYMBOLIC_CONST(x) (GET_CODE(x)==SYMBOL_REF || \
++	GET_CODE(x)==LABEL_REF || symbol_mentioned_p(x) || label_mentioned_p(x)) 
+ 
+ 
+ /* Condition code information. */
+@@ -1951,7 +1967,20 @@
+   else output_addr_const(STREAM, X);					\
+ }
+ 
++/* We need to know when we're making the constant pool; this data 
++   needs to be set GOT or GOTOFF */
++extern int bMakingConstTable;
++
+ /* Handles PIC addr specially */
++/* patb  This code was inspired by the i386 version.
++	NOTE: we only do GOT dereferencing for pointer/symbols in
++	the .text segment.
++	The first "if" handles the _GLOBAL_OFFSET_TABLE_entry, and
++	the second "if" handles symbols that need (GOT) or (GOTOFF)
++  !! patb: Think the 16th/17th line of the macro, about CONSTANT_POOL_ADDRESS
++  	will never trigger, because our arm.md will never
++  	generate SYMBOL_REF int_addr which points into CONSTANT_POOL */
++
+ #define OUTPUT_INT_ADDR_CONST(STREAM,X) \
+   {									\
+     if (flag_pic && GET_CODE(X) == CONST && is_pic(X))			\
+@@ -1962,6 +1991,18 @@
+ 	fputs(")", STREAM);						\
+       }									\
+     else output_addr_const(STREAM, X);					\
++    /* do pic symbols; we only do this in the .text segment, not in .data seg */ \
++    if (flag_pic && bMakingConstTable \
++       && (GET_CODE(X) == SYMBOL_REF || GET_CODE(X) == LABEL_REF)) 	\
++    { \
++	if (GET_CODE(X)==SYMBOL_REF && CONSTANT_POOL_ADDRESS_P(X)) 	\
++		fprintf(STREAM,"(GOTOFF)"); 				\
++	else if (GET_CODE(X)==LABEL_REF) 				\
++		fprintf(STREAM,"(GOTOFF)"); 				\
++	else if (SYMBOL_REF_LOCAL(X)) 			\
++		fprintf(STREAM,"(GOTOFF)"); 		\
++	else fprintf(STREAM,"(GOT)"); 			\
++    } \
+   }
+ 
+ /* Output code to add DELTA to the first argument, and then jump to FUNCTION.
+--- egcs-1.1.2/gcc/config/arm/arm.md.hjlu	Thu Oct  1 20:22:05 1998
++++ egcs-1.1.2/gcc/config/arm/arm.md	Mon Mar 15 17:59:55 1999
+@@ -2591,7 +2591,9 @@
+ 			   : preserve_subexpressions_p ()));
+       DONE;
+     }
+-  if (CONSTANT_P (operands[1]) && flag_pic)
++
++  /* in PIC code, process anything involving SYMBOL_REF or LABEL_REF */
++  if (SYMBOLIC_CONST (operands[1]) && flag_pic)
+     operands[1] = legitimize_pic_address (operands[1], SImode,
+ 					  ((reload_in_progress
+ 					    || reload_completed)
+@@ -4229,7 +4231,16 @@
+ 	 (match_operand:SI 1 "general_operand" "g"))
+    (clobber (reg:SI 14))]
+   "GET_CODE (operands[0]) == SYMBOL_REF"
+-  "bl%?\\t%a0"
++;; ScottB: February 8, 1998
++;; Changing the output control string from straight assembler generation
++;; to a C call which checks if we are generating pic code.
++;;  "bl%?\\t%a0"
++  "*
++{
++   if (flag_pic) 
++     return \"bl%?\\t%a0(PLT)\";
++   return \"bl%?\\t%a0\";
++}"
+ [(set_attr "type" "call")])
+ 
+ (define_insn "*call_value_symbol"
+@@ -4238,7 +4249,16 @@
+ 	(match_operand:SI 2 "general_operand" "g")))
+    (clobber (reg:SI 14))]
+   "GET_CODE(operands[1]) == SYMBOL_REF"
+-  "bl%?\\t%a1"
++;; ScottB: February 8, 1998
++;; Changing the output control string from straight assembler generation
++;; to a C call which checks if we are generating pic code.
++;;  "bl%?\\t%a1"
++  "*
++{
++   if (flag_pic) 
++     return \"bl%?\\t%a1(PLT)\";
++   return \"bl%?\\t%a1\";
++}"
+ [(set_attr "type" "call")])
+ 
+ ;; Often the return insn will be the same as loading from memory, so set attr
+@@ -5969,6 +5989,10 @@
+   "(GET_CODE (operands[0]) == SYMBOL_REF && USE_RETURN_INSN
+     && !get_frame_size () && !current_function_calls_alloca
+     && !frame_pointer_needed && !current_function_args_size)"
++;; ScottB: February 11, 1998
++;; Changing the output control string from straight assembler generation
++;; to a C statement which checks if we are generating pic code.
++;;  return \"b%?\\t%a0\";
+   "*
+ {
+   extern rtx arm_target_insn;
+@@ -5983,6 +6007,9 @@
+   }
+ 
+   output_return_instruction (NULL, FALSE, FALSE);
++  /* ScottB: Changes made here: if (flag_pic) .... */
++  if (flag_pic) 
++    return \"b%?\\t%a0(PLT)\";
+   return \"b%?\\t%a0\";
+ }"
+ [(set_attr "type" "call")
+@@ -5997,6 +6024,10 @@
+   "(GET_CODE (operands[1]) == SYMBOL_REF && USE_RETURN_INSN
+     && !get_frame_size () && !current_function_calls_alloca
+     && !frame_pointer_needed && !current_function_args_size)"
++;; ScottB: February 11, 1998
++;; Changing the output control string from straight assembler generation
++;; to a C statement which checks if we are generating pic code.
++;;  return \"b%?\\t%a1\";
+   "*
+ {
+   extern rtx arm_target_insn;
+@@ -6011,6 +6042,9 @@
+   }
+ 
+   output_return_instruction (NULL, FALSE, FALSE);
++  /* ScottB: Changes made here: if (flag_pic) .... */
++  if (flag_pic) 
++     return \"b%?\\t%a1(PLT)\";
+   return \"b%?\\t%a1\";
+ }"
+ [(set_attr "type" "call")
+@@ -6019,6 +6053,11 @@
+ ;; As above but when this function is not void, we must be returning the
+ ;; result of the called subroutine.
+ 
++;; ScottB: February 11, 1998
++;; This peephole definition seems to be redundant.  The comment above
++;; seems to be appropriate to the code above and below.  I was not 
++;; able to trigger this peephole optimization, only the first two.
++
+ (define_peephole
+   [(parallel [(set (match_operand 0 "s_register_operand" "=rf")
+ 		   (call (mem:SI (match_operand:SI 1 "" "X"))
+@@ -6029,6 +6068,13 @@
+   "(GET_CODE (operands[1]) == SYMBOL_REF && USE_RETURN_INSN
+     && !get_frame_size () && !current_function_calls_alloca
+     && !frame_pointer_needed && !current_function_args_size)"
++;; ScottB: February 11, 1998
++;; Changing the output control string from straight assembler generation
++;; to a C statement which checks if we are generating pic code.
++;; Modifying this optimization, even though I have not found code to trigger
++;; it.  It seems reasonable if we are generating PIC code, that we would
++;; want to go through the PLT anyway.
++;;  return \"b%?\\t%a1\";
+   "*
+ {
+   extern rtx arm_target_insn;
+@@ -6043,6 +6089,9 @@
+   }
+ 
+   output_return_instruction (NULL, FALSE, FALSE);
++  /* ScottB: Changes made here: if (flag_pic) .... */
++  if (flag_pic) 
++     return \"b%?\\t%a1(PLT)\";
+   return \"b%?\\t%a1\";
+ }"
+ [(set_attr "type" "call")
+@@ -6210,6 +6259,7 @@
+   ""
+   "*
+ {
++  bMakingConstTable = TRUE;
+   switch (GET_MODE_CLASS (GET_MODE (operands[0])))
+     {
+     case MODE_FLOAT:
+@@ -6232,6 +6282,7 @@
+   ""
+   "*
+ {
++  bMakingConstTable = TRUE;
+   switch (GET_MODE_CLASS (GET_MODE (operands[0])))
+     {
+     case MODE_FLOAT:
+@@ -6249,11 +6300,35 @@
+ }"
+ [(set_attr "length" "8")])
+ 
++(define_insn "consttable_12"
++  [(unspec_volatile [(match_operand 0 "" "")] 6)]
++  ""
++  "*
++{
++  bMakingConstTable = TRUE;
++  switch (GET_MODE_CLASS (GET_MODE (operands[0])))
++    {
++    case MODE_FLOAT:
++    {
++      union real_extract u;
++      bcopy ((char *) &CONST_DOUBLE_LOW (operands[0]), (char *) &u, sizeof u);
++      assemble_real (u.d, GET_MODE (operands[0]));
++      break;
++    }
++    default:
++      assemble_integer (operands[0], 12, 1);
++      break;
++    }
++  return \"\";
++}"
++[(set_attr "length" "12")])
++
+ (define_insn "consttable_end"
+   [(unspec_volatile [(const_int 0)] 4)]
+   ""
+   "*
+   /* Nothing to do (currently).  */
++  bMakingConstTable = FALSE;
+   return \"\";
+ ")
+ 
+--- egcs-1.1.2/gcc/config/arm/elf.h.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/arm/elf.h	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,545 @@
++/* Definitions of target machine for GNU compiler, for ARM with ELF
++   Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
++   Contributed by Philip Blundell <philb@gnu.org>
++   
++This file is part of GNU CC.
++
++GNU CC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2, or (at your option)
++any later version.
++
++GNU CC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with GNU CC; see the file COPYING.  If not, write to
++the Free Software Foundation, 59 Temple Place - Suite 330,
++Boston, MA 02111-1307, USA.  */
++
++#ifndef ARM_OS_NAME
++#define ARM_OS_NAME "(generic)"
++#endif
++
++/* Biggest alignment supported by the object file format of this
++   machine.  Use this macro to limit the alignment which can be
++   specified using the `__attribute__ ((aligned (N)))' construct.  If
++   not defined, the default value is `BIGGEST_ALIGNMENT'.  */
++#define MAX_OFILE_ALIGNMENT (32768*8)
++
++/* The text to go at the start of the assembler file */
++#define ASM_FILE_START(STREAM)						    \
++{									    \
++  output_file_directive ((STREAM), main_input_filename);		    \
++  fprintf (STREAM,"%srfp\t.req\t%sr9\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%ssl\t.req\t%sr10\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%sfp\t.req\t%sr11\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%sip\t.req\t%sr12\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%ssp\t.req\t%sr13\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%slr\t.req\t%sr14\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++  fprintf (STREAM,"%spc\t.req\t%sr15\n", REGISTER_PREFIX, REGISTER_PREFIX); \
++}
++
++#define ASM_APP_ON  ""
++#define ASM_APP_OFF  ""
++
++/* Switch to the text or data segment.  */
++#define TEXT_SECTION_ASM_OP  ".text"
++#define DATA_SECTION_ASM_OP  ".data"
++#define BSS_SECTION_ASM_OP   ".bss"
++
++#define REGISTER_PREFIX ""
++#define USER_LABEL_PREFIX ""	/* For ELF the default is no underscores */
++#define LOCAL_LABEL_PREFIX "."
++
++/* The assembler's names for the registers.  */
++#ifndef REGISTER_NAMES
++#define REGISTER_NAMES  \
++{				                   \
++  "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",  \
++  "r8", "r9", "sl", "fp", "ip", "sp", "lr", "pc",  \
++  "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7",  \
++  "cc", "sfp", "afp"				   \
++}
++#endif
++
++#ifndef ADDITIONAL_REGISTER_NAMES
++#define ADDITIONAL_REGISTER_NAMES		\
++{						\
++  {"a1", 0},					\
++  {"a2", 1},					\
++  {"a3", 2},					\
++  {"a4", 3},					\
++  {"v1", 4},					\
++  {"v2", 5},					\
++  {"v3", 6},					\
++  {"v4", 7},					\
++  {"v5", 8},					\
++  {"v6", 9},					\
++  {"rfp", 9}, /* Gcc used to call it this */	\
++  {"sb", 9},					\
++  {"v7", 10},					\
++  {"r10", 10},	/* sl */			\
++  {"r11", 11},	/* fp */			\
++  {"r12", 12},	/* ip */			\
++  {"r13", 13},	/* sp */			\
++  {"r14", 14},	/* lr */			\
++  {"r15", 15}	/* pc */			\
++}
++#endif
++
++/* DBX register number for a given compiler register number */
++#define DBX_REGISTER_NUMBER(REGNO)  (REGNO)
++
++/* Generate DBX debugging information.  */
++#define DBX_DEBUGGING_INFO  1
++
++/* Output a source filename for the debugger. RISCiX dbx insists that the
++   ``desc'' field is set to compiler version number >= 315 (sic).  */
++#define DBX_OUTPUT_MAIN_SOURCE_FILENAME(STREAM,NAME) 			\
++do {									\
++  fprintf (STREAM, ".stabs \"%s\",%d,0,315,%s\n", (NAME), N_SO,		\
++	   &ltext_label_name[1]);					\
++  text_section ();							\
++  ASM_OUTPUT_INTERNAL_LABEL (STREAM, "Ltext", 0);			\
++} while (0)
++  
++/* Attach a special .ident directive to the end of the file to identify
++   the version of GCC which compiled this code.  */
++
++#define IDENT_ASM_OP ".ident"
++
++#ifdef IDENTIFY_WITH_IDENT
++#define ASM_IDENTIFY_GCC(FILE) /* nothing */
++#define ASM_IDENTIFY_LANGUAGE(FILE)			\
++ fprintf(FILE, "\t%s \"GCC (%s) %s\"\n", IDENT_ASM_OP,	\
++	 lang_identify(), version_string)
++#else
++#define ASM_FILE_END(FILE)					\
++do {				 				\
++     fprintf ((FILE), "\t%s\t\"GCC: (GNU) %s\"\n",		\
++	      IDENT_ASM_OP, version_string);			\
++   } while (0)
++#endif
++
++/* Allow #sccs in preprocessor.  */
++
++#define SCCS_DIRECTIVE
++
++/* Output #ident as a .ident.  */
++
++#define ASM_OUTPUT_IDENT(FILE, NAME) \
++  fprintf (FILE, "\t%s\t\"%s\"\n", IDENT_ASM_OP, NAME);
++
++/* imported from i386/freebsd.h  patb 10/2/98 */
++/* These macros generate the special .type and .size directives which
++   are used to set the corresponding fields of the linker symbol table
++   entries in an ELF object file under SVR4.  These macros also output
++   the starting labels for the relevant functions/objects.  */
++
++/* Write the extra assembler code needed to declare a function properly.
++   Some svr4 assemblers need to also have something extra said about the
++   function's return value.  We allow for that here.  */
++
++#define ASM_DECLARE_FUNCTION_NAME(FILE, NAME, DECL)			\
++  do {									\
++    fprintf (FILE, "\t.type\t");					\
++    assemble_name (FILE, NAME);						\
++    fprintf (FILE, ",%%function\n");					\
++    ASM_OUTPUT_LABEL(FILE, NAME);					\
++  } while (0)
++
++/* Write the extra assembler code needed to declare an object properly.  */
++
++#define ASM_DECLARE_OBJECT_NAME(FILE, NAME, DECL)			\
++  do {									\
++    fprintf (FILE, "\t.type\t");					\
++    assemble_name (FILE, NAME);						\
++    fprintf (FILE, ",%%object\n");					\
++    size_directive_output = 0;						\
++    if (!flag_inhibit_size_directive && DECL_SIZE (DECL))		\
++      {									\
++        size_directive_output = 1;					\
++	fprintf (FILE, "\t.size\t");					\
++	assemble_name (FILE, NAME);					\
++	fprintf (FILE, ",%d\n",  int_size_in_bytes (TREE_TYPE (DECL)));	\
++      }									\
++    ASM_OUTPUT_LABEL(FILE, NAME);					\
++  } while (0)
++
++/* Output the size directive for a decl in rest_of_decl_compilation
++   in the case where we did not do so before the initializer.
++   Once we find the error_mark_node, we know that the value of
++   size_directive_output was set
++   by ASM_DECLARE_OBJECT_NAME when it was run for the same decl.  */
++
++#define ASM_FINISH_DECLARE_OBJECT(FILE, DECL, TOP_LEVEL, AT_END)        \
++do {                                                                    \
++     char *name = XSTR (XEXP (DECL_RTL (DECL), 0), 0);                  \
++     if (!flag_inhibit_size_directive && DECL_SIZE (DECL)	        \
++         && ! AT_END && TOP_LEVEL                                       \
++         && DECL_INITIAL (DECL) == error_mark_node                      \
++         && !size_directive_output)                                     \
++       {                                                                \
++         fprintf (FILE, "\t.size\t");		                        \
++	 assemble_name (FILE, name);                                    \
++	 fprintf (FILE, ",%d\n",  int_size_in_bytes (TREE_TYPE (DECL)));\
++	}								\
++   } while (0)
++
++
++/* This is how to declare the size of a function.  */
++
++#define ASM_DECLARE_FUNCTION_SIZE(FILE, FNAME, DECL)			\
++  do {									\
++    if (!flag_inhibit_size_directive)					\
++      {									\
++        char label[256];						\
++	static int labelno;						\
++	labelno++;							\
++	ASM_GENERATE_INTERNAL_LABEL (label, "Lfe", labelno);		\
++	ASM_OUTPUT_INTERNAL_LABEL (FILE, "Lfe", labelno);		\
++	fprintf (FILE, "\t.size\t", SIZE_ASM_OP);				\
++	assemble_name (FILE, (FNAME));					\
++        fprintf (FILE, ", ");						\
++	assemble_name (FILE, label);					\
++        fprintf (FILE, " - ");						\
++	assemble_name (FILE, (FNAME));					\
++	putc ('\n', FILE);						\
++      }									\
++  } while (0)
++
++
++#define ASM_OUTPUT_LABEL(STREAM,NAME)	\
++do {					\
++  assemble_name (STREAM,NAME);		\
++  fputs (":\n", STREAM);		\
++} while (0)
++
++/* Output a globalising directive for a label.  */
++#define ASM_GLOBALIZE_LABEL(STREAM,NAME)  \
++  (fprintf (STREAM, "\t.global\t"),	  \
++   assemble_name (STREAM, NAME),	  \
++   fputc ('\n',STREAM))                   \
++
++/* Make an internal label into a string.  */
++#define ASM_GENERATE_INTERNAL_LABEL(STRING, PREFIX, NUM)  \
++  sprintf (STRING, "*%s%s%d", LOCAL_LABEL_PREFIX, PREFIX, NUM)
++
++/* Nothing special is done about jump tables */
++/* #define ASM_OUTPUT_CASE_LABEL(STREAM,PREFIX,NUM,TABLE)   */
++/* #define ASM_OUTPUT_CASE_END(STREAM,NUM,TABLE)	    */
++#define JUMP_TABLES_IN_TEXT_SECTION 1
++
++/* Construct a private name.  */
++#define ASM_FORMAT_PRIVATE_NAME(OUTVAR,NAME,NUMBER)  \
++  ((OUTVAR) = (char *) alloca (strlen (NAME) + 10),  \
++   sprintf ((OUTVAR), "%s.%d", (NAME), (NUMBER)))
++
++/* Output an element of a dispatch table.  */
++#define ASM_OUTPUT_ADDR_VEC_ELT(STREAM,VALUE)  \
++   fprintf (STREAM, "\t.word\t%sL%d\n", LOCAL_LABEL_PREFIX, VALUE)
++
++#define ASM_OUTPUT_ADDR_DIFF_ELT(STREAM,BODY,VALUE,REL)  \
++   fprintf (STREAM, "\tb\t%sL%d\n", LOCAL_LABEL_PREFIX, (VALUE))
++
++/* Output various types of constants.  For real numbers we output hex, with
++   a comment containing the "human" value, this allows us to pass NaN's which
++   the riscix assembler doesn't understand (it also makes cross-assembling
++   less likely to fail). */
++
++#define ASM_OUTPUT_LONG_DOUBLE(STREAM,VALUE)				\
++do { char dstr[30];							\
++     long l[3];								\
++     REAL_VALUE_TO_TARGET_LONG_DOUBLE (VALUE, l);			\
++     REAL_VALUE_TO_DECIMAL (VALUE, "%.20g", dstr);			\
++     fprintf (STREAM, "\t.long 0x%lx,0x%lx,0x%lx\t%s long double %s\n", \
++	      l[0], l[1], l[2], ASM_COMMENT_START, dstr);		\
++   } while (0)
++
++    
++#define ASM_OUTPUT_DOUBLE(STREAM, VALUE)  				\
++do { char dstr[30];							\
++     long l[2];								\
++     REAL_VALUE_TO_TARGET_DOUBLE (VALUE, l);				\
++     REAL_VALUE_TO_DECIMAL (VALUE, "%.14g", dstr);			\
++     fprintf (STREAM, "\t.long 0x%lx, 0x%lx\t%s double %s\n", l[0],	\
++	      l[1], ASM_COMMENT_START, dstr);				\
++   } while (0)
++
++#define ASM_OUTPUT_FLOAT(STREAM, VALUE)					\
++do { char dstr[30];							\
++     long l;								\
++     REAL_VALUE_TO_TARGET_SINGLE (VALUE, l);				\
++     REAL_VALUE_TO_DECIMAL (VALUE, "%.7g", dstr);			\
++     fprintf (STREAM, "\t.word 0x%lx\t%s float %s\n", l,		\
++	      ASM_COMMENT_START, dstr);					\
++   } while (0);
++
++#define ASM_OUTPUT_INT(STREAM, EXP)		\
++  {						\
++    fprintf (STREAM, "\t.word\t");		\
++    OUTPUT_INT_ADDR_CONST (STREAM, (EXP));	\
++    fprintf (STREAM, "\n");			\
++  }
++
++#define ASM_OUTPUT_SHORT(STREAM, EXP)  \
++  (fprintf (STREAM, "\t.short\t"),     \
++   output_addr_const (STREAM, (EXP)),  \
++   fputc ('\n', STREAM))
++
++#define ASM_OUTPUT_CHAR(STREAM, EXP)  \
++  (fprintf (STREAM, "\t.byte\t"),      \
++   output_addr_const (STREAM, (EXP)),  \
++   fputc ('\n', STREAM))
++
++#define ASM_OUTPUT_BYTE(STREAM, VALUE)  \
++  fprintf (STREAM, "\t.byte\t%d\n", VALUE)
++
++#define ASM_OUTPUT_ASCII(STREAM, PTR, LEN)  \
++  output_ascii_pseudo_op ((STREAM), (unsigned char *)(PTR), (LEN))
++
++/* Output a gap.  In fact we fill it with nulls.  */
++#define ASM_OUTPUT_SKIP(STREAM, NBYTES)  \
++   fprintf (STREAM, "\t.space\t%d\n", NBYTES)
++
++/* Align output to a power of two.  Horrible /bin/as.  */
++#define ASM_OUTPUT_ALIGN(STREAM, POWER)  \
++   fprintf (STREAM, "\t.align\t%d\n", POWER)
++
++/* Output a common block */
++#define ASM_OUTPUT_COMMON(STREAM, NAME, SIZE, ROUNDED)  		\
++  (fprintf (STREAM, "\t.comm\t"), 		     			\
++   assemble_name ((STREAM), (NAME)),		     			\
++   fprintf(STREAM, ", %d\t%s %d\n", ROUNDED, ASM_COMMENT_START, SIZE))
++
++/* Output a local common block.  /bin/as can't do this, so hack a
++   `.space' into the bss segment.  Note that this is *bad* practice.  */
++#define ASM_OUTPUT_ALIGNED_LOCAL(STREAM,NAME,SIZE,ALIGN)		\
++  do {									\
++    bss_section ();							\
++    ASM_OUTPUT_ALIGN (STREAM, floor_log2 (ALIGN / BITS_PER_UNIT));	\
++    ASM_OUTPUT_LABEL (STREAM, NAME);					\
++    fprintf (STREAM, "\t.space\t%d\n", SIZE);				\
++  } while (0)
++
++/* Output a zero-initialized block.  */
++#define ASM_OUTPUT_ALIGNED_BSS(STREAM,DECL,NAME,SIZE,ALIGN) \
++  asm_output_aligned_bss(STREAM, DECL, NAME, SIZE, ALIGN)
++
++/* Output a source line for the debugger.  */
++/* #define ASM_OUTPUT_SOURCE_LINE(STREAM,LINE) */
++
++/* The assembler's parentheses characters.  */
++#define ASM_OPEN_PAREN "("
++#define ASM_CLOSE_PAREN ")"
++
++#ifndef ASM_COMMENT_START
++#define ASM_COMMENT_START "@"
++#endif
++
++/* This works for GAS and some other assemblers.  */
++#define SET_ASM_OP	".set"
++
++/* Support const sections and the ctors and dtors sections for g++.
++   Note that there appears to be two different ways to support const
++   sections at the moment.  You can either #define the symbol
++   READONLY_DATA_SECTION (giving it some code which switches to the
++   readonly data section) or else you can #define the symbols
++   EXTRA_SECTIONS, EXTRA_SECTION_FUNCTIONS, SELECT_SECTION, and
++   SELECT_RTX_SECTION.  We do both here just to be on the safe side.  */
++
++#define USE_CONST_SECTION	1
++
++#define CONST_SECTION_ASM_OP	".section\t.rodata"
++
++/* Define the pseudo-ops used to switch to the .ctors and .dtors sections.
++
++   Note that we want to give these sections the SHF_WRITE attribute
++   because these sections will actually contain data (i.e. tables of
++   addresses of functions in the current root executable or shared library
++   file) and, in the case of a shared library, the relocatable addresses
++   will have to be properly resolved/relocated (and then written into) by
++   the dynamic linker when it actually attaches the given shared library
++   to the executing process.  (Note that on SVR4, you may wish to use the
++   `-z text' option to the ELF linker, when building a shared library, as
++   an additional check that you are doing everything right.  But if you do
++   use the `-z text' option when building a shared library, you will get
++   errors unless the .ctors and .dtors sections are marked as writable
++   via the SHF_WRITE attribute.)  */
++
++#define CTORS_SECTION_ASM_OP	".section\t.ctors,\"aw\""
++#define DTORS_SECTION_ASM_OP	".section\t.dtors,\"aw\""
++
++/* On svr4, we *do* have support for the .init and .fini sections, and we
++   can put stuff in there to be executed before and after `main'.  We let
++   crtstuff.c and other files know this by defining the following symbols.
++   The definitions say how to change sections to the .init and .fini
++   sections.  This is the same for all known svr4 assemblers.  */
++
++#define INIT_SECTION_ASM_OP	".section\t.init"
++#define FINI_SECTION_ASM_OP	".section\t.fini"
++
++/* A default list of other sections which we might be "in" at any given
++   time.  For targets that use additional sections (e.g. .tdesc) you
++   should override this definition in the target-specific file which
++   includes this file.  */
++
++#undef EXTRA_SECTIONS
++#define EXTRA_SECTIONS in_const, in_ctors, in_dtors
++
++/* A default list of extra section function definitions.  For targets
++   that use additional sections (e.g. .tdesc) you should override this
++   definition in the target-specific file which includes this file.  */
++
++#undef EXTRA_SECTION_FUNCTIONS
++#define EXTRA_SECTION_FUNCTIONS						\
++  CONST_SECTION_FUNCTION						\
++  CTORS_SECTION_FUNCTION						\
++  DTORS_SECTION_FUNCTION
++
++#undef READONLY_DATA_SECTION
++#define READONLY_DATA_SECTION() const_section ()
++
++extern void text_section ();
++
++#define CONST_SECTION_FUNCTION						\
++void									\
++const_section ()							\
++{									\
++  if (!USE_CONST_SECTION)						\
++    text_section();							\
++  else if (in_section != in_const)					\
++    {									\
++      fprintf (asm_out_file, "%s\n", CONST_SECTION_ASM_OP);		\
++      in_section = in_const;						\
++    }									\
++}
++
++#define CTORS_SECTION_FUNCTION						\
++void									\
++ctors_section ()							\
++{									\
++  if (in_section != in_ctors)						\
++    {									\
++      fprintf (asm_out_file, "%s\n", CTORS_SECTION_ASM_OP);		\
++      in_section = in_ctors;						\
++    }									\
++}
++
++#define DTORS_SECTION_FUNCTION						\
++void									\
++dtors_section ()							\
++{									\
++  if (in_section != in_dtors)						\
++    {									\
++      fprintf (asm_out_file, "%s\n", DTORS_SECTION_ASM_OP);		\
++      in_section = in_dtors;						\
++    }									\
++}
++
++/* Switch into a generic section.
++   This is currently only used to support section attributes.
++
++   We make the section read-only and executable for a function decl,
++   read-only for a const data decl, and writable for a non-const data decl.  */
++#define ASM_OUTPUT_SECTION_NAME(FILE, DECL, NAME, RELOC) \
++  fprintf (FILE, ".section\t%s,\"%s\",%%progbits\n", NAME, \
++	   (DECL) && TREE_CODE (DECL) == FUNCTION_DECL ? "ax" : \
++	   (DECL) && DECL_READONLY_SECTION (DECL, RELOC) ? "a" : "aw")
++
++
++#define INT_ASM_OP		".word"
++
++/* A C statement (sans semicolon) to output an element in the table of
++   global constructors.  */
++#define ASM_OUTPUT_CONSTRUCTOR(FILE,NAME)				\
++  do {									\
++    ctors_section ();							\
++    fprintf (FILE, "\t%s\t ", INT_ASM_OP);				\
++    assemble_name (FILE, NAME);						\
++    fprintf (FILE, "\n");						\
++  } while (0)
++
++/* A C statement (sans semicolon) to output an element in the table of
++   global destructors.  */
++#define ASM_OUTPUT_DESTRUCTOR(FILE,NAME)       				\
++  do {									\
++    dtors_section ();                   				\
++    fprintf (FILE, "\t%s\t ", INT_ASM_OP);				\
++    assemble_name (FILE, NAME);              				\
++    fprintf (FILE, "\n");						\
++  } while (0)
++
++/* A C statement or statements to switch to the appropriate
++   section for output of DECL.  DECL is either a `VAR_DECL' node
++   or a constant of some sort.  RELOC indicates whether forming
++   the initial value of DECL requires link-time relocations.  */
++
++#define SELECT_SECTION(DECL,RELOC)					\
++{									\
++  if (TREE_CODE (DECL) == STRING_CST)					\
++    {									\
++      if (! flag_writable_strings)					\
++	const_section ();						\
++      else								\
++	data_section ();						\
++    }									\
++  else if (TREE_CODE (DECL) == VAR_DECL)				\
++    {									\
++      if ((flag_pic && RELOC)						\
++	  || !TREE_READONLY (DECL) || TREE_SIDE_EFFECTS (DECL)		\
++	  || !DECL_INITIAL (DECL)					\
++	  || (DECL_INITIAL (DECL) != error_mark_node			\
++	      && !TREE_CONSTANT (DECL_INITIAL (DECL))))			\
++	data_section ();						\
++      else								\
++	const_section ();						\
++    }									\
++  else									\
++    const_section ();							\
++}
++
++/* A C statement or statements to switch to the appropriate
++   section for output of RTX in mode MODE.  RTX is some kind
++   of constant in RTL.  The argument MODE is redundant except
++   in the case of a `const_int' rtx.  Currently, these always
++   go into the const section.  */
++
++#undef SELECT_RTX_SECTION
++#define SELECT_RTX_SECTION(MODE,RTX) const_section()
++
++/* Define the strings used for the special svr4 .type and .size directives.
++   These strings generally do not vary from one system running svr4 to
++   another, but if a given system (e.g. m88k running svr) needs to use
++   different pseudo-op names for these, they may be overridden in the
++   file which includes this one.  */
++
++#define TYPE_ASM_OP	".type"
++#define SIZE_ASM_OP	".size"
++
++/* This is how we tell the assembler that a symbol is weak.  */
++
++#define ASM_WEAKEN_LABEL(FILE,NAME) \
++  do { fputs ("\t.weak\t", FILE); assemble_name (FILE, NAME); \
++       fputc ('\n', FILE); } while (0)
++
++/* This is how we tell the assembler that two symbols have the same value.  */
++
++#define ASM_OUTPUT_DEF(FILE,NAME1,NAME2) \
++  do { assemble_name(FILE, NAME1); 	 \
++       fputs(" = ", FILE);		 \
++       assemble_name(FILE, NAME2);	 \
++       fputc('\n', FILE); } while (0)
++
++/* The following macro defines the format used to output the second
++   operand of the .type assembler directive.  Different svr4 assemblers
++   expect various different forms for this operand.  The one given here
++   is just a default.  You may need to override it in your machine-
++   specific tm.h file (depending upon the particulars of your assembler).  */
++
++#define TYPE_OPERAND_FMT	"%%%s"
++
++#include "arm/arm.h"
+--- egcs-1.1.2/gcc/config/arm/lib1funcs.asm.hjlu	Wed Apr  1 12:18:58 1998
++++ egcs-1.1.2/gcc/config/arm/lib1funcs.asm	Mon Mar 15 17:59:55 1999
+@@ -43,6 +43,12 @@
+ #define RETCOND
+ #endif
+ 
++#ifdef __ELF__
++#define __PLT__ (PLT)
++#else
++#define __PLT__
++#endif
++
+ #ifndef __USER_LABEL_PREFIX__
+ #define __USER_LABEL_PREFIX__ _
+ #endif
+@@ -66,9 +72,11 @@
+ sp		.req	r13
+ lr		.req	r14
+ pc		.req	r15
++
+ 	.text
+-	.globl SYM (__udivsi3)
+-	.align 0
++	.globl	SYM(__udivsi3)
++	.type 	SYM(__udivsi3),%function
++	.align	0
+ 
+ SYM (__udivsi3):
+ 	cmp	divisor, #0
+@@ -124,10 +132,12 @@
+ 
+ Ldiv0:
+ 	str	lr, [sp, #-4]!
+-	bl	SYM (__div0)
++	bl	SYM (__div0) __PLT__
+ 	mov	r0, #0			@ about as wrong as it could be
+ 	ldmia	sp!, {pc}RETCOND
+ 
++	.size	SYM(__udivsi3), . - SYM(__udivsi3)
++
+ #endif /* L_udivsi3 */
+ 
+ #ifdef L_umodsi3
+@@ -142,6 +152,7 @@
+ pc		.req	r15
+ 	.text
+ 	.globl SYM (__umodsi3)
++	.type SYM (__umodsi3),%function
+ 	.align 0
+ 
+ SYM (__umodsi3):
+@@ -210,10 +221,12 @@
+ 
+ Ldiv0:
+ 	str	lr, [sp, #-4]!
+-	bl	SYM (__div0)
++	bl	SYM (__div0) __PLT__
+ 	mov	r0, #0			@ about as wrong as it could be
+ 	ldmia	sp!, {pc}RETCOND
+ 
++	.size	SYM(__umodsi3), . - SYM(__umodsi3)
++
+ #endif /* L_umodsi3 */
+ 
+ #ifdef L_divsi3
+@@ -228,6 +241,7 @@
+ pc		.req	r15
+ 	.text
+ 	.globl SYM (__divsi3)
++	.type SYM (__divsi3),%function
+ 	.align 0
+ 
+ SYM (__divsi3):
+@@ -291,10 +305,12 @@
+ 
+ Ldiv0:
+ 	str	lr, [sp, #-4]!
+-	bl	SYM (__div0)
++	bl	SYM (__div0) __PLT__
+ 	mov	r0, #0			@ about as wrong as it could be
+ 	ldmia	sp!, {pc}RETCOND
+ 
++	.size	SYM(__divsi3), . - SYM(__divsi3)
++
+ #endif /* L_divsi3 */
+ 
+ #ifdef L_modsi3
+@@ -309,6 +325,7 @@
+ pc		.req	r15
+ 	.text
+ 	.globl SYM (__modsi3)
++	.type SYM (__modsi3),%function
+ 	.align 0
+ 
+ SYM (__modsi3):
+@@ -388,18 +405,22 @@
+ 
+ Ldiv0:
+ 	str	lr, [sp, #-4]!
+-	bl	SYM (__div0)
++	bl	SYM (__div0) __PLT__
+ 	mov	r0, #0			@ about as wrong as it could be
+ 	ldmia	sp!, {pc}RETCOND
+ 
++	.size	SYM(__modsi3), . - SYM(__modsi3)
++
+ #endif /* L_modsi3 */
+ 
+ #ifdef L_dvmd_tls
+ 
+ 	.globl SYM (__div0)
++	.type SYM(__div0),%function
+ 	.align 0
+ SYM (__div0):
+ 	RET	pc, lr
++	.size	SYM(__div0), . - SYM(__div0)
+ 
+ #endif /* L_divmodsi_tools */
+ 
+@@ -407,18 +428,20 @@
+ @ GNU/Linux division-by zero handler.  Used in place of L_dvmd_tls
+ 
+ #include <asm/unistd.h>
+-#define SIGFPE	8			@ cant use <asm/signal.h> as it
+-					@ contains too much C rubbish
++#define SIGFPE	8
++
+ 	.globl SYM (__div0)
++	.type SYM(__div0),%function
+ 	.align 0
+ SYM (__div0):
+ 	stmfd	sp!, {r1, lr}
+ 	swi	__NR_getpid
+ 	cmn	r0, #1000
+-	ldmgefd	sp!, {r1, pc}RETCOND	@ not much we can do
++	ldmhsfd	sp!, {r1, pc}RETCOND	@ not much we can do
+ 	mov	r1, #SIGFPE
+ 	swi	__NR_kill
+ 	ldmfd	sp!, {r1, pc}RETCOND
++	.size 	SYM(__div0), . - SYM(__div0)
+ 
+ #endif /* L_dvmd_lnx */
+ 
+--- egcs-1.1.2/gcc/config/arm/linux-aout.h.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/arm/linux-aout.h	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,58 @@
++/* Definitions for ARM running Linux-based GNU systems using a.out.
++   Copyright (C) 1993, 1994, 1997, 1998 Free Software Foundation, Inc.
++   Contributed by Russell King  <rmk92@ecs.soton.ac.uk>.
++
++This file is part of GNU CC.
++
++GNU CC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2, or (at your option)
++any later version.
++
++GNU CC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; see the file COPYING.  If not, write to
++the Free Software Foundation, 59 Temple Place - Suite 330,
++Boston, MA 02111-1307, USA.  */
++
++#include <linux-aout.h>
++
++/* these are different... */
++#undef STARTFILE_SPEC
++#define STARTFILE_SPEC \
++"%{pg:gcrt0.o%s} %{!pg:%{p:gcrt0.o%s} %{!p:crt0.o%s}} %{static:-static}"
++
++#undef ASM_APP_ON
++#undef ASM_APP_OFF
++#undef COMMENT_BEGIN
++ 
++/* We default to ARM3.  */
++#define SUBTARGET_CPU_DEFAULT TARGET_CPU_arm3
++
++#undef CPP_PREDEFINES
++#define CPP_PREDEFINES \
++"-Dunix -Darm -Dlinux -Asystem(unix) -Asystem(posix) -Acpu(arm) -Amachine(arm)"
++
++#undef LIB_SPEC
++#define LIB_SPEC \
++	"%{mieee-fp:-lieee} %{p:-lgmon} %{pg:-lgmon} %{!ggdb:-lc} %{ggdb:-lg}"
++
++#define HANDLE_SYSV_PRAGMA
++  
++/* Run-time Target Specification.  */
++#define TARGET_VERSION  fputs (" (ARM GNU/Linux with a.out)", stderr);
++
++/* 
++ * Maths operation domain error number, EDOM
++ * We don't really want this for libc6.  However, taking it out would be
++ * too much of a pain for now and it doesn't hurt much.
++ */
++#define TARGET_EDOM 33
++
++#include "arm/aout.h"
++
++#include "arm/linux-gas.h"
+--- egcs-1.1.2/gcc/config/arm/linux-elf.h.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/arm/linux-elf.h	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,101 @@
++/* Definitions for ARM running Linux-based GNU systems using ELF
++   Copyright (C) 1993, 1994, 1997, 1998, 1999 Free Software Foundation, Inc.
++   Contributed by Philip Blundell <philb@gnu.org>
++
++This file is part of GNU CC.
++
++GNU CC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2, or (at your option)
++any later version.
++
++GNU CC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; see the file COPYING.  If not, write to
++the Free Software Foundation, 59 Temple Place - Suite 330,
++Boston, MA 02111-1307, USA.  */
++
++/* Run-time Target Specification.  */
++#define TARGET_VERSION  fputs (" (ARM GNU/Linux with ELF)", stderr);
++
++/* we have libgcc2 */
++#define HAVE_ATEXIT
++
++/* Default is to use APCS-32 mode.  */
++#ifndef SUBTARGET_DEFAULT_APCS26
++#define TARGET_DEFAULT (ARM_FLAG_APCS_32 | ARM_FLAG_SHORT_BYTE)
++#define MULTILIB_DEFAULTS   { "mapcs-32" }
++#define SUBTARGET_EXTRA_LINK_SPEC	\
++	" %{mapcs-26:-m elf32arm26} %{!mapcs-26:-m elf32arm}"
++#define SUBTARGET_EXTRA_ASM_SPEC	\
++	" %{mapcs-26:-mapcs-26} %(!mapcs-26:-mapcs-32}"
++#endif
++
++/* This was defined in linux.h.  Define it here also. */
++#undef DEFAULT_VTABLE_THUNKS
++#define DEFAULT_VTABLE_THUNKS   1
++
++/* Handle #pragma weak and #pragma pack.  */
++#define HANDLE_SYSV_PRAGMA
++
++/* Now we define the strings used to build the spec file */
++
++#define ASM_SPEC "%{mbig-endian:-EB} %{mapcs-float:-mfloat} "
++/* we don't need an ASM_FINAL_SPEC */
++
++#define LIB_SPEC \
++  "%{shared: -lc} \
++   %{!shared: %{pthread:-lpthread} \
++	%{profile:-lc_p} %{!profile: -lc}}"
++
++#define LIBGCC_SPEC "%{msoft-float:-lfloat} -lgcc"
++
++/* add the compiler's crtend, and the library's crtn */
++#define ENDFILE_SPEC "%{!shared:crtend.o%s} %{shared:crtendS.o%s} \
++   %{pg:gcrtn.o%s}%{!pg:crtn.o%s}"
++
++#define STARTFILE_SPEC "%{!shared:crt1.o%s} \
++   crti.o%s \
++   %{!shared:crtbegin.o%s} %{shared:crtbeginS.o%s}"
++
++#define LINK_SPEC "%{h*} %{version:-v} \
++   %{b} %{Wl,*:%*} \
++   %{static:-Bstatic} \
++   %{shared:-shared} \
++   %{symbolic:-Bsymbolic} \
++   %{rdynamic:-export-dynamic} \
++   %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2} \
++   -X \
++   %{mbig-endian:-EB}" \
++   SUBTARGET_EXTRA_LINK_SPEC
++
++#undef CPP_PREDEFINES
++#define CPP_PREDEFINES \
++"-Dunix -Darm -Dlinux -Asystem(unix) -Asystem(posix) -Acpu(arm) \
++-Amachine(arm) -D__ELF__"
++
++#include "arm/elf.h"   /* macros to issue to the assembler */
++
++#include "arm/linux-gas.h"
++
++#ifndef SUBTARGET_DEFAULT_APCS26
++#undef CPP_APCS_PC_DEFAULT_SPEC
++#define CPP_APCS_PC_DEFAULT_SPEC "-D__APCS_32__"
++/* On 32-bit machine it is always safe to assume we have the "new"
++   floating point system.  */
++#undef FP_DEFAULT
++#define FP_DEFAULT FP_SOFT3
++#endif
++
++#ifndef OBJECT_FORMAT_ELF
++#define OBJECT_FORMAT_ELF
++#endif
++
++/* Make DWARF2 an option, but keep DBX as the default for now.
++   Use -gdwarf2 to turn on DWARF2.  */
++#define DWARF2_DEBUGGING_INFO
++#define PREFERRED_DEBUGGING_TYPE DBX_DEBUG
+--- egcs-1.1.2/gcc/config/arm/linux-elf26.h.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/arm/linux-elf26.h	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,34 @@
++/* Definitions for 26-bit ARM running Linux-based GNU systems using ELF
++   Copyright (C) 1998 Free Software Foundation, Inc.
++   Contributed by Philip Blundell <philb@gnu.org>
++
++This file is part of GNU CC.
++
++GNU CC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2, or (at your option)
++any later version.
++
++GNU CC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; see the file COPYING.  If not, write to
++the Free Software Foundation, 59 Temple Place - Suite 330,
++Boston, MA 02111-1307, USA.  */
++
++#define SUBTARGET_DEFAULT_APCS26
++
++#define MULTILIB_DEFAULTS   { "mapcs-26" }
++
++#define SUBTARGET_EXTRA_LINK_SPEC	\
++	" %{mapcs-32:-m elf32arm} %{!mapcs-32:-m elf32arm26}"
++
++#define SUBTARGET_EXTRA_ASM_SPEC	\
++	" %{mapcs-32:-mapcs-32} %(!mapcs-32:-mapcs-26}"
++
++#define TARGET_DEFAULT (ARM_FLAG_SHORT_BYTE)
++
++#include "arm/linux-elf.h"
+--- egcs-1.1.2/gcc/config/arm/linux-gas.h.hjlu	Sat Dec  6 12:24:36 1997
++++ egcs-1.1.2/gcc/config/arm/linux-gas.h	Mon Mar 15 17:59:55 1999
+@@ -1,7 +1,8 @@
+ /* Definitions of target machine for GNU compiler.  ARM Linux-based GNU
+    systems version.
+-   Copyright (C) 1997 Free Software Foundation, Inc.
+-   Contributed by Russell King  <rmk92@ecs.soton.ac.uk>.
++   Copyright (C) 1997, 1998, 1999 Free Software Foundation, Inc.
++   Contributed by Russell King  <rmk92@ecs.soton.ac.uk>
++   and Philip Blundell <philb@gnu.org>
+ 
+ This file is part of GNU CC.
+ 
+@@ -20,11 +21,6 @@
+ the Free Software Foundation, 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.  */
+ 
+-/* Limit the length of a stabs entry (for the broken Acorn assembler) */
+-#define DBX_CONTIN_LENGTH 80
+-
+-#include "arm/linux.h"
+-
+ /*
+  * We are using GAS, so stabs should work.
+  */
+@@ -32,3 +28,59 @@
+ #ifndef DBX_DEBUGGING_INFO
+ #define DBX_DEBUGGING_INFO 1
+ #endif
++
++/*
++ * This is how we tell the assembler that a symbol is weak.  GAS always
++ * supports weak symbols.
++ */
++
++#define ASM_WEAKEN_LABEL(FILE,NAME) \
++  do { fputs ("\t.weak\t", FILE); assemble_name (FILE, NAME); \
++       fputc ('\n', FILE); } while (0)
++
++/* This is used in ASM_FILE_START */
++#undef ARM_OS_NAME
++#define ARM_OS_NAME "Linux"
++
++/* Unsigned chars produces much better code than signed.  */
++#define DEFAULT_SIGNED_CHAR 0
++
++#undef SUBTARGET_CPP_SPEC
++#define SUBTARGET_CPP_SPEC  "%{posix:-D_POSIX_SOURCE} %{fPIC:-D__PIC__ -D__pic__} %{fpic:-D__PIC__ -D__pic__}"
++
++#undef SIZE_TYPE
++#define SIZE_TYPE "unsigned int"
++
++#undef PTRDIFF_TYPE
++#define PTRDIFF_TYPE "int"
++
++#undef WCHAR_TYPE
++#define WCHAR_TYPE "long int"
++
++#undef WCHAR_TYPE_SIZE
++#define WCHAR_TYPE_SIZE BITS_PER_WORD
++
++/* Emit code to set up a trampoline and synchronise the caches.  */
++
++#undef INITIALIZE_TRAMPOLINE
++#define INITIALIZE_TRAMPOLINE(TRAMP, FNADDR, CXT)			\
++{									\
++  emit_move_insn (gen_rtx (MEM, SImode, plus_constant ((TRAMP), 8)),	\
++		  (CXT));						\
++  emit_move_insn (gen_rtx (MEM, SImode, plus_constant ((TRAMP), 12)),	\
++		  (FNADDR));						\
++  emit_library_call (gen_rtx_SYMBOL_REF (Pmode, "__clear_cache"),	\
++		     0, VOIDmode, 2, TRAMP, Pmode,			\
++		     plus_constant (TRAMP, TRAMPOLINE_SIZE), Pmode);	\
++}
++
++/* Clear the instruction cache from `beg' to `end'.  This makes an
++   inline system call to SYS_cacheflush.  */
++
++#define CLEAR_INSN_CACHE(BEG, END)					\
++{									\
++  register unsigned long _beg __asm ("a1") = (unsigned long) (BEG);	\
++  register unsigned long _end __asm ("a2") = (unsigned long) (END);	\
++  register unsigned long _flg __asm ("a3") = 0;				\
++  __asm __volatile ("swi 0x9f0002");					\
++}
+--- egcs-1.1.2/gcc/config/arm/t-linux.hjlu	Sat Dec  6 12:24:39 1997
++++ egcs-1.1.2/gcc/config/arm/t-linux	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # Just for these, we omit the frame pointer since it makes such a big
+ # difference.  It is then pointless adding debugging.
+-LIBGCC2_CFLAGS=-O2 -fomit-frame-pointer $(LIBGCC2_INCLUDES) $(GCC_CFLAGS) -g0
++LIBGCC2_CFLAGS = -O2 -fomit-frame-pointer $(TARGET_LIBGCC2_CFLAGS) $(CROSS) $(LIBGCC2_INCLUDES) $(GCC_CFLAGS) -g0
+ 
+ # Don't build enquire
+ ENQUIRE=
+@@ -12,8 +12,8 @@
+ LIB1ASMSRC = arm/lib1funcs.asm
+ LIB1ASMFUNCS = _udivsi3 _divsi3 _umodsi3 _modsi3 _dvmd_lnx
+ 
+-MULTILIB_OPTIONS = mapcs-32
+-MULTILIB_DIRNAMES = apcs-32
++#MULTILIB_OPTIONS = mapcs-32/mapcs-26
++#MULTILIB_DIRNAMES = apcs-32 apcs-26
+ 
+ LIBGCC = stmp-multilib
+ INSTALL_LIBGCC = install-multilib
+--- egcs-1.1.2/gcc/config/arm/xm-linux.h.hjlu	Sat Dec  6 12:24:41 1997
++++ egcs-1.1.2/gcc/config/arm/xm-linux.h	Mon Mar 15 17:59:55 1999
+@@ -22,3 +22,7 @@
+ #include <arm/xm-arm.h>
+ #include <xm-linux.h>
+ 
++/* If cross-compiling, don't require stdio.h etc to build libgcc.a.  */
++#ifdef CROSS_COMPILE
++#define inhibit_libc
++#endif
+--- egcs-1.1.2/gcc/config/i386/i386.c.hjlu	Sat Feb 13 06:47:21 1999
++++ egcs-1.1.2/gcc/config/i386/i386.c	Mon Mar 15 17:59:55 1999
+@@ -3646,8 +3646,7 @@
+       if (REG_P (SET_DEST (exp))
+ 	  && (REG_P (SET_SRC (exp)) || GET_CODE (SET_SRC (exp)) == MEM
+ 	      || GET_RTX_CLASS (GET_CODE (SET_SRC (exp))) == '<'
+-	      || (GET_CODE (SET_SRC (exp)) == IF_THEN_ELSE
+-		  && GET_MODE_CLASS (GET_MODE (SET_DEST (exp))) == MODE_INT)))
++	      || GET_CODE (SET_SRC (exp)) == IF_THEN_ELSE))
+ 	{
+ 	  if (cc_status.value1
+ 	      && reg_overlap_mentioned_p (SET_DEST (exp), cc_status.value1))
+@@ -3749,7 +3748,7 @@
+           if (stack_regs_mentioned_p (SET_SRC (XVECEXP (exp, 0, 0))))
+ 	    {
+               cc_status.flags |= CC_IN_80387;
+-	      if (0 && TARGET_CMOVE && stack_regs_mentioned_p
++	      if (TARGET_CMOVE && stack_regs_mentioned_p
+ 		  (XEXP (SET_SRC (XVECEXP (exp, 0, 0)), 1)))
+ 		cc_status.flags |= CC_FCOMI;
+ 	    }
+@@ -4079,7 +4078,7 @@
+   int unordered_compare = GET_MODE (SET_SRC (body)) == CCFPEQmode;
+   rtx tmp;
+ 
+-  if (0 && TARGET_CMOVE && STACK_REG_P (operands[1]))
++  if (TARGET_CMOVE && STACK_REG_P (operands[1]))
+     {
+       cc_status.flags |= CC_FCOMI;
+       cc_prev_status.flags &= ~CC_TEST_AX;
+@@ -4113,7 +4112,8 @@
+ 	    {
+ 	      output_asm_insn (AS2 (fucomip,%y1,%0), operands);
+ 	      output_asm_insn (AS1 (fstp, %y0), operands);
+-	      return "";
++	      if (!TARGET_IEEE_FP)
++		return "";
+ 	    }
+ 	  else
+ 	    output_asm_insn ("fucompp", operands);
+@@ -4124,7 +4124,8 @@
+ 	    {
+ 	      output_asm_insn (AS2 (fcomip, %y1,%0), operands);
+ 	      output_asm_insn (AS1 (fstp, %y0), operands);
+-	      return "";
++	      if (!TARGET_IEEE_FP)
++		return "";
+ 	    }
+ 	  else
+ 	    output_asm_insn ("fcompp", operands);
+@@ -4154,7 +4155,8 @@
+       else if (cc_status.flags & CC_FCOMI)
+ 	{
+ 	  output_asm_insn (strcat (buf, AS2 (%z1,%y1,%0)), operands);
+-	  return "";
++	  if (!TARGET_IEEE_FP)
++	    return "";
+ 	}
+       else
+         output_asm_insn (strcat (buf, AS1 (%z1,%y1)), operands);
+@@ -4178,17 +4180,19 @@
+   rtx next;
+   enum rtx_code code;
+ 
+-  xops[0] = gen_rtx_REG (HImode, 0);
+-  output_asm_insn (AS1 (fnsts%W0,%0), xops);
++  if (!(cc_status.flags & CC_FCOMI))
++    {
++      xops[0] = gen_rtx_REG (HImode, 0);
++      output_asm_insn (AS1 (fnsts%W0,%0), xops);
++    }
+ 
+   if (! TARGET_IEEE_FP)
+     {
+       if (!(cc_status.flags & CC_REVERSED))
+         {
+           next = next_cc0_user (insn);
+-
+-          if (GET_CODE (next) == JUMP_INSN
+-              && GET_CODE (PATTERN (next)) == SET
++  
++          if (GET_CODE (PATTERN (next)) == SET
+               && SET_DEST (PATTERN (next)) == pc_rtx
+               && GET_CODE (SET_SRC (PATTERN (next))) == IF_THEN_ELSE)
+ 	    code = GET_CODE (XEXP (SET_SRC (PATTERN (next)), 0));
+@@ -4213,8 +4217,7 @@
+   if (next == NULL_RTX)
+     abort ();
+ 
+-  if (GET_CODE (next) == JUMP_INSN
+-      && GET_CODE (PATTERN (next)) == SET
++  if (GET_CODE (PATTERN (next)) == SET
+       && SET_DEST (PATTERN (next)) == pc_rtx
+       && GET_CODE (SET_SRC (PATTERN (next))) == IF_THEN_ELSE)
+     code = GET_CODE (XEXP (SET_SRC (PATTERN (next)), 0));
+@@ -4237,61 +4240,103 @@
+   else
+     abort ();
+ 
+-  xops[0] = gen_rtx_REG (QImode, 0);
++  if (cc_status.flags & CC_FCOMI)
++    {
++      /* It is very tricky. We have to do it right. */
+ 
+-  switch (code)
++      xops [0] = gen_rtx_REG (QImode, 0);
++
++      switch (code)
++	{
++	case GT:
++	case GE:
++	  break;
++
++	case LT:
++	  output_asm_insn (AS1 (setb,%b0), xops);
++	  output_asm_insn (AS1 (setp,%h0), xops);
++	  output_asm_insn (AS2 (cmp%B0,%b0,%h0), xops);
++	  break;
++
++	case LE:
++	  output_asm_insn (AS1 (setbe,%b0), xops);
++	  output_asm_insn (AS1 (setnp,%h0), xops);
++	  output_asm_insn (AS2 (xor%B0,%b0,%h0), xops);
++	  break;
++
++	case EQ:
++	case NE:
++	  output_asm_insn (AS1 (setne,%b0), xops);
++	  output_asm_insn (AS1 (setp,%h0), xops);
++	  output_asm_insn (AS2 (or%B0,%b0,%h0), xops);
++	  break;
++
++	case GTU:
++	case LTU:
++	case GEU:
++	case LEU:
++	default:
++	  abort ();
++	}
++    }
++  else
+     {
+-    case GT:
+-      xops[1] = GEN_INT (0x45);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      /* je label */
+-      break;
++      xops[0] = gen_rtx_REG (QImode, 0);
+ 
+-    case LT:
+-      xops[1] = GEN_INT (0x45);
+-      xops[2] = GEN_INT (0x01);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
+-      /* je label */
+-      break;
++      switch (code)
++	{
++	case GT:
++	  xops[1] = GEN_INT (0x45);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  /* je label */
++	  break;
+ 
+-    case GE:
+-      xops[1] = GEN_INT (0x05);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      /* je label */
+-      break;
++	case LT:
++	  xops[1] = GEN_INT (0x45);
++	  xops[2] = GEN_INT (0x01);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
++	  /* je label */
++	  break;
+ 
+-    case LE:
+-      xops[1] = GEN_INT (0x45);
+-      xops[2] = GEN_INT (0x40);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      output_asm_insn (AS1 (dec%B0,%h0), xops);
+-      output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
+-      /* jb label */
+-      break;
++	case GE:
++	  xops[1] = GEN_INT (0x05);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  /* je label */
++	  break;
+ 
+-    case EQ:
+-      xops[1] = GEN_INT (0x45);
+-      xops[2] = GEN_INT (0x40);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
+-      /* je label */
+-      break;
++	case LE:
++	  xops[1] = GEN_INT (0x45);
++	  xops[2] = GEN_INT (0x40);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  output_asm_insn (AS1 (dec%B0,%h0), xops);
++	  output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
++	  /* jb label */
++	  break;
+ 
+-    case NE:
+-      xops[1] = GEN_INT (0x44);
+-      xops[2] = GEN_INT (0x40);
+-      output_asm_insn (AS2 (and%B0,%1,%h0), xops);
+-      output_asm_insn (AS2 (xor%B0,%2,%h0), xops);
+-      /* jne label */
+-      break;
++	case EQ:
++	  xops[1] = GEN_INT (0x45);
++	  xops[2] = GEN_INT (0x40);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  output_asm_insn (AS2 (cmp%B0,%2,%h0), xops);
++	  /* je label */
++	  break;
+ 
+-    case GTU:
+-    case LTU:
+-    case GEU:
+-    case LEU:
+-    default:
+-      abort ();
++	case NE:
++	  xops[1] = GEN_INT (0x44);
++	  xops[2] = GEN_INT (0x40);
++	  output_asm_insn (AS2 (and%B0,%1,%h0), xops);
++	  output_asm_insn (AS2 (xor%B0,%2,%h0), xops);
++	  /* jne label */
++	  break;
++
++	case GTU:
++	case LTU:
++	case GEU:
++	case LEU:
++	default:
++	  abort ();
++	}
+     }
+ 
+   return "";
+@@ -5196,6 +5241,13 @@
+      int which_alternative;
+      rtx operands[];
+ {
++  enum rtx_code code = GET_CODE (operands[1]);
++
++  /* It should never happen. */
++  if (!(cc_prev_status.flags & CC_IN_80387)
++      && (code == GT || code == LE || code == GE || code == LT))
++    abort ();
++
+   switch (which_alternative)
+     {
+     case 0:
+@@ -5220,7 +5272,7 @@
+      int which_alternative;
+      rtx operands[];
+ {
+-  int code = GET_CODE (operands[1]);
++  enum rtx_code code = GET_CODE (operands[1]);
+   enum machine_mode mode;
+   rtx xops[4];
+ 
+--- egcs-1.1.2/gcc/config/i386/i386.md.hjlu	Sat Feb 13 06:47:22 1999
++++ egcs-1.1.2/gcc/config/i386/i386.md	Mon Mar 15 17:59:55 1999
+@@ -1230,14 +1230,15 @@
+       operands[1] = force_reg (SFmode, operands[1]);
+     }
+ 
+-  /* If we are loading a floating point constant that isn't 0 or 1
+-     into a register, indicate we need the pic register loaded.  This could
+-     be optimized into stores of constants if the target eventually moves
+-     to memory, but better safe than sorry.  */
++  /* If we are loading a floating point constant that isn't 0 or 1 into a
++     register, indicate we need the pic register loaded.  This could be
++     optimized into stores of constants if the target eventually moves to
++     memory, but better safe than sorry.  */
+   else if ((reload_in_progress | reload_completed) == 0
+       && GET_CODE (operands[0]) != MEM
+       && GET_CODE (operands[1]) == CONST_DOUBLE
+-      && !standard_80387_constant_p (operands[1]))
++      && ((flag_pic && flag_omit_frame_pointer)
++	  || ! standard_80387_constant_p (operands[1])))
+     {
+       rtx insn, note, fp_const;
+ 
+@@ -1385,7 +1386,8 @@
+   else if ((reload_in_progress | reload_completed) == 0
+       && GET_CODE (operands[0]) != MEM
+       && GET_CODE (operands[1]) == CONST_DOUBLE
+-      && !standard_80387_constant_p (operands[1]))
++      && ((flag_pic && flag_omit_frame_pointer)
++	  || ! standard_80387_constant_p (operands[1])))
+     {
+       rtx insn, note, fp_const;
+ 
+@@ -1527,14 +1529,15 @@
+       operands[1] = force_reg (XFmode, operands[1]);
+     }
+ 
+-  /* If we are loading a floating point constant that isn't 0 or 1
+-     into a register, indicate we need the pic register loaded.  This could
+-     be optimized into stores of constants if the target eventually moves
+-     to memory, but better safe than sorry.  */
++  /* If we are loading a floating point constant that isn't 0 or 1 into a
++     register, indicate we need the pic register loaded.  This could be
++     optimized into stores of constants if the target eventually moves to
++     memory, but better safe than sorry.  */
+   else if ((reload_in_progress | reload_completed) == 0
+       && GET_CODE (operands[0]) != MEM
+       && GET_CODE (operands[1]) == CONST_DOUBLE
+-      && !standard_80387_constant_p (operands[1]))
++      && ((flag_pic && flag_omit_frame_pointer)
++	  || ! standard_80387_constant_p (operands[1])))
+     {
+       rtx insn, note, fp_const;
+ 
+@@ -1674,7 +1677,7 @@
+   {
+   rtx xops[2];
+ 
+-  if ((TARGET_ZERO_EXTEND_WITH_AND || REGNO (operands[0]) == 0) 
++  if ((TARGET_ZERO_EXTEND_WITH_AND || REGNO (operands[0]) == 0)
+       && REG_P (operands[1]) && REGNO (operands[0]) == REGNO (operands[1]))
+     {
+       xops[0] = operands[0];
+--- egcs-1.1.2/gcc/config/mips/elf.h.hjlu	Mon Jun  8 22:41:28 1998
++++ egcs-1.1.2/gcc/config/mips/elf.h	Mon Mar 15 17:59:55 1999
+@@ -169,3 +169,77 @@
+   fputc ('\n', FILE);				\
+  } while (0)
+ 
++/* This says how to output assembler code to declare an uninitialized
++   external linkage data object.  Under ELF, we want the alignment of
++   data objects to depend on their types.  We do exactly that here.  */
++
++#define COMMON_ASM_OP  ".comm"
++
++#undef ASM_OUTPUT_ALIGNED_COMMON
++#define ASM_OUTPUT_ALIGNED_COMMON(FILE, NAME, SIZE, ALIGN)		\
++do {									\
++  fprintf ((FILE), "\t%s\t", COMMON_ASM_OP);				\
++  assemble_name ((FILE), (NAME));					\
++  fprintf ((FILE), ",%u,%u\n", (SIZE), (ALIGN) / BITS_PER_UNIT);	\
++} while (0)
++
++/* Similar to above, this says how to output assembler code to declare
++   an uninitialized external linkage data object. */
++
++#define LOCAL_ASM_OP   ".local"
++
++#undef ASM_OUTPUT_ALIGNED_LOCAL
++#define ASM_OUTPUT_ALIGNED_LOCAL(FILE, NAME, SIZE, ALIGN)		\
++do {									\
++  fprintf ((FILE), "\t%s\t", LOCAL_ASM_OP);				\
++  assemble_name ((FILE), (NAME));					\
++  fprintf ((FILE), "\n");						\
++  ASM_OUTPUT_ALIGNED_COMMON (FILE, NAME, SIZE, ALIGN);			\
++} while (0)
++
++/* Support const sections and the ctors and dtors sections for g++.  */
++
++#define CTORS_SECTION_ASM_OP    ".section\t.ctors,\"aw\""
++#define DTORS_SECTION_ASM_OP    ".section\t.dtors,\"aw\""
++
++/* We must redefine a few bits we are overriding from mips.h.  */
++
++#undef EXTRA_SECTIONS
++#define EXTRA_SECTIONS in_sdata, in_rdata, in_ctors, in_dtors
++
++#undef EXTRA_SECTION_FUNCTIONS
++#define EXTRA_SECTION_FUNCTIONS                                         \
++  SECTION_FUNCTION_TEMPLATE(sdata_section, in_sdata, SDATA_SECTION_ASM_OP) \
++  SECTION_FUNCTION_TEMPLATE(rdata_section, in_rdata, RDATA_SECTION_ASM_OP) \
++  SECTION_FUNCTION_TEMPLATE(ctors_section, in_ctors, CTORS_SECTION_ASM_OP) \
++  SECTION_FUNCTION_TEMPLATE(dtors_section, in_dtors, DTORS_SECTION_ASM_OP)
++
++#define SECTION_FUNCTION_TEMPLATE(FN, ENUM, OP)				\
++void FN ()								\
++{									\
++  if (in_section != ENUM)						\
++    {									\
++      fprintf (asm_out_file, "%s\n", OP);				\
++      in_section = ENUM;						\
++    }									\
++}
++
++/* A C statement (sans semicolon) to output an element in the table of
++   global constructors.  */
++#define ASM_OUTPUT_CONSTRUCTOR(FILE,NAME)				\
++  do {									\
++    ctors_section ();							\
++    fprintf (FILE, "\t%s\t", TARGET_LONG64 ? ".dword" : ".word");	\
++    assemble_name (FILE, NAME);						\
++    fprintf (FILE, "\n");						\
++  } while (0)
++
++/* A C statement (sans semicolon) to output an element in the table of
++   global destructors.  */
++#define ASM_OUTPUT_DESTRUCTOR(FILE,NAME)				\
++  do {									\
++    dtors_section ();							\
++    fprintf (FILE, "\t%s\t", TARGET_LONG64 ? ".dword" : ".word");	\
++    assemble_name (FILE, NAME);						\
++    fprintf (FILE, "\n");						\
++  } while (0)
+--- egcs-1.1.2/gcc/config/mips/linux.h.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/mips/linux.h	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,134 @@
++/* Definitions of target machine for GNU compiler,
++   for MIPS Linux-based GNU systems.
++   Copyright (C) 1998 Free Software Foundation, Inc.
++   Contributed by by Ralf Baechle (ralf@gnu.org)
++
++This file is part of GNU CC.
++
++GNU CC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2, or (at your option)
++any later version.
++
++GNU CC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with GNU CC; see the file COPYING.  If not, write to
++the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
++
++#undef TARGET_DEFAULT
++#define TARGET_DEFAULT (MASK_ABICALLS|MASK_GAS)
++
++#undef MACHINE_TYPE
++#if TARGET_ENDIAN_DEFAULT == 0
++#define MACHINE_TYPE "(MIPSEL Linux/ELF)"
++#else
++#define MACHINE_TYPE "(MIPS Linux/ELF)"
++#endif
++
++#undef CPP_PREDEFINES
++#if TARGET_ENDIAN_DEFAULT == 0
++#define CPP_PREDEFINES "\
++-D__ELF__ -D_MIPS_SIM=_MIPS_SIM_ABI32 \
++-D__PIC__ -D__pic__ -Dunix -Dmips -DR3000 -DMIPSEL -Dlinux \
++-Asystem(linux) -Asystem(posix) -Acpu(mips) -Amachine(mips)"
++#else
++#define CPP_PREDEFINES "\
++-D__ELF__ -D_MIPS_SIM=_MIPS_SIM_ABI32 \
++-D__PIC__ -D__pic__ -Dunix -Dmips -DR3000 -DMIPSEB -Dlinux \
++-Asystem(linux) -Asystem(posix) -Acpu(mips) -Amachine(mips)"
++#endif
++
++#undef SUBTARGET_CPP_SPEC
++#define SUBTARGET_CPP_SPEC "\
++%{fno-PIC:-U__PIC__ -U__pic__} %{fno-pic:-U__PIC__ -U__pic__} \
++%{fPIC:-D__PIC__ -D__pic__} %{fpic:-D__PIC__ -D__pic__} \
++%{-D__HAVE_FPU__} \
++%{posix:-D_POSIX_SOURCE}"
++
++#undef SUBTARGET_ASM_SPEC
++#define SUBTARGET_ASM_SPEC "\
++%{!fno-PIC:%{!fno-pic:-KPIC}} %{fPIC:-KPIC} %{fpic:-KPIC} \
++%{fno-PIC:-non_shared} %{fno-pic:-non_shared} \
++%{membedded-pic}"
++
++#undef LINK_SPEC
++#if TARGET_ENDIAN_DEFAULT == 0
++#define LINK_SPEC "-m elf32lsmip \
++%{G*} %{EB} %{EL} %{mips1} %{mips2} %{mips3} %{mips4} \
++%{bestGnum} %{shared} %{non_shared} \
++%{call_shared} %{no_archive} %{exact_version} \
++  %{!shared: \
++      %{!static: \
++       %{rdynamic:-export-dynamic} \
++       %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++       %{static:-static}}"
++#else
++#define LINK_SPEC "-m elf32bsmip \
++%{G*} %{EB} %{EL} %{mips1} %{mips2} %{mips3} %{mips4} \
++%{bestGnum} %{shared} %{non_shared} \
++%{call_shared} %{no_archive} %{exact_version} \
++  %{!shared: \
++      %{!static: \
++       %{rdynamic:-export-dynamic} \
++       %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++       %{static:-static}}"
++#endif
++
++#undef STARTFILE_SPEC
++#define STARTFILE_SPEC \
++"%{!shared:%{pg:gcrt1.o%s}%{!pg:%{p:gcrt1.o%s}\
++   %{!p:%{profile:gcrt1.o%s}%{!profile:crt1.o%s}}}} \
++crti.o%s %{!shared:crtbegin.o%s} %{shared:crtbeginS.o%s}"
++
++#undef ENDFILE_SPEC
++#define ENDFILE_SPEC \
++"%{!shared:crtend.o%s} %{shared:crtendS.o%s} crtn.o%s"
++
++
++/*
++ * We don't need no stinkin' coff.
++ */
++#undef OBJECT_FORMAT_COFF
++
++/*
++ * -G is incompatible with -KPIC which is the default, so only allow objects
++ * in the small data section if the user explicitly asks for it.
++ */
++#undef MIPS_DEFAULT_GVALUE
++#define MIPS_DEFAULT_GVALUE 0
++
++/*
++ * Since gas and gld are standard on Linux, we don't need these
++ */
++#undef MD_EXEC_PREFIX
++#undef MD_STARTFILE_PREFIX
++#undef ASM_FINAL_SPEC
++
++/*
++ * No need for these since gcc is the only c/c++/objc compiler for Linux/MIPS
++ */
++#undef PCC_BITFIELD_TYPE_MATTERS
++#define PCC_BITFIELD_TYPE_MATTERS 1
++#undef PCC_STATIC_STRUCT_RETURN
++
++/* Don't assume anything about the header files. */
++#define NO_IMPLICIT_EXTERN_C
++
++#undef HAVE_ATEXIT
++#define HAVE_ATEXIT
++
++/* Generate calls to memcpy, etc., not bcopy, etc. */
++#define TARGET_MEM_FUNCTIONS
++
++/* Specify wchar_t types.  */
++#undef  WCHAR_TYPE
++#undef  WCHAR_TYPE_SIZE
++#undef  MAX_WCHAR_TYPE_SIZE
++
++#define WCHAR_TYPE      "long int"
++#define WCHAR_TYPE_SIZE LONG_TYPE_SIZE
++#define MAX_WCHAR_TYPE_SIZE     MAX_LONG_TYPE_SIZE
+--- egcs-1.1.2/gcc/config/mips/t-linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/config/mips/t-linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,20 @@
++# Suppress building libgcc1.a, since the MIPS compiler port is complete
++# and does not need anything from libgcc1.a.
++LIBGCC1 = 
++CROSS_LIBGCC1 = 
++
++# Don't run fixproto
++STMP_FIXPROTO =
++
++# Don't install "assert.h" in gcc. We use the one in glibc.
++INSTALL_ASSERT_H =
++
++# This results in far to many libs ...  Unfortunately we need them at
++# least for now.
++MULTILIB_OPTIONS=EL/EB
++MULTILIB_DIRNAMES=el eb
++MULTILIB_MATCHES=
++MULTILIB_EXCLUDE=
++
++LIBGCC = stmp-multilib
++INSTALL_LIBGCC = install-multilib
+--- egcs-1.1.2/gcc/config/sparc/sol2.h.hjlu	Thu Jul  2 23:19:35 1998
++++ egcs-1.1.2/gcc/config/sparc/sol2.h	Mon Mar 15 17:59:55 1999
+@@ -145,6 +145,18 @@
+ 
+ /* This should be the same as in svr4.h, except with -R added.  */
+ #undef LINK_SPEC
++#ifdef CROSS_COMPILE
++#define LINK_SPEC \
++  "-m elf32_sparc %{h*} \
++   %{b} %{Wl,*:%*} \
++   %{static:-dn -Bstatic} \
++   %{shared:-G -dy %{!mimpure-text:-z text} %{!h*:%{o*:-h %*}}} \
++   %{symbolic:-Bsymbolic -G -dy -z text %{!h*:%{o*:-h %*}}} \
++   %{G:-G} \
++   %{YP,*} \
++   %{R*} \
++   %{Qy:} %{!Qn:-Qy}"
++#else
+ #define LINK_SPEC \
+   "%{h*} %{v:-V} \
+    %{b} %{Wl,*:%*} \
+@@ -164,6 +176,7 @@
+        %{pg:-Y P,/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib} \
+        %{!p:%{!pg:-Y P,/usr/ccs/lib:/usr/lib}}}} \
+    %{Qy:} %{!Qn:-Qy}"
++#endif
+ 
+ /* This defines which switch letters take arguments.
+    It is as in svr4.h but with -R added.  */
+--- egcs-1.1.2/gcc/config/linux.h.hjlu	Thu May  7 05:21:48 1998
++++ egcs-1.1.2/gcc/config/linux.h	Mon Mar 15 17:59:55 1999
+@@ -103,7 +103,7 @@
+      %{!profile:%{!ggdb:-lc} %{ggdb:-lg}}}"
+ #else
+ #define LIB_SPEC \
+-  "%{shared: -lc} \
++  "%{shared: -lc --version-script libgcc.map%s} \
+    %{!shared: %{mieee-fp:-lieee} %{pthread:-lpthread} \
+ 	%{profile:-lc_p} %{!profile: -lc}}"
+ #endif
+--- egcs-1.1.2/gcc/config/t-linux.hjlu	Mon Feb 23 04:41:09 1998
++++ egcs-1.1.2/gcc/config/t-linux	Mon Mar 15 17:59:55 1999
+@@ -14,3 +14,17 @@
+ LIBGCC1 = 
+ CROSS_LIBGCC1 =
+ LIBGCC1_TEST =
++
++# Make glocal functions in libgcc.a local to the shared library with
++# symbol versioning.
++LIBGCC_MAP=libgcc.map
++# This list has to be maintained manually. It should cover the libgcc
++# functions, which can be safely made local to a shared library, on
++# all Linux platforms.
++LIBGCC_MAP_LIST=__ashldi3 __ashrdi3 __builtin_saveregs __clear_cache \
++  __cmpdi2 __divdi3 __dummy __eprintf __ffsdi2 __fixdfdi __fixsfdi \
++  __fixunsdfdi __fixunsdfsi __fixunssfdi __fixunssfsi __fixunsxfdi \
++  __fixunsxfsi __fixxfdi __floatdidf __floatdisf __floatdixf \
++  __gcc_bcmp __lshrdi3 __moddi3 __muldi3 __negdi2 __pure_virtual \
++  __ucmpdi2 __udiv_w_sdiv __udivdi3 __udivmoddi4 __umoddi3
++EXTRACT_LIBGCC=for s in $(LIBGCC_MAP_LIST); do echo "    $$s;"; done
+--- egcs-1.1.2/gcc/config/t-linux-gnulibc1.hjlu	Mon Aug 11 11:57:16 1997
++++ egcs-1.1.2/gcc/config/t-linux-gnulibc1	Mon Mar 15 17:59:55 1999
+@@ -1,2 +1,5 @@
+ # We are building for the Linux C library 5.
+ T_CFLAGS = -DUSE_GNULIBC_1
++
++# No symbol versioning.
++LIBGCC_MAP=
+--- egcs-1.1.2/gcc/f/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/f/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,3 @@
++Thu Feb 18 09:06:23 1999  H.J. Lu  (hjl@gnu.org)
++
++	* Make-lang.in (f77.start.encap): Add $(srcdir)/f/intdoc.texi.
+--- egcs-1.1.2/gcc/f/Make-lang.in.hjlu	Fri Feb 26 07:55:40 1999
++++ egcs-1.1.2/gcc/f/Make-lang.in	Mon Mar 15 17:59:55 1999
+@@ -233,9 +233,13 @@
+ #
+ # Build hooks:
+ 
++# During a parallel native build, $(srcdir)/f/intdoc.texi may get built
++# when gcc is halfway installed, which leads a non-working C compiler.
++# As the result, $(srcdir)/f/intdoc.texi may not be generated correctly.
++# We generat it during the normal compile.
+ f77.all.build: g77$(exeext)
+ f77.all.cross: g77-cross$(exeext)
+-f77.start.encap: g77$(exeext)
++f77.start.encap: g77$(exeext) $(srcdir)/f/intdoc.texi
+ f77.rest.encap:
+ 
+ f77.info: f/g77.info
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.law/arm13.C.hjlu	Tue Aug 19 03:35:34 1997
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.law/arm13.C	Mon Mar 15 17:59:55 1999
+@@ -1,10 +1,11 @@
+ // GROUPS passed ARM-compliance
+ #include <stdio.h>
+-#include <stdlib.h>
+ 
+ inline void *operator new(size_t, void *place) { return place; }
++extern "C" {
+ void*     malloc(size_t);
+ void      free(void*);
++};
+ 
+ main()
+ {
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.other/new.C.hjlu	Sun May 10 20:07:25 1998
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.other/new.C	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ // Build don't link:
+ 
+-typedef unsigned int size_t;
++typedef __SIZE_TYPE__ size_t;
+ inline void *
+ operator new(size_t alloc_sz, const char *fname, unsigned lineno)
+ {
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.other/new2.C.hjlu	Thu Jun  4 22:30:27 1998
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.other/new2.C	Mon Mar 15 17:59:55 1999
+@@ -1,5 +1,5 @@
+ //Build don't link:
+-typedef unsigned int size_t;
++typedef __SIZE_TYPE__ size_t;
+ void *operator new(size_t, unsigned int);
+ 
+ struct X{
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb15.C.hjlu	Wed May 27 19:00:35 1998
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb15.C	Mon Mar 15 17:59:55 1999
+@@ -1,12 +1,13 @@
+ // Build don't link:
+ #include<iostream.h>
++#include<stddef.h>
+ 
+ struct A {
+   A() {
+     cerr<<"A constructing\n";
+     throw 1;
+   }
+-  void *operator new(unsigned sz) {
++  void *operator new(size_t sz) {
+     cerr<<"A allocated\n";
+     return ::operator new(sz);
+   }
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb2.C.hjlu	Wed May 27 19:00:35 1998
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb2.C	Mon Mar 15 17:59:55 1999
+@@ -1,5 +1,5 @@
+ // Build don't link: 
+-typedef unsigned int size_t;
++typedef __SIZE_TYPE__ size_t;
+ inline void *operator new(size_t, void *place) throw() { return place; }
+ 
+ struct A
+--- egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb71.C.hjlu	Mon Jun  1 04:24:32 1998
++++ egcs-1.1.2/gcc/testsuite/g++.old-deja/g++.robertl/eb71.C	Mon Mar 15 17:59:55 1999
+@@ -1,5 +1,5 @@
+ // Build don't link: 
+-typedef unsigned int size_t;
++typedef __SIZE_TYPE__ size_t;
+ 
+ class   A {
+ 
+--- egcs-1.1.2/gcc/testsuite/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/testsuite/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,7 @@
++Sun Aug 16 16:22:50 1998  H.J. Lu  (hjl@gnu.org)
++
++	* g++.old-deja/g++.other/new.C: Fix size_t.
++	* g++.old-deja/g++.other/new2.C: Likewise.
++	* g++.old-deja/g++.robertl/eb2.C: Likewise.
++	* g++.old-deja/g++.robertl/eb15.C: Likewise.
++	* g++.old-deja/g++.robertl/eb71.C: Likewise.
+--- egcs-1.1.2/gcc/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/gcc/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,266 @@
++Wed Mar 10 13:18:03 1999  H.J. Lu  (hjl@gnu.org)
++
++	* version.c: Update to egcs-2.91.63.1 19990224/Linux.
++
++Sat Feb  6 09:45:27 1999  H.J. Lu  (hjl@gnu.org)
++
++	* mips/linux.h (LINK_SPEC): Add "-m elf32lsmip" for little
++	endian and "-m elf32bsmip" for big endian.
++
++Mon Jan 18 06:54:29 1998  H.J. Lu  (hjl@gnu.org)
++	       
++	From Ralf Baechle  <ralf@uni-koblenz.de>:
++
++	* configure.in (mips*-*-linux*): New entries.
++	* gcc.1 (mips options): Delete obsolete -mlonglong128.
++	* mips/elf.h (ASM_OUTPUT_ALIGNED_COMMON): New.
++	(ASM_OUTPUT_ALIGNED_LOCAL): New.
++	(EXTRA_SECTIONS, EXTRA_SECTION_FUNCTIONS): Redefine, adding ctors
++	and dtors bits.
++	(ASM_OUTPUT_CONSTRUCTOR, ASM_OUTPUT_DESTRUCTOR): New.
++	* mips/linux.h, mips/t-linux: New files.
++
++Mon Jan 11 20:02:56 1999  H.J. Lu  (hjl@gnu.org)
++
++	* config/i386/i386.c (notice_update_cc): No need to check the
++	INT mode for conditional moves since FLOAT conditional moves
++	don't affect cc0.
++	(output_fp_conditional_move): Abort for LT, LE, GE, and GT
++	signed integer comparisons.
++	(output_int_conditional_move): Use "enum rtx_code" for code
++	type.
++	(output_fp_cc0_set): Don't check the JUMP_INSN code for
++	conditional move.
++
++	* config/i386/i386.c (notice_update_cc, output_float_compare):
++	Enable TARGET_CMOVE support.
++
++	* config/i386/i386.c (output_float_compare): Fix the FLOAT
++	comparison for IEEE math and CC_FCOMI.
++
++Sun Dec 13 09:05:07 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (LIBGCC_MAP): New. Set to empty.
++	(all.cross, rest.cross, rest.encap): Add $(LIBGCC_MAP) to
++	dependency.
++	(install-common): Install libgcc.map if appropriate.
++	(stage1-start, stage2-start, stage3-start, stage4-start): Copy
++	libgcc.map if appropriate.
++	(clean): Also remove libgcc.map.
++	(libgcc.map): New rule.
++
++	* config/t-linux (LIBGCC_MAP): New.
++	(EXTRACT_LIBGCC): New.
++
++	* config/t-linux-gnulibc1 (LIBGCC_MAP): Cleared.
++
++	* config/linux.h (LIB_SPEC): Modefied if USE_GNULIBC_1 is not
++	defined.
++
++Tue Jan 12 19:52:19 1999  Richard Earnshaw (rearnsha@arm.com)
++
++	* reload1.c (choose_reload_regs):  Don't inherit a reload if an input
++	is tied to an earlyclobber operand.
++
++1999-01-11  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/elf.h (ASM_OUTPUT_ALIGN): Leave argument as a power
++	of 2 for the assembler.
++
++1999-01-10  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/linux-elf.h (LIBGCC_SPEC): Include -lfloat if
++	-msoft-float is given.
++	(LIB_SPEC): Replace definition with one similar to that in
++	config/linux.h.
++	(HANDLE_SYSV_PRAGMA): Define.
++
++	* config/arm/arm.h (CPP_FLOAT_SPEC): Define __APCS_FLOAT__ if
++	-mapcs-float is given.
++
++1999-01-06  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/linux-elf.h (DEFAULT_VTABLE_THUNKS): Always define to 
++	1.  Patch from Jim Pick <jim@jimpick.com>.
++
++1999-01-05  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/arm.md (consttable_12): New insn.
++	* config/arm/arm.c (dump_table): Call it.
++	
++	* config/arm/linux-gas.h (INITIALIZE_TRAMPOLINE): Replace the
++	default definition with one that clears the cache for StrongARM
++	compatibility.
++
++1999-01-04  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/linux-elf.h: On a 32-bit target, default to FP_SOFT3.
++	(ASM_SPEC): When -mapcs-float is given, pass -mfloat to the
++ 	assembler so that it can fill in the ELF header correctly.
++
++	* config/arm/arm.h (FUNCTION_ARG, etc): Rewrite more cleanly and
++	fix a couple of bugs.
++	* config/arm/arm.c: Likewise.
++
++1998-12-27  Philip Blundell  <philb@gnu.org>
++
++	* flow.c (find_basic_blocks_1): If RTX_FRAME_RELATED_P is set on a 
++	label, don't add it to label_value_list.
++	* rtl.h: Add comment documenting this behaviour.
++	* config/arm/arm.c (arm_finalize_pic): Set RTX_FRAME_RELATED_P on
++	the temporary label we generate.
++
++1998-12-20  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/linux-elf26.h: Define SUBTARGET_EXTRA_LINK_SPEC
++ 	rather than SUBTARGET_LINK_SPEC directly.
++
++	* config/arm/arm.h: Better support for apcs-float argument passing
++	convention.
++	* config/arm/arm.c: Likewise.
++
++	* config/arm/linux-gas.h: Enable use of sys_cacheflush now that
++	the latest kernels support it.
++
++1998-11-26  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/t-linux (MULTILIB_*): Disable for now.  We don't want 
++	everybody to need both APCS-26 and APCS-32 libraries installed.
++
++1998-11-25  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/elf.h (MAX_OFILE_ALIGNMENT): Define here.
++	(ASM_FILE_START): Add .file directive.
++
++1998-11-24  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/linux-elf.h: Turn on DWARF2 debugging tables as an
++	option, but leave the default set to DBX for the time being.
++
++	* config/arm/t-linux (LIBGCC2_CFLAGS): Add to the old value rather 
++	than replacing it, in case it included -fPIC.  Include $(CROSS) so
++	that the test for inhibit_libc mentioned below can work.
++	(MULTILIB_DIRNAMES): Add apcs-26 versions.
++
++	* config/arm/linux-gas.h: Move definition of inhibit_libc to ...
++	* config/arm/xm-linux.h: ... here.
++	
++	* config/arm/linux-elf26.h (MULTILIB_DEFAULTS): Define.
++	* config/arm/linux-elf.h [! SUBTARGET_DEFAULT_APCS26] 
++	(MULTILIB_DEFAULTS): Likewise.
++
++	* config/arm/linux-gas.h (CLEAR_INSN_CACHE): Correct number for
++ 	sys_cacheflush.
++	
++1998-11-23  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/lib1funcs.asm: Correct name of __ELF__ symbol.
++
++1998-11-17  Philip Blundell  <pb@nexus.co.uk>
++
++	* crtstuff.c (__do_global_ctors_aux): Wrap extra goto in #ifdef
++	__arm__ so as not to hurt other platforms.
++
++1998-10-20  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/linux-elf.h: Make -mshort-load-bytes the default.
++	* config/arm/linux-elf26.h: Likewise.
++
++	* config/arm/linux-gas.h: Define `inhibit_libc' if
++	cross-compiling.
++
++Sun Oct  4 12:39:07 1998  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/elf.h (LOCAL_LABEL_PREFIX): Set to ".".
++
++	* configure.in: Recognise "armv2-*-linux" and use 26-bit mode as
++	the default.
++	* configure: Regenerated.
++
++	* config/arm/arm.h (FUNCTION_ARG): Initial stab at passing
++	floating point args in registers (if APCS_FLOAT).
++	(FUNCTION_ARG_REGNO_P): Allow f0-f3 if APCS_FLOAT.
++
++	* config/arm/linux-elf26.h: New file.
++
++	* config/arm/linux-elf.h (LINK_SPEC): Add more flags.
++	(ASM_SPEC): New macro.
++	(TARGET_DEFAULT): Don't default to 32-bit mode if requested
++	otherwise.
++	(CPP_APCS_PC_DEFAULT_SPEC): Change to APCS-32 if appropriate.
++
++	* config/arm/linux-gas.h (CLEAR_INSN_CACHE): New macro, currently 
++	disabled (awaiting kernel support).
++
++Sat Aug 29 18:25:33 1998  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/linux-elf.h (TARGET_DEFAULT): Make 32-bit code the
++	default.
++
++	* config/arm/lib1funcs.asm: PLT jumps are conditional on __elf__,
++	not PIC.
++	[L_dvmd_lnx] (__div0): Correct check for errors.
++
++	* config/arm/linux-elf.h (LINK_SPEC): Dynamic linker lives in
++ 	/lib, not /lib/elf.  Add support for -rdynamic option.
++
++Wed Aug 19 11:24:15 1998  Philip Blundell  <pb@nexus.co.uk>
++
++	* config/arm/linux-aout.h (SIZE_TYPE, PTRDIFF_TYPE, WCHAR_TYPE,
++	WCHAR_TYPE_SIZE): Move definitions to linux-gas.h.
++
++Sat Aug 15 22:54:14 1998  Philip Blundell  <philb@gnu.org>
++
++	* config/arm/elf.h (ASM_OUTPUT_ADDR_DIFF_ELT): New argument BODY.
++
++	* configure.in: For all ARM targets, match on the pattern
++ 	`arm*-*-..' rather than just `arm-*-...'.  Remove support for old
++	and outdated `arm-*-linuxelf' configuration name.
++
++Fri Jun  5 18:47:09 1998  Philip Blundell  <philb@gnu.org>
++
++	* configure.in: Add support for ELF on ARM systems.
++	* configure: Regenerated.
++
++	* config/arm/elf.h: New file.  Generic ARM/ELF support.
++	* config/arm/linux.h: Rename to ...
++	* config/arm/linux-aout.h: ... this, and move some definitions to...
++	* config/arm/linux-gas.h: ... here.  Add support for weak symbols.
++	* config/arm/linux-elf.h: New file.  Support for Linux with ELF.
++
++	* config/arm/arm.c: Various changes to PIC code generation.
++	* config/arm/lib1funcs.asm: If compiling as PIC, make external
++	calls PLT-relative.  Add .size and .type directives.
++	* config/arm/arm.md: Added wrapper around constant pool generation
++	(bMakingConstTable).  Generate PLT-relative calls when compiling
++	PIC code.
++	* config/arm/arm.h (SYMBOL_REF_LOCAL): Added.  We need to
++	distinguish between cases that require GOT relocs and those
++	that can be done with GOTOFF.
++	(OUTPUT_INST_ADDR_CONST): If we're writing the constant table
++	during a PIC compilation, use GOTOFF relocs.
++
++	* crtstuff.c: Add explicit jump between sections.
++
++	Based on patch by Pat Beirne and Scott Bambrough.
++
++Fri Aug 28 05:06:06 1998  Bernd Schmidt <crux@pool.informatik.rwth-aachen.de>
++
++	* i386.md (movsf, movdf, movxf): Accept no constants if -fPIC and
++	-fomit-frame-pointer.
++
++Sun Jul 12 21:08:23 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (install-man): Install cpp.1.
++
++Sat Jun 27 19:09:29 1998  H.J. Lu  (hjl@gnu.org)
++
++	* configure.in (gxx_include_dir): Changed to
++	'${prefix}/include/g++'-${libstdcxx_interface}.
++
++	* configure: Regenerated.
++
++Fri Mar 20 08:01:41 1998  H.J. Lu  (hjl@gnu.org)
++
++	* config/sparc/sol2.h (LINK_SPEC): Add support for cross
++	compile.
+--- egcs-1.1.2/gcc/Makefile.in.hjlu	Sun Mar  7 19:22:20 1999
++++ egcs-1.1.2/gcc/Makefile.in	Mon Mar 15 17:59:55 1999
+@@ -346,6 +346,9 @@
+ # libgcc1-test target (must also be overridable for a target)
+ LIBGCC1_TEST = libgcc1-test
+ 
++# The libgcc symbol versioning map.
++LIBGCC_MAP=
++
+ # List of extra executables that should be compiled for this target machine
+ # that are used for compiling from source code to object code.
+ # The rules for compiling them should be in the t-* file for the machine.
+@@ -804,13 +807,14 @@
+ # Note that we can compile enquire using the cross-compiler just built,
+ # although we can't run it on this machine.
+ all.cross: native gcc-cross specs stmp-headers $(STMP_FIXPROTO) $(LIBGCC) \
+-	$(LIBGCC1_TEST) $(EXTRA_PARTS) lang.all.cross
++	$(LIBGCC_MAP) $(LIBGCC1_TEST) $(EXTRA_PARTS) lang.all.cross
+ # This is what to compile if making gcc with a cross-compiler.
+ all.build: native xgcc$(exeext) $(EXTRA_PARTS) lang.all.build
+ # This is what must be made before installing GCC and converting libraries.
+ start.encap: native xgcc$(exeext) specs $(LIBGCC1) xlimits.h lang.start.encap
+ # These can't be made until after GCC can run.
+-rest.encap: stmp-headers $(STMP_FIXPROTO) $(LIBGCC) $(EXTRA_PARTS) lang.rest.encap
++rest.encap: stmp-headers $(STMP_FIXPROTO) $(LIBGCC) $(LIBGCC_MAP) \
++	$(EXTRA_PARTS) lang.rest.encap
+ # This is what is made with the host's compiler
+ # whether making a cross compiler or not.
+ native: config.status auto-host.h cpp$(exeext) $(LANGUAGES) \
+@@ -825,7 +829,7 @@
+ 
+ # On the target machine, finish building a cross compiler.
+ # This does the things that can't be done on the host machine.
+-rest.cross: $(LIBGCC) gfloat.h specs
++rest.cross: $(LIBGCC) $(LIBGCC_MAP) gfloat.h specs
+ 
+ # Verify that it works to compile and link libgcc1-test.
+ # If it does, then there are sufficient replacements for libgcc1.a.
+@@ -2191,7 +2195,7 @@
+ # Using unprotoize.c is not quite right in the first place, 
+ # but what better way is there?
+ 	-rm -f libgcc.a libgcc1.a libgcc1-asm.a libgcc2.a libgcc2.ready
+-	-rm -f libgcc1.null
++	-rm -f libgcc1.null libgcc.map
+ 	-rm -f *.dvi
+ 	-rm -f */*.dvi
+ 	-if [ -f md.pre-cpp ]; then \
+@@ -2360,6 +2364,12 @@
+ 	  $(INSTALL_DATA) specs $(libsubdir)/specs; \
+ 	  chmod a-x $(libsubdir)/specs; \
+ 	fi
++# Install libgcc.map if it exists.
++	-if [ -n "$(LIBGCC_MAP)" -a -f libgcc.map ] ; then \
++	  rm -f $(libsubdir)/libgcc.map; \
++	  $(INSTALL_DATA) libgcc.map $(libsubdir)/libgcc.map; \
++	  chmod a-x $(libsubdir)/libgcc.map; \
++	fi
+ # Install protoize if it was compiled.
+ 	-if [ -f protoize$(exeext) ]; \
+ 	then \
+@@ -2839,6 +2849,10 @@
+ 	-if [ -f collect-ld$(exeext) ] ; then $(LN_S) ../collect-ld$(exeext) stage1 ; else true ; fi
+ 	-rm -f stage1/libgcc.a
+ 	-cp libgcc.a stage1
++	-if [ -n "$(LIBGCC_MAP)" -a -f libgcc.map ] ; then \
++	  rm -f stage1/libgcc.map; \
++	  cp libgcc.map stage1; \
++	fi
+ 	-if $(RANLIB_TEST) ; then $(RANLIB) stage1/libgcc.a; else true; fi
+ 	-for f in .. $(EXTRA_MULTILIB_PARTS); do if [ x$${f} != x.. ]; then \
+ 	  cp stage1/$${f} . ; \
+@@ -2860,6 +2874,10 @@
+ 	-if [ -f collect-ld ] ; then $(LN_S) ../collect-ld$(exeext) stage2 ; else true ; fi
+ 	-rm -f stage2/libgcc.a
+ 	-cp libgcc.a stage2
++	-if [ -n "$(LIBGCC_MAP)" -a -f libgcc.map ] ; then \
++	  rm -f stage2/libgcc.map; \
++	  cp libgcc.map stage2; \
++	fi
+ 	-if $(RANLIB_TEST) ; then $(RANLIB) stage2/libgcc.a; else true; fi
+ 	-for f in .. $(EXTRA_MULTILIB_PARTS); do if [ x$${f} != x.. ]; then \
+ 	  cp stage2/$${f} . ; \
+@@ -2881,6 +2899,10 @@
+ 	-if [ -f collect-ld$(exeext) ] ; then $(LN_S) ../collect-ld$(exeext) stage3 ; else true ; fi
+ 	-rm -f stage3/libgcc.a
+ 	-cp libgcc.a stage3
++	-if [ -n "$(LIBGCC_MAP)" -a -f libgcc.map ] ; then \
++	  rm -f stage3/libgcc.map; \
++	  cp libgcc.map stage3; \
++	fi
+ 	-if $(RANLIB_TEST) ; then $(RANLIB) stage3/libgcc.a; else true; fi
+ 	-for f in .. $(EXTRA_MULTILIB_PARTS); do if [ x$${f} != x.. ]; then \
+ 	  cp stage3/$${f} . ; \
+@@ -2902,6 +2924,10 @@
+ 	-if [ -f collect-ld$(exeext) ] ; then $(LN_S) ../collect-ld$(exeext) stage4 ; else true ; fi
+ 	-rm -f stage4/libgcc.a
+ 	-cp libgcc.a stage4
++	-if [ -n "$(LIBGCC_MAP)" -a -f libgcc.map ] ; then \
++	  rm -f stage4/libgcc.map; \
++	  cp libgcc.map stage4; \
++	fi
+ 	-if $(RANLIB_TEST) ; then $(RANLIB) stage4/libgcc.a; else true; fi
+ 	-for f in .. $(EXTRA_MULTILIB_PARTS); do if [ x$${f} != x.. ]; then \
+ 	  cp stage4/$${f} . ; \
+@@ -2983,3 +3009,9 @@
+ 	echo "#endif" >> t-float.h-cross
+ 	mv t-float.h-cross float.h-cross
+ 
++# Rule to generate the libgcc symbol versioning map.
++libgcc.map:
++	echo "GCC.INTERNAL {" > $@
++	echo "  local:" >> $@
++	$(EXTRACT_LIBGCC) >> $@
++	echo "};" >> $@
+--- egcs-1.1.2/gcc/config.sub.hjlu	Sat Apr  4 12:37:36 1998
++++ egcs-1.1.2/gcc/config.sub	Mon Mar 15 17:59:55 1999
+@@ -175,7 +175,7 @@
+ 		;;
+ 	# Recognize the basic CPU types with company name.
+ 	vax-* | tahoe-* | i[34567]86-* | i860-* | m32r-* | m68k-* | m68000-* \
+-	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm-* | c[123]* \
++	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm*-* | c[123]* \
+ 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* \
+ 	      | power-* | none-* | 580-* | cray2-* | h8300-* | i960-* \
+ 	      | xmp-* | ymp-* | hppa-* | hppa1.0-* | hppa1.1-* \
+--- egcs-1.1.2/gcc/configure.hjlu	Sun Mar 14 06:13:11 1999
++++ egcs-1.1.2/gcc/configure	Mon Mar 15 17:59:55 1999
+@@ -631,7 +631,8 @@
+   if test x${enable_version_specific_runtime_libs} = xyes; then
+     gxx_include_dir='${libsubdir}/include/g++'
+   else
+-    gxx_include_dir='${prefix}/include/g++'
++    topsrcdir=${srcdir}/.. . ${srcdir}/../config.if
++    gxx_include_dir='${prefix}/include/g++'-${libstdcxx_interface}
+   fi
+ fi
+ 
+@@ -767,7 +768,7 @@
+ fi
+ 
+ echo $ac_n "checking host system type""... $ac_c" 1>&6
+-echo "configure:771: checking host system type" >&5
++echo "configure:772: checking host system type" >&5
+ 
+ host_alias=$host
+ case "$host_alias" in
+@@ -788,7 +789,7 @@
+ echo "$ac_t""$host" 1>&6
+ 
+ echo $ac_n "checking target system type""... $ac_c" 1>&6
+-echo "configure:792: checking target system type" >&5
++echo "configure:793: checking target system type" >&5
+ 
+ target_alias=$target
+ case "$target_alias" in
+@@ -806,7 +807,7 @@
+ echo "$ac_t""$target" 1>&6
+ 
+ echo $ac_n "checking build system type""... $ac_c" 1>&6
+-echo "configure:810: checking build system type" >&5
++echo "configure:811: checking build system type" >&5
+ 
+ build_alias=$build
+ case "$build_alias" in
+@@ -833,7 +834,7 @@
+ # Extract the first word of "gcc", so it can be a program name with args.
+ set dummy gcc; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:837: checking for $ac_word" >&5
++echo "configure:838: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_CC'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -863,7 +864,7 @@
+   # Extract the first word of "cc", so it can be a program name with args.
+ set dummy cc; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:867: checking for $ac_word" >&5
++echo "configure:868: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_CC'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -914,7 +915,7 @@
+       # Extract the first word of "cl", so it can be a program name with args.
+ set dummy cl; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:918: checking for $ac_word" >&5
++echo "configure:919: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_CC'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -946,7 +947,7 @@
+ fi
+ 
+ echo $ac_n "checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works""... $ac_c" 1>&6
+-echo "configure:950: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works" >&5
++echo "configure:951: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works" >&5
+ 
+ ac_ext=c
+ # CFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
+@@ -957,12 +958,12 @@
+ 
+ cat > conftest.$ac_ext << EOF
+ 
+-#line 961 "configure"
++#line 962 "configure"
+ #include "confdefs.h"
+ 
+ main(){return(0);}
+ EOF
+-if { (eval echo configure:966: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
++if { (eval echo configure:967: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   ac_cv_prog_cc_works=yes
+   # If we can't run a trivial program, we are probably using a cross compiler.
+   if (./conftest; exit) 2>/dev/null; then
+@@ -988,12 +989,12 @@
+   { echo "configure: error: installation or configuration problem: C compiler cannot create executables." 1>&2; exit 1; }
+ fi
+ echo $ac_n "checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler""... $ac_c" 1>&6
+-echo "configure:992: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler" >&5
++echo "configure:993: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler" >&5
+ echo "$ac_t""$ac_cv_prog_cc_cross" 1>&6
+ cross_compiling=$ac_cv_prog_cc_cross
+ 
+ echo $ac_n "checking whether we are using GNU C""... $ac_c" 1>&6
+-echo "configure:997: checking whether we are using GNU C" >&5
++echo "configure:998: checking whether we are using GNU C" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_gcc'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1002,7 +1003,7 @@
+   yes;
+ #endif
+ EOF
+-if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:1006: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
++if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:1007: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+   ac_cv_prog_gcc=yes
+ else
+   ac_cv_prog_gcc=no
+@@ -1021,7 +1022,7 @@
+ ac_save_CFLAGS="$CFLAGS"
+ CFLAGS=
+ echo $ac_n "checking whether ${CC-cc} accepts -g""... $ac_c" 1>&6
+-echo "configure:1025: checking whether ${CC-cc} accepts -g" >&5
++echo "configure:1026: checking whether ${CC-cc} accepts -g" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_cc_g'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1053,7 +1054,7 @@
+ fi
+ 
+ echo $ac_n "checking whether ${MAKE-make} sets \${MAKE}""... $ac_c" 1>&6
+-echo "configure:1057: checking whether ${MAKE-make} sets \${MAKE}" >&5
++echo "configure:1058: checking whether ${MAKE-make} sets \${MAKE}" >&5
+ set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y%./+-%__p_%'`
+ if eval "test \"`echo '$''{'ac_cv_prog_make_${ac_make}_set'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+@@ -1086,7 +1087,7 @@
+ # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:1090: checking for $ac_word" >&5
++echo "configure:1091: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_AWK'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1118,7 +1119,7 @@
+ # Extract the first word of "flex", so it can be a program name with args.
+ set dummy flex; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:1122: checking for $ac_word" >&5
++echo "configure:1123: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_LEX'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1152,7 +1153,7 @@
+   *) ac_lib=l ;;
+   esac
+   echo $ac_n "checking for yywrap in -l$ac_lib""... $ac_c" 1>&6
+-echo "configure:1156: checking for yywrap in -l$ac_lib" >&5
++echo "configure:1157: checking for yywrap in -l$ac_lib" >&5
+ ac_lib_var=`echo $ac_lib'_'yywrap | sed 'y%./+-%__p_%'`
+ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+@@ -1160,7 +1161,7 @@
+   ac_save_LIBS="$LIBS"
+ LIBS="-l$ac_lib  $LIBS"
+ cat > conftest.$ac_ext <<EOF
+-#line 1164 "configure"
++#line 1165 "configure"
+ #include "confdefs.h"
+ /* Override any gcc2 internal prototype to avoid an error.  */
+ /* We use char because int might match the return type of a gcc2
+@@ -1171,7 +1172,7 @@
+ yywrap()
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1175: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
++if { (eval echo configure:1176: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   rm -rf conftest*
+   eval "ac_cv_lib_$ac_lib_var=yes"
+ else
+@@ -1194,7 +1195,7 @@
+ fi
+ 
+ echo $ac_n "checking whether ln works""... $ac_c" 1>&6
+-echo "configure:1198: checking whether ln works" >&5
++echo "configure:1199: checking whether ln works" >&5
+ if eval "test \"`echo '$''{'gcc_cv_prog_LN'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1226,7 +1227,7 @@
+ fi
+ 
+ echo $ac_n "checking whether ln -s works""... $ac_c" 1>&6
+-echo "configure:1230: checking whether ln -s works" >&5
++echo "configure:1231: checking whether ln -s works" >&5
+ if eval "test \"`echo '$''{'gcc_cv_prog_LN_S'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1258,19 +1259,19 @@
+ fi
+ 
+ echo $ac_n "checking for volatile""... $ac_c" 1>&6
+-echo "configure:1262: checking for volatile" >&5
++echo "configure:1263: checking for volatile" >&5
+ if eval "test \"`echo '$''{'gcc_cv_c_volatile'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1267 "configure"
++#line 1268 "configure"
+ #include "confdefs.h"
+ 
+ int main() {
+ volatile int foo;
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1274: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:1275: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   gcc_cv_c_volatile=yes
+ else
+@@ -1293,7 +1294,7 @@
+ # Extract the first word of "ranlib", so it can be a program name with args.
+ set dummy ranlib; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:1297: checking for $ac_word" >&5
++echo "configure:1298: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_RANLIB'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1325,7 +1326,7 @@
+ # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:1329: checking for $ac_word" >&5
++echo "configure:1330: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_YACC'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -1366,7 +1367,7 @@
+ # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
+ # ./install, which can be erroneously created by make from ./install.sh.
+ echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
+-echo "configure:1370: checking for a BSD compatible install" >&5
++echo "configure:1371: checking for a BSD compatible install" >&5
+ if test -z "$INSTALL"; then
+ if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+@@ -1417,7 +1418,7 @@
+ 
+ 
+ echo $ac_n "checking how to run the C preprocessor""... $ac_c" 1>&6
+-echo "configure:1421: checking how to run the C preprocessor" >&5
++echo "configure:1422: checking how to run the C preprocessor" >&5
+ # On Suns, sometimes $CPP names a directory.
+ if test -n "$CPP" && test -d "$CPP"; then
+   CPP=
+@@ -1432,13 +1433,13 @@
+   # On the NeXT, cc -E runs the code through the compiler's parser,
+   # not just through cpp.
+   cat > conftest.$ac_ext <<EOF
+-#line 1436 "configure"
++#line 1437 "configure"
+ #include "confdefs.h"
+ #include <assert.h>
+ Syntax Error
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1442: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1443: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   :
+@@ -1449,13 +1450,13 @@
+   rm -rf conftest*
+   CPP="${CC-cc} -E -traditional-cpp"
+   cat > conftest.$ac_ext <<EOF
+-#line 1453 "configure"
++#line 1454 "configure"
+ #include "confdefs.h"
+ #include <assert.h>
+ Syntax Error
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1459: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1460: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   :
+@@ -1466,13 +1467,13 @@
+   rm -rf conftest*
+   CPP="${CC-cc} -nologo -E"
+   cat > conftest.$ac_ext <<EOF
+-#line 1470 "configure"
++#line 1471 "configure"
+ #include "confdefs.h"
+ #include <assert.h>
+ Syntax Error
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1476: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1477: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   :
+@@ -1497,12 +1498,12 @@
+ echo "$ac_t""$CPP" 1>&6
+ 
+ echo $ac_n "checking for ANSI C header files""... $ac_c" 1>&6
+-echo "configure:1501: checking for ANSI C header files" >&5
++echo "configure:1502: checking for ANSI C header files" >&5
+ if eval "test \"`echo '$''{'ac_cv_header_stdc'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1506 "configure"
++#line 1507 "configure"
+ #include "confdefs.h"
+ #include <stdlib.h>
+ #include <stdarg.h>
+@@ -1510,7 +1511,7 @@
+ #include <float.h>
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1514: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1515: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   rm -rf conftest*
+@@ -1527,7 +1528,7 @@
+ if test $ac_cv_header_stdc = yes; then
+   # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
+ cat > conftest.$ac_ext <<EOF
+-#line 1531 "configure"
++#line 1532 "configure"
+ #include "confdefs.h"
+ #include <string.h>
+ EOF
+@@ -1545,7 +1546,7 @@
+ if test $ac_cv_header_stdc = yes; then
+   # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
+ cat > conftest.$ac_ext <<EOF
+-#line 1549 "configure"
++#line 1550 "configure"
+ #include "confdefs.h"
+ #include <stdlib.h>
+ EOF
+@@ -1566,7 +1567,7 @@
+   :
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1570 "configure"
++#line 1571 "configure"
+ #include "confdefs.h"
+ #include <ctype.h>
+ #define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
+@@ -1577,7 +1578,7 @@
+ exit (0); }
+ 
+ EOF
+-if { (eval echo configure:1581: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
++if { (eval echo configure:1582: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+ then
+   :
+ else
+@@ -1601,12 +1602,12 @@
+ fi
+ 
+ echo $ac_n "checking whether time.h and sys/time.h may both be included""... $ac_c" 1>&6
+-echo "configure:1605: checking whether time.h and sys/time.h may both be included" >&5
++echo "configure:1606: checking whether time.h and sys/time.h may both be included" >&5
+ if eval "test \"`echo '$''{'ac_cv_header_time'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1610 "configure"
++#line 1611 "configure"
+ #include "confdefs.h"
+ #include <sys/types.h>
+ #include <sys/time.h>
+@@ -1615,7 +1616,7 @@
+ struct tm *tp;
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1619: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:1620: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   ac_cv_header_time=yes
+ else
+@@ -1639,17 +1640,17 @@
+ do
+ ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
+ echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
+-echo "configure:1643: checking for $ac_hdr" >&5
++echo "configure:1644: checking for $ac_hdr" >&5
+ if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1648 "configure"
++#line 1649 "configure"
+ #include "confdefs.h"
+ #include <$ac_hdr>
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1653: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1654: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   rm -rf conftest*
+@@ -1679,17 +1680,17 @@
+ # Check for thread headers.
+ ac_safe=`echo "thread.h" | sed 'y%./+-%__p_%'`
+ echo $ac_n "checking for thread.h""... $ac_c" 1>&6
+-echo "configure:1683: checking for thread.h" >&5
++echo "configure:1684: checking for thread.h" >&5
+ if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1688 "configure"
++#line 1689 "configure"
+ #include "confdefs.h"
+ #include <thread.h>
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1693: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1694: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   rm -rf conftest*
+@@ -1713,17 +1714,17 @@
+ 
+ ac_safe=`echo "pthread.h" | sed 'y%./+-%__p_%'`
+ echo $ac_n "checking for pthread.h""... $ac_c" 1>&6
+-echo "configure:1717: checking for pthread.h" >&5
++echo "configure:1718: checking for pthread.h" >&5
+ if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1722 "configure"
++#line 1723 "configure"
+ #include "confdefs.h"
+ #include <pthread.h>
+ EOF
+ ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+-{ (eval echo configure:1727: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
++{ (eval echo configure:1728: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
+ if test -z "$ac_err"; then
+   rm -rf conftest*
+@@ -1749,12 +1750,12 @@
+ # See if the system preprocessor understands the ANSI C preprocessor
+ # stringification operator.
+ echo $ac_n "checking whether cpp understands the stringify operator""... $ac_c" 1>&6
+-echo "configure:1753: checking whether cpp understands the stringify operator" >&5
++echo "configure:1754: checking whether cpp understands the stringify operator" >&5
+ if eval "test \"`echo '$''{'gcc_cv_c_have_stringify'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1758 "configure"
++#line 1759 "configure"
+ #include "confdefs.h"
+ 
+ int main() {
+@@ -1762,7 +1763,7 @@
+ char *test = S(foo);
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1766: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:1767: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   gcc_cv_c_have_stringify=yes
+ else
+@@ -1785,12 +1786,12 @@
+ # Use <inttypes.h> only if it exists,
+ # doesn't clash with <sys/types.h>, and declares intmax_t.
+ echo $ac_n "checking for inttypes.h""... $ac_c" 1>&6
+-echo "configure:1789: checking for inttypes.h" >&5
++echo "configure:1790: checking for inttypes.h" >&5
+ if eval "test \"`echo '$''{'gcc_cv_header_inttypes_h'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1794 "configure"
++#line 1795 "configure"
+ #include "confdefs.h"
+ #include <sys/types.h>
+ #include <inttypes.h>
+@@ -1798,7 +1799,7 @@
+ intmax_t i = -1;
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1802: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:1803: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   gcc_cv_header_inttypes_h=yes
+ else
+@@ -1823,12 +1824,12 @@
+ 	sysconf isascii gettimeofday
+ do
+ echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
+-echo "configure:1827: checking for $ac_func" >&5
++echo "configure:1828: checking for $ac_func" >&5
+ if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1832 "configure"
++#line 1833 "configure"
+ #include "confdefs.h"
+ /* System header to define __stub macros and hopefully few prototypes,
+     which can conflict with char $ac_func(); below.  */
+@@ -1851,7 +1852,7 @@
+ 
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1855: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
++if { (eval echo configure:1856: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   rm -rf conftest*
+   eval "ac_cv_func_$ac_func=yes"
+ else
+@@ -1877,12 +1878,12 @@
+ 
+ 
+ echo $ac_n "checking for vprintf""... $ac_c" 1>&6
+-echo "configure:1881: checking for vprintf" >&5
++echo "configure:1882: checking for vprintf" >&5
+ if eval "test \"`echo '$''{'ac_cv_func_vprintf'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1886 "configure"
++#line 1887 "configure"
+ #include "confdefs.h"
+ /* System header to define __stub macros and hopefully few prototypes,
+     which can conflict with char vprintf(); below.  */
+@@ -1905,7 +1906,7 @@
+ 
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1909: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
++if { (eval echo configure:1910: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   rm -rf conftest*
+   eval "ac_cv_func_vprintf=yes"
+ else
+@@ -1929,12 +1930,12 @@
+ 
+ if test "$ac_cv_func_vprintf" != yes; then
+ echo $ac_n "checking for _doprnt""... $ac_c" 1>&6
+-echo "configure:1933: checking for _doprnt" >&5
++echo "configure:1934: checking for _doprnt" >&5
+ if eval "test \"`echo '$''{'ac_cv_func__doprnt'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 1938 "configure"
++#line 1939 "configure"
+ #include "confdefs.h"
+ /* System header to define __stub macros and hopefully few prototypes,
+     which can conflict with char _doprnt(); below.  */
+@@ -1957,7 +1958,7 @@
+ 
+ ; return 0; }
+ EOF
+-if { (eval echo configure:1961: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
++if { (eval echo configure:1962: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   rm -rf conftest*
+   eval "ac_cv_func__doprnt=yes"
+ else
+@@ -1993,7 +1994,7 @@
+ 
+ 
+ echo $ac_n "checking whether the printf functions support %p""... $ac_c" 1>&6
+-echo "configure:1997: checking whether the printf functions support %p" >&5
++echo "configure:1998: checking whether the printf functions support %p" >&5
+ if eval "test \"`echo '$''{'gcc_cv_func_printf_ptr'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -2001,7 +2002,7 @@
+   gcc_cv_func_printf_ptr=no
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 2005 "configure"
++#line 2006 "configure"
+ #include "confdefs.h"
+ #include <stdio.h>
+ 
+@@ -2014,7 +2015,7 @@
+   exit (p != q);
+ }
+ EOF
+-if { (eval echo configure:2018: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
++if { (eval echo configure:2019: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+ then
+   gcc_cv_func_printf_ptr=yes
+ else
+@@ -2042,12 +2043,12 @@
+ 	index rindex getenv atol sbrk abort atof strerror getcwd getwd
+ do
+ echo $ac_n "checking whether $ac_func must be declared""... $ac_c" 1>&6
+-echo "configure:2046: checking whether $ac_func must be declared" >&5
++echo "configure:2047: checking whether $ac_func must be declared" >&5
+ if eval "test \"`echo '$''{'gcc_cv_decl_needed_$ac_func'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 2051 "configure"
++#line 2052 "configure"
+ #include "confdefs.h"
+ 
+ #include <stdio.h>
+@@ -2075,7 +2076,7 @@
+ char *(*pfn) = (char *(*)) $ac_func
+ ; return 0; }
+ EOF
+-if { (eval echo configure:2079: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:2080: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   eval "gcc_cv_decl_needed_$ac_func=no"
+ else
+@@ -2104,12 +2105,12 @@
+ for ac_func in getrlimit setrlimit
+ do
+ echo $ac_n "checking whether $ac_func must be declared""... $ac_c" 1>&6
+-echo "configure:2108: checking whether $ac_func must be declared" >&5
++echo "configure:2109: checking whether $ac_func must be declared" >&5
+ if eval "test \"`echo '$''{'gcc_cv_decl_needed_$ac_func'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 2113 "configure"
++#line 2114 "configure"
+ #include "confdefs.h"
+ 
+ #include <stdio.h>
+@@ -2141,7 +2142,7 @@
+ char *(*pfn) = (char *(*)) $ac_func
+ ; return 0; }
+ EOF
+-if { (eval echo configure:2145: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:2146: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   eval "gcc_cv_decl_needed_$ac_func=no"
+ else
+@@ -2168,12 +2169,12 @@
+ 
+ 
+ echo $ac_n "checking for sys_siglist declaration in signal.h or unistd.h""... $ac_c" 1>&6
+-echo "configure:2172: checking for sys_siglist declaration in signal.h or unistd.h" >&5
++echo "configure:2173: checking for sys_siglist declaration in signal.h or unistd.h" >&5
+ if eval "test \"`echo '$''{'ac_cv_decl_sys_siglist'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+-#line 2177 "configure"
++#line 2178 "configure"
+ #include "confdefs.h"
+ #include <sys/types.h>
+ #include <signal.h>
+@@ -2185,7 +2186,7 @@
+ char *msg = *(sys_siglist + 1);
+ ; return 0; }
+ EOF
+-if { (eval echo configure:2189: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
++if { (eval echo configure:2190: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+   rm -rf conftest*
+   ac_cv_decl_sys_siglist=yes
+ else
+@@ -2511,18 +2512,38 @@
+ 		# On NetBSD, the headers are already okay, except for math.h.
+ 		fixincludes=fixinc.wrap
+ 		;;
+-	arm-*-linux-gnuaout*)		# ARM GNU/Linux
++	arm*-*-linux-gnuaout*)		# ARM GNU/Linux with a.out
+ 		cpu_type=arm
+ 		xmake_file=x-linux
+-		tm_file=arm/linux-gas.h
++		tm_file=arm/linux-aout.h
+ 		tmake_file=arm/t-linux
+ 		fixincludes=Makefile.in
+ 		gnu_ld=yes
+ 		;;
+-	arm-*-aout)
++	arm*-*-linux-gnu*)		# ARM GNU/Linux with ELF
++		xm_file=arm/xm-linux.h
++		xmake_file=x-linux
++		case $machine in
++		armv2*-*-*)
++			tm_file=arm/linux-elf26.h
++			;;
++		*)
++			tm_file=arm/linux-elf.h
++			;;
++		esac
++		tmake_file="t-linux arm/t-linux"
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++		fixincludes=Makefile.in		# Nothing to fix
++		gnu_ld=yes
++		;;
++	arm*-*-aout)
+ 		tm_file=arm/aout.h
+ 		tmake_file=arm/t-bare
+ 		;;
++	arm*-*-elf)
++		tm_file=arm/elf.h
++		tmake_file=arm/t-bare
++		;;
+ 	c1-convex-*)			# Convex C1
+ 		target_cpu_default=1
+ 		use_collect2=yes
+@@ -4189,6 +4210,24 @@
+ 			use_collect2=yes
+ 		fi
+ 		;;
++	mips*el-*-linux*)		# Little endian MIPS w/ Linux & ELF
++		tm_file="mips/elfl.h mips/linux.h"
++		tmake_file="mips/t-linux"
++		xm_file="mips/xm-mips.h xm-linux.h"
++                xmake_file=none
++		gnu_ld=yes gas=yes
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++                fixincludes=Makefile.in
++		;;
++	mips*-*-linux*)			# Big endian MIPS w/ Linux & ELF
++		tm_file="mips/elf.h mips/linux.h"
++		tmake_file="mips/t-linux"
++		xm_file="mips/xm-mips.h xm-linux.h"
++                xmake_file=none
++		gnu_ld=yes gas=yes
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++                fixincludes=Makefile.in
++		;;
+ 	mips-*-gnu*)
+ 		;;
+ 	mipsel-*-ecoff*)
+@@ -5409,7 +5448,7 @@
+ 
+ # Figure out what assembler alignment features are present.
+ echo $ac_n "checking assembler alignment features""... $ac_c" 1>&6
+-echo "configure:5413: checking assembler alignment features" >&5
++echo "configure:5452: checking assembler alignment features" >&5
+ gcc_cv_as=
+ gcc_cv_as_alignment_features=
+ gcc_cv_as_gas_srcdir=`echo $srcdir | sed -e 's,gcc$,gas,'`
+--- egcs-1.1.2/gcc/configure.in.hjlu	Sun Mar  7 19:22:22 1999
++++ egcs-1.1.2/gcc/configure.in	Mon Mar 15 17:59:55 1999
+@@ -85,7 +85,8 @@
+   if test x${enable_version_specific_runtime_libs} = xyes; then
+     gxx_include_dir='${libsubdir}/include/g++'
+   else
+-    gxx_include_dir='${prefix}/include/g++'
++    topsrcdir=${srcdir}/.. . ${srcdir}/../config.if
++    gxx_include_dir='${prefix}/include/g++'-${libstdcxx_interface}
+   fi
+ fi
+ 
+@@ -532,18 +533,38 @@
+ 		# On NetBSD, the headers are already okay, except for math.h.
+ 		fixincludes=fixinc.wrap
+ 		;;
+-	arm-*-linux-gnuaout*)		# ARM GNU/Linux
++	arm*-*-linux-gnuaout*)		# ARM GNU/Linux with a.out
+ 		cpu_type=arm
+ 		xmake_file=x-linux
+-		tm_file=arm/linux-gas.h
++		tm_file=arm/linux-aout.h
+ 		tmake_file=arm/t-linux
+ 		fixincludes=Makefile.in
+ 		gnu_ld=yes
+ 		;;
+-	arm-*-aout)
++	arm*-*-linux-gnu*)		# ARM GNU/Linux with ELF
++		xm_file=arm/xm-linux.h
++		xmake_file=x-linux
++		case $machine in
++		armv2*-*-*)
++			tm_file=arm/linux-elf26.h
++			;;
++		*)
++			tm_file=arm/linux-elf.h
++			;;
++		esac
++		tmake_file="t-linux arm/t-linux"
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++		fixincludes=Makefile.in		# Nothing to fix
++		gnu_ld=yes
++		;;
++	arm*-*-aout)
+ 		tm_file=arm/aout.h
+ 		tmake_file=arm/t-bare
+ 		;;
++	arm*-*-elf)
++		tm_file=arm/elf.h
++		tmake_file=arm/t-bare
++		;;
+ 	c1-convex-*)			# Convex C1
+ 		target_cpu_default=1
+ 		use_collect2=yes
+@@ -2209,6 +2230,24 @@
+ 		then
+ 			use_collect2=yes
+ 		fi
++		;;
++	mips*el-*-linux*)		# Little endian MIPS w/ Linux & ELF
++		tm_file="mips/elfl.h mips/linux.h"
++		tmake_file="mips/t-linux"
++		xm_file="mips/xm-mips.h xm-linux.h"
++                xmake_file=none
++		gnu_ld=yes gas=yes
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++                fixincludes=Makefile.in
++		;;
++	mips*-*-linux*)			# Big endian MIPS w/ Linux & ELF
++		tm_file="mips/elf.h mips/linux.h"
++		tmake_file="mips/t-linux"
++		xm_file="mips/xm-mips.h xm-linux.h"
++                xmake_file=none
++		gnu_ld=yes gas=yes
++		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
++                fixincludes=Makefile.in
+ 		;;
+ 	mips-*-gnu*)
+ 		;;
+--- egcs-1.1.2/gcc/flow.c.hjlu	Wed Jul  8 17:15:55 1998
++++ egcs-1.1.2/gcc/flow.c	Mon Mar 15 17:59:55 1999
+@@ -485,8 +485,12 @@
+ 	  /* Make a list of all labels referred to other than by jumps.  */
+ 	  for (note = REG_NOTES (insn); note; note = XEXP (note, 1))
+ 	    if (REG_NOTE_KIND (note) == REG_LABEL)
+-	      label_value_list = gen_rtx_EXPR_LIST (VOIDmode, XEXP (note, 0),
+-						    label_value_list);
++	      {
++		rtx lab = XEXP (note, 0);
++		if (! RTX_FRAME_RELATED_P (lab))
++		  label_value_list = gen_rtx_EXPR_LIST (VOIDmode, lab,
++							label_value_list);
++	      }
+ 	}
+ 
+       /* Keep a lifo list of the currently active exception notes.  */
+--- egcs-1.1.2/gcc/gcc.1.hjlu	Sat Mar 13 21:25:58 1999
++++ egcs-1.1.2/gcc/gcc.1	Mon Mar 15 17:59:55 1999
+@@ -420,7 +420,6 @@
+ \-mips3
+ \-mint64
+ \-mlong64
+-\-mlonglong128
+ \-mmips\-as
+ \-mgas
+ \-mrnames
+--- egcs-1.1.2/gcc/reload1.c.hjlu	Thu Aug 27 18:48:14 1998
++++ egcs-1.1.2/gcc/reload1.c	Mon Mar 15 17:59:55 1999
+@@ -5721,7 +5721,18 @@
+ 			  for (i1 = 0; i1 < n_earlyclobbers; i1++)
+ 			    if (reg_overlap_mentioned_for_reload_p
+ 				(reg_last_reload_reg[regno],
+-				 reload_earlyclobbers[i1]))
++				 reload_earlyclobbers[i1])
++				/* If this reload is an input tied to
++				   an earlyclobber output and there
++				   are other reloads for this insn,
++				   then inheriting this reload might
++				   clobber other reloaded inputs.
++				   Detecting this while scanning the
++				   other reloads is hard, so don't
++				   inherit the reload in this rare
++				   case. */
++				|| (reload_earlyclobbers[i1] == reload_out[r]
++				    && n_reloads > 1))
+ 			      break;
+ 
+ 			  if (i1 != n_earlyclobbers
+--- egcs-1.1.2/gcc/rtl.h.hjlu	Sun Jul 12 23:34:12 1998
++++ egcs-1.1.2/gcc/rtl.h	Mon Mar 15 17:59:55 1999
+@@ -165,7 +165,10 @@
+   unsigned integrated : 1;
+   /* Nonzero if this rtx is related to the call frame, either changing how
+      we compute the frame address or saving and restoring registers in
+-     the prologue and epilogue.  */
++     the prologue and epilogue.
++     1 in a CODE_LABEL if this label is only used as part of the prologue.
++     Flow will assume the label is not a potential nonlocal goto 
++     destination in this case.  */
+   unsigned frame_related : 1;
+   /* The first element of the operands of this rtx.
+      The number of operands and their types are controlled
+--- egcs-1.1.2/gcc/version.c.hjlu	Sat Mar 13 21:26:02 1999
++++ egcs-1.1.2/gcc/version.c	Mon Mar 15 18:00:22 1999
+@@ -1 +1 @@
+-char *version_string = "egcs-2.91.66 19990314 (egcs-1.1.2 release)";
++char *version_string = "egcs-2.91.66 19990314/Linux (egcs-1.1.2 release)";
+--- egcs-1.1.2/libf2c/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/libf2c/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,3 @@
++Fri Jan 15 07:06:25 1999  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (FLAGS_TO_PASS): Use "" instead of ''.
+--- egcs-1.1.2/libf2c/Makefile.in.hjlu	Thu Oct  1 20:29:06 1998
++++ egcs-1.1.2/libf2c/Makefile.in	Mon Mar 15 17:59:55 1999
+@@ -53,13 +53,13 @@
+ # Quote this way so that it can be used to set shell variables too.
+ # Currently no use for PICFLAG, RUNTESTFLAGS -- check usage.
+ FLAGS_TO_PASS= \
+-	CC='$(CC)' \
+-	CFLAGS='$(CFLAGS)' \
+-	CPPFLAGS='$(CPPFLAGS)' \
+-	AR='$(AR)' \
+-	RANLIB='$(RANLIB)' \
+-	PICFLAG='$(PICFLAG)' \
+-	RUNTESTFLAGS='$(RUNTESTFLAGS)'
++	"CC=$(CC)" \
++	"CFLAGS=$(CFLAGS)" \
++	"CPPFLAGS=$(CPPFLAGS)" \
++	"AR=$(AR)" \
++	"RANLIB=$(RANLIB)" \
++	"PICFLAG=$(PICFLAG)" \
++	"RUNTESTFLAGS=$(RUNTESTFLAGS)"
+ 
+ LIBG2C = libg2c.a
+ 
+--- egcs-1.1.2/libiberty/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/libiberty/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,3 @@
++1999-01-13  Philip Blundell  <pb@nexus.co.uk>
++
++	* config.table (frags): Add support for ARM PIC.
+--- egcs-1.1.2/libiberty/config.table.hjlu	Mon Nov 23 03:46:58 1998
++++ egcs-1.1.2/libiberty/config.table	Mon Mar 15 17:59:55 1999
+@@ -19,6 +19,7 @@
+ if [ "${shared}" = "yes" ]; then
+   case "${host}" in
+     *-*-cygwin32*) ;;
++    arm*-*) frags="${frags} ../../config/mh-armpic" ;;
+     hppa*-*-*)	   frags="${frags} ../../config/mh-papic" ;;
+     i[3456]86-*-*) frags="${frags} ../../config/mh-x86pic" ;;
+     alpha*-*-linux*) frags="${frags} ../../config/mh-elfalphapic" ;;
+--- egcs-1.1.2/libio/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/libio/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,21 @@
++Wed Feb  3 22:05:41 1999  H.J. Lu  (hjl@gnu.org)
++			  Jeffrey A Law  (law@cygnus.com)
++
++	* Makefile.in (iostream.list): Remove dependency on
++	stamp-picdir.
++	($(LIBIOSTREAM_DEP)): Depend on stamp-picdir.
++	($(LIBIO_FILES)): Similarly.
++
++	* config.shared (all): Make $(PICDIR) concurrent.
++
++1999-01-10  Philip Blundell  <philb@gnu.org>
++
++	* configure.in (frags): Add support for ARM PIC.
++
++Fri Aug 28 19:53:33 1998  H.J. Lu  (hjl@gnu.org)
++
++	* configure.in: Fix INSTALLDIR replacement for cross-compile.
++
++Sat Jun 27 19:09:29 1998  H.J. Lu  (hjl@gnu.org)
++
++	* config.shared: Set libsubdir.
+--- egcs-1.1.2/libio/Makefile.in.hjlu	Sat Jun 27 01:24:20 1998
++++ egcs-1.1.2/libio/Makefile.in	Mon Mar 15 17:59:55 1999
+@@ -88,8 +88,12 @@
+ tpipe: tpipe.o libio.a
+ 	$(CC) $(CFLAGS) -o tpipe tpipe.o libio.a
+ 
+-iostream.list: stamp-picdir $(_G_CONFIG_H) $(LIBIOSTREAM_DEP)
++iostream.list: $(_G_CONFIG_H) $(LIBIOSTREAM_DEP)
+ 	@echo "$(LIBIOSTREAM_USE)"> iostream.list
++
++# The "pic" subdir must be created before we can put any object
++# files into it.
++$(LIBIOSTREAM_DEP) $(LIBIO_OBJECTS): stamp-picdir
+ 
+ stmp-stdio:
+ 	@rootme=`pwd`/ ; export rootme; cd stdio ; \
+--- egcs-1.1.2/libio/config.shared.hjlu	Thu Jun 25 22:13:51 1998
++++ egcs-1.1.2/libio/config.shared	Mon Mar 15 17:59:55 1999
+@@ -79,6 +79,7 @@
+ 
+ echo 'bindir = $(exec_prefix)/bin'
+ echo 'libdir = $(exec_prefix)/lib'
++echo 'libsubdir = $(libdir)/gcc-lib/$(target_alias)/$(gcc_version)'
+ 
+ echo 'datadir = $(prefix)/lib'
+ echo 'mandir = $(prefix)/man'
+@@ -179,12 +180,13 @@
+   fi
+ fi
+ 
+-ALL='$(PICDIR)'" ${ALL}"
+-
+ echo >&2 "all: ${ALL} multi-all"
+ if [ "${SUBDIRS}" != "" ] ; then
+   echo >&2 '	@rootme=`pwd`/; export rootme; \'
+   echo >&2 '	$(MAKE) "DODIRS=$(SUBDIRS)" DO=all $(FLAGS_TO_PASS) subdir_do'
++fi
++if [ "${LIBDIR}" = "yes" ]; then
++  echo >&2 "${ALL} "'multi-all: $(PICDIR)'
+ fi
+ echo >&2 '.PHONY: all'
+ echo >&2 ''
+--- egcs-1.1.2/libio/configure.in.hjlu	Mon Nov 23 03:47:30 1998
++++ egcs-1.1.2/libio/configure.in	Mon Mar 15 17:59:55 1999
+@@ -55,6 +55,7 @@
+   case "${target}" in
+     hppa*-*)	 frags="${frags} ../../config/mh-papic" ;;
+     i[3456]86-*) frags="${frags} ../../config/mh-x86pic" ;;
++    arm*-*) frags="${frags} ../../config/mh-armpic" ;;
+     alpha*-*-linux*) frags="${frags} ../../config/mh-elfalphapic" ;;
+ 
+     # There doesn't seem to be a simpler way to say all-ppc except AIX
+@@ -146,7 +147,7 @@
+ if [ -n "${with_cross_host}" ] ; then
+     rm -f Makefile.tem
+     sed \
+-	-e 's|INSTALLDIR.*=.*$|INSTALLDIR = $(tooldir)/lib|' \
++	-e 's|\(^[ 	]*INSTALLDIR[ 	]*=[ 	]*\)[^ 	;]*|\1$(tooldir)/lib|' \
+ 	Makefile >Makefile.tem
+     mv -f Makefile.tem Makefile
+ fi
+--- egcs-1.1.2/libstdc++/config/aix.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/aix.ml	Mon Mar 15 17:59:55 1999
+@@ -1,8 +1,9 @@
+ # AIX has wierd shared/non-shared libraries.
+ 
+-ARLIB	 = libstdc++-ar.a 
++ARLIB	 = libstdc++-ar.a.$(VERSION)
++ARLINK	 = libstdc++-ar.a
+ SHLINK   = libstdc++.a
+-LIBS     = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS     = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ DEPLIBS  = ../$(SHLIB)
+ SHDEPS   = -lm
+ SHFLAGS  = -Wl,-unix
+--- egcs-1.1.2/libstdc++/config/dec-osf.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/dec-osf.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # We don't need -fpic on the alpha, so let's install both the shared and
+ # non-shared versions.
+ 
+-LIBS     = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS     = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ DEPLIBS  = ../$(SHLIB)
+ SHDEPS   = -lm
+--- egcs-1.1.2/libstdc++/config/elf.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/elf.ml	Mon Mar 15 17:59:55 1999
+@@ -1,7 +1,7 @@
+ # Elf without shared libm -- we have to link with the archive library, even
+ # for programs that don't use complex.
+ 
+-LIBS    = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS    = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ SHFLAGS = -h $(SHLIB)
+ DEPLIBS = ../$(SHLIB)
+ LDLIBS  = -L.. -lstdc++ -lm
+--- egcs-1.1.2/libstdc++/config/elfshlibm.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/elfshlibm.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # Elf with shared libm, so we can link it into the shared libstdc++.
+ 
+-LIBS    = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS    = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ SHFLAGS = -h $(SHLIB)
+ SHDEPS  = -lm
+ DEPLIBS = ../$(SHLIB)
+--- egcs-1.1.2/libstdc++/config/hpux.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/hpux.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # HPUX uses the .sl suffix for shared libraries.
+ 
+ SHLIB   = libstdc++.sl
+-LIBS    = $(ARLIB) $(SHLIB)
++LIBS    = $(ARLIB) $(ARLINK) $(SHLIB)
+ DEPLIBS = ../$(SHLIB)
+ SHFLAGS = $(PICFLAG)
+--- egcs-1.1.2/libstdc++/config/irix5.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/irix5.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # We don't need -fpic on IRIX, so let's install both the shared and
+ # non-shared versions.
+ 
+-LIBS     = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS     = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ DEPLIBS  = ../$(SHLIB)
+ SHDEPS   = -lm
+--- egcs-1.1.2/libstdc++/config/linux.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/linux.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,11 @@
+ # Elf with shared libm, so we can link it into the shared libstdc++.
+ 
+-LIBS    = $(ARLIB) $(SHLIB) $(SHLINK) mshlink
++ARLIB   = libstdc++-$(LIBSTDCXX_INTERFACE)$(LIBC_INTERFACE)$(CXX_INTERFACE)-$(VERSION).a
++MARLINK = libstdc++$(LIBC_INTERFACE)$(CXX_INTERFACE).a.$(LIBSTDCXX_INTERFACE)
++SHLIB   = libstdc++-$(LIBSTDCXX_INTERFACE)$(LIBC_INTERFACE)$(CXX_INTERFACE)-$(VERSION).so
++MSHLINK = libstdc++$(LIBC_INTERFACE)$(CXX_INTERFACE).so.$(LIBSTDCXX_INTERFACE)
++
++LIBS    = $(ARLIB) marlink $(ARLINK) $(SHLIB) mshlink $(SHLINK)
+ SHFLAGS = -Wl,-soname,$(MSHLINK)
+ SHDEPS  = -lm
+ DEPLIBS = ../$(SHLIB)
+--- egcs-1.1.2/libstdc++/config/sol2shm.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/sol2shm.ml	Mon Mar 15 17:59:55 1999
+@@ -1,6 +1,6 @@
+ # Solaris2 with shared libm, so we can link it into the shared libstdc++.
+ 
+-LIBS    = $(ARLIB) $(SHLIB) $(SHLINK)
++LIBS    = $(ARLIB) $(ARLINK) $(SHLIB) $(SHLINK)
+ SHFLAGS = -h $(SHLIB)
+ SHDEPS  = -lm
+ DEPLIBS = ../$(SHLIB)
+--- egcs-1.1.2/libstdc++/config/sunos4.ml.hjlu	Thu Aug 21 18:58:35 1997
++++ egcs-1.1.2/libstdc++/config/sunos4.ml	Mon Mar 15 17:59:55 1999
+@@ -2,7 +2,7 @@
+ # library, even for programs that don't use complex.
+ # SunOS requires a version number in shared library filenames.
+ 
+-LIBS    = $(ARLIB) $(SHLIB)
++LIBS    = $(ARLIB) $(ARLINK) $(SHLIB)
+ SHFLAGS = $(PICFLAG)
+ DEPLIBS = ../$(SHLIB)
+ LDLIBS	= -L.. -lstdc++ -lm
+--- egcs-1.1.2/libstdc++/stl/memory.hjlu	Sun Nov  2 15:27:59 1997
++++ egcs-1.1.2/libstdc++/stl/memory	Mon Mar 15 17:59:55 1999
+@@ -26,8 +26,8 @@
+ //  of the interface are still being discussed by the C++ standardization
+ //  committee.  It will be included once the iterface is finalized.
+ 
+-#if 0
+-#if defined(_MUTABLE_IS_KEYWORD) && defined(_EXPLICIT_IS_KEYWORD) && \
++#if 1
++#if 1 || defined(_MUTABLE_IS_KEYWORD) && defined(_EXPLICIT_IS_KEYWORD) && \
+     defined(__STL_MEMBER_TEMPLATES)
+ 
+ __STL_BEGIN_NAMESPACE
+@@ -73,7 +73,7 @@
+   X& operator*() const __STL_NOTHROW { return *ptr; }
+   X* operator->() const __STL_NOTHROW { return ptr; }
+   X* get() const __STL_NOTHROW { return ptr; }
+-  X* release const __STL_NOTHROW { owns = false; return ptr }
++  X* release () __STL_NOTHROW { owns = false; return ptr; }
+ };
+ 
+ __STL_END_NAMESPACE
+--- egcs-1.1.2/libstdc++/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/libstdc++/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,57 @@
++1999-01-12  Philip Blundell  <philb@gnu.org>
++
++	* configure.in (frags): Add support for ARM PIC.
++
++Tue Sep  1 21:37:08 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in ($(ARLINK), $(SHLINK)): Don't rely on 'ln -f'.
++
++1998-09-01  Matthias Klose  <doko@cs.tu-berlin.de>
++
++	* Makefile.in (install): Don't rely on 'ln -f'.
++
++Fri Aug 28 19:53:33 1998  H.J. Lu  (hjl@gnu.org)
++
++	* configure.in: Fix INSTALLDIR replacement for cross-compile.
++
++	* Makefile.in (RELINSTALLDIR): Handle cross-compile.
++
++Fri Aug 28 03:11:54 1998  Daniel Jacobowitz <dmj@andrew.cmu.edu>
++
++	* Makefile.in (RELINSTALLDIR): Handle multilib.
++
++Fri Jul 31 08:16:42 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (RELINSTALLDIR): New. Use it to make symlinks.
++
++Sat Jun 27 19:13:53 1998  H.J. Lu  (hjl@gnu.org)
++
++	* Makefile.in (INTERFACE): New, set to 2.
++	(ARLIB): Set to libstdc++.a.$(VERSION)
++	(ARLINK, MARLINK): New macros.
++	(LIBS): Add $(ARLINK).
++	($(ARLINK), marlink): New targets.
++	(install): Don't check $(libsubdir). Handle versioned libraries.
++
++	* config/linux.ml (ARLIB, MARLINK, SHLIB, MSHLINK): New macros.
++	(LIBS): Add marlink $(ARLINK).
++
++	* config/aix.ml (ARLIB): Set to libstdc++-ar.a.$(VERSION)
++	(ARLINK): New macros.
++	(BUILD_LIBS): Add $(ARLINK).
++
++	* config/dec-osf.ml (LIBS): Add $(ARLINK).
++	* config/elf.ml (LIBS): Likewise.
++	* config/elfshlibm.ml (LIBS): Likewise.
++	* config/hpux.ml (LIBS): Likewise.
++	* config/iris5.ml (LIBS): Likewise.
++	* config/sol2shm.ml (LIBS): Likewise.
++	* config/sunos4.ml (LIBS): Likewise.
++
++	* configure.in: Use ${topsrcdir}/config.if to put
++	LIBSTDCXX_INTERFACE, CXX_INTERFACE, LIBC_INTERFACE in
++	${package_makefile_frag}.
++
++Tue Jun  2 19:06:58 1998  H.J. Lu  (hjl@gnu.org)
++
++	* memory (auto_ptr): Enabled.
+--- egcs-1.1.2/libstdc++/Makefile.in.hjlu	Sat Jul 11 22:20:49 1998
++++ egcs-1.1.2/libstdc++/Makefile.in	Mon Mar 15 17:59:55 1999
+@@ -15,6 +15,7 @@
+ # Software Foundation, 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
+ VERSION = 2.9.0
++INTERFACE = 2
+ 
+ OBJS  = cstringi.o stdexcepti.o cstdlibi.o cmathi.o stlinst.o
+ SUBLIBS = $(STAMP)-string $(STAMP)-complx
+@@ -27,7 +28,9 @@
+ 	 memory numeric pthread_alloc queue rope set slist stack utility \
+ 	 vector fstream iomanip iostream strstream iosfwd
+ 
+-ARLIB   = libstdc++.a
++ARLIB   = libstdc++.a.$(VERSION)
++ARLINK  = libstdc++.a
++MARLINK = libstdc++.a.`echo $(VERSION) | sed 's/\([0-9][.][0-9]\).*/\1/'`
+ SHLIB   = libstdc++.so.$(VERSION)
+ SHARLIB = libstdc++-sh.a
+ SHLINK  = libstdc++.so
+@@ -37,7 +40,7 @@
+ 
+ STAMP   = bigstmp
+ 
+-LIBS    = $(ARLIB)
++LIBS    = $(ARLIB) $(ARLINK)
+ 
+ #### package, host, target, and site dependent Makefile fragments come in here.
+ ##
+@@ -85,6 +88,13 @@
+ 	mv t$(ARLIB) $(ARLIB)
+ 	$(RANLIB) $(ARLIB)
+ 
++$(ARLINK):
++	-rm -f $(ARLINK)
++	ln -s $(ARLIB) $(ARLINK)
++
++marlink:
++	@$(MAKE) $(MARLINK) "ARLINK=$(MARLINK)"
++
+ $(SHLIB): piclist
+ 	$(CC) $(LIBCXXFLAGS) $(SHFLAGS) -shared -o $(SHLIB) `cat piclist` $(SHDEPS)
+ 
+@@ -95,7 +105,8 @@
+ 	$(RANLIB) $(SHARLIB)
+ 
+ $(SHLINK):
+-	ln -f -s $(SHLIB) $(SHLINK)
++	-rm -f $(SHLINK)
++	ln -s $(SHLIB) $(SHLINK)
+ 
+ mshlink:
+ 	@$(MAKE) $(MSHLINK) "SHLINK=$(MSHLINK)"
+@@ -270,20 +281,55 @@
+ 	else true ; \
+ 	fi
+ 	rootme=`pwd`/ ; export rootme ; \
+-	if [ x$(libsubdir) = x ] || [ x$(enable_version_specific_runtime_libs) != xyes ]; then \
++	if [ x$(enable_version_specific_runtime_libs) != xyes ]; then \
+ 	  INSTALLDIR=$(libdir); \
+ 	else \
+ 	  INSTALLDIR=$(libsubdir); \
+ 	fi; \
+-	rm -f $${INSTALLDIR}$(MULTISUBDIR)/$(SHLINK) ; \
++	INSTALLLINKDIR=$(libsubdir); \
++	if [ $${INSTALLLINKDIR}$(MULTISUBDIR) = $${INSTALLDIR} ]; \
++	then \
++	  RELINSTALLDIR=; \
++	elif [ x$(MULTISUBDIR) = x ]; then \
++	  RELINSTALLDIR=../../../; \
++	else \
++	  RELINSTALLDIR=../../../..$(MULTISUBDIR); \
++	fi; \
++	if [ $(build_alias) != $(target_alias) ]; then \
++	  case $$RELINSTALLDIR in \
++	  ../../../|../../../../) \
++	    RELINSTALLDIR=../$${RELINSTALLDIR}$(target_alias)/lib/;; \
++	  esac; \
++	fi; \
++	rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$(SHLINK) ; \
++	rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$(ARLINK) ; \
+ 	for FILE in $(LIBS) ; do \
+ 	  rm -f $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
+ 	  if [ $$FILE = $(SHLINK) ] ; then \
+-	    ln -f -s $(SHLIB) $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
++	    if [ -f $${INSTALLDIR}/$(MSHLINK) ]; then \
++	      rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $${RELINSTALLDIR}$(MSHLINK) $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	    else \
++	      rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $${RELINSTALLDIR}$(SHLIB) $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	    fi; \
++	  elif [ $$FILE = $(ARLINK) ] ; then \
++	    if [ -f $${INSTALLDIR}/$(MARLINK) ]; then \
++	      rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $${RELINSTALLDIR}$(MARLINK) $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	    else \
++	      rm -f $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $${RELINSTALLDIR}$(ARLIB) $${INSTALLLINKDIR}$(MULTISUBDIR)/$$FILE ; \
++	    fi; \
+ 	  elif [ $$FILE = mshlink ]; then \
+ 	    for FILE in $(MSHLINK) ; do \
+ 	      rm -f $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
+-	      ln -f -s $(SHLIB) $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $(SHLIB) $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
++	    done; \
++	  elif [ $$FILE = marlink ]; then \
++	    for FILE in $(MARLINK) ; do \
++	      rm -f $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
++	      ln -s $(ARLIB) $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
+ 	    done; \
+ 	  elif [ $$FILE = $(SHLIB) ]; then \
+ 	    $(INSTALL_PROGRAM) $$FILE $${INSTALLDIR}$(MULTISUBDIR)/$$FILE ; \
+--- egcs-1.1.2/libstdc++/configure.in.hjlu	Wed Feb 24 20:26:25 1999
++++ egcs-1.1.2/libstdc++/configure.in	Mon Mar 15 17:59:55 1999
+@@ -39,6 +39,7 @@
+ 
+ if [ "${shared}" = "yes" ]; then
+   case "${target}" in
++    arm*-*) frags="${frags} ../../config/mh-armpic" ;;
+     hppa*-*-*)		frags=../../config/mh-papic ;;
+     i[3456]86-*-*)	frags=../../config/mh-x86pic ;;
+     alpha*-*-linux*)	frags=../../config/mh-elfalphapic ;;
+@@ -105,13 +106,20 @@
+ 
+ (. ${srcdir}/${TO_TOPDIR}libio/config.shared) >${package_makefile_frag} 2>${package_makefile_rules_frag}
+ 
++. ${topsrcdir}/config.if
++echo "
++LIBSTDCXX_INTERFACE=${libstdcxx_interface}
++CXX_INTERFACE=${cxx_interface}
++LIBC_INTERFACE=${libc_interface}
++" >> ${package_makefile_frag}
++
+ # post-target:
+ 
+ # If cross-compiling, we install in $(tooldir).
+ if [ -n "${with_cross_host}" ] ; then
+     rm -f Makefile.tem
+     sed \
+-        -e 's|\(INSTALLDIR[ 	]*=[ 	]*\)[^ 	;]*|\1$(tooldir)/lib|' \
++	-e 's|\(^[ 	]*INSTALLDIR[ 	]*=[ 	]*\)[^ 	;]*|\1$(tooldir)/lib|' \
+         Makefile >Makefile.tem
+     mv -f Makefile.tem Makefile
+ fi
+--- egcs-1.1.2/ChangeLog.linux.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/ChangeLog.linux	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,30 @@
++Mon Jan 18 06:56:39 1999  H.J. Lu  (hjl@gnu.org)
++
++	From Ralf Baechle  <ralf@uni-koblenz.de>:
++
++	* config.guess (mips-linux): Detect endianness via machine properties
++	not compiler defines.
++	* config.sub (mips-*-linux): Default middle triple to unknown.
++	* configure.in (enable_shared): Default mips-linux on.
++
++1999-01-07  Philip Blundell  <philb@gnu.org>
++
++	* configure.in: Set target_makefile_frag and host_makefile_frag
++	appropriately for ARM systems.  Patch from Jim Pick
++	<jim@jimpick.com>
++
++1998-12-20  Philip Blundell  <philb@gnu.org>
++
++	* config.sub: Be more liberal when matching CPU names; allow
++	`arm*' rather than just `arm'.
++
++Fri Dec  4 18:18:23 1998  H.J. Lu  (hjl@gnu.org)
++
++	* config.guess (dummy): Changed to $dummy.
++
++Sat Jun 27 19:06:04 1998  H.J. Lu  (hjl@gnu.org)
++
++	* configure (gxx_include_dir): Changed to
++	'${prefix}/include/g++'-${libstdcxx_interface}.
++
++	* config.if: New to determine the interfaces.
+--- egcs-1.1.2/config.guess.hjlu	Mon Mar  1 17:37:59 1999
++++ egcs-1.1.2/config.guess	Mon Mar 15 17:59:55 1999
+@@ -46,7 +46,9 @@
+ UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
+ UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
+ 
+-trap 'rm -f dummy.c dummy.o dummy; exit 1' 1 2 15
++dummy=$$
++
++trap 'rm -f $dummy.c $dummy.o $dummy; exit 1' 1 2 15
+ 
+ # Note: order is significant - the case branches are not exclusive.
+ 
+@@ -59,7 +61,7 @@
+ 	# A Tn.n version is a released field test version.
+ 	# A Xn.n version is an unreleased experimental baselevel.
+ 	# 1.2 uses "1.2" for uname -r.
+-	cat <<EOF >dummy.s
++	cat <<EOF >$dummy.s
+ 	.globl main
+ 	.ent main
+ main:
+@@ -76,9 +78,9 @@
+ 	ret \$31,(\$26),1
+ 	.end main
+ EOF
+-	${CC-cc} dummy.s -o dummy 2>/dev/null
++	${CC-cc} $dummy.s -o $dummy 2>/dev/null
+ 	if test "$?" = 0 ; then
+-		./dummy
++		./$dummy
+ 		case "$?" in
+ 			7)
+ 				UNAME_MACHINE="alpha"
+@@ -97,7 +99,7 @@
+ 				;;
+ 		esac
+ 	fi
+-	rm -f dummy.s dummy
++	rm -f $dummy.s $dummy
+ 	echo ${UNAME_MACHINE}-dec-osf`echo ${UNAME_RELEASE} | sed -e 's/^[VTX]//' | tr [[A-Z]] [[a-z]]`
+ 	exit 0 ;;
+     21064:Windows_NT:50:3)
+@@ -229,7 +231,7 @@
+ 	echo clipper-intergraph-clix${UNAME_RELEASE}
+ 	exit 0 ;;
+     mips:*:*:UMIPS | mips:*:*:RISCos)
+-	sed 's/^	//' << EOF >dummy.c
++	sed 's/^	//' << EOF >$dummy.c
+ 	int main (argc, argv) int argc; char **argv; {
+ 	#if defined (host_mips) && defined (MIPSEB)
+ 	#if defined (SYSTYPE_SYSV)
+@@ -245,10 +247,10 @@
+ 	  exit (-1);
+ 	}
+ EOF
+-	${CC-cc} dummy.c -o dummy \
+-	  && ./dummy `echo "${UNAME_RELEASE}" | sed -n 's/\([0-9]*\).*/\1/p'` \
+-	  && rm dummy.c dummy && exit 0
+-	rm -f dummy.c dummy
++	${CC-cc} $dummy.c -o $dummy \
++	  && ./$dummy `echo "${UNAME_RELEASE}" | sed -n 's/\([0-9]*\).*/\1/p'` \
++	  && rm $dummy.c $dummy && exit 0
++	rm -f $dummy.c $dummy
+ 	echo mips-mips-riscos${UNAME_RELEASE}
+ 	exit 0 ;;
+     Night_Hawk:Power_UNIX:*:*)
+@@ -300,7 +302,7 @@
+ 	exit 0 ;;
+     *:AIX:2:3)
+ 	if grep bos325 /usr/include/stdio.h >/dev/null 2>&1; then
+-		sed 's/^		//' << EOF >dummy.c
++		sed 's/^		//' << EOF >$dummy.c
+ 		#include <sys/systemcfg.h>
+ 
+ 		main()
+@@ -311,8 +313,8 @@
+ 			exit(0);
+ 			}
+ EOF
+-		${CC-cc} dummy.c -o dummy && ./dummy && rm dummy.c dummy && exit 0
+-		rm -f dummy.c dummy
++		${CC-cc} $dummy.c -o $dummy && ./$dummy && rm $dummy.c $dummy && exit 0
++		rm -f $dummy.c $dummy
+ 		echo rs6000-ibm-aix3.2.5
+ 	elif grep bos324 /usr/include/stdio.h >/dev/null 2>&1; then
+ 		echo rs6000-ibm-aix3.2.4
+@@ -370,7 +372,7 @@
+ 	echo ${HP_ARCH}-hp-hpux${HPUX_REV}
+ 	exit 0 ;;
+     3050*:HI-UX:*:*)
+-	sed 's/^	//' << EOF >dummy.c
++	sed 's/^	//' << EOF >$dummy.c
+ 	#include <unistd.h>
+ 	int
+ 	main ()
+@@ -395,8 +397,8 @@
+ 	  exit (0);
+ 	}
+ EOF
+-	${CC-cc} dummy.c -o dummy && ./dummy && rm dummy.c dummy && exit 0
+-	rm -f dummy.c dummy
++	${CC-cc} $dummy.c -o $dummy && ./$dummy && rm $dummy.c $dummy && exit 0
++	rm -f $dummy.c $dummy
+ 	echo unknown-hitachi-hiuxwe2
+ 	exit 0 ;;
+     9000/7??:4.3bsd:*:* | 9000/8?[79]:4.3bsd:*:* )
+@@ -528,7 +530,7 @@
+ 	  m68klinux)  echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+ 	  elf32ppc)
+ 		# Determine Lib Version
+-		cat >dummy.c <<EOF
++		cat >$dummy.c <<EOF
+ #include <features.h>
+ #if defined(__GLIBC__)
+ extern char __libc_version[];
+@@ -541,25 +543,25 @@
+ #if defined(__GLIBC__)
+   printf("%s %s\n", __libc_version, __libc_release);
+ #else
+-  printf("unkown\n");
++  printf("unknown\n");
+ #endif
+   return 0;
+ }
+ EOF
+ 		LIBC=""
+-		${CC-cc} dummy.c -o dummy 2>/dev/null
++		${CC-cc} $dummy.c -o $dummy 2>/dev/null
+ 		if test "$?" = 0 ; then
+-			./dummy | grep 1\.99 > /dev/null
++			./$dummy | grep 1\.99 > /dev/null
+ 			if test "$?" = 0 ; then
+ 				LIBC="libc1"
+ 			fi
+ 		fi	
+-		rm -f dummy.c dummy
++		rm -f $dummy.c $dummy
+ 		echo powerpc-unknown-linux-gnu${LIBC} ; exit 0 ;;
+ 	esac
+ 
+ 	if test "${UNAME_MACHINE}" = "alpha" ; then
+-		sed 's/^	//'  <<EOF >dummy.s
++		sed 's/^	//'  <<EOF >$dummy.s
+ 		.globl main
+ 		.ent main
+ 	main:
+@@ -577,9 +579,9 @@
+ 		.end main
+ EOF
+ 		LIBC=""
+-		${CC-cc} dummy.s -o dummy 2>/dev/null
++		${CC-cc} $dummy.s -o $dummy 2>/dev/null
+ 		if test "$?" = 0 ; then
+-			./dummy
++			./$dummy
+ 			case "$?" in
+ 			7)
+ 				UNAME_MACHINE="alpha"
+@@ -598,31 +600,30 @@
+ 				;;
+ 			esac	
+ 
+-			objdump --private-headers dummy | \
++			objdump --private-headers $dummy | \
+ 			  grep ld.so.1 > /dev/null
+ 			if test "$?" = 0 ; then
+ 				LIBC="libc1"
+ 			fi
+ 		fi	
+-		rm -f dummy.s dummy
++		rm -f $dummy.s $dummy
+ 		echo ${UNAME_MACHINE}-unknown-linux-gnu${LIBC} ; exit 0
+ 	elif test "${UNAME_MACHINE}" = "mips" ; then
+-	  cat >dummy.c <<EOF
+-main(argc, argv)
+-     int argc;
+-     char *argv[];
+-{
+-#ifdef __MIPSEB__
+-  printf ("%s-unknown-linux-gnu\n", argv[1]);
+-#endif
+-#ifdef __MIPSEL__
+-  printf ("%sel-unknown-linux-gnu\n", argv[1]);
+-#endif
+-  return 0;
+-}
++		sed 's/^		//'  <<EOF >$dummy.c
++		int main()
++		{
++			int x = 1;
++			return !*(char *)&x; /* Exit 1 for big-endian */
++		}
+ EOF
+-	  ${CC-cc} dummy.c -o dummy 2>/dev/null && ./dummy "${UNAME_MACHINE}" && rm dummy.c dummy && exit 0
+-	  rm -f dummy.c dummy
++		${CC-cc} $dummy.c -o $dummy 2>/dev/null && ./$dummy
++		if test "$?" = 1 ; then
++			echo mips-unknown-linux-gnu
++		else
++			echo mipsel-unknown-linux-gnu
++		fi
++		rm -f $dummy.c $dummy
++		exit 0
+ 	else
+ 	  # Either a pre-BFD a.out linker (linux-gnuoldld)
+ 	  # or one that does not give us useful --help.
+@@ -641,7 +642,7 @@
+ 	    ;;
+ 	  esac
+ 	  # Determine whether the default compiler is a.out or elf
+-	  cat >dummy.c <<EOF
++	  cat >$dummy.c <<EOF
+ #include <features.h>
+ main(argc, argv)
+      int argc;
+@@ -663,8 +664,8 @@
+   return 0;
+ }
+ EOF
+-	  ${CC-cc} dummy.c -o dummy 2>/dev/null && ./dummy "${UNAME_MACHINE}" && rm dummy.c dummy && exit 0
+-	  rm -f dummy.c dummy
++	  ${CC-cc} $dummy.c -o $dummy 2>/dev/null && ./$dummy "${UNAME_MACHINE}" && rm $dummy.c $dummy && exit 0
++	  rm -f $dummy.c $dummy
+ 	fi ;;
+ # ptx 4.0 does uname -s correctly, with DYNIX/ptx in there.  earlier versions
+ # are messed up and put the nodename in both sysname and nodename.
+@@ -816,7 +817,7 @@
+ #echo '(No uname command or uname output not recognized.)' 1>&2
+ #echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" 1>&2
+ 
+-cat >dummy.c <<EOF
++cat >$dummy.c <<EOF
+ #ifdef _SEQUENT_
+ # include <sys/types.h>
+ # include <sys/utsname.h>
+@@ -914,8 +915,8 @@
+ }
+ EOF
+ 
+-${CC-cc} dummy.c -o dummy 2>/dev/null && ./dummy && rm dummy.c dummy && exit 0
+-rm -f dummy.c dummy
++${CC-cc} $dummy.c -o $dummy 2>/dev/null && ./$dummy && rm $dummy.c $dummy && exit 0
++rm -f $dummy.c $dummy
+ 
+ # Apollos put the system type in the environment.
+ 
+--- egcs-1.1.2/config.if.hjlu	Mon Mar 15 17:59:55 1999
++++ egcs-1.1.2/config.if	Mon Mar 15 17:59:55 1999
+@@ -0,0 +1,79 @@
++#! /dev/null
++# Don't call it directly. This shell script fragment is called to
++# determine:
++#
++#	1. libstcxx_interface: the interface name for libstdc++.
++#	2. cxx_interface: the interface name for c++.
++#	3. libc_interface: the interface name for libc.
++#
++
++# Get the top level src dir.
++if [ -z "${topsrcdir}" -a -z "${top_srcdir}" ]
++then
++  echo "Undefined top level src dir: topsrcdir and top_srcdir are empty" >&2
++  exit 1
++fi
++
++if [ -n "${topsrcdir}" ]
++then
++  if_topsrcdir=${topsrcdir}
++else
++  if_topsrcdir=${top_srcdir}
++fi
++
++# We check libstdc++ for libstdcxx_interface.
++libstdcxx_interface=`grep "^INTERFACE" ${if_topsrcdir}/libstdc++/Makefile.in | sed 's/INTERFACE[ 	]*=[ 	]*\(.*\)/\1/'`
++
++# We check gcc/cp for cxx_interface.
++cxx_interface=`grep "^INTERFACE" ${if_topsrcdir}/gcc/cp/Makefile.in | sed 's/INTERFACE[ 	]*=[ 	]*\(.*\)/\1/'`
++
++# The trickiest part is libc_interface.
++if [ -z "${libc_interface}" ]
++then
++  case ${target_os} in
++  *linux*libc1*|*linux*libc5*)
++    case ${target_alias} in
++    *alpha*|*powerpc*)
++      libc_interface=-libc5.9-
++      ;;
++    *)
++      libc_interface=-libc5-
++      ;;
++    esac
++    ;;
++  *linux*gnu*)
++    # We have to work harder to figure it out.
++    if [ ${target_alias} = ${build_alias} ]
++    then
++      dummy=if$$
++      cat >$dummy.c <<EOF
++#include <features.h>                      
++main(argc, argv)
++     int argc;          
++     char *argv[];
++{
++  printf("%d\n", __GLIBC_MINOR__);
++  return 0;
++}
++EOF
++      ${CC-cc} $dummy.c -o $dummy 2>/dev/null
++      if [ "$?" = 0 ]
++      then
++	libc_interface=-libc6.`./$dummy`-
++	rm -f $dummy.c $dummy
++      else
++	# It should never happen.
++	echo "Cannot find the GNU C library minor version number." >&2
++	rm -f $dummy.c $dummy
++	exit 1
++      fi
++    else
++      # Cross compiling. Assume glibc 2.1.
++      libc_interface=-libc6.1-
++    fi
++    ;;
++  *)
++    libc_interface=-
++    ;;
++  esac
++fi
+--- egcs-1.1.2/config.sub.hjlu	Fri Apr  3 11:21:57 1998
++++ egcs-1.1.2/config.sub	Mon Mar 15 17:59:55 1999
+@@ -159,7 +159,7 @@
+ case $basic_machine in
+ 	# Recognize the basic CPU types without company name.
+ 	# Some are omitted here because they have special meanings below.
+-	tahoe | i860 | m32r | m68k | m68000 | m88k | ns32k | arc | arm \
++	tahoe | i860 | m32r | m68k | m68000 | m88k | ns32k | arc | arm* \
+ 		| arme[lb] | pyramid | mn10200 | mn10300 \
+ 		| tron | a29k | 580 | i960 | h8300 | hppa | hppa1.0 | hppa1.1 \
+ 		| alpha | alphaev5 | alphaev56 | alphapca56 | alphaev6 \
+@@ -204,7 +204,7 @@
+ 		;;
+ 	# Recognize the basic CPU types with company name.
+ 	vax-* | tahoe-* | i[3456]86-* | i860-* | m32r-* | m68k-* | m68000-* \
+-	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm-* | c[123]* \
++	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | arm*-* | c[123]* \
+ 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* \
+ 	      | power-* | none-* | 580-* | cray2-* | h8300-* | i960-* \
+ 	      | xmp-* | ymp-* | hppa-* | hppa1.0-* | hppa1.1-* \
+@@ -816,11 +816,10 @@
+ 		basic_machine=hppa1.1-oki
+ 		;;
+ 	mips)
+-		if [ x$os = x-linux-gnu ]; then
+-			basic_machine=mips-unknown
+-		else
+-			basic_machine=mips-mips
+-		fi
++		case x$os in
++		  x-linux*) basic_machine=mips-unknown ;;
++		  *) basic_machine=mips-mips;;
++		esac
+ 		;;
+ 	romp)
+ 		basic_machine=romp-ibm
+--- egcs-1.1.2/configure.hjlu	Sun Mar 14 06:13:11 1999
++++ egcs-1.1.2/configure	Mon Mar 15 17:59:55 1999
+@@ -1259,7 +1259,8 @@
+ 	        if test x${enable_version_specific_runtime_libs} = xyes; then
+ 		    echo gxx_include_dir = '${libsubdir}/include/g++' >> ${Makefile}
+ 		else
+-		    echo gxx_include_dir = '${prefix}/include/g++' >> ${Makefile}
++		    . ${topsrcdir}/config.if
++		    echo gxx_include_dir = '${prefix}/include/g++'-${libstdcxx_interface} >> ${Makefile}
+ 		fi
+ 	    else
+ 		echo gxx_include_dir = ${gxx_include_dir} >> ${Makefile}
+--- egcs-1.1.2/configure.in.hjlu	Thu Oct  1 20:15:06 1998
++++ egcs-1.1.2/configure.in	Mon Mar 15 17:59:55 1999
+@@ -252,6 +252,7 @@
+     alpha*-dec-osf*)	enable_shared=yes ;;
+     alpha*-*-linux*)	enable_shared=yes ;;
+     mips-sgi-irix5*)	enable_shared=yes ;;
++    mips*-*-linux*)	enable_shared=yes ;;
+     *)			enable_shared=no ;;
+   esac
+ fi
+@@ -280,6 +281,9 @@
+     alpha*-*-linux*)
+       host_makefile_frag="${host_makefile_frag} config/mh-elfalphapic"
+       ;;
++    arm*)
++      host_makefile_frag="${host_makefile_frag} config/mh-armpic"
++      ;;
+     *)
+       if test -f ${srcdir}/config/mh-${host_cpu}pic; then
+         host_makefile_frag="${host_makefile_frag} config/mh-${host_cpu}pic"
+@@ -915,6 +919,9 @@
+       ;;
+     alpha*-*-linux*)
+       target_makefile_frag="${target_makefile_frag} config/mt-elfalphapic"
++      ;;
++    arm*)
++      target_makefile_frag="${target_makefile_frag} config/mt-armpic"
+       ;;
+     *)
+       if test -f ${srcdir}/config/mt-${target_cpu}pic; then

@@ -1,0 +1,37 @@
+--- egcs-1.1.2/gcc/ChangeLog~	Sat Mar 13 18:38:18 1999
++++ egcs-1.1.2/gcc/ChangeLog	Wed Mar 17 00:08:26 1999
+@@ -1,3 +1,8 @@
++Wed Mar 17 00:05:41 1999  David S. Miller  <davem@redhat.com>
++
++	* jump.c (jump_optimize): Verify that registers used by jumps are
++	not clobbered by instructions being moved.
++
+ Sun Mar 14 02:38:07 PST 1999 Jeff Law  (law@cygnus.com)
+ 
+ 	* egcs-1.1.2 Released.
+--- egcs-1.1.2/gcc/jump.c.~1~	Mon Feb 15 14:10:23 1999
++++ egcs-1.1.2/gcc/jump.c	Wed Mar 17 00:11:46 1999
+@@ -862,7 +862,11 @@
+ 		  && ! reg_referenced_between_p (temp1, p, NEXT_INSN (temp3))
+ 		  && ! reg_set_between_p (temp1, p, temp3)
+ 		  && (GET_CODE (SET_SRC (temp4)) == CONST_INT
+-		      || ! modified_between_p (SET_SRC (temp4), p, temp2)))
++		      || ! modified_between_p (SET_SRC (temp4), p, temp2))
++		  /* Verify that registers used by the jump are not clobbered
++		     by the instruction being moved.  */
++		  && ! modified_between_p (PATTERN (temp), temp2,
++					   NEXT_INSN (temp2)))
+ 		{
+ 		  emit_insn_after_with_line_notes (PATTERN (temp2), p, temp2);
+ 		  delete_insn (temp2);
+@@ -960,6 +964,10 @@
+ 						 NEXT_INSN (temp2))
+ 		  && ! reg_set_between_p (temp1, insert_after, temp)
+ 		  && ! modified_between_p (SET_SRC (temp4), insert_after, temp)
++		  /* Verify that registers used by the jump are not clobbered
++		     by the instruction being moved.  */
++		  && ! modified_between_p (PATTERN (temp), temp3,
++					   NEXT_INSN (temp3))
+ 		  && invert_jump (temp, JUMP_LABEL (insn)))
+ 		{
+ 		  emit_insn_after_with_line_notes (PATTERN (temp3),
