@@ -1,0 +1,104 @@
+--- mktemp-1.5/mktemp.1.ewt	Mon Mar 22 20:29:54 1999
++++ mktemp-1.5/mktemp.1	Mon Mar 22 20:29:56 1999
+@@ -1,4 +1,4 @@
+-.\"	$OpenBSD: mktemp.1,v 1.5 1997/06/17 15:34:27 millert Exp $
++.\"	$OpenBSD: mktemp.1,v 1.10 1998/09/26 19:55:09 aaron Exp $
+ .\"
+ .\" Copyright (c) 1989, 1991, 1993
+ .\"	The Regents of the University of California.  All rights reserved.
+@@ -31,7 +31,7 @@
+ .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ .\" SUCH DAMAGE.
+ .\"
+-.Dd November, 20, 1996
++.Dd November 20, 1996
+ .Dt MKTEMP 1
+ .Os
+ .Sh NAME
+@@ -39,7 +39,6 @@
+ .Nd make temporary file name (unique)
+ .Sh SYNOPSIS
+ .Nm mktemp
+-.Op Fl d
+ .Op Fl q
+ .Op Fl u
+ .Ar template
+@@ -49,25 +48,15 @@
+ utility takes the given file name template and overwrites a
+ portion of it to create a file name.  This file name is unique
+ and suitable for use by the application.  The template may be
+-any file name with some number of
++any file name with six
+ .Ql X Ns s
+ appended
+ to it, for example
+-.Pa /tmp/temp.XXXX .
++.Pa /tmp/temp.XXXXXX .
+ The trailing
+ .Ql X Ns s
+ are replaced with the current process number and/or a
+ unique letter combination.
+-The number of unique file names
+-.Nm
+-can return depends on the number of
+-.Ql X Ns s
+-provided; six
+-.Ql X Ns s
+-will
+-result in
+-.Nm
+-testing roughly 26 ** 6 combinations.
+ .Pp
+ If
+ .Nm
+@@ -76,11 +65,22 @@
+ .Fl u
+ flag is given) and the filename is printed
+ to standard output.
++.Pp
++.Nm mktemp
++is provided to allow shell scripts to safely use temporary files.
++Traditionally, many shell scripts take the name of the program with
++the PID as a suffix and use that as a temporary file name.  This
++kind of naming scheme is predictable and the race condition it creates
++is easy for an attacker to win.  A safer, though still inferior approach
++is to make a temporary directory using the same naming scheme.  While
++this does allow one to guarantee that a temporary file will not be
++subverted, it still allows a simple denial of service attack.  For these
++reasons it is suggested that
++.Nm
++be used instead.
+ .Sh OPTIONS
+ .Bl -tag -width indent
+ The available options are as follows:
+-.It Fl d
+-Make a directory instead of a file.
+ .It Fl q
+ Fail silently if an error occurs.  This is useful if
+ a script does not want error output to go to standard error.
+@@ -93,11 +93,12 @@
+ .Fn mktemp 3
+ but still introduces a race condition.  Use of this
+ option is not encouraged.
++.El
+ .Sh RETURN VALUES
+ The
+ .Nm
+ utility
+-exits with a value of 0 on success, and 1 on failure.
++exits with a value of 0 on success or 1 on failure.
+ .Sh EXAMPLES
+ The following
+ .Xr sh 1
+@@ -118,11 +119,6 @@
+ 	exit 1
+ fi
+ .Ed
+-.Pp
+-Note that one can also check to see that $TMPFILE is
+-zero length instead of checking $?.  This would allow
+-the check to be done later one in the script (since
+-$? would get clobbered by the next shell command).
+ .Sh SEE ALSO
+ .Xr mkstemp 3 ,
+ .Xr mktemp 3
