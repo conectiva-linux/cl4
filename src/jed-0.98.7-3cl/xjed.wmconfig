@@ -1,0 +1,4 @@
+xjed name "xjed"
+xjed description "xjed Editor"
+xjed exec "xjed &"
+xjed group Utilities

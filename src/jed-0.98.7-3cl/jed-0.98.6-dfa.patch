@@ -1,0 +1,9 @@
+--- jed/src/jed-feat.h.old	Tue Dec  9 02:24:27 1997
++++ jed/src/jed-feat.h	Tue Dec  9 02:25:52 1997
+@@ -43,5 +43,5 @@
+  * approach based on regular expressions.  Experimental.
+  */
+-#define JED_HAS_DFA_SYNTAX		0
++#define JED_HAS_DFA_SYNTAX		1
+ 
+ /* Set JED_HAS_ABBREVS to 1 for the abbreviation feature. */

@@ -1,0 +1,10 @@
+--- keymap.c~	Wed Feb 11 11:57:20 1998
++++ keymap.c	Sun Apr 19 16:12:55 1998
+@@ -603,6 +603,7 @@
+ 	  {
+ 	     *buf = 2;
+ 	     *(buf + 1) = 256 - 1 - i;
++	     buf[2] = 0;
+ 	     SLang_push_string(SLang_make_keystring(buf));
+ 	     num++;
+ 	  }

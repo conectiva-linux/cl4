@@ -1,0 +1,13 @@
+--- jed-old/src/Makefile.in	Thu Jan 29 08:25:45 1998
++++ jed/src/Makefile.in	Thu Jan 29 14:20:40 1998
+@@ -13,8 +13,8 @@
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ #JED_ROOT = $(HOME)/src/jed# <--- make sure # is at end of file!!
+-#JED_ROOT = $(prefix)/jed# <--- make sure # is at end of file!!
+-JED_ROOT = @JED_ROOT@# <--- make sure # is at end of file!!
++JED_ROOT = $(prefix)/lib/jed# <--- make sure # is at end of file!!
++#JED_ROOT = @JED_ROOT@# <--- make sure # is at end of file!!
+ BIN_DIR = @bindir@
+ MAN_DIR = @mandir@/man1
+ INSTALL		= @INSTALL@
