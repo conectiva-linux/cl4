@@ -1,0 +1,181 @@
+(
+"Aplicações",
+	(
+	"Informações",
+		("Informações...", INFO_PANEL),
+		("Informações Legais", LEGAL_PANEL),
+		(
+		"Console do Sistema",
+		EXEC,
+		"xconsole"
+		),
+		(
+		"Carga do Sistema",
+		EXEC,
+		"xosview || xload"
+		),
+		(
+		"Lista de Processos",
+		EXEC,
+		"xterm -e top"
+		),
+		(
+		"Leitor de Manual",
+		EXEC,
+		"xman"
+		)
+	),
+	(
+	"XTerm",
+	EXEC,
+	"xterm -sb"
+	),
+    (
+    "Programas",
+    OPEN_MENU,
+    "| wmconfig --output wmaker --no-promote 2>/dev/null"
+    ),
+	("Áreas de Trabalho", WORKSPACE_MENU),
+	(
+	"Seleção",
+		(
+		"Copiar",
+		EXEC,
+		"echo '%s' | wxcopy"
+		),
+		(
+		"eMail Para",
+		EXEC,
+		"xterm -name mail -T \"Pine\" -e pine %s"
+		),
+		(
+		"Navegar",
+		EXEC,
+		"netscape %s"
+		),
+		(
+		"Procurar Manual",
+		EXEC,
+		"if ( man  %s  > /dev/null ); then man  %s  | xless;	else xmessage -center -title \"Manual Browser\" Sorry, but there is no manual page entry for  %s ...; fi"
+		)
+	),
+	(
+	"Área de Trabalho",
+		("Esconder Outros", HIDE_OTHERS),
+		("Mostrar Todos", SHOW_ALL),
+		("Arrumar Ícones", ARRANGE_ICONS),
+		("Atualizar", REFRESH),
+		(
+		"Travar",
+		EXEC,
+		"xlock -allowroot -usefirst"
+		),
+		("Salvar Sessão", SAVE_SESSION),
+		("Apagar Sessão Salva", CLEAR_SESSION)
+	),
+	(
+	"Aparência",
+		(
+		"Temas",
+		OPEN_MENU,
+		"-noext /usr/X11R6/share/WindowMaker/Themes  $HOME/GNUstep/Library/WindowMaker/Themes WITH setstyle"
+		),
+		(
+		"Estilos",
+		OPEN_MENU,
+		"-noext /usr/X11R6/share/WindowMaker/Styles  $HOME/GNUstep/Library/WindowMaker/Styles WITH setstyle"
+		),
+		(
+		"Conjunto de Ícones",
+		OPEN_MENU,
+		"-noext /usr/X11R6/share/WindowMaker/IconSets  $HOME/GNUstep/Library/WindowMaker/IconSets WITH seticons"
+		),
+		(
+		"Papéis de Parede",
+			(
+			"Sólido",
+                        	(
+                        	"Preto",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, black)'"
+                        	),
+                        	(
+                        	"Azul",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, \"#505075\")'"
+                        	),
+				(
+				"Indigo",
+				EXEC,
+				"wdwrite WindowMaker WorkspaceBack  '(solid, \"#243e6c\")'"
+				),
+				(
+				"Azul escuro",
+				EXEC,
+				"wdwrite WindowMaker WorkspaceBack  '(solid, \"#180090\")'"
+				),
+                        	(
+                        	"Roxo",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, \"#554466\")'"
+                        	),
+                        	(
+                        	"Creme",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, \"wheat4\")'"
+                        	),
+                        	(
+                        	"Cinza Escuro",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, \"#333340\")'"
+                        	),
+                        	(
+                        	"Vinho",
+                        	EXEC,
+                        	"wdwrite WindowMaker WorkspaceBack  '(solid, \"#400020\")'"
+                        	)
+			),
+			(
+			"Degradé",
+				(
+				"Bandeira",
+				EXEC,
+				"wdwrite WindowMaker WorkspaceBack  '(mdgradient, green, green, yellow)'"
+				),
+				(
+				"Céu",
+				EXEC,
+				"wdwrite WindowMaker WorkspaceBack  '(vgradient, blue4, white)'"
+				)
+			),
+			(
+			"Imagens",
+			OPEN_MENU,
+			"-noext /usr/X11R6/share/WindowMaker/Backgrounds  $HOME/GNUstep/Library/WindowMaker/Backgrounds WITH wmsetbg -u -t"
+			)
+		),
+		(
+		"Salvar Tema",
+		EXEC,
+		"getstyle -t $HOME/GNUstep/Library/WindowMaker/Themes/\"%a(Nome do Tema)\""
+		),
+		(
+		"Salvar Configuração de Ícones",
+		EXEC,
+		"geticonset $HOME/GNUstep/Library/WindowMaker/IconSets/\"%a(Nome do Conjunto de Ícones)\""
+		)
+	),
+	(
+	"Sair",
+		("Reiniciar", RESTART),
+        (
+        "Alternar para...",
+            ("AfterStep", RESTART, /usr/X11R6/bin/RunWM.AfterStep),
+            ("Fvwm2 (Fvwm95)", RESTART, /usr/X11R6/bin/RunWM.Fvwm95),
+            ("Fvwm2 (MWM)", RESTART, /usr/X11R6/bin/RunWM.MWM),
+            ("icewm", RESTART, /usr/X11R6/bin/RunWM.icewm)
+        ),
+		("Sair...", EXIT),
+		("Terminar Sessão...", SHUTDOWN)
+	)
+)
