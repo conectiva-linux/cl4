@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# ypbind:       Starts the upbind Daemon
+#
+# Version:      @(#) /etc/rc.d/init.d/ypbind.init 1.0
+#
+# chkconfig: - 13 87
+# description: This is a daemon which runs on NIS/YP clients and binds them \
+#              to a NIS domain. It must be running for systems based on glibc \
+#              to work as NIS clients, but it should not be enabled on systems \
+#              which are not using NIS.
+# description(pt_BR): Este é o servidor que executa os clientes NIS/YP e os \
+#                     conecta a um domínio NIS. Deve rodar em sistemas baseados \
+#                     na glibc sendo usados como clientes NIS, não deve ser usado \
+#                     em sistemas que não estejam usando o NIS.
+# processname: ypbind
+# config: /etc/yp.conf
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Connecting to NIS domain... "
+	daemon ypbind
+	echo
+	touch /var/lock/subsys/ypbind
+	;;
+  stop)
+	gprintf "Stopping %s: " "NIS"
+	killproc ypbind
+	rm -f /var/lock/subsys/ypbind
+	echo
+	;;
+  status)
+	status ypbind
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "ypbind"
+	exit 1
+esac
+
+exit 0
+

@@ -1,0 +1,11 @@
+--- ypbind-3.3/configure.in~	Thu Mar 25 23:23:12 1999
++++ ypbind-3.3/configure.in	Thu Mar 25 23:23:39 1999
+@@ -38,7 +38,7 @@
+ fi
+ CFLAGS="$CCOPTS"
+ 
+-AM_PROG_INSTALL
++AC_PROG_INSTALL
+ 
+ dnl Checks for libraries.
+ 
