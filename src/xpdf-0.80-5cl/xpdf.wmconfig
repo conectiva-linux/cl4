@@ -1,0 +1,3 @@
+xpdf name "xPDF"
+xpdf exec "xpdf &"
+xpdf group Applications/Viewers
