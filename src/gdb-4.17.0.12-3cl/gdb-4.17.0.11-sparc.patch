@@ -1,0 +1,91 @@
+--- gdb-4.17/gdb/Makefile.in.sparc	Mon Mar  8 18:48:42 1999
++++ gdb-4.17/gdb/Makefile.in	Mon Mar  8 18:49:47 1999
+@@ -100,9 +100,9 @@
+ 
+ # Where is the READLINE library?  Typically in ../readline.
+ READLINE_DIR = ../readline
+-READLINE = $(READLINE_DIR)/libreadline.a
++READLINE = -lreadline#$(READLINE_DIR)/libreadline.a
+ READLINE_SRC = $(srcdir)/$(READLINE_DIR)
+-READLINE_CFLAGS = -I$(READLINE_SRC)
++READLINE_CFLAGS = -I/usr/include/readline#-I$(READLINE_SRC)
+ 
+ # Opcodes currently live in one of two places.  Either they are in the
+ # opcode library, typically ../opcodes, or they are in a header file
+--- gdb-4.17/gdb/exec.c.sparc	Mon Mar  8 18:53:40 1999
++++ gdb-4.17/gdb/exec.c	Mon Mar  8 20:09:05 1999
+@@ -503,11 +503,18 @@
+ #endif /* 0, Stu's implementation */
+   for (p = target->to_sections; p < target->to_sections_end; p++)
+     {
++      int slop = 0;
++
++#if defined(__sparc__)
++      if (! strcmp (p->the_bfd_section->name, ".interp"))
++       slop = 32;
++#endif
++
+       if (overlay_debugging && section && p->the_bfd_section &&
+ 	  strcmp (section->name, p->the_bfd_section->name) != 0)
+ 	continue;	/* not the section we need */
+       if (memaddr >= p->addr)
+- 	if (memend <= p->endaddr)
++ 	if (memend <= p->endaddr + slop)
+ 	  {
+ 	    /* Entire transfer is within this section.  */
+ 	    res = xfer_fn (p->bfd, p->the_bfd_section, myaddr,
+--- gdb-4.17/gdb/infrun.c.sparc	Mon Mar  8 18:38:34 1999
++++ gdb-4.17/gdb/infrun.c	Mon Mar  8 20:02:35 1999
+@@ -1497,7 +1497,10 @@
+ 	      set_momentary_breakpoint (sr_sal, get_current_frame (),
+ 					bp_step_resume);
+ 	    if (!IN_SOLIB_DYNSYM_RESOLVE_CODE (sr_sal.pc)
+-		&& !IN_SIGTRAMP (stop_pc, NULL))
++#if !defined(__sparc__)
++		&& !IN_SIGTRAMP (stop_pc, NULL)
++#endif
++	    )
+ 	      step_resume_breakpoint->frame = step_frame_address;
+ 
+ 	    if (sr_sal.pc < step_range_start
+--- gdb-4.17/bfd/section.c.sparc	Mon Mar  8 18:55:31 1999
++++ gdb-4.17/bfd/section.c	Mon Mar  8 20:10:05 1999
+@@ -961,6 +961,7 @@
+      bfd_size_type count;
+ {
+   bfd_size_type sz;
++  int slop = 0;
+ 
+   if (section->flags & SEC_CONSTRUCTOR)
+     {
+@@ -976,7 +977,11 @@
+     }
+   /* Even if reloc_done is true, this function reads unrelocated
+      contents, so we want the raw size.  */
+-  sz = section->_raw_size;
++#if defined(__sparc__)
++  if (! strcmp (section->name, ".interp"))
++    slop = 32;
++#endif
++  sz = section->_raw_size + slop;
+   if ((bfd_size_type) offset > sz || count > sz || offset + count > sz)
+     goto bad_val;
+ 
+--- gdb-4.17/bfd/libbfd.c.sparc	Mon Mar  8 18:57:29 1999
++++ gdb-4.17/bfd/libbfd.c	Mon Mar  8 20:10:42 1999
+@@ -1080,9 +1080,14 @@
+      file_ptr offset;
+      bfd_size_type count;
+ {
++    int slop = 0;
+     if (count == 0)
+         return true;
+-    if ((bfd_size_type)(offset+count) > section->_raw_size
++#if defined(__sparc__)
++    if (! strcmp (section->name, ".interp"))
++      slop = 32;
++#endif
++    if ((bfd_size_type)(offset+count) > (section->_raw_size + slop)
+         || bfd_seek(abfd, (file_ptr)(section->filepos + offset), SEEK_SET) == -1
+         || bfd_read(location, (bfd_size_type)1, count, abfd) != count)
+         return (false); /* on error */

@@ -1,0 +1,41 @@
+--- gdb-4.17/gdb/config/sparc/nm-linux.h.kern22	Thu Apr  1 18:26:26 1999
++++ gdb-4.17/gdb/config/sparc/nm-linux.h	Thu Apr  1 18:26:47 1999
+@@ -31,6 +31,4 @@
+ #define	SVR4_SHARED_LIBS
+ #include "solib.h"		/* Support for shared libraries */
+ #endif
+-
+-#define PT_ATTACH PTRACE_SUNATTACH
+ #define PT_DETACH PTRACE_SUNDETACH
+--- gdb-4.17/gdb/infptrace.c.kern22	Thu Apr  1 19:18:17 1999
++++ gdb-4.17/gdb/infptrace.c	Thu Apr  1 19:18:32 1999
+@@ -50,13 +50,11 @@
+ 
+ #include <sys/ptrace.h>
+ 
+ #if defined(__sparc__) && defined(__linux__)
+-#undef	PT_ATTACH
+ #undef	PT_DETACH
+-#define	PT_ATTACH PTRACE_SUNATTACH	/* XXX reestablish "nm.h" vals */
+ #define	PT_DETACH PTRACE_SUNDETACH
+ #endif
+ 
+ #endif	/* PTRACE_IN_WRONG_PLACE */
+ #endif /* NO_PTRACE_H */
+ 
+--- gdb-4.17/gdb/sparc-nat.c.kern22	Thu Apr  1 19:18:11 1999
++++ gdb-4.17/gdb/sparc-nat.c	Thu Apr  1 19:18:37 1999
+@@ -35,13 +35,11 @@
+ 
+ #include <sys/ptrace.h>
+ 
+ #if defined(__sparc__) && defined(__linux__)
+-#undef	PT_ATTACH
+ #undef	PT_DETACH
+-#define	PT_ATTACH PTRACE_SUNATTACH	/* XXX reestablish "nm.h" vals */
+ #define	PT_DETACH PTRACE_SUNDETACH
+ #endif
+ 
+ #include <sys/wait.h>
+ #ifdef __linux__
+ #include <asm/reg.h>
