@@ -1,0 +1,11 @@
+--- pciutils-1.99.4/Makefile.orig	Thu Feb  4 11:51:48 1999
++++ pciutils-1.99.4/Makefile	Thu Feb  4 11:52:00 1999
+@@ -4,7 +4,7 @@
+ 
+ OPT=-O2 -fomit-frame-pointer
+ #OPT=-O2 -g
+-CFLAGS=$(OPT) -Wall -W -Wno-parentheses -Wstrict-prototypes -Werror
++CFLAGS=$(OPT) -Wall -W -Wno-parentheses -Wstrict-prototypes # -Werror
+ 
+ ROOT=/
+ PREFIX=/usr

@@ -1,0 +1,77 @@
+--- pciutils-1.99.5/lib/header.h.jj	Mon Apr 19 15:00:10 1999
++++ pciutils-1.99.5/lib/header.h	Mon Apr 19 15:20:19 1999
+@@ -80,8 +80,8 @@
+ #define  PCI_BASE_ADDRESS_MEM_TYPE_1M	0x02	/* Below 1M */
+ #define  PCI_BASE_ADDRESS_MEM_TYPE_64	0x04	/* 64 bit address */
+ #define  PCI_BASE_ADDRESS_MEM_PREFETCH	0x08	/* prefetchable? */
+-#define  PCI_BASE_ADDRESS_MEM_MASK	(~0x0fUL)
+-#define  PCI_BASE_ADDRESS_IO_MASK	(~0x03UL)
++#define  PCI_BASE_ADDRESS_MEM_MASK	(~0x0fL)
++#define  PCI_BASE_ADDRESS_IO_MASK	(~0x03L)
+ /* bit 1 is reserved if address_space = 1 */
+ 
+ /* Header type 0 (normal devices) */
+--- pciutils-1.99.5/lib/configure.jj	Mon Apr 19 15:00:10 1999
++++ pciutils-1.99.5/lib/configure	Mon Apr 19 15:27:12 1999
+@@ -27,11 +27,12 @@ case $cpu in
+ 			echo >>$c '#define HAVE_PM_INTEL_CONF'
+ 			ok=1
+ 			;;
+-	sparc)		echo -n " syscalls"
+-			echo >>$c '#define HAVE_PM_SYSCALLS'
+-			ok=1
+-			;;
+-	alpha|sparc64)	echo >>$c '#define HAVE_64BIT_ADDRESS'
++#	sparc)		echo -n " syscalls"
++#			echo >>$c '#define HAVE_PM_SYSCALLS'
++#			ok=1
++#			;;
++	alpha|sparc|sparc64)
++			echo >>$c '#define HAVE_64BIT_ADDRESS'
+ #			echo -n " syscalls"
+ #			echo >>$c '#define HAVE_PM_SYSCALLS'
+ #			ok=1
+--- pciutils-1.99.5/lspci.c.jj	Mon Apr 19 15:00:09 1999
++++ pciutils-1.99.5/lspci.c	Mon Apr 19 15:14:47 1999
+@@ -62,6 +62,14 @@ static struct pci_access *pacc;
+ #define ADDR_FORMAT "%08lx"
+ #endif
+ 
++#ifdef ARCH_SPARC64
++#define IO_FORMAT "%016Lx"
++#elif defined(HAVE_64BIT_ADDRESS)
++#define IO_FORMAT "%04Lx"
++#else
++#define IO_FORMAT "%04lx"
++#endif
++
+ /* Our view of the PCI bus */
+ 
+ struct device {
+@@ -259,10 +267,10 @@ show_bases(struct device *d, int cnt)
+ 	}
+       if (flg & PCI_BASE_ADDRESS_SPACE_IO)
+ 	{
+-	  unsigned long a = pos & PCI_BASE_ADDRESS_IO_MASK;
++	  pciaddr_t a = pos & PCI_BASE_ADDRESS_IO_MASK;
+ 	  printf("I/O ports at ");
+ 	  if (a)
+-	    printf("%04lx", a);
++	    printf(IO_FORMAT, a);
+ 	  else if (flg & PCI_BASE_ADDRESS_IO_MASK)
+ 	    printf("<ignored>");
+ 	  else
+--- pciutils-1.99.5/ChangeLog.jj	Mon Apr 19 15:00:10 1999
++++ pciutils-1.99.5/ChangeLog	Mon Apr 19 15:34:31 1999
+@@ -1,3 +1,11 @@
++Mon Apr 19 15:21:08 1999  Jakub Jelinek  <jj@ultra.linux.cz>
++
++	* lspci.c: Display I/O addresses correctly on sparc64.
++	* lib/header.h: Ditto.
++
++	* lib/configure: On sparc set HAVE_64BIT* as well, we want
++	a binary which works on both 32bit and 64bit SPARCs.
++
+ Sun Apr 18 21:14:58 1999  Martin Mares  <mj@albireo.ucw.cz>
+ 
+ 	* lspci.c, lib/proc.c: Alpha compilation fixes from Matthew Jacob
