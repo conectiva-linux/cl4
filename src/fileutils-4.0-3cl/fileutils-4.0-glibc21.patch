@@ -1,0 +1,20 @@
+--- fileutils-4.0/lib/getline.h~	Tue Dec 16 16:59:26 1997
++++ fileutils-4.0/lib/getline.h	Tue Mar 23 21:30:27 1999
+@@ -27,10 +27,13 @@
+ #  endif
+ # endif
+ 
+-int
+-getline PARAMS ((char **_lineptr, size_t *_n, FILE *_stream));
++/*
++ * defined already in the glibc headers
++  int
++  getline PARAMS ((char **_lineptr, size_t *_n, FILE *_stream));
+ 
+-int
+-getdelim PARAMS ((char **_lineptr, size_t *_n, int _delimiter, FILE *_stream));
++  int
++  getdelim PARAMS ((char **_lineptr, size_t *_n, int _delimiter, FILE *_stream));
++*/
+ 
+ #endif /* not GETLINE_H_ */
