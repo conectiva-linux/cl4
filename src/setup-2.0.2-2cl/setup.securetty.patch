@@ -1,0 +1,10 @@
+--- setup.orig/etc/securetty	Mon Jun 21 16:16:48 1999
++++ setup/etc/securetty	Mon Jun 21 16:17:07 1999
+@@ -6,3 +6,7 @@
+ tty6
+ tty7
+ tty8
++tty9
++tty10
++tty11
++tty12
