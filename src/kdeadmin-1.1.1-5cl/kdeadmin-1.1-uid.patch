@@ -1,0 +1,9 @@
+diff -uNr kdeadmin-1.1/kuser/misc.h kdeadmin-1.1-uid/kuser/misc.h
+--- kdeadmin-1.1/kuser/misc.h	Tue Dec 22 03:00:19 1998
++++ kdeadmin-1.1-uid/kuser/misc.h	Fri Apr  2 21:40:47 1999
+@@ -24,3 +24,5 @@
+ int copyFile(QString from, QString to);
+ 
+ #endif // _KU_MISC_H
++// Conectiva's regular user uid's start at 500 (like Red Hat)
++#define _KU_FIRST_USER 500
