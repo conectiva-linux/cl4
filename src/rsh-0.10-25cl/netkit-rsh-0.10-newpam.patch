@@ -1,0 +1,212 @@
+--- netkit-rsh-0.10/rshd/rshd.c.newpam	Sat Nov 23 14:32:00 1996
++++ netkit-rsh-0.10/rshd/rshd.c	Tue Oct 14 11:56:40 1997
+@@ -397,7 +397,7 @@
+ #else
+        retcode = pam_start("rsh", locuser, &conv, &pamh);
+        if (retcode != PAM_SUCCESS) {
+-               syslog (LOG_ERR, "pam_start: %s\n", pam_strerror(retcode));
++               syslog (LOG_ERR, "pam_start: %s\n", pam_strerror(pamh, retcode));
+                exit (1);
+        }
+         (void) pam_set_item (pamh, PAM_RUSER, remuser);
+@@ -418,7 +418,7 @@
+ 	    pam_end(pamh,PAM_SYSTEM_ERR);
+ 	    exit (1);
+ 	  }
+-	  retcode = pam_setcred(pamh, PAM_CRED_ESTABLISH);
++	  retcode = pam_setcred(pamh, PAM_ESTABLISH_CRED);
+ 	}
+ 
+ 	if (retcode == PAM_SUCCESS)
+--- netkit-rsh-0.10/rlogind/sockconv.c.newpam	Sun Jun  8 15:57:22 1997
++++ netkit-rsh-0.10/rlogind/sockconv.c	Tue Oct 14 12:05:01 1997
+@@ -65,13 +65,11 @@
+ 	  charsRead++;
+      }
+ 
+-     text = xstrdup(buffer);  /* get some space for this text */
++     text = x_strdup(buffer);  /* get some space for this text */
+ 
+      return (text);
+ }
+ 
+-#define REPLY_CHUNK 5
+-
+ static void drop_reply(struct pam_response *reply, int replies)
+ {
+      int i;
+@@ -87,73 +85,51 @@
+ int sock_conv(int num_msg, const struct pam_message **msgm,
+ 		     struct pam_response **response, void *appdata_ptr)
+ {
+-     int count=0,replies=0,space=0;
++     int replies=0;
+      struct pam_response *reply=NULL;
+-     char *string=NULL;
++     char *string;
++
++     reply = malloc(sizeof(struct pam_response) * num_msg);
++     if (!reply) return PAM_CONV_ERR;
+ 
+-     for (count=0; count < num_msg; ++count) {
+-	  switch (msgm[count]->msg_style) {
++     for (replies=0; replies < num_msg; replies++) {
++	  string = NULL;
++	  switch (msgm[replies]->msg_style) {
+ 	  case PAM_PROMPT_ECHO_OFF:
+-	       string = read_string(CONV_ECHO_OFF,msgm[count]->msg);
++	       string = read_string(CONV_ECHO_OFF,msgm[replies]->msg);
+ 	       if (string == NULL) {
+ 		    drop_reply(reply,replies);
+ 		    return (PAM_CONV_ERR);
+ 	       }
+ 	       break;
+ 	  case PAM_PROMPT_ECHO_ON:
+-	       string = read_string(CONV_ECHO_ON,msgm[count]->msg);
++	       string = read_string(CONV_ECHO_ON,msgm[replies]->msg);
+ 	       if (string == NULL) {
+ 		    drop_reply(reply,replies);
+ 		    return (PAM_CONV_ERR);
+ 	       }
+ 	       break;
+ 	  case PAM_ERROR_MSG:
+-	       fprintf(stderr,"%s\n",msgm[count]->msg);
++	       fprintf(stderr,"%s\n",msgm[replies]->msg);
++	       string = NULL;
+ 	       break;
+ 	  case PAM_TEXT_INFO:
+-	       fprintf(stderr,"%s\n",msgm[count]->msg);
++	       fprintf(stderr,"%s\n",msgm[replies]->msg);
++	       string = NULL;
+ 	       break;
+ 	  default:
+ 	       fprintf(stderr, "erroneous conversation (%d)\n"
+-		       ,msgm[count]->msg_style);
++		       ,msgm[replies]->msg_style);
+ 	       drop_reply(reply,replies);
+ 	       return (PAM_CONV_ERR);
+ 	  }
+ 
+-	  if (string) {     /* must add to reply array */
+-	       struct pam_response *ptmp;
+-
+-	       /* do we need a larger reply array ? */
+-
+-	       if (space <= replies) {
+-		    space += REPLY_CHUNK;
+-		    ptmp = (struct pam_response *)
+-			 realloc(reply, space*sizeof(struct pam_response));
+-		    if (ptmp == NULL) {
+-			 drop_reply(reply,replies);
+-			 return PAM_CONV_ERR;        /* ran out of memory */
+-		    }
+-		    reply = ptmp;                       /* enlarged array */
+-	       }
++	  /* add string to list of responses */
+ 
+-	       /* add string to list of responses */
+-
+-	       reply[replies].resp_retcode = 0;
+-	       reply[replies++].resp = string;
+-	       string = NULL;
+-	  }
++	  reply[replies].resp_retcode = 0;
++	  reply[replies].resp = string;
+      }
+ 
+-     /* do we need to bother with a response? */
+-     if (reply) {
+-
+-	  /*
+-	   * note, this pam_response structure (array) will be
+-	   * free()'d by the module 
+-	   */
+-
+-	  *response = reply;
+-     }
+-     
++     *response = reply;
+      return PAM_SUCCESS;
+ }
+--- netkit-rsh-0.10/rlogind/rlogind.c.newpam	Tue May 13 01:12:47 1997
++++ netkit-rsh-0.10/rlogind/rlogind.c	Tue Oct 14 11:56:40 1997
+@@ -577,7 +577,7 @@
+ #ifdef USE_PAM
+ 	  case 2:
+ 		len = snprintf(bp, sizeof(buf)-1, "rlogind: %s: %s.\r\n",
+-			       msg, pam_strerror(errno));
++			       msg, pam_strerror(pamh, errno));
+ 		break;
+ #endif
+ 	}
+@@ -610,7 +610,7 @@
+ #ifdef USE_PAM
+        retcode = pam_start("rlogin", lusername, &conv, &pamh);
+        if (retcode != PAM_SUCCESS) {
+-               syslog (LOG_ERR, "pam_start: %s\n", pam_strerror(retcode));
++               syslog (LOG_ERR, "pam_start: %s\n", pam_strerror(pamh, retcode));
+                fatal(STDERR_FILENO, "initialization failed", 0);
+        }
+ 
+@@ -629,7 +629,7 @@
+                        retval = pam_acct_mgmt(pamh, 0);
+                if (retval == PAM_SUCCESS)
+                        break;
+-               if (retval == PAM_AUTHTOKEN_REQD) {
++               if (retval == PAM_NEW_AUTHTOK_REQD) {
+                        retval = pam_chauthtok (pamh,PAM_CHANGE_EXPIRED_AUTHTOK);
+ 	               if(retval == PAM_SUCCESS)
+ 			 /* Try authentication again if passwd change
+@@ -673,7 +673,7 @@
+                        return -1;
+                }
+ 
+-               retval = pam_setcred(pamh, PAM_CRED_ESTABLISH);
++               retval = pam_setcred(pamh, PAM_ESTABLISH_CRED);
+ 	}
+ 
+ 	if (retval != PAM_SUCCESS) {
+--- netkit-rsh-0.10/rexecd/rexecd.c.newpam	Sun Jun  8 15:42:38 1997
++++ netkit-rsh-0.10/rexecd/rexecd.c	Tue Oct 14 11:56:40 1997
+@@ -159,26 +159,28 @@
+   #define COPY_STRING(s) (s) ? strdup(s) : NULL
+ 
+   for (count = 0; count < num_msg; count++) {
++    GET_MEM;
+     switch (msg[count]->msg_style) {
+       case PAM_PROMPT_ECHO_ON:
+-        GET_MEM;
+         reply[replies].resp_retcode = PAM_SUCCESS;
+         reply[replies++].resp = COPY_STRING(PAM_username);
+           /* PAM frees resp */
+         break;
+       case PAM_PROMPT_ECHO_OFF:
+-        GET_MEM;
+         reply[replies].resp_retcode = PAM_SUCCESS;
+         reply[replies++].resp = COPY_STRING(PAM_password);
+           /* PAM frees resp */
+         break;
+       case PAM_TEXT_INFO:
++        reply[replies].resp_retcode = PAM_SUCCESS;
++        reply[replies++].resp = NULL;
+         /* ignore it... */
+         break;
+       case PAM_ERROR_MSG:
+-      default:
++        reply[replies].resp_retcode = PAM_SUCCESS;
++        reply[replies++].resp = NULL;
+         /* Must be an error of some sort... */
+-        free (reply);
++      default:
+         return PAM_CONV_ERR;
+     }
+   }
+@@ -256,7 +258,7 @@
+        PAM_BAIL;
+        pam_error = pam_acct_mgmt(pamh, 0);
+        PAM_BAIL;
+-       pam_error = pam_setcred(pamh, PAM_CRED_ESTABLISH);
++       pam_error = pam_setcred(pamh, PAM_ESTABLISH_CRED);
+        PAM_BAIL;
+        pam_end(pamh, PAM_SUCCESS);
+        /* If this point is reached, the user has been authenticated. */

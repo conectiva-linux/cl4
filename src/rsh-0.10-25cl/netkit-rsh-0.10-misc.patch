@@ -1,0 +1,24 @@
+--- netkit-rsh-0.10/MCONFIG.ewt	Tue Jul 15 14:35:21 1997
++++ netkit-rsh-0.10/MCONFIG	Tue Jul 15 14:35:57 1997
+@@ -33,7 +33,7 @@
+ WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS) -D_GNU_SOURCE=1 $(RPM_OPT_FLAGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -49,10 +49,10 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ # Support Pluggable Authentication Modules
+-USE_PAM=0
++USE_PAM=1
+ 
+ # Support shadow passwords
+ USE_SHADOW=0
