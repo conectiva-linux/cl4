@@ -1,0 +1,12 @@
+diff -uNr gnome-objc-1.0.1/configure.in gnome-objc-1.0.1-pt_BR/configure.in
+--- gnome-objc-1.0.1/configure.in	Mon Mar  1 18:15:23 1999
++++ gnome-objc-1.0.1-pt_BR/configure.in	Fri Jun 25 15:33:46 1999
+@@ -38,7 +38,7 @@
+ AC_PROG_LN_S
+ AC_PROG_MAKE_SET
+ 
+-ALL_LINGUAS="es fr it no pt ru"
++ALL_LINGUAS="es fr it no pt pt_BR ru"
+ 
+ AM_GNOME_GETTEXT
+ 
