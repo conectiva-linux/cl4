@@ -1,0 +1,4 @@
+playmidi name "PlayMidi"
+playmidi description "Play MIDI Files."
+playmidi exec "playmidi"
+playmidi group Utilities/Sound
