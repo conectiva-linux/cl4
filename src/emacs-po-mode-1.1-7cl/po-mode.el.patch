@@ -1,0 +1,12 @@
+diff -Nur po-mode.orig/po-mode.el po-mode/po-mode.el
+--- po-mode.orig/po-mode.el	Thu Jun 11 11:35:29 1998
++++ po-mode/po-mode.el	Wed Oct 21 09:30:33 1998
+@@ -2450,7 +2450,7 @@
+ 
+   ;; This `let' is for protecting the previous value of compile-command.
+   (let ((compile-command (concat po-msgfmt-program
+-				 " --statistics -c -v -o /dev/null "
++				 " -v -o /dev/null "
+ 				 buffer-file-name)))
+     (compile compile-command)))
+ 
