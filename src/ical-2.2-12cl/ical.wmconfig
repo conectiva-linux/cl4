@@ -1,0 +1,5 @@
+ical name "Ical"
+ical description "Calendário"
+ical icon datebook.xpm
+ical exec "ical"
+ical group Utilitários/Diversos
