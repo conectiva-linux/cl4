@@ -1,0 +1,4 @@
+wmmixer name "Wmmixer"
+wmmixer description "Applet para Controle do Som"
+wmmixer exec "wmmixer &"
+wmmixer group "Applets do Dock do WindowMaker"
