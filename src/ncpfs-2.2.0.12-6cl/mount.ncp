@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# by Bill Nottingham <notting@redhat.com>
+#
+
+if [ $# != 4 -o "$3" != "-o" ]; then
+	echo "unsupported commandline $0 $*"
+	exit -1
+fi
+
+HOSTINFO="-S `echo $1 | sed -e 's/:/ -V /'`"
+
+COMMAND="ncpmount $HOSTINFO"
+for arg in `echo $4 | tr ',' ' '`; do
+        case "$arg" in
+	  "rw")
+	      COMMAND="$COMMAND -f755 -d755"
+	      ;;
+	  "ro")
+	      COMMAND="$COMMAND -f555 -d555"
+	      ;;
+          gid=*)
+              MGID=`echo $arg | cut -d '=' -f 2`
+              COMMAND="$COMMAND -g$MGID"
+              ;;
+          uid=*)
+              MUID=`echo $arg | cut -d '=' -f 2`
+	      COMMAND="$COMMAND -u$MUID"
+	      ;;
+	  user=*)
+	      USER="-U `echo $arg | cut -d '=' -f 2-`"
+	      ;;
+          passwd=*)
+              PASSWD="-P `echo $arg | cut -d '=' -f 2-`"
+              ;;
+	   *)
+	     ;;
+	esac
+done
+
+if [ -n "$PASSWD" ]; then
+      echo $COMMAND $USER $PASSWD $2
+      $COMMAND $USER $PASSWD $2
+else
+     echo $COMMAND $USER -n $2
+     $COMMAND $USER -n $2
+fi

@@ -1,0 +1,34 @@
+--- ncpfs-2.2.0.11/include/kernel/types.h.glibc21	Wed Apr 22 08:58:58 1998
++++ ncpfs-2.2.0.11/include/kernel/types.h	Fri Jan 22 10:52:36 1999
+@@ -24,16 +24,10 @@
+ typedef __kernel_gid_t __ker21_gid_t;
+ typedef __kernel_mode_t __ker21_mode_t;
+ 
+-#ifdef __GLIBC__
+-/* why is this defined in posix_types ???? dirty hack... */
+-#undef __FD_CLR
+-#undef __FD_SET
+-#undef __FD_ISSET
+-#undef __FD_ZERO
+-#ifdef _SELECTBITS_H
+-#undef _SELECTBITS_H
+-#include <selectbits.h>
+-#endif
++/* thwap */
++#ifdef __arm__
++#undef _SYS_SELECT_H
++#include <sys/select.h>
+ #endif
+ 
+ #endif	/* __KERNEL_TYPES_H__ */
+--- ncpfs-2.2.0.11/sutil/ncpmount.c.glibc21	Fri Dec  4 14:21:14 1998
++++ ncpfs-2.2.0.11/sutil/ncpmount.c	Fri Jan 22 10:51:56 1999
+@@ -25,7 +25,7 @@
+ #include <pwd.h>
+ #include <grp.h>
+ #include "ext/socket.h"
+-#include <sys/param.h>
++#include <linux/limits.h>
+ #include <netinet/in.h>
+ #include <netdb.h>
+ #include <sys/stat.h>
