@@ -1,0 +1,5 @@
+xwpe name "xwpe"
+xwpe description "Ambiente de Desenvolvimento C"
+xwpe mini-icon mini-bug1.xpm
+xwpe exec "xwpe &"
+xwpe group Desenvolvimento
