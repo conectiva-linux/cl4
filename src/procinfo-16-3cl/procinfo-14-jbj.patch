@@ -1,0 +1,20 @@
+--- procinfo-14/procinfo.c.jbj	Fri Oct  2 16:03:26 1998
++++ procinfo-14/procinfo.c	Fri Oct  2 16:09:02 1998
+@@ -275,10 +275,16 @@
+ 
+     elapsed = new.uptime;
+ 
+-#ifndef __alpha__		/* IRQ 0 isn't a timer tick on Alpha's... */
++#ifdef __i386__		/* IRQ 0 is timer tick on i386's... */
+     if (irq_array) {
+ 	if (fs && old.uptime)
+ 	    elapsed = DIFF (intr[0]);
++    } else
++#endif
++#ifdef __sparc__	/* IRQ 10 is timer tick on sparc's... */
++    if (irq_array) {
++	if (fs && old.uptime)
++	    elapsed = DIFF (intr[10]);
+     } else
+ #endif
+     {

@@ -1,0 +1,24 @@
+--- procinfo-14/Makefile.misc	Sun May 24 10:49:04 1998
++++ procinfo-14/Makefile	Thu Sep 10 11:06:29 1998
+@@ -4,7 +4,7 @@
+ 
+ CC = gcc -Wall -Wstrict-prototypes
+ 
+-CFLAGS = -O2
++CFLAGS = $(RPM_OPT_FLAGS)
+ LDFLAGS = -s
+ 
+ # If you get lots of `undefined references', you probably need -lncurses
+@@ -33,9 +33,9 @@
+ 
+ install: procinfo procinfo.8 lsdev.pl socklist.pl lsdev.8
+ 	-mkdir -p $(prefix)/bin
+-	install procinfo $(prefix)/bin/procinfo
+-	install lsdev.pl $(prefix)/bin/lsdev
+-	install socklist.pl $(prefix)/bin/socklist
++	install -m 755 -o 0 -g 0 procinfo $(prefix)/bin/procinfo
++	install -m 755 -o 0 -g 0 lsdev.pl $(prefix)/bin/lsdev
++	install -m 755 -o 0 -g 0 socklist.pl $(prefix)/bin/socklist
+ 	-mkdir -p $(prefix)/man/man8
+ 	install -m 644  procinfo.8 $(prefix)/man/man8/procinfo.8
+ 	install -m 644  lsdev.8 $(prefix)/man/man8/lsdev.8
