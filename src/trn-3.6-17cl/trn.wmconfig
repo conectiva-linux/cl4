@@ -1,0 +1,4 @@
+trn name "trn"
+trn description "Leitor de Notícias (News)"
+trn exec "xterm -e trn &"
+trn group "Utilitários/Diversos"

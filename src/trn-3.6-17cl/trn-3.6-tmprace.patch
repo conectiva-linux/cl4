@@ -1,0 +1,12 @@
+diff -Nur trn-3.6.orig/newsgroups trn-3.6/newsgroups
+--- trn-3.6.orig/newsgroups	Mon Nov 30 02:49:16 1998
++++ trn-3.6/newsgroups	Mon Nov 30 02:50:07 1998
+@@ -24,7 +24,7 @@
+ pager="/usr/bin/less"
+ 
+ 
+-active="/tmp/active.$$"
++active=`mktemp /tmp/active.XXXXXX`
+ rnlib=/usr/lib/trn
+ case $rnlib in
+ ~*) rnlib=`/usr/lib/trn/filexp $rnlib` ;;
