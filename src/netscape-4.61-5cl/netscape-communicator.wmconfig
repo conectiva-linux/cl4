@@ -1,0 +1,4 @@
+netscape-communicator name "Netscape Communicator"
+netscape-communicator description "Netscape Communicator"
+netscape-communicator group Rede
+netscape-communicator exec "/usr/bin/netscape-communicator"

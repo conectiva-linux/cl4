@@ -1,0 +1,4 @@
+netscape-navigator name "Netscape Navigator"
+netscape-navigator description "Netscape Navigator"
+netscape-navigator group Rede
+netscape-navigator exec "/usr/bin/netscape-navigator"
