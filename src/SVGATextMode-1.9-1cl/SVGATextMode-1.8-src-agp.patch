@@ -1,0 +1,66 @@
+--- SVGATextMode-1.8-src/XFREE/vgaPCI.h.agp	Thu Feb  5 00:20:22 1998
++++ SVGATextMode-1.8-src/XFREE/vgaPCI.h	Thu Feb  5 00:23:08 1998
+@@ -95,6 +95,7 @@
+ #define PCI_CHIP_MGA2064	0x0519
+ #define PCI_CHIP_MGA1064	0x051A
+ #define PCI_CHIP_MGA2164        0x051B
++#define PCI_CHIP_MGA2164AGP     0x051F
+ 
+ /* Chips & Tech */
+ #define PCI_CHIP_65545		0x00D8
+@@ -255,6 +256,7 @@
+ 				{PCI_CHIP_MGA2085,	"MGA 2085PX"},
+ 				{PCI_CHIP_MGA2064,	"MGA 2064W"},
+ 				{PCI_CHIP_MGA2164,	"MGA 2164W"},
++				{PCI_CHIP_MGA2164AGP,	"MGA 2164W/AGP"},
+ 				{PCI_CHIP_MGA1064,	"MGA 1064SG"},
+ 				{0x0000,		NULL}}},
+     {PCI_VENDOR_CHIPSTECH, "C&T", {
+--- SVGATextMode-1.8-src/XFREE/vgaPCI.c.agp	Wed Nov 26 10:56:43 1997
++++ SVGATextMode-1.8-src/XFREE/vgaPCI.c	Thu Feb  5 00:24:51 1998
+@@ -81,7 +81,8 @@
+ 	      break;
+ 	    }
+             if (info->Vendor == PCI_VENDOR_MATROX &&
+-                (info->ChipType == PCI_CHIP_MGA2164)) {
++                (info->ChipType == PCI_CHIP_MGA2164 ||
++		 info->ChipType == PCI_CHIP_MGA2164AGP)) {
+               info->IOBase = pcrp->_base1;
+               info->MemBase = pcrp->_base0;
+             } 
+--- SVGATextMode-1.8-src/XFREE/mga_clock.c.agp	Wed Nov 26 10:53:09 1997
++++ SVGATextMode-1.8-src/XFREE/mga_clock.c	Thu Feb  5 00:26:33 1998
+@@ -57,8 +57,9 @@
+ 			if (pcr->_vendor == PCI_VENDOR_MATROX)
+ 			{
+ 				if ((pcr->_device == PCI_CHIP_MGA2064)
+-					|| (pcr->_device == PCI_CHIP_MGA1064)
+-                                        || (pcr->_device == PCI_CHIP_MGA2164))
++				    || (pcr->_device == PCI_CHIP_MGA1064)
++				    || (pcr->_device == PCI_CHIP_MGA2164)
++				    ||	(pcr->_device == PCI_CHIP_MGA2164AGP))
+ 					break;
+ 			}
+ 		}
+@@ -66,7 +67,10 @@
+ 
+ 	if (!pcr) return(FALSE);
+ 
+-	if ((pcr->_device != PCI_CHIP_MGA2064) && (pcr->_device != PCI_CHIP_MGA1064) && (pcr->_device != PCI_CHIP_MGA2164))
++	if ((pcr->_device != PCI_CHIP_MGA2064)
++	    && (pcr->_device != PCI_CHIP_MGA1064)
++	    && (pcr->_device != PCI_CHIP_MGA2164)
++	    && (pcr->_device != PCI_CHIP_MGA2164AGP))
+ 		return(FALSE);
+ 
+ 	/*
+@@ -88,7 +92,8 @@
+  
+         if (  ( (pcr->_device == PCI_CHIP_MGA1064) && 
+                 (pcr->_rev_id == 0x3)) ||
+-              (pcr->_device == PCI_CHIP_MGA2164))
++              (pcr->_device == PCI_CHIP_MGA2164)
++	      || (pcr->_device == PCI_CHIP_MGA2164AGP))
+                 
+         {      
+                 /* 

@@ -1,0 +1,56 @@
+diff -Nur SVGATextMode-1.9-src.orig/TextConfig SVGATextMode-1.9-src/TextConfig
+--- SVGATextMode-1.9-src.orig/TextConfig	Tue Oct 13 17:09:15 1998
++++ SVGATextMode-1.9-src/TextConfig	Mon Apr  5 12:34:01 1999
+@@ -450,11 +450,11 @@
+ Option "LoadFont"
+ FontProg "/usr/bin/setfont"
+ #FontPath "/usr/lib/kbd/consolefonts"
+-FontSelect "Cyr_a8x16"   8x16 9x16 8x15 9x15 
+-FontSelect "Cyr_a8x14"   8x14 9x14 8x13 9x13
+-FontSelect "8x12alt.psf" 8x12 9x12 8x11 9x11
+-FontSelect "Cyr_a8x8"    8x8  9x8  8x7  9x7
+-FontSelect "Cyr_a8x32"   8x32 9x32 8x31 9x31
++FontSelect "lat1u-16.psf"   8x16 9x16 8x15 9x15
++FontSelect "lat1u-14.psf"   8x14 9x14 8x13 9x13
++FontSelect "lat1u-12.psf" 8x12 9x12 8x11 9x11
++FontSelect "lat1u-08.psf"    8x8  9x8  8x7  9x7
++#FontSelect "Cyr_a8x32"   8x32 9x32 8x31 9x31
+ 
+ #
+ # using the following FontProg line will avoid losing high-ascii characters
+@@ -777,7 +777,7 @@
+ # Especially the 80x... modes are a real enhancement over the original one.
+ #
+ "S80x25"           55   640  704  800  872    400  405  410  417 font  9x16 DoubleScan
+-"S80x12"           55   640  704  800  872    400  405  410  417 font  9x32 DoubleScan
++#"S80x12"           55   640  704  800  872    400  405  410  417 font  9x32 DoubleScan
+ "S80x50"           55   640  704  800  872    800  810  820  835 font  9x16
+ "S80x66"           55   640  704  800  872    800  810  820  835 font  9x12
+ "S80x100"          55   640  704  800  872    800  810  820  835 font  9x8
+@@ -790,7 +790,7 @@
+ #
+ # This one is completely nuts. You'll know why once you see this on a 20" screen...
+ #
+-"MEGA20x7"  15.12  160 200 224 240   240  241  242  256 font 9x32 doublescan
++#"MEGA20x7"  15.12  160 200 224 240   240  241  242  256 font 9x32 doublescan
+  
+ ###########################################################################
+ # For as far as I know, of all the "cheap" cards, only ET4000 can handle clocks
+@@ -926,7 +926,7 @@
+ # Be carefull with these! They use EXTREMELY high clocks (for text mode)
+ # Delman Lee (delman@mipg.upenn.edu)
+ "160x60"          110  1280 1304 1480 1696    960  986  989 1023 font  8x16
+-"160x30"          110  1280 1304 1480 1696    960  986  989 1023 font  8x32
++#"160x30"          110  1280 1304 1480 1696    960  986  989 1023 font  8x32
+ "108x60"           80   864  964 1104 1256    960  986  989 1023 font  8x16
+ #
+ # Some 120Hz / 82 KHz modes
+@@ -1008,7 +1008,7 @@
+ #
+ "B160x60"         94.5  1280 1348 1432 1680    960  986  989 1023  font 8x16
+ "B160x48"         94.5  1280 1348 1432 1680    768  770  774  800  font 8x16
+-"B160x30"         94.5  1280 1348 1432 1680    960  986  989 1023  font 8x32
++#"B160x30"         94.5  1280 1348 1432 1680    960  986  989 1023  font 8x32
+ "B160x100"        94.5  1280 1352 1472 1680    800  809  819  850  font 8x8
+ 
+ 
