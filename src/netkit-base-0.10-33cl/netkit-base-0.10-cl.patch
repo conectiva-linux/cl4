@@ -1,0 +1,113 @@
+diff -uNr base/inet.init base.acme/inet.init
+--- base/inet.init	Wed Feb  3 17:50:53 1999
++++ base.acme/inet.init	Fri Mar 12 15:43:02 1999
+@@ -13,6 +13,11 @@
+ #              is responsible for starting many services, including telnet, \
+ #              ftp, rsh, and rlogin. Disabling inetd disables all of the \
+ #              services it is responsible for.
++# description(pt_BR): O super servidor internet (comumente chamado de inetd) \
++#              inicializa uma variedade de serviços internet sob demanda. Ele \
++#              é responsável pela inicialização de muitos serviços, incluindo \
++#              telnet, ftp, rsh e rlogin. Desabilitar o inetd desabilita \
++#              todos os serviços sob sua responsabilidade.
+ # processname: inetd
+ # pidfile: /var/run/inetd.pid
+ # config: /etc/sysconfig/network
+@@ -36,7 +41,7 @@
+ # See how we were called.
+ case "$1" in
+   start)
+-	echo -n "Starting INET services: "
++	gprintf "Starting %s services: " "INET"
+ 	daemon inetd
+ 
+ 	echo
+@@ -46,7 +51,7 @@
+ 	# bringing down NFS filesystems isn't inet's problem I don't know 
+ 	# why this script used to do that -- ewt
+ 
+-	echo -n "Stopping INET services: "
++	gprintf "Stopping %s services: " "INET"
+ 	killproc inetd
+ 
+ 	echo
+@@ -59,7 +64,7 @@
+ 	killall -HUP inetd
+ 	;;
+   *)
+-	echo "Usage: inet {start|stop|status|restart|reload}"
++	gprintf "Usage: %s {start|stop|status|restart|reload}\n" "inet"
+ 	exit 1
+ esac
+ 
+diff -uNr base/inetd.conf base.acme/inetd.conf
+--- base/inetd.conf	Tue Feb 23 04:35:32 1999
++++ base.acme/inetd.conf	Fri Mar 12 15:45:41 1999
+@@ -13,6 +13,9 @@
+ #
+ # Modified for RHS Linux by Marc Ewing <marc@redhat.com>
+ #
++# Modified for Conectiva Linux by
++#			Arnaldo Carvalho de Melo <acme@conectiva.com.br>
++#
+ # <service_name> <sock_type> <proto> <flags> <user> <server_path> <args>
+ #
+ # Echo, discard, daytime, and chargen are used primarily for testing.
+@@ -26,8 +29,8 @@
+ #echo		stream	tcp	nowait	root	internal
+ #discard	stream	tcp	nowait	root	internal
+ #chargen	stream	tcp	nowait	root	internal
+-daytime		stream	tcp	nowait	root	internal
+-time		stream	tcp	nowait	root	internal
++#daytime	stream	tcp	nowait	root	internal
++#time		stream	tcp	nowait	root	internal
+ #echo		dgram	udp	wait	root	internal
+ #discard	dgram	udp	wait	root	internal
+ #chargen	dgram	udp	wait	root	internal
+@@ -37,19 +40,19 @@
+ #
+ # Shell, login, exec and talk are BSD protocols.
+ #
+-ftp	stream	tcp	nowait	root	/usr/sbin/tcpd	in.ftpd -l -a
+-telnet	stream  tcp 	nowait  root    /usr/sbin/tcpd	in.telnetd
+-shell		stream	tcp	nowait	root	/usr/sbin/tcpd	in.rshd
+-login		stream	tcp	nowait	root	/usr/sbin/tcpd	in.rlogind
++ftp		stream	tcp	nowait	root	/usr/sbin/tcpd	in.ftpd -l -a
++telnet		stream  tcp 	nowait  root    /usr/sbin/tcpd	in.telnetd
++#shell		stream	tcp	nowait	root	/usr/sbin/tcpd	in.rshd
++#login		stream	tcp	nowait	root	/usr/sbin/tcpd	in.rlogind
+ #exec		stream	tcp	nowait	root	/usr/sbin/tcpd	in.rexecd
+ #comsat		dgram	udp	wait	root	/usr/sbin/tcpd	comsat
+-ntalk		dgram	udp	wait	root	/usr/sbin/tcpd	in.ntalkd
++#ntalk		dgram	udp	wait	root	/usr/sbin/tcpd	in.ntalkd
+ #
+ # Pop and imap mail services et al
+ #
+-pop-2		stream  tcp     nowait  root    /usr/sbin/tcpd	ipop2d
+-pop-3		stream  tcp     nowait  root    /usr/sbin/tcpd	ipop3d
+-imap		stream  tcp     nowait  root    /usr/sbin/tcpd	imapd
++#pop-2		stream  tcp     nowait  root    /usr/sbin/tcpd	ipop2d
++#pop-3		stream  tcp     nowait  root    /usr/sbin/tcpd	ipop3d
++#imap		stream  tcp     nowait  root    /usr/sbin/tcpd	imapd
+ #
+ # The Internet UUCP service.
+ #
+@@ -68,7 +71,7 @@
+ #
+ # cfinger is for GNU finger, which is currently not in use in RHS Linux
+ #
+-finger		stream	tcp	nowait	root	/usr/sbin/tcpd	in.fingerd
++#finger		stream	tcp	nowait	root	/usr/sbin/tcpd	in.fingerd
+ #cfinger	stream	tcp	nowait	root	/usr/sbin/tcpd	in.cfingerd
+ #systat		stream	tcp	nowait	guest	/usr/sbin/tcpd	/bin/ps	-auwwx
+ #netstat	stream	tcp	nowait	guest	/usr/sbin/tcpd	/bin/netstat -f inet
+@@ -80,7 +83,7 @@
+ # do not uncomment smtp unless you *really* know what you are doing.
+ # smtp is handled by the sendmail daemon now, not smtpd.  It does NOT
+ # run from here, it is started at boot time from /etc/rc.d/rc#.d.
+-#smtp	stream  tcp 	nowait  root    /usr/bin/smtpd	smtpd
+-#nntp	stream	tcp	nowait	root	/usr/sbin/tcpd	in.nntpd
++#smtp		stream  tcp 	nowait  root    /usr/bin/smtpd	smtpd
++#nntp		stream	tcp	nowait	root	/usr/sbin/tcpd	in.nntpd
+ #
+ # End of inetd.conf

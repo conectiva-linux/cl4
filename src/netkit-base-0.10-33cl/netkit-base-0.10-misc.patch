@@ -1,0 +1,35 @@
+--- netkit-base-0.10/inetd/inetd.8.misc	Wed Jun 17 13:04:23 1998
++++ netkit-base-0.10/inetd/inetd.8	Wed Jun 17 13:05:12 1998
+@@ -263,7 +263,7 @@
+ is reread.
+ .Nm Inetd
+ creates a file
+-.Em /etc/inetd.pid
++.Em /var/run/inetd.pid
+ that contains its process identifier.
+ .Sh SEE ALSO
+ .Xr comsat 8 ,
+--- netkit-base-0.10/MCONFIG.misc	Tue May 13 01:32:20 1997
++++ netkit-base-0.10/MCONFIG	Wed Jun 17 13:02:57 1998
+@@ -36,10 +36,10 @@
+ CC=gcc
+ 
+ # Compiler warnings
+-WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
++WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline 
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe $(RPM_OPT_FLAGS) -D__USE_BSD_SIGNAL $(WARNINGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -52,7 +52,7 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ 
+ 

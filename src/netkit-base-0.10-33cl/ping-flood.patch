@@ -1,0 +1,63 @@
+--- ping.c-orig	Fri Sep 25 09:14:32 1998
++++ ping.c	Tue Oct 13 19:45:55 1998
+@@ -177,6 +177,8 @@
+ static long nrepeats;		/* number of duplicates */
+ static long ntransmitted;	/* sequence # for outbound packets = #sent */
+ static int interval = 1;	/* interval between packets */
++static int floodok = 1;		/* OK to send next flood ping */
++static struct timeval floodts;	/* Time last flood ping was sent */
+ 
+ /* timing */
+ static int timing;		/* flag to do timing */
+@@ -485,13 +487,20 @@
+ 		size_t fromlen;
+ 
+ 		if (options & F_FLOOD) {
+-			pinger();
++			if (floodok)
++			{
++			    floodok = 0;
++			    pinger();
++			}
+ 			timeout.tv_sec = 0;
+ 			timeout.tv_usec = 10000;
+ 			fdmask = 1 << s;
+ 			if (select(s + 1, (fd_set *)&fdmask, (fd_set *)NULL,
+ 			    (fd_set *)NULL, &timeout) < 1)
++			{
++				floodok = 1;
+ 				continue;
++			}
+ 		}
+ 		fromlen = sizeof(from);
+ 		if ((cc = recvfrom(s, (char *)packet, packlen, 0,
+@@ -589,6 +598,9 @@
+ 
+ 	CLR(icp->icmp_seq % mx_dup_ck);
+ 
++	if (options & F_FLOOD)
++		(void)gettimeofday(&floodts, (struct timezone *)NULL);
++		
+ 	if (timing)
+ 		(void)gettimeofday((struct timeval *)&outpack[8],
+ 		    (struct timezone *)NULL);
+@@ -637,6 +649,11 @@
+ 
+ 	(void)gettimeofday(&tv, (struct timezone *)NULL);
+ 
++	if (options & F_FLOOD
++	    && (tv.tv_sec-floodts.tv_sec)*1000 +
++		(tv.tv_usec-floodts.tv_usec)/1000 >= 20 )
++	    floodok = 1;
++
+ 	/* Check the IP header */
+ 	ip = (struct iphdr *)buf;
+ 	hlen = ip->ip_hl << 2;
+@@ -655,6 +672,7 @@
+ 		if (icp->icmp_id != ident)
+ 			return;			/* 'Twas not our ECHO */
+ 		++nreceived;
++		floodok = 1;
+ 		if (timing) {
+ #ifndef icmp_data
+ 			tp = (struct timeval *)(icp + 1);

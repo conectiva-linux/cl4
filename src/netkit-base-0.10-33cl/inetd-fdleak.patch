@@ -1,0 +1,62 @@
+From dholland@zen.ics.uwe.ac.uk  Tue Apr  6 21:28:28 1999
+Return-Path: <dholland@zen.ics.uwe.ac.uk>
+Received: from lacrosse.redhat.com (root@lacrosse.redhat.com [207.175.42.154])
+	by devserv.devel.redhat.com (8.8.7/8.8.7) with ESMTP id VAA22503
+	for <jbj@devserv.devel.redhat.com>; Tue, 6 Apr 1999 21:28:27 -0400
+From: dholland@zen.ics.uwe.ac.uk
+Received: from mail.redhat.com (mail.redhat.com [199.183.24.239])
+	by lacrosse.redhat.com (8.8.7/8.8.7) with ESMTP id VAA19153
+	for <jbj@lacrosse.redhat.com>; Tue, 6 Apr 1999 21:28:23 -0400
+Received: from zen.ics.uwe.ac.uk (dholland@zen.btc.uwe.ac.uk [164.11.100.4])
+	by mail.redhat.com (8.8.7/8.8.7) with ESMTP id VAA14876
+	for <jbj@redhat.com>; Tue, 6 Apr 1999 21:28:22 -0400
+Received: (from dholland@localhost)
+	by zen.ics.uwe.ac.uk (8.8.7/8.8.7) id CAA03486
+	for jbj@redhat.com; Wed, 7 Apr 1999 02:28:17 +0100
+Message-Id: <199904070128.CAA03486@zen.ics.uwe.ac.uk>
+Subject: better inetd patch
+To: jbj@redhat.com
+Date: Wed, 7 Apr 1999 02:28:15 +0100 (BST)
+Reply-To: dholland@hcs.harvard.edu
+Content-Type: text
+Status: RO
+Content-Length: 1043
+Lines: 36
+
+
+Index: inetd.c
+===================================================================
+RCS file: /home/netbug/netkit/CVSREPO/netkit-base/inetd/inetd.c,v
+retrieving revision 1.19
+diff -u -r1.19 inetd.c
+--- inetd.c	1997/09/23 09:16:40	1.19
++++ inetd.c	1999/04/07 01:25:14
+@@ -472,6 +472,10 @@
+ 			"%s/%s server failing (looping), service terminated\n",
+ 					    sep->se_service, sep->se_proto);
+ 					FD_CLR(sep->se_fd, &allsock);
++					if (!sep->se_wait && 
++					    sep->se_socktype==SOCK_STREAM) {
++						close(ctrl);
++					}
+ 					(void) close(sep->se_fd);
+ 					sep->se_fd = -1;
+ 					sep->se_count = 0;
+@@ -489,7 +493,7 @@
+ 		}
+ 		if (pid < 0) {
+ 			syslog(LOG_ERR, "fork: %m");
+-			if (sep->se_socktype == SOCK_STREAM)
++			if (!sep->se_wait && sep->se_socktype == SOCK_STREAM)
+ 				close(ctrl);
+ 			sigprocmask(SIG_SETMASK, &emptymask, NULL);
+ 			sleep(1);
+@@ -1703,6 +1707,7 @@
+ 	sin.sin_port = htons(0);
+ 	if (bind(s, (struct sockaddr *) &sin, sizeof(sin)) == -1) {
+ 		syslog(LOG_ERR, "bind: %m");
++		close(s);
+ 		return (result);
+ 	}
+ 
+

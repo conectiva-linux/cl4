@@ -1,0 +1,9 @@
+--- netkit-base-0.10/README.maint	Wed Apr  7 17:17:48 1999
++++ netkit-base-0.10/README	Wed Apr  7 17:18:22 1999
+@@ -75,5 +75,5 @@
+ 	are including fixes. :-)
+ 
+ 
+-David A. Holland	dholland@hcs.harvard.edu
++David A. Holland	netbug@ftp.uk.linux.org
+ 								8-Mar-1997

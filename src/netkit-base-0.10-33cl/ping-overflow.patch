@@ -1,0 +1,85 @@
+--- ping.c	Sun Jun  8 20:39:50 1997
++++ ping.c.new	Wed Mar 31 20:20:10 1999
+@@ -125,7 +125,7 @@
+ #define	DEFDATALEN	(64 - 8)	/* default data length */
+ #define	MAXIPLEN	60
+ #define	MAXICMPLEN	76
+-#define	MAXPACKET	(65536 - 60 - 8)/* max packet size */
++#define	MAXPAYLOAD	(IP_MAXPACKET - 60 - 8)/* max packet size */
+ #define	MAXWAIT		10		/* max seconds to wait for response */
+ #define	NROUTES		9		/* number of record route slots */
+ 
+@@ -165,7 +165,8 @@
+ struct sockaddr whereto;	/* who to ping */
+ int datalen = DEFDATALEN;
+ int s;				/* socket file descriptor */
+-u_char outpack[MAXPACKET];
++/* cevans - import OpenBSD fix */
++u_char outpack[IP_MAXPACKET];
+ char BSPACE = '\b';		/* characters written for flood */
+ char DOT = '.';
+ static char *hostname;
+@@ -303,7 +304,7 @@
+ 			break;
+ 		case 's':		/* size of packet to send */
+ 			datalen = atoi(optarg);
+-			if (datalen > MAXPACKET) {
++			if (datalen > MAXPAYLOAD) {
+ 				(void)fprintf(stderr,
+ 				    "ping: packet size too large.\n");
+ 				exit(2);
+@@ -649,7 +650,10 @@
+ 	}
+ 
+ 	/* Now the ICMP part */
+-	cc -= hlen;
++	cc -= hlen; /* hlen trusted - could take cc -ve? */
++	if (cc < 0) {
++		cc = 0;
++	}
+ 	icp = (struct icmphdr *)(buf + hlen);
+ 	if (icp->icmp_type == ICMP_ECHOREPLY) {
+ 		if (icp->icmp_id != ident)
+@@ -774,9 +778,14 @@
+ 				cp += i;
+ 				break;
+ 			}
+-			old_rrlen = i;
+-			memcpy(old_rr, cp, i);
++			if (i < MAX_IPOPTLEN) {
++				old_rrlen = i;
++				memcpy(old_rr, cp, i);
++			} else {
++				old_rrlen = 0;
++			}
+ 			(void)printf("\nRR: ");
++			j = 0;
+ 			for (;;) {
+ 				l = *++cp;
+ 				l = (l<<8) + *++cp;
+@@ -788,8 +797,13 @@
+ 					(void)printf("\t%s", pr_addr(ntohl(l)));
+ 				hlen -= 4;
+ 				i -= 4;
++				j += 4;
+ 				if (i <= 0)
+ 					break;
++				if (j >= MAX_IPOPTLEN) {
++					(void)printf("\t(truncated route)");
++					break;
++				}
+ 				(void)putchar('\n');
+ 			}
+ 			break;
+@@ -1171,7 +1185,7 @@
+ 	    &pat[13], &pat[14], &pat[15]);
+ 
+ 	if (ii > 0)
+-		for (kk = 0; kk <= MAXPACKET - (8 + ii); kk += ii)
++		for (kk = 0; kk <= MAXPAYLOAD - (8 + ii); kk += ii)
+ 			for (jj = 0; jj < ii; ++jj)
+ 				bp[jj + kk] = pat[jj];
+ 	if (!(options & F_QUIET)) {
+
+
+
