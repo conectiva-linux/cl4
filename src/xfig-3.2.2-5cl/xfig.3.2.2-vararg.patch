@@ -1,0 +1,132 @@
+diff -ur xfig.3.2.2/w_library.c xfig.3.2.2.varargs/w_library.c
+--- xfig.3.2.2/w_library.c	Wed Jun 24 18:50:29 1998
++++ xfig.3.2.2.varargs/w_library.c	Mon Mar 22 11:46:29 1999
+@@ -17,7 +17,6 @@
+ /* This is where the library popup is created */
+ 
+ #include <string.h>
+-#include <varargs.h>
+ #include "fig.h"
+ #include "figx.h"
+ #include "resources.h"
+@@ -45,7 +44,7 @@
+ 
+ /* STATICS */
+ static void	library_cancel(), library_load();
+-static void	create_library_panel(), libraryStatus();
++static void	create_library_panel(), libraryStatus(char *format, ...);
+ static void	put_new_object_sel(), set_cur_obj_name(), erase_pixmap();
+ static void	set_preview_name(), preview_libobj(), update_preview();
+ 
+@@ -836,15 +835,12 @@
+ static char statstr[100];
+ 
+ static void
+-libraryStatus(va_alist)
+-    va_dcl
++libraryStatus(char *format, ...)
+ {
+     va_list ap;
+-    char *format;
+ 
+-    va_start(ap);
+-    format = va_arg(ap, char *);
+-    vsprintf(statstr, format, ap );
++    va_start(ap, format);
++    vsprintf(statstr, format, ap);
+     va_end(ap);
+     FirstArg(XtNstring, statstr);
+     SetValues(library_status);
+diff -ur xfig.3.2.2/w_msgpanel.c xfig.3.2.2.varargs/w_msgpanel.c
+--- xfig.3.2.2/w_msgpanel.c	Thu Jun 11 17:07:10 1998
++++ xfig.3.2.2.varargs/w_msgpanel.c	Mon Mar 22 12:03:22 1999
+@@ -21,7 +21,6 @@
+ 
+ #include "fig.h"
+ #include "figx.h"
+-#include <varargs.h>
+ #include "resources.h"
+ #include "object.h"
+ #include "mode.h"
+@@ -440,14 +439,11 @@
+ 
+ /* VARARGS1 */
+ void
+-put_msg(va_alist)
+-    va_dcl
++put_msg(char *format, ...)
+ {
+     va_list ap;
+-    char *format;
+ 
+-    va_start(ap);
+-    format = va_arg(ap, char *);
++    va_start(ap, format);
+     vsprintf(prompt, format, ap );
+     va_end(ap);
+     FirstArg(XtNstring, prompt);
+@@ -728,11 +724,10 @@
+ 
+ /* VARARGS1 */
+ void
+-file_msg(va_alist) va_dcl
++file_msg(char *format, ...)
+ {
+     XawTextBlock block;
+     va_list ap;
+-    char *format;
+ 
+     popup_file_msg();
+     if (first_file_msg) {
+@@ -741,8 +736,7 @@
+ 	file_msg("File %s:",read_file_name);
+     }
+ 
+-    va_start(ap);
+-    format = va_arg(ap, char *);
++    va_start(ap, format);
+     vsprintf(tmpstr, format, ap );
+     va_end(ap);
+ 
+diff -ur xfig.3.2.2/w_msgpanel.h xfig.3.2.2.varargs/w_msgpanel.h
+--- xfig.3.2.2/w_msgpanel.h	Fri Jun  5 17:22:10 1998
++++ xfig.3.2.2.varargs/w_msgpanel.h	Mon Mar 22 12:03:38 1999
+@@ -20,7 +20,7 @@
+ extern Boolean	file_msg_is_popped;
+ extern Widget	file_msg_popup;
+ 
+-extern void	put_msg();
++extern void	put_msg(char *format, ...);
+ extern void	boxsize_msg();
+ extern void	length_msg();
+ extern void	altlength_msg();
+diff -ur xfig.3.2.2/w_srchrepl.c xfig.3.2.2.varargs/w_srchrepl.c
+--- xfig.3.2.2/w_srchrepl.c	Fri Jun  5 17:47:04 1998
++++ xfig.3.2.2.varargs/w_srchrepl.c	Mon Mar 22 12:05:04 1999
+@@ -51,7 +51,6 @@
+ #include "w_util.h"
+ #include "w_drawprim.h"
+ #include "u_create.h"
+-#include <varargs.h>
+ 
+ static String search_panel_translations =
+         "<Message>WM_PROTOCOLS: QuitSearchPanel()\n";
+@@ -266,16 +265,13 @@
+   SetValues(found_msg_win);
+ }
+ 
+-static void show_msg(va_alist)
+-     va_dcl
++static void show_msg(char *format, ...)
+ {
+   va_list ap;
+-  char *format;
+   XawTextBlock block;
+   static char tmpstr[300];
+ 
+-  va_start(ap);
+-  format = va_arg(ap, char *);
++  va_start(ap, format);
+   vsprintf(tmpstr, format, ap );
+   va_end(ap);
+ 
