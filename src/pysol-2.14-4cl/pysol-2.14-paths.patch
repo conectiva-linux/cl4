@@ -1,0 +1,12 @@
+diff -uNr pysol-2.14/Makefile pysol-2.14-paths/Makefile
+--- pysol-2.14/Makefile	Wed May 26 10:37:48 1999
++++ pysol-2.14-paths/Makefile	Wed Jun 30 18:29:47 1999
+@@ -38,7 +38,7 @@
+ 	gzip -9f $(prefix)/man/man6/pysol.6
+ 
+ install-icon:
+-	test -d /usr/X11R6/include/X11/pixmaps && cp data/pysol.xpm /usr/X11R6/include/X11/pixmaps/
++	test -d /usr/share/pixmaps && cp data/pysol.xpm /usr/share/pixmaps/
+ 
+ uninstall:
+ 	-rm -f $(prefix)/games/pysol
