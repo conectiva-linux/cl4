@@ -1,0 +1,95 @@
+Add this to the strace RPMs, it fixes string reading of strings in all
+syscalls on all platforms, and fixes tracing of pipe() on Sparc.
+
+diff -u --recursive strace-orig/defs.h strace-3.1/defs.h
+--- strace-orig/defs.h	Sat Apr 18 04:02:54 1998
++++ strace-3.1/defs.h	Sat Apr 18 03:59:13 1998
+@@ -290,7 +290,7 @@
+ #ifdef SUNOS4
+ extern int fixvfork P((struct tcb *));
+ #endif
+-#ifndef LINUX
++#if !(defined(LINUX) && !defined(SPARC))
+ extern long getrval2 P((struct tcb *));
+ #endif
+ #ifdef SVR4
+diff -u --recursive strace-orig/net.c strace-3.1/net.c
+--- strace-orig/net.c	Mon May 20 20:20:57 1996
++++ strace-3.1/net.c	Sat Apr 18 03:58:22 1998
+@@ -502,7 +502,7 @@
+ struct tcb *tcp;
+ {
+ 
+-#ifdef LINUX
++#if defined(LINUX) && !defined(SPARC)
+ 	int fds[2];
+ 
+ 	if (exiting(tcp)) {
+@@ -515,18 +515,12 @@
+ 		else
+ 			tprintf("[%u, %u]", fds[0], fds[1]);
+ 	}
+-#endif /* LINUX */
+-
+-#ifdef SUNOS4
++#else
++#if defined(SPARC) || defined(SVR4)
+ 	if (exiting(tcp))
+ 		tprintf("[%lu, %lu]", tcp->u_rval, getrval2(tcp));
+-#endif /* SUNOS4 */
+-
+-#ifdef SVR4
+-	if (exiting(tcp))
+-		tprintf("[%lu, %lu]", tcp->u_rval, getrval2(tcp));
+-#endif /* SVR4 */
+-
++#endif 
++#endif
+ 	return 0;
+ }
+ 
+diff -u --recursive strace-orig/util.c strace-3.1/util.c
+--- strace-orig/util.c	Sat Apr 18 04:02:54 1998
++++ strace-3.1/util.c	Sat Apr 18 04:04:26 1998
+@@ -509,23 +509,6 @@
+ {
+ 
+ #ifdef LINUX
+-#if 0
+-	if (tcp->pfd == -2)
+-		return -1;
+-	if (tcp->pfd == -1) {
+-		char buf[32];
+-
+-		sprintf(buf, "/proc/%d/mem", tcp->pid);
+-		if ((tcp->pfd = open(buf, O_RDONLY)) == -1) {
+-			perror(buf);
+-			tcp->pfd = -2;
+-			return -1;
+-		}
+-	}
+-	lseek(tcp->pfd, addr, 0);
+-	if (read(tcp->pfd, laddr, len) == -1)
+-		return -1;
+-#else
+ 	int pid = tcp->pid;
+ 	int n, m;
+ 	union {
+@@ -556,7 +539,6 @@
+ 		memcpy(laddr, u.x, m = MIN(sizeof(long), len));
+ 		addr += sizeof(long), laddr += m, len -= m;
+ 	}
+-#endif
+ #endif /* LINUX */
+ 
+ #ifdef SUNOS4
+@@ -642,7 +624,7 @@
+ int len;
+ char *laddr;
+ {
+-#ifndef SUNOS4
++#if !defined(SUNOS4) && !defined(LINUX)
+ 	return umoven(tcp, addr, len, laddr);
+ #else /* SUNOS4 */
+ 	int pid = tcp->pid;
+

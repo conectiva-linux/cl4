@@ -1,0 +1,39 @@
+--- strace-3.1/file.c.orig	Mon Jun  8 17:22:47 1998
++++ strace-3.1/file.c	Mon Jun  8 17:23:49 1998
+@@ -678,9 +678,9 @@
+ 	}
+ #ifdef ALPHA
+ 
+-	tprintf("{f_type=%s, f_fsize=%u, f_fbsize=%u, f_blocks=%u, f_bfree=%u, ",
++	tprintf("{f_type=%s, f_fbsize=%u, f_blocks=%u, f_bfree=%u, ",
+ 		sprintfstype(statbuf.f_type),
+-		statbuf.f_fsize,statbuf.f_bsize, statbuf.f_blocks, statbuf.f_bfree);
++		statbuf.f_bsize, statbuf.f_blocks, statbuf.f_bfree);
+ 	tprintf("f_bavail=%u, f_files=%u, f_ffree=%u, f_namelen=%u}",
+ 		statbuf.f_bavail,statbuf.f_files, statbuf.f_ffree, statbuf.f_namelen);
+ #else /* !ALPHA */
+--- strace-3.1/sock.c.orig	Mon Jun  8 17:29:21 1998
++++ strace-3.1/sock.c	Mon Jun  8 17:32:17 1998
+@@ -35,6 +35,10 @@
+ #include <sys/sockio.h>
+ #endif
+ 
++#ifdef ALPHA
++#include <ioctls.h>
++#endif
++
+ int
+ sock_ioctl(tcp, code, arg)
+ struct tcb *tcp;
+--- strace-3.1/term.c.orig	Mon Jun  8 17:30:52 1998
++++ strace-3.1/term.c	Mon Jun  8 17:32:48 1998
+@@ -29,9 +29,7 @@
+ 
+ #include "defs.h"
+ 
+-#ifndef ALPHA
+ #include <termio.h>
+-#endif
+ #include <termios.h>
+ #ifdef HAVE_SYS_FILIO_H
+ #include <sys/filio.h>

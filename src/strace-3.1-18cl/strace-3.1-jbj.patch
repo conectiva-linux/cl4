@@ -1,0 +1,11 @@
+--- strace-3.1/file.c.jbj	Wed Sep 30 15:40:52 1998
++++ strace-3.1/file.c	Wed Sep 30 15:40:59 1998
+@@ -1154,7 +1154,7 @@
+ 				d->d_namlen, d->d_namlen, d->d_name);
+ 		}
+ #endif /* SUNOS4 */
+-	        printf ("%d %d\n", i, len);
++	        tprintf ("%d %d\n", i, len);
+ 		i += d->d_reclen;
+ 		dents++;
+ 	}

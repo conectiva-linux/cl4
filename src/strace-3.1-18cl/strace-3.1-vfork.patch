@@ -1,0 +1,11 @@
+--- strace-3.1/process.c.vfork	Tue Feb  9 14:19:16 1999
++++ strace-3.1/process.c	Tue Feb  9 14:19:52 1999
+@@ -244,7 +244,7 @@
+ 	int vforking = 0;
+ 
+ #ifdef SYS_vfork
+-	vforking = (tcp->scno == EXEC_vfork);
++	vforking = (tcp->scno == SYS_vfork);
+ #endif
+ 	if (entering(tcp)) {
+ 		if (!followfork || vforking)

@@ -1,0 +1,12 @@
+--- syscall.c	Tue Feb  9 12:42:20 1999
++++ syscall.c.clone	Tue Feb  9 12:43:30 1999
+@@ -488,6 +488,9 @@
+ #ifdef SYS_vfork
+ 	case SYS_vfork:
+ #endif
++#ifdef SYS_clone
++	case SYS_clone:
++#endif
+ 		internal_fork(tcp);
+ 		break;
+ 

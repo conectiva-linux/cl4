@@ -1,0 +1,58 @@
+--- strace-3.1/sock.c.compat21	Sun Jan 17 17:19:28 1999
++++ strace-3.1/sock.c	Sun Jan 17 17:19:28 1999
+@@ -36,7 +36,11 @@
+ #endif
+ 
+ #ifdef ALPHA
++#if	(__GLIBC__ == 2 && __GLIBC_MINOR__ == 1)
++#include <asm/ioctls.h>
++#else
+ #include <ioctls.h>
++#endif
+ #endif
+ 
+ int
+--- strace-3.1/signal.c.compat21	Sun Jan 17 17:21:13 1999
++++ strace-3.1/signal.c	Sun Jan 17 17:35:04 1999
+@@ -43,11 +43,13 @@
+ #ifdef HAVE_ASM_SIGCONTEXT_H
+ #include <asm/sigcontext.h>
+ #ifdef SPARC
++#if !(__GLIBC__ == 2 && __GLIBC_MINOR__ == 1)
+ typedef struct {
+ 	struct pt_regs		si_regs;
+ 	int			si_mask;
+ } siginfo_t;
+ #endif
++#endif
+ #else /* !HAVE_ASM_SIGCONTEXT_H */
+ #ifdef I386
+ struct sigcontext_struct {
+@@ -643,7 +645,11 @@
+ #ifdef SPARC
+ 	long i1;
+ 	struct pt_regs regs;
++#if (__GLIBC__ == 2 && __GLIBC_MINOR__ == 1)
++	__siginfo_t si;
++#else
+ 	siginfo_t si;
++#endif
+ 
+ 	if(ptrace(PTRACE_GETREGS, tcp->pid, (char *)&regs, 0) < 0) {
+ 		perror("sigreturn: PTRACE_GETREGS ");
+--- strace-3.1/mem.c.compat21	Sun Jan 17 17:49:04 1999
++++ strace-3.1/mem.c	Sun Jan 17 17:51:29 1999
+@@ -31,6 +31,13 @@
+ 
+ #include "defs.h"
+ 
++#if defined(SPARC) && (__GLIBC__ == 2 && __GLIBC_MINOR__ == 1)
++#include <linux/mman.h>
++#undef	MAP_FILE
++#undef	MAP_LOCKED
++#undef	MAP_NORESERVE
++#endif
++
+ #include <sys/mman.h>
+ 
+ int

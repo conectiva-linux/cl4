@@ -1,0 +1,13 @@
+--- strace-3.1/util.c.sparc5	Sat Sep 19 17:31:25 1998
++++ strace-3.1/util.c	Sat Sep 19 17:31:10 1998
+@@ -56,6 +56,10 @@
+ #define CHECKED_UMOVESTR
+ #endif
+ 
++#if defined(LINUX) && defined(SPARC)
++#include <linux/ptrace.h>
++#endif
++
+ #if defined(LINUX) && defined(SPARC) && !defined(__GLIBC__)
+ 
+ #include <linux/unistd.h>

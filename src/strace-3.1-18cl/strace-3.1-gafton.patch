@@ -1,0 +1,61 @@
+--- strace-3.1/defs.h.gafton	Mon Jul 20 19:05:12 1998
++++ strace-3.1/defs.h	Mon Jul 20 19:10:23 1998
+@@ -29,6 +29,8 @@
+  *	$Id: defs.h,v 2.38 1996/05/21 03:20:55 jrs Exp $
+  */
+ 
++#include <features.h>
++
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
+@@ -96,7 +98,7 @@
+ #endif /* !SVR4 */
+ 
+ #ifdef LINUX
+-#if !defined(LINUXSPARC) || !defined(__GLIBC__)
++#if !defined(__GLIBC__)
+ #define	PTRACE_PEEKUSER	PTRACE_PEEKUSR
+ #define	PTRACE_POKEUSER	PTRACE_POKEUSR
+ #endif
+@@ -108,6 +110,10 @@
+ #define REG_PC 64
+ #endif /* ALPHA */
+ #endif /* LINUX */
++
++#if defined(LINUX) && defined(I386)
++#include <sys/reg.h>
++#endif /* LINUX && I386 */
+ 
+ #define SUPPORTED_PERSONALITIES 1
+ #define DEFAULT_PERSONALITY 0
+--- strace-3.1/util.c.gafton	Mon Jul 20 19:05:12 1998
++++ strace-3.1/util.c	Mon Jul 20 19:05:12 1998
+@@ -44,6 +45,18 @@
+ #include <sys/utsname.h>
+ #endif /* SUNOS4_KERNEL_ARCH_KLUDGE */
+ 
++#ifdef SUNOS4
++#define CHECKED_UMOVESTR
++#endif
++
++/* Under Linux, unless we #define CHECKED_UMOVESTR, we are prone to get
++ * EIO from ptrace() inside umoven(), particularly for the first argument
++ * of open() calls, which is really irritating.
++ */
++#ifdef LINUX
++#define CHECKED_UMOVESTR
++#endif
++
+ #if defined(LINUX) && defined(SPARC) && !defined(__GLIBC__)
+ 
+ #include <linux/unistd.h>
+@@ -624,7 +637,7 @@
+ int len;
+ char *laddr;
+ {
+-#if !defined(SUNOS4) && !defined(LINUX)
++#if !defined(CHECKED_UMOVESTR)
+ 	return umoven(tcp, addr, len, laddr);
+ #else /* SUNOS4 */
+ 	int pid = tcp->pid;

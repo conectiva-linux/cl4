@@ -1,0 +1,25 @@
+--- strace-3.1/configure.in.ewt	Sun Jun  7 20:28:43 1998
++++ strace-3.1/configure.in	Sun Jun  7 20:28:47 1998
+@@ -119,7 +119,7 @@
+ AC_HEADER_MAJOR
+ AC_SIG_ATOMIC_T
+ AC_CHECK_LIB(nsl, main)
+-AC_CHECK_FUNCS(sigaction strerror strsignal pread sys_siglist _sys_siglist getdents mctl putpmsg prctl sendmsg)
++AC_CHECK_FUNCS(sigaction strerror strsignal pread sys_siglist _sys_siglist getdents mctl putpmsg sendmsg)
+ AC_CHECK_HEADERS(sys/filio.h sys/asynch.h sys/stream.h sys/tiuser.h sys/sysconfig.h asm/sigcontext.h)
+ AC_DECL_SYS_ERRLIST
+ AC_DECL_SYS_SIGLIST
+--- strace-3.1/process.c.ewt	Sun Jun  7 20:29:53 1998
++++ strace-3.1/process.c	Sun Jun  7 20:30:21 1998
+@@ -1143,11 +1143,6 @@
+ 			tprintf("release=\"%s\", version=\"%s\", ",
+ 				uname.release, uname.version);
+ 			tprintf("machine=\"%s\"", uname.machine);
+-#ifdef LINUX
+-#if !defined(ALPHA) && !defined(sparc)
+-			tprintf(", domainname=\"%s\"", uname.domainname);
+-#endif /* ALPHA */
+-#endif /* LINUX */
+ 			tprintf("}");
+ 		}
+ 		else

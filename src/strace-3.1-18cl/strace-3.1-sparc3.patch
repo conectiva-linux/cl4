@@ -1,0 +1,259 @@
+Apply this after the other one I sent you.  This one makes
+fork/exec/sigreturn/setsockopt work...  This thing is not fun to debug
+;-(  But, now it works _very_ well on UP-1.1beta.
+
+diff -u --recursive --new-file BAK/strace-3.1/net.c strace-3.1/net.c
+--- BAK/strace-3.1/net.c	Sat Apr 18 06:17:56 1998
++++ strace-3.1/net.c	Sat Apr 18 06:25:26 1998
+@@ -604,7 +604,7 @@
+ 		} else {
+ 			/* XXX - should know socket family here */
+ 			printxval(protocols, tcp->u_arg[1], "IPPROTO_???");
+-			tprintf("%lu, ", tcp->u_arg[2]);
++			tprintf(", %lu, ", tcp->u_arg[2]);
+ 		}
+ 		printnum(tcp, tcp->u_arg[3], "%ld");
+ 		tprintf(", %lu", tcp->u_arg[4]);
+diff -u --recursive --new-file BAK/strace-3.1/defs.h strace-3.1/defs.h
+--- BAK/strace-3.1/defs.h	Sat Apr 18 03:59:13 1998
++++ strace-3.1/defs.h	Sat Apr 18 05:11:26 1998
+@@ -159,7 +159,7 @@
+ #define TCB_FOLLOWFORK	00400	/* Process should have forks followed */
+ #define TCB_REPRINT	01000	/* We should reprint this syscall on exit */
+ #ifdef LINUX
+-#ifdef ALPHA
++#if defined(ALPHA) || defined(SPARC)
+ #define TCB_WAITEXECVE	02000	/* ignore SIGTRAP after exceve */
+ #endif /* ALPHA */
+ #endif /* LINUX */
+diff -u --recursive --new-file BAK/strace-3.1/process.c strace-3.1/process.c
+--- BAK/strace-3.1/process.c	Fri Apr 17 22:31:08 1998
++++ strace-3.1/process.c	Sat Apr 18 06:14:10 1998
+@@ -48,11 +48,6 @@
+ #include <sys/prctl.h>
+ #endif
+ 
+-#ifdef LINUXSPARC
+-#undef PTRACE_ATTACH
+-#define PTRACE_ATTACH PTRACE_SUNATTACH
+-#endif
+-
+ #ifndef WCOREDUMP
+ #define WCOREDUMP(status) ((status) & 0200)
+ #endif
+@@ -694,7 +689,7 @@
+ 		}
+ 	}
+ #ifdef LINUX
+-#ifdef ALPHA
++#if defined(ALPHA) || defined(SPARC)
+ 	tcp->flags |= TCB_WAITEXECVE;
+ #endif /* ALPHA */
+ #endif /* LINUX */
+diff -u --recursive --new-file BAK/strace-3.1/signal.c strace-3.1/signal.c
+--- BAK/strace-3.1/signal.c	Fri Apr 17 22:31:08 1998
++++ strace-3.1/signal.c	Sat Apr 18 06:09:49 1998
+@@ -42,6 +42,12 @@
+ #ifdef LINUX
+ #ifdef HAVE_ASM_SIGCONTEXT_H
+ #include <asm/sigcontext.h>
++#ifdef SPARC
++typedef struct {
++	struct pt_regs		si_regs;
++	int			si_mask;
++} siginfo_t;
++#endif
+ #else /* !HAVE_ASM_SIGCONTEXT_H */
+ #ifdef I386
+ struct sigcontext_struct {
+@@ -632,6 +638,36 @@
+ 		return RVAL_NONE | RVAL_STR;
+ 	}
+ 	return 0;
++#else
++#ifdef SPARC
++	long i1;
++	struct pt_regs regs;
++	siginfo_t si;
++
++	if(ptrace(PTRACE_GETREGS, tcp->pid, (char *)&regs, 0) < 0) {
++		perror("sigreturn: PTRACE_GETREGS ");
++		return 0;
++	}
++	memmove (&regs.u_regs [1], &regs.u_regs [0],
++		 sizeof (regs.u_regs) - sizeof (regs.u_regs [0]));
++	if(entering(tcp)) {
++		tcp->u_arg[0] = 0;
++		i1 = regs.u_regs[UREG_I1];
++		if(umove(tcp, i1, &si) < 0) {
++			perror("sigreturn: umove ");
++			return 0;
++		}
++		tcp->u_arg[0] = 1;
++		tcp->u_arg[1] = si.si_mask;
++	} else {
++		tcp->u_rval = tcp->u_error = 0;
++		if(tcp->u_arg[0] == 0)
++			return 0;
++		tcp->auxstr = sprintsigmask("mask now ", tcp->u_arg[1]);
++		return RVAL_NONE | RVAL_STR;
++	}
++	return 0;
++#endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+ #endif /* !I386 */
+diff -u --recursive --new-file BAK/strace-3.1/strace.c strace-3.1/strace.c
+--- BAK/strace-3.1/strace.c	Sat May 18 23:40:37 1996
++++ strace-3.1/strace.c	Sat Apr 18 06:14:47 1998
+@@ -819,7 +819,13 @@
+ 	 * before detaching.  Arghh.  We go through hoops
+ 	 * to make a clean break of things.
+ 	 */
+-	if ((error = ptrace(PTRACE_DETACH, tcp->pid, (char *) 1, sig)) == 0) {
++	errno = 0;
++#if defined(SPARC)
++#undef PTRACE_DETACH
++#define PTRACE_DETACH PTRACE_SUNDETACH
++#endif
++	ptrace(PTRACE_DETACH, tcp->pid, (char *) 1, sig);
++	if (errno == 0) {
+ 		/* On a clear day, you can see forever. */
+ 	}
+ 	else if (errno != ESRCH) {
+@@ -865,7 +871,7 @@
+ 	}
+ #endif /* LINUX */
+ 
+-#ifdef SUNOS4
++#if defined(SUNOS4)
+ 	/* PTRACE_DETACH won't respect `sig' argument, so we post it here. */
+ 	if (sig && kill(tcp->pid, sig) < 0)
+ 		perror("detach: kill");
+diff -u --recursive --new-file BAK/strace-3.1/syscall.c strace-3.1/syscall.c
+--- BAK/strace-3.1/syscall.c	Fri Apr 17 22:31:08 1998
++++ strace-3.1/syscall.c	Sat Apr 18 05:55:30 1998
+@@ -637,6 +637,10 @@
+ 			break;
+ 		default:
+ 			/* Unknown syscall trap. */
++			if(tcp->flags & TCB_WAITEXECVE) {
++				tcp->flags &= ~TCB_WAITEXECVE;
++				return 0;
++			}
+ 			fprintf(stderr,"syscall: unknown syscall trap %08x %08x\n", trap, regs.pc);
+ 			return -1;
+ 		}
+diff -u --recursive --new-file BAK/strace-3.1/util.c strace-3.1/util.c
+--- BAK/strace-3.1/util.c	Sat Apr 18 04:04:26 1998
++++ strace-3.1/util.c	Sat Apr 18 05:07:52 1998
+@@ -942,15 +942,7 @@
+ 	/* We simply use the SunOS breakpoint code. */
+ 
+ 	struct pt_regs regs;
+-#define BPT	0x91d02001	/* ta	1 */
+-#define LOOP	0x10800000	/* ba	0 */
+ #define LOOPA	0x30800000	/* ba,a	0 */
+-#define NOP	0x01000000
+-#if LOOPA
+-	static int loopdeloop[1] = {LOOPA};
+-#else
+-	static int loopdeloop[2] = {LOOP, NOP};
+-#endif
+ 
+ 	if (tcp->flags & TCB_BPTSET) {
+ 		fprintf(stderr, "PANIC: TCB already set in pid %u\n", tcp->pid);
+@@ -960,10 +952,13 @@
+ 		perror("setbpt: ptrace(PTRACE_GETREGS, ...)");
+ 		return -1;
+ 	}
++	memmove (&regs.u_regs [1], &regs.u_regs [0],
++		 sizeof (regs.u_regs) - sizeof (regs.u_regs [0]));
+ 	tcp->baddr = regs.u_regs[UREG_I7] + 8;
+-	if (ptrace(PTRACE_READTEXT, tcp->pid, (char *)tcp->baddr,
+-				sizeof tcp->inst, (char *)tcp->inst) < 0) {
+-		perror("setbpt: ptrace(PTRACE_READTEXT, ...)");
++	errno = 0;
++	tcp->inst[0] = ptrace(PTRACE_PEEKTEXT, tcp->pid, (char *)tcp->baddr, 0);
++	if(errno) {
++		perror("setbpt: ptrace(PTRACE_PEEKTEXT, ...)");
+ 		return -1;
+ 	}
+ 
+@@ -973,13 +968,14 @@
+ 	 * traced at the moment it will reach the trap and would probably
+ 	 * die with a core dump.
+ 	 * Thus, we are force our way in by taking out two instructions
+-	 * and insert an eternal loop in stead, in expectance of the SIGSTOP
++	 * and insert an eternal loop instead, in expectance of the SIGSTOP
+ 	 * generated by out PTRACE_ATTACH.
+ 	 * Of cause, if we evaporate ourselves in the middle of all this...
+ 	 */
+-	if (ptrace(PTRACE_WRITETEXT, tcp->pid, (char *) tcp->baddr,
+-			sizeof loopdeloop, (char *) loopdeloop) < 0) {
+-		perror("setbpt: ptrace(PTRACE_WRITETEXT, ...)");
++	errno = 0;
++	ptrace(PTRACE_POKETEXT, tcp->pid, (char *) tcp->baddr, LOOPA);
++	if(errno) {
++		perror("setbpt: ptrace(PTRACE_POKETEXT, ...)");
+ 		return -1;
+ 	}
+ 	tcp->flags |= TCB_BPTSET;
+@@ -1105,52 +1101,17 @@
+ 
+ #ifdef SPARC
+ 	/* Again, we borrow the SunOS breakpoint code. */
+-
+-#if !LOOPA
+-	struct pt_regs regs;
+-#endif
+-
+ 	if (!(tcp->flags & TCB_BPTSET)) {
+ 		fprintf(stderr, "PANIC: TCB not set in pid %u\n", tcp->pid);
+ 		return -1;
+ 	}
+-	if (ptrace(PTRACE_WRITETEXT, tcp->pid, (char *) tcp->baddr,
+-				sizeof tcp->inst, (char *) tcp->inst) < 0) {
+-		perror("clearbtp: ptrace(PTRACE_WRITETEXT, ...)");
++	errno = 0;
++	ptrace(PTRACE_POKETEXT, tcp->pid, (char *) tcp->baddr, tcp->inst[0]);
++	if(errno) {
++		perror("clearbtp: ptrace(PTRACE_POKETEXT, ...)");
+ 		return -1;
+ 	}
+ 	tcp->flags &= ~TCB_BPTSET;
+-
+-#if !LOOPA
+-	/*
+-	 * Since we don't have a single instruction breakpoint, we may have
+-	 * to adjust the program counter after removing the our `breakpoint'.
+-	 */
+-	if (ptrace(PTRACE_GETREGS, tcp->pid, (char *)&regs, 0) < 0) {
+-		perror("clearbpt: ptrace(PTRACE_GETREGS, ...)");
+-		return -1;
+-	}
+-	if ((regs.pc < tcp->baddr) ||
+-				(regs.pc > tcp->baddr + 4)) {
+-		/* The breakpoint has not been reached yet */
+-		if (debug)
+-			fprintf(stderr,
+-				"NOTE: PC not at bpt (pc %#x baddr %#x)\n",
+-					regs.pc, tcp->parent->baddr);
+-		return 0;
+-	}
+-	if (regs.pc != tcp->baddr)
+-		if (debug)
+-			fprintf(stderr, "NOTE: PC adjusted (%#x -> %#x\n",
+-				regs.pc, tcp->baddr);
+-
+-	regs.pc = tcp->baddr;
+-	if (ptrace(PTRACE_SETREGS, tcp->pid, (char *)&regs, 0) < 0) {
+-		perror("clearbpt: ptrace(PTRACE_SETREGS, ...)");
+-		return -1;
+-	}
+-#endif /* LOOPA */
+-
+ #else /* !SPARC */
+ 
+ 	if (debug)
+

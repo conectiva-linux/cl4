@@ -1,0 +1,47 @@
+I hate the kernel_stat stuff in glibc so much...
+
+--- strace-3.1/file.c.~4~	Sat Apr 18 06:28:35 1998
++++ strace-3.1/file.c	Sat Apr 18 11:06:19 1998
+@@ -413,12 +413,41 @@
+ }
+ #endif
+ 
++#ifdef LINUXSPARC
++/* Ugly, bug GLIBC makes this necessary. */
++struct kernel_stat
++{
++    unsigned short int st_dev;
++    unsigned long int st_ino;
++    unsigned short int st_mode;
++    short int st_nlink;
++    unsigned short int st_uid;
++    unsigned short int st_gid;
++    unsigned short int st_rdev;
++    long int st_size;
++    long int st_atime;
++    unsigned long int __unused1;
++    long int st_mtime;
++    unsigned long int __unused2;
++    long int st_ctime;
++    unsigned long int __unused3;
++    long int st_blksize;
++    long int st_blocks;
++    unsigned long int __unused4;
++    unsigned long int __unused5;
++};
++#endif
++
+ static void
+ printstat(tcp, addr)
+ struct tcb *tcp;
+ int addr;
+ {
++#ifdef LINUXSPARC
++	struct kernel_stat statbuf;
++#else
+ 	struct stat statbuf;
++#endif
+ 
+ #ifdef LINUXSPARC
+ 	if (current_personality == 1) {
+

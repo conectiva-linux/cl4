@@ -1,0 +1,48 @@
+--- strace-3.1/process.c.ewt	Tue Aug 19 11:17:42 1997
++++ strace-3.1/process.c	Tue Aug 19 11:18:04 1997
+@@ -1138,11 +1138,6 @@
+ 			tprintf("release=\"%s\", version=\"%s\", ",
+ 				uname.release, uname.version);
+ 			tprintf("machine=\"%s\"", uname.machine);
+-#ifdef LINUX
+-#ifndef ALPHA
+-			tprintf(", domainname=\"%s\"", uname.domainname);
+-#endif /* ALPHA */
+-#endif /* LINUX */
+ 			tprintf("}");
+ 		}
+ 		else
+--- strace-3.1/system.c.ewt	Tue Aug 19 11:15:00 1997
++++ strace-3.1/system.c	Tue Aug 19 11:15:21 1997
+@@ -33,14 +33,16 @@
+ 
+ #ifdef LINUX
+ 
+-#include <linux/fs.h>
++#define MS_RDONLY	 1	/* Mount read-only */
++#define MS_NOSUID	 2	/* Ignore suid and sgid bits */
++#define MS_NODEV	 4	/* Disallow access to device special files */
++#define MS_NOEXEC	 8	/* Disallow program execution */
++#define MS_SYNCHRONOUS	16	/* Writes are synced at once */
++#define MS_REMOUNT	32	/* Alter flags of a mounted FS */
++
+ #include <sys/socket.h>
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+-#include <linux/nfs.h>
+-#include <linux/nfs_mount.h>
+-
+-#include <linux/unistd.h>
+ 
+ #ifdef __NR_personality
+ /* Workaround for kernel namespace pollution. */
+--- strace-3.1/term.c.ewt	Tue Aug 19 11:18:16 1997
++++ strace-3.1/term.c	Tue Aug 19 11:18:20 1997
+@@ -33,7 +33,6 @@
+ # include <termio.h>
+ #endif
+ #ifdef LINUX
+-# include <asm/termiobits.h>
+ # include <sys/ioctl.h>
+ #endif
+ #include <termios.h>

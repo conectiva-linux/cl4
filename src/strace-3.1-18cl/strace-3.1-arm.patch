@@ -1,0 +1,401 @@
+--- strace-3.1/linux/arm/sys/ptrace.h.arm	Thu Dec  3 00:40:32 1998
++++ strace-3.1/linux/arm/sys/ptrace.h	Thu Dec  3 00:40:26 1998
+@@ -0,0 +1,29 @@
++/*
++	This file is required in order to introduce the
++	constants required to access the USER part of the
++	ARM task structure
++	
++*/
++
++
++#include_next <sys/ptrace.h>
++
++/* these are the offsets (in bytes) into the PTRACE_PEEKUSER space */
++#define ARM__r0	0
++#define ARM__r1 4
++#define ARM__r2 8
++#define ARM__r3	12
++#define ARM__r4 16
++#define ARM__r5 20
++#define ARM__r6	24
++#define ARM__r7 28
++#define ARM__r8 32
++#define ARM__r9	36
++#define ARM__sl 40
++#define ARM__fp 44
++#define ARM__ip	48
++#define ARM__sp 52
++#define ARM__lr 56
++#define ARM__pc	60
++#define ARM__cc 64
++#define ARM__orig_r0 68
+--- strace-3.1/ChangeLog.arm	Fri May 31 01:49:47 1996
++++ strace-3.1/ChangeLog	Thu Dec  3 00:40:09 1998
+@@ -1,3 +1,7 @@
++Mon Apr 27 12:00:00 1998  Pat Beirne <patb@corelcomputer.com>
++
++	* added ArmLinux to Makefile.in, config.h.in, utils.c
++
+ Fri May 31 01:48:49 1996  J. Richard Sladkey  <jrs@world.std.com>
+ 
+ 	* version.c: Version 3.1 is released.
+--- strace-3.1/Makefile.in.arm	Mon May 20 01:39:40 1996
++++ strace-3.1/Makefile.in	Thu Dec  3 00:40:09 1998
+@@ -22,7 +22,7 @@
+ 
+ # OS is one of `linux', `sunos4', or `svr4'.
+ OS = @opsys@
+-# ARCH is one of `i386', `m68k', `sparc', or `mips'.
++# ARCH is one of `i386', `m68k', `sparc', or `mips' or 'arm'.
+ ARCH = @arch@
+ # OSARCH is OS/ARCH if it exists, otherwise just OS.
+ OSARCH = @osarch@
+--- strace-3.1/acconfig.h.arm	Mon May 20 23:20:52 1996
++++ strace-3.1/acconfig.h	Thu Dec  3 00:40:09 1998
+@@ -24,6 +24,9 @@
+ /* Define if this is an alpha architecture.  */
+ #undef ALPHA
+ 
++/* Define if this is an ARM architecture. */
++#undef ARM
++
+ /* Define if you have SVR4 and the poll system call works on /proc files.  */
+ #undef HAVE_POLLABLE_PROCFS
+ 
+--- strace-3.1/config.h.in.arm	Mon May 20 23:20:52 1996
++++ strace-3.1/config.h.in	Thu Dec  3 00:40:09 1998
+@@ -75,6 +75,9 @@
+ /* Define if this is an alpha architecture.  */
+ #undef ALPHA
+ 
++/* Define if this is an ARM architecture. */
++#undef ARM
++
+ /* Define if you have SVR4 and the poll system call works on /proc files.  */
+ #undef HAVE_POLLABLE_PROCFS
+ 
+--- strace-3.1/defs.h.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/defs.h	Thu Dec  3 00:40:09 1998
+@@ -111,6 +111,15 @@
+ #endif /* ALPHA */
+ #endif /* LINUX */
+ 
++	/* on the ARM, this macro was set real high (0x90000) for kernel
++	purposes; we want it 0 for strace purposes */
++#ifdef ARM
++#include <asm/unistd.h>
++#undef __NR_SYSCALL_BASE
++#define __NR_SYSCALL_BASE 0
++#endif /* ARM */
++
++
+ #if defined(LINUX) && defined(I386)
+ #include <sys/reg.h>
+ #endif /* LINUX && I386 */
+--- strace-3.1/configure.in.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/configure.in	Thu Dec  3 00:40:09 1998
+@@ -47,6 +47,9 @@
+ alpha)
+ 	arch=alpha
+ 	;;
++arm*)
++	arch=arm
++	;;
+ *)
+ 	AC_MSG_ERROR(this architecture is not yet supported by strace)
+ 	;;
+--- strace-3.1/process.c.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/process.c	Thu Dec  3 00:40:09 1998
+@@ -582,7 +582,11 @@
+ {
+ 	int i;
+ 
++#ifndef ARM
+ 	if (!(qual_flags[SYS_execve] & QUAL_TRACE))
++#else
++	if (!(qual_flags[SYS_execve - __NR_SYSCALL_BASE] & QUAL_TRACE))
++#endif
+ 		return;
+ 	printleader(tcp);
+ 	tprintf("execve(");
+@@ -1335,12 +1339,33 @@
+ 	{ uoff(signal),		"offsetof(struct user, signal)"		},
+ 	{ uoff(reserved),	"offsetof(struct user, reserved)"	},
+ 	{ uoff(u_ar0),		"offsetof(struct user, u_ar0)"		},
++#ifndef ARM
+ 	{ uoff(u_fpstate),	"offsetof(struct user, u_fpstate)"	},
++#endif /* ARM */
+ 	{ uoff(magic),		"offsetof(struct user, magic)"		},
+ 	{ uoff(u_comm),		"offsetof(struct user, u_comm)"		},
+ #ifdef I386
+ 	{ uoff(u_debugreg),	"offsetof(struct user, u_debugreg)"	},
+ #endif /* I386 */
++#ifdef ARM
++	{ ARM__r0,	"r0"	},
++	{ ARM__r1,	"r1"	},
++	{ ARM__r2,	"r2"	},
++	{ ARM__r3,	"r3"	},
++	{ ARM__r4,	"r4"	},
++	{ ARM__r5,	"r5"	},
++	{ ARM__r6,	"r6"	},
++	{ ARM__r7,	"r7"	},
++	{ ARM__r8,	"r8"	},
++	{ ARM__r9,	"r9"	},
++	{ ARM__sl,	"sl"	},
++	{ ARM__fp,	"fp"	},
++	{ ARM__ip,	"ip"	},
++	{ ARM__sp,	"sp"	},
++	{ ARM__lr,	"lr"	},
++	{ ARM__pc,	"pc"	},
++	{ ARM__cc,	"cc"	},
++#endif /* ARM */
+ #endif /* !ALPHA */
+ #endif /* !SPARC */
+ #endif /* LINUX */
+--- strace-3.1/signal.c.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/signal.c	Thu Dec  3 00:40:09 1998
+@@ -96,7 +96,7 @@
+ #endif
+ #endif /* LINUX */
+ 
+-char *signalent0[] = {
++char *signalent0[NSIG+1] = {
+ #include "signalent.h"
+ };
+ int nsignals0 = sizeof signalent0 / sizeof signalent0[0];
+@@ -218,7 +218,8 @@
+ 	*s++ = '[';
+ 	for (i = 1; i <= NSIG; i++) {
+ 		if (sigismember(&mask, i) == 1) {
+-			sprintf(s, format, signalent[i] + 3); s += strlen(s);
++			if (signalent[i])
++				sprintf(s, format, signalent[i] + 3), s += strlen(s);
+ 			format = " %s";
+ 		}
+ 	}
+@@ -667,6 +668,28 @@
+ 		return RVAL_NONE | RVAL_STR;
+ 	}
+ 	return 0;
++#else /* !SPARC */
++#ifdef ARM
++ 	struct sigcontext_struct sc;
++ 	long sp;
++ 	
++ 	if (entering(tcp)) {
++ 		tcp->u_arg[0] = 0;
++ 		if (upeek(tcp->pid, ARM__sp, &sp) < 0)
++ 			return 0;
++ 		if (umove(tcp, sp, &sc) < 0)
++ 			return 0;
++ 		tcp->u_arg[0] = 1;
++ 		tcp->u_arg[1] = sc.oldmask;
++ 	} else {
++		tcp->u_rval = tcp->u_error = 0;
++ 		if (tcp->u_arg[0] == 0)
++ 			return 0;
++ 		tcp->auxstr = sprintsigmask("mask now ", tcp->u_arg[1]);
++ 		return RVAL_NONE | RVAL_STR;
++ 	}
++ 	return 0;
++#endif /* !ARM */
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+--- strace-3.1/strace.c.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/strace.c	Thu Dec  3 00:40:09 1998
+@@ -330,7 +330,9 @@
+ 			continue;
+ 		}
+ #else /* !SVR4 */
+-		if (ptrace(PTRACE_ATTACH, tcp->pid, (char *) 1, 0) < 0) {
++printf("about to attach %x\n",tcp->pid);
++		if ((c=ptrace(PTRACE_ATTACH, tcp->pid, (char *) 1, 0)) < 0) {
++printf("attach succeeded %x\n",c);
+ 			perror("attach: ptrace(PTRACE_ATTACH, ...)");
+ 			droptcb(tcp);
+ 			continue;
+@@ -407,7 +409,7 @@
+ #endif /* MIPS */
+ 			pause();
+ #else /* !SVR4 */
+-			if (ptrace(PTRACE_TRACEME, 0, (char *) 1, 0) < 0) {
++			if ((c=ptrace(PTRACE_TRACEME, 0, (char *) 1, 0)) < 0) {
+ 				perror("strace: ptrace(PTRACE_TRACEME, ...)");
+ 				return -1;
+ 			}
+--- strace-3.1/syscall.c.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/syscall.c	Thu Dec  3 00:40:09 1998
+@@ -545,6 +545,10 @@
+ #ifdef SPARC
+ 	struct pt_regs regs;
+ 	unsigned long trap;
++#else /* !SPARC */
++#ifdef ARM
++ 	long ip, r0;
++#endif ARM	
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* M68K */
+@@ -655,6 +659,15 @@
+ 			memmove (&regs.u_regs[UREG_I0], &regs.u_regs[UREG_I1], 7*sizeof(regs.u_regs[0]));
+ 		}
+ 	}
++#else /* !SPARC */
++#ifdef ARM
++ 	/* for ArmLinux, the syscall number is buried in the instruction */
++ 	if (upeek(pid, ARM__pc, &scno) <0)
++ 		return -1;
++ 	if (umove(tcp, scno-4, &scno) <0)
++ 		return -1;
++ 	scno &= 0xffff;
++#endif /* ARM */
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* M68K */
+@@ -670,7 +683,9 @@
+ #else /* !HAVE_PR_SYSCALL */
+ 	scno = tcp->status.pr_what;
+ #endif /* !HAVE_PR_SYSCALL */
++printf("syscall, flags %x, %x\n",tcp->flags, tcp->flags & TCB_INSYSCALL);
+ 	if (!(tcp->flags & TCB_INSYSCALL)) {
++printf("not in syscall, status %x\t scno %x\n",tcp->status.pr_why,scno);	
+ 		if (tcp->status.pr_why != PR_SYSENTRY) {
+ 			if (
+ 			    scno == SYS_fork
+@@ -735,6 +750,17 @@
+ 			fprintf(stderr, "stray syscall exit: d0 = %ld\n", d0);
+ 		return 0;
+ 	}
++#else /* !M68K */
++#ifdef ARM
++	/* the ARM convention is that IP==0 at syscall entry and IP==1 at syscall exit */
++	if (upeek(pid, ARM__ip, &ip) <0)
++		return -1;
++	if (ip != 0 && !(tcp->flags & TCB_INSYSCALL)) {
++		if (debug)
++			fprintf(stderr, "stray syscall exit: r0 = %ld\n", r0);
++		return 0;
++	}
++#endif /* ARM */	
+ #endif /* M68K */
+ #endif /* !I386 */
+ #endif /* LINUX */
+@@ -782,6 +808,18 @@
+ 			tcp->u_rval = regs.u_regs[UREG_I0];
+ 			u_error = 0;
+ 		}
++#else /* !SPARC */
++#ifdef ARM 
++ 		if (upeek(pid, ARM__r0, &r0) < 0)
++ 			return -1;
++ 		if (r0 < 0 && -r0 < nerrnos) {
++ 			u_error = -r0;
++ 			tcp->u_rval = -1;
++ 		} else {
++ 			u_error = 0;
++ 			tcp->u_rval = r0;
++ 		}
++#endif /* ARM */		
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* M68K */
+--- strace-3.1/util.c.arm	Thu Dec  3 00:40:08 1998
++++ strace-3.1/util.c	Thu Dec  3 00:40:09 1998
+@@ -854,6 +854,12 @@
+ 	if (ptrace(PTRACE_GETREGS,tcp->pid,(char *)&regs,0) < 0)
+ 		return -1;
+ 	pc = regs.pc;
++#else /* !SPARC */
++#ifdef ARM
++ 	if (upeek(tcp->pid, ARM__pc, &pc) < 0)
++ 		return -1;
++ 	pc -= 8;
++#endif /* ARM */
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+@@ -922,6 +928,16 @@
+ 		return;
+ 	}
+ 	tprintf("[%08lx] ", regs.pc);
++#else /* !SPARC */
++#ifdef ARM
++ 	long pc;
++ 	
++ 	if (upeek(tcp->pid, ARM__pc, &pc) < 0) {
++ 		tprintf ("[????????] ");
++ 		return;
++ 	}
++ 	pc -= 8;
++#endif /* ARM */	
+ #endif /* SPARC */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+@@ -1006,6 +1022,10 @@
+ #else /* !M68K */
+ #ifdef ALPHA
+ #define LOOP    0xc3ffffff
++#else /* !ALPHA */
++#ifdef ARM	
++#define LOOP 	0xef9f0001
++#endif /* ARM */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+ #endif /* !I386 */
+@@ -1025,6 +1045,12 @@
+ #ifdef ALPHA
+ 	if (upeek(tcp->pid, REG_PC, &tcp->baddr) < 0)
+ 	  return -1;
++#else /* !ALPHA */
++#ifdef ARM
++ 	if (upeek(tcp->pid, ARM__pc, &tcp->baddr) < 0)
++ 	  return -1;
++ 	tcp->baddr -= 4;
++#endif /* ARM */	  
+ #endif /* ALPHA */
+ #endif /* !M68K */
+ #endif /* !I386 */
+@@ -1111,6 +1137,10 @@
+ #else /* !M68K */
+ #ifdef ALPHA
+ 	long pc;
++#else /* !ALPHA */
++#ifdef ARM
++	long pc;
++#endif /* ARM */
+ #endif /* ALPHA */
+ #endif /* !M68K */
+ #endif /* !I386 */
+@@ -1177,6 +1207,19 @@
+ 				pc, tcp->baddr);
+ 		return 0;
+ 	}
++#else /* !ALPHA */
++#ifdef ARM
++	if (upeek(tcp->pid, ARM__pc, &pc) < 0)
++		return -1;
++	pc -= 4;
++	if (pc != tcp->baddr) {
++		/* The breakpoint has not been reached yet.  */
++		if (debug)
++			fprintf(stderr, "NOTE: PC not at bpt (pc %#lx baddr %#lx)\n",
++				pc, tcp->baddr);
++		return 0;
++	}
++#endif ARM
+ #endif /* ALPHA */
+ #endif /* !M68K */
+ #endif /* !I386 */
+--- strace-3.1/config.sub.arm	Wed May 15 00:31:28 1996
++++ strace-3.1/config.sub	Thu Dec  3 00:40:09 1998
+@@ -145,7 +145,7 @@
+ 		;;
+ 	# Recognize the basic CPU types with company name.
+ 	vax-* | tahoe-* | i[345]86-* | i860-* | m68k-* | m68000-* | m88k-* \
+-	      | sparc-* | ns32k-* | fx80-* | arm-* | c[123]* \
++	      | sparc-* | ns32k-* | fx80-* | arm*-* | c[123]* \
+ 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* | power-* \
+ 	      | none-* | 580-* | cray2-* | h8300-* | i960-* | xmp-* | ymp-* \
+ 	      | hppa1.0-* | hppa1.1-* | alpha-* | we32k-* | cydra-* | ns16k-* \
