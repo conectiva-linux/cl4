@@ -1,0 +1,12 @@
+diff -uNr gnumeric-0.25/configure.in gnumeric-0.25-pt_BR/configure.in
+--- gnumeric-0.25/configure.in	Fri Jun 25 15:45:20 1999
++++ gnumeric-0.25-pt_BR/configure.in	Mon Apr 26 19:40:05 1999
+@@ -40,7 +40,7 @@
+ dnl Check doc/translating.sgml for a description of how to translate
+ dnl and why we have so many translations.
+ dnl
+-ALL_LINGUAS="cs de en_GB es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fr hu it ja ko no pt ru pl"
++ALL_LINGUAS="cs de en_GB es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fr hu it ja ko no pt pt_BR ru pl"
+ AM_GNU_GETTEXT
+ AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
+ 

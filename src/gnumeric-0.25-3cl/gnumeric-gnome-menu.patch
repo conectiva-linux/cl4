@@ -1,0 +1,17 @@
+--- ./gnumeric.desktop~	Fri Feb  5 19:40:31 1999
++++ ./gnumeric.desktop	Tue Jun 29 23:24:11 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Gnumeric spreadsheet
++Name[pt_BR]=Planilha Eletrônica Gnumeric
+ Name[ja]=Gnumeric ¥¹¥×¥ì¥Ã¥É¥·¡¼¥È
+ Name[es]=Gnumeric
+ Name[fr]=Tableur Gnumeric
+@@ -7,6 +8,7 @@
+ Name[pt]=Gnumeric
+ Name[no]=Gnumeric regneark
+ Comment=Spreadsheet
++Comment[pt_BR]=Planilha eletrônica
+ Comment[ja]=É½·×»»¥×¥í¥°¥é¥à
+ Comment[es]=Hoja de cálculo
+ Comment[fr]=Tableur Gnumeric
