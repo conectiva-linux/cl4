@@ -1,0 +1,51 @@
+--- getty_ps-2.0.7j/main.c~	Wed Oct 22 17:43:04 1997
++++ getty_ps-2.0.7j/main.c	Wed Oct 22 18:15:34 1997
+@@ -82,8 +82,9 @@
+ 	long sec, usec;
+ 	struct sigaction act;
+ 
++	memset(&act, 0, sizeof(struct sigaction));
+         act.sa_handler = action;
+-        act.sa_mask = 0;
++        sigemptyset(&act.sa_mask);
+         act.sa_flags = SA_NOMASK;	/* allow own signal to be received */
+         if(sigaction(SIGALRM, &act, NULL))		/* called by pause() */
+ 		Perror("sigaction");
+--- getty_ps-2.0.7j/funcs.c~	Wed Oct 22 17:43:04 1997
++++ getty_ps-2.0.7j/funcs.c	Wed Oct 22 18:34:01 1997
+@@ -226,8 +226,15 @@
+ 
+ 		/* set c_cc[] chars to reasonable values
+ 		 */
++#ifdef _POSIX_VDISABLE
++#if _POSIX_VDISABLE != -1
+ 		for (i=0; i < NCC; i++)
+-			setterm.c_cc[i] = CNUL;
++			setterm.c_cc[i] = _POSIX_VDISABLE;
++#else
++		for (i=0; i < NCC; i++)
++			setterm.c_cc[i] = 0;
++#endif
++#endif
+ 		setterm.c_cc[VINTR] = Cintr;
+ 		setterm.c_cc[VQUIT] = CQUIT;
+ 		setterm.c_cc[VERASE] = Cerase;
+@@ -459,7 +466,7 @@
+ 	register int expfail = EXPFAIL;
+ 	register retval = FAIL;
+ 	char ch, *p, word[MAXLINE+1], buf[MAXBUF];
+-	sig_t (*oldalarm)() = NULL;
++	sig_t oldalarm = NULL;
+ 
+ 	if (strequal(s, "\"\"")) {	/* ("") used as a place holder */
+ 		debug(D_INIT, "EXPECT: ([nothing])");
+@@ -578,8 +585,7 @@
+ **	expalarm() - called when expect()'s SIGALRM goes off
+ */
+ 
+-sig_t
+-expalarm()
++sig_t expalarm(int sig)
+ {
+ 	longjmp(env, 1);
+ }

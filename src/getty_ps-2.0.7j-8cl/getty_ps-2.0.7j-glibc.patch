@@ -1,0 +1,120 @@
+--- getty_ps-2.0.7j/getty.h.noglibc	Wed Oct 22 17:07:12 1997
++++ getty_ps-2.0.7j/getty.h	Wed Oct 22 17:07:24 1997
+@@ -39,7 +39,6 @@
+ #include "config.h"
+ #include "extern.h"
+ #include "funcs.h"
+-#include "mytermio.h"		/* SMR - gcc was missing a few definitions */
+ 
+ /*	General purpose defines
+  */
+--- getty_ps-2.0.7j/config.h.noglibc	Sat May 21 01:11:24 1994
++++ getty_ps-2.0.7j/config.h	Wed Oct 22 17:04:55 1997
+@@ -27,7 +27,7 @@
+ #define	index	  strchr		/* use these instead */
+ #define	rindex	  strrchr
+ 
+-typedef	void	sig_t;
++/*typedef	void	sig_t;*/
+ 
+ #ifndef	UTMP_FILE
+ #define	UTMP_FILE "/etc/utmp"		/* name of the utmp file */
+--- getty_ps-2.0.7j/main.h.noglibc	Sun Feb  2 10:00:23 1997
++++ getty_ps-2.0.7j/main.h	Wed Oct 22 17:04:55 1997
+@@ -89,7 +89,7 @@
+ EXTERN char		*defname;	/* defaults file name */
+ EXTERN boolean		clear;		/* TRUE, clear screen */
+ EXTERN char		*clrscr;	/* string to clear screen with */
+-EXTERN char		*login;		/* login program */
++EXTERN char		*loginprog;	/* login program */
+ EXTERN char		*init;		/* init string */
+ EXTERN char		*waitfor;	/* waitfor string */
+ EXTERN char		*Connect;	/* connect string */
+--- getty_ps-2.0.7j/main.c.noglibc	Fri Apr 26 13:26:03 1996
++++ getty_ps-2.0.7j/main.c	Wed Oct 22 17:04:55 1997
+@@ -178,7 +178,7 @@
+ 	delay = 	0;			/* delay before prompt */
+ 	speed =		(char *) NULL;		
+ 	clear =		TRUE;			/* clear the screen */
+-	login =		LOGIN;			/* login program */
++	loginprog =	LOGIN;			/* login program */
+ 	waitchar =	FALSE;			/* don't wait for a char */
+ 	waitfor =	(char *) NULL;		/* no waitfor string */
+ 	Connect =	(char *) NULL;		/* no connect string */
+@@ -423,7 +423,7 @@
+ 			Version = strdup(buf);
+ 		}
+ 	}
+-	if((p = defvalue(def, "LOGIN"))) login = p;
++	if((p = defvalue(def, "LOGIN"))) loginprog = p;
+ 	if((p = defvalue(def, "ISSUE"))) issue = p;
+ 	if((p = defvalue(def, "CLEAR")) && (strequal(p, "NO"))) 
+ 		clear = FALSE;
+@@ -1039,7 +1039,7 @@
+ 				(void) signal(SIGALRM, SIG_DFL);
+ 				(void) alarm(0);
+ 
+-				login = fido;
++				loginprog = fido;
+ 				logerr("Fido Call Detected");
+ #endif /* FIDO */
+ 			case SUCCESS:
+@@ -1066,14 +1066,14 @@
+ 				setenv("TERM", term, TRUE);
+ #endif /* SETTERM */
+ 				debug(D_RUN, "execing login");
+-				(void) execl(login, 
++				(void) execl(loginprog, 
+ 				  "login", buf, (char *)NULL);
+ 				debug(D_RUN, 
+ 				  "exec failed: %s; trying with /bin/sh",
+ 				  strerror(errno));
+-				(void) execl("/bin/sh", "sh", "-c", login,
++				(void) execl("/bin/sh", "sh", "-c", loginprog,
+ 				  buf, (char *) NULL);
+-				logerr("exec of %s failed: %s", login,
++				logerr("exec of %s failed: %s", loginprog,
+ 				       strerror(errno));
+ 				exit(FAIL);
+ 
+--- getty_ps-2.0.7j/utmp2.c.noglibc	Mon Sep 11 11:55:17 1995
++++ getty_ps-2.0.7j/utmp2.c	Wed Oct 22 17:04:55 1997
+@@ -16,6 +16,7 @@
+ static off_t utaddress;			/* The file address of the last entry
+ 					   returned by getutent. */
+ 
++#if 0
+ /* kludge for the benefit of getutent() whose semantics differs from the
+    other get..() functions. When set, getutent() will not read the 
+    next entry in utmp, but immediatly returns &Ut, and resets the
+@@ -105,6 +106,7 @@
+ 
+ 	return (struct utmp *)0;
+ }
++#endif
+ 
+ /*  Back up and overwrite the last entry returned by getutent,
+  *  Or append to the file if getutent returned 0.
+@@ -119,6 +121,7 @@
+ 	return ut;
+ }
+ 
++#if 0
+ struct utmp *getutline(struct utmp *ut)
+ {
+ 	if(Fd == -1)
+@@ -174,3 +177,4 @@
+ 	if(Fd != -1) close(Fd);
+ 	Fd = -1;
+ }
++#endif
+--- getty_ps-2.0.7j/table.c.djb	Wed Oct 29 20:38:18 1997
++++ getty_ps-2.0.7j/table.c	Wed Oct 29 20:38:28 1997
+@@ -21,6 +21,7 @@
+ 
+ #include "getty.h"
+ #include "table.h"
++#include "mytermio.h"
+ #include <errno.h>
+ 
+ 

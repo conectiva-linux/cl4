@@ -1,0 +1,255 @@
+--- getty_ps-2.0.7h/config.h.orig	Sat May 21 01:11:24 1994
++++ getty_ps-2.0.7h/config.h	Tue Feb 27 23:37:16 1996
+@@ -46,8 +46,8 @@
+ 
+ #define	ASCIIPID			/* PID stored in ASCII */
+ #define	BOTHPID				/* ... or perhaps not */
+-#define	UUCPID 11			/* uid of UUCP account */
+-#define	LOCK "/usr/spool/uucp/LCK..%s"	/* lock file name */
++#define	UUCPID "uucp"			/* uid of UUCP account */
++#define	LOCK "/var/lock/LCK..%s"	/* lock file name */
+ 
+ 
+ 
+--- getty_ps-2.0.7h/extern.h.orig	Mon May 16 23:38:52 1994
++++ getty_ps-2.0.7h/extern.h	Tue Feb 27 23:34:23 1996
+@@ -38,12 +38,7 @@
+ /*	Global variables
+  */
+ 
+-#ifdef	MAIN
+ EXTERN	char	MsgBuf[80];	/* message buffer */
+-#else
+-EXTERN	char	MsgBuf[];
+-#endif	/* MAIN */
+-
+ EXTERN	boolean	AutoBaud;	/* autobauding requested? */
+ EXTERN	char	AutoRate[16];	/* AutoBaud digits buffer */
+ EXTERN	boolean	Check;		/* check a gettytab file? */
+--- getty_ps-2.0.7h/funcs.c.orig	Tue May 17 03:33:36 1994
++++ getty_ps-2.0.7h/funcs.c	Tue Feb 27 23:34:23 1996
+@@ -70,7 +70,7 @@
+ 	char c, n, tbuf[16], ubuf[32];
+ 	time_t clock;
+ 	struct tm *lt, *localtime();
+-	char *month_name[] = { "January", "February", "March", "April",
++static	char *month_name[] = { "January", "February", "March", "April",
+ 			       "May", "June", "July", "August", "September",
+ 			       "October", "November", "December" };
+ 
+@@ -402,6 +402,7 @@
+ 	}
+ 
+ 	while ((ch = *s++)) {
++	        int i;
+ 		if (ch == '\\') {
+ 			switch (*s) {
+ 			case 'p':		/* '\p' == pause */
+@@ -424,20 +425,22 @@
+ 				break;
+ 			}
+ 		}
+-		sprintf(MsgBuf + strlen(MsgBuf), ch < ' ' ? "^%c" : "%c",
++		/* check if we have enough room for Msg */
++		if ((i=strlen(MsgBuf))>sizeof(MsgBuf)-3) {
++			debug(D_INIT, MsgBuf);
++			MsgBuf[i=0] = '\0';
++		}
++		sprintf(MsgBuf + i, ch < ' ' ? "^%c" : "%c",
+ 			ch < ' ' ? ch | 0100 : ch);
+ 		if (putc(ch, stdout) == EOF) {
+ 			retval = FAIL;
+ 			break;
+ 		}
+ 	}
+-	strcat(MsgBuf, ") -- ");
+ 	if(retval == SUCCESS)
+-		strcat(MsgBuf, "OK");
++                debug(D_INIT, "%s) -- OK", MsgBuf);
+ 	else
+-		sprintf(MsgBuf + strlen(MsgBuf), 
+-			"Failed: %s", strerror(errno));
+-	debug(D_INIT, MsgBuf);
++	        debug(D_INIT, "%s) -- Failed: %s", MsgBuf, strerror(errno));
+ 	return(retval);
+ }
+ 
+@@ -465,7 +468,7 @@
+ 
+ 	/* look for escape chars in expected word
+ 	 */
+-	for (p = word; (ch = (*s++ & 0177));) {
++	for (p = word; (ch = (*s++ & 0177)) && p<&word[MAXLINE+1];) {
+ 		if (ch == '\\') {
+ 			if (*s == 'A') {	/* spot for AutoBaud digits */
+ 				*p++ = AUTOBD;
+@@ -495,12 +498,24 @@
+ 	oldalarm = signal(SIGALRM, expalarm);
+ 	(void) alarm((unsigned) expfail);
+ 
+-	sprintf(MsgBuf, "EXPECT: <%d> (%s), GOT: ", expfail, dprint(word));
++	debug(D_INIT, "EXPECT: <%d> (%s)", expfail, dprint(word));
+ 
++	MsgBuf[0] = '\0';
+ 	p = buf;
+ 	while ((ch = getc(stdin)) != EOF) {
+-		sprintf(MsgBuf + strlen(MsgBuf), ch < ' ' ? "^%c" : "%c",
++		/* check if we have enough room for Msg */
++		if ((i=strlen(MsgBuf))>sizeof(MsgBuf)-3) {
++			debug(D_INIT, "GOT: %s", MsgBuf);
++			MsgBuf[i=0] = '\0';
++		}
++		sprintf(MsgBuf + i, ch < ' ' ? "^%c" : "%c",
+ 			ch < ' ' ? ch | 0100 : ch);
++		/* check if we have enough room */
++		if (p==&buf[MAXBUF]) {
++			/* oops, move back HALF the buffer */
++			p = &buf[MAXBUF/2];
++			strcpy(buf,p);
++		}
+ 		*p++ = (char) ((int) ch & 0177);
+ 		*p = '\0';
+ 		if (strlen(buf) >= strlen(word)) {
+@@ -515,7 +530,7 @@
+ 	}
+ 	(void) alarm((unsigned) 0);
+ 	(void) signal(SIGALRM, oldalarm);
+-	debug(D_INIT, "%s -- %s", MsgBuf, 
++	debug(D_INIT, "GOT: %s -- %s", MsgBuf, 
+ 		(retval == SUCCESS) ? "got it" : "Failed");
+ 	return(retval);
+ }
+@@ -647,7 +662,7 @@
+ 		}
+ 		if (ch == Erase) {
+ 			if (count) {
+-				(void) fputs((Erase == '\010' ? 
++				(void) fputs((Erase == '\b' ? 
+ 					" \b" : "\b \b"), stdout);
+ 				(void) fflush(stdout);
+ 				--p;
+@@ -814,10 +829,14 @@
+ {
+ 	char *p, *fmt, ch;
+ 	static char msg[1024];
++	int i = 0 ;
+ 
+ 	msg[0] = '\0';
+ 	p = word;
+ 	while ((ch = *p++)) {
++	        /* is the buffer big enough */
++	        if ((i=strlen(msg)) > sizeof(msg)-7) 
++		  break;
+ 		if (ch == AUTOBD) {
+ 			strcat(msg, "[speed]");
+ 			continue;
+@@ -827,7 +846,7 @@
+ 		} else {
+ 			fmt = "%c";
+ 		}
+-		sprintf(msg + strlen(msg), fmt, ch);
++		sprintf(msg + i, fmt, ch);
+ 	}
+ 	return(msg);
+ }
+--- getty_ps-2.0.7h/main.c.orig	Tue Feb 27 21:42:32 1996
++++ getty_ps-2.0.7h/main.c	Tue Feb 27 23:34:23 1996
+@@ -914,7 +914,7 @@
+ 		Speed = speedtab[i].speed;
+ 
+ #ifdef ISSUE
+-		if (clear && *clrscr) {
++		if (clear && clrscr && *clrscr) {
+ 			(void) tputs(clrscr, 1, tputc);
+ 		}
+ 		fputc('\r', stdout);
+@@ -932,8 +932,8 @@
+ login_prompt:
+ 		(void) ioctl(STDIN, TCFLSH, 0);
+ #ifdef FIDO
+-	if (emsi && (strcmp(emsi,"yes") == 0)) 
+-		(void) Fputs("**EMSI_REQA77E\r", stdout);
++		if (emsi && (strcmp(emsi,"yes") == 0)) 
++			(void) Fputs("**EMSI_REQA77E\r", stdout);
+ #endif
+ 		(void) Fputs(gtab->login, stdout);
+ 		if(TimeOut > 0) {
+--- getty_ps-2.0.7h/main.h.orig	Mon Oct  9 15:56:27 1995
++++ getty_ps-2.0.7h/main.h	Tue Feb 27 23:34:23 1996
+@@ -19,6 +19,7 @@
+ #include <termcap.h>
+ #include <unistd.h>
+ #include <time.h>
++#include <limits.h>
+ 
+ #ifdef PWD
+ #include <pwd.h>
+@@ -98,9 +99,9 @@
+ EXTERN boolean		waitchar;	/* TRUE, wait for a character */
+ EXTERN unsigned int	delay;		/* seconds to delay before the prompt */
+ EXTERN GTAB		*gtab;		/* terminal mode */
+-EXTERN char		devname[MAXLINE + 1];	
++EXTERN char		devname[PATH_MAX + 1];	
+ 					/* name of tty device */
+-EXTERN char		initdevname[MAXLINE + 1];	
++EXTERN char		initdevname[PATH_MAX + 1];	
+ 					/* name of init device */
+ 
+ #ifdef ISSUE
+--- getty_ps-2.0.7h/tune.h.orig	Fri May 20 05:03:38 1994
++++ getty_ps-2.0.7h/tune.h	Tue Feb 27 23:39:19 1996
+@@ -53,10 +53,11 @@
+ /*  Where to find things
+  */
+ 
+-#define	CONSOLE	 "/usr/adm/getty.log"	/* error log if not using syslog */
+ #ifndef FSSTND
++#define	CONSOLE	 "/usr/adm/getty.log"	/* error log if not using syslog */
+ #define	DEFAULTS "/etc/default/%s"	/* name of defaults file */
+ #else
++#define	CONSOLE	 "/var/log/getty.log"	/* error log if not using syslog */
+ #define	DEFAULTS "/etc/conf.%s"		/* FSSTND compliant defaults file */
+ #endif
+ #define	ISSUE	 "/etc/issue"		/* name of the issue file;
+@@ -77,7 +78,7 @@
+  */
+ 
+ #define	MAXDEF	 100			/* max # lines in defaults file */
+-#define	MAXLINE	 8192			/* max # chars in a line */
++#define	MAXLINE	 1024			/* max # chars in a line */
+ #define	MAXID	 12			/* max # chars in Gtab Id */
+ #define	MAXLOGIN 80			/* max # chars in Gtab Login */
+ 
+--- getty_ps-2.0.7h/uufuncs.c.orig	Mon May 16 22:33:51 1994
++++ getty_ps-2.0.7h/uufuncs.c	Tue Feb 27 23:34:23 1996
+@@ -8,6 +8,7 @@
+ #define UUFUNCS
+ #define UUGETTY
+ 
++#include <pwd.h>
+ #include "main.h"
+ #include "uufuncs.h"
+ #include "debug.h"
+@@ -79,6 +80,7 @@
+ #endif	/* ASCIIPID */
+ 	int getpid();
+ 	char *mktemp();
++	struct	passwd *pw;
+ 
+ 	debug(D_LOCK, "makelock(%s) called", name);
+ 
+@@ -102,6 +104,14 @@
+ 	(void) write(fd, (char *)&pid, sizeof(pid));
+ #endif	/* ASCIIPID */
+ 	(void) close(fd);
++
++	/* change owner of link */
++	pw = getpwnam(UUCPID);
++	if (pw==NULL || chown(temp,pw->pw_uid,pw->pw_gid)<0) {
++		debug(D_LOCK, "lock NOT made -- chown failed");
++		(void) unlink(temp);
++		return(FAIL);
++	}
+ 
+ 	/* link it to the lock file
+ 	 */

@@ -1,0 +1,49 @@
+--- getty_ps-2.0.7j/Makefile.make	Tue Jan 23 11:07:04 1996
++++ getty_ps-2.0.7j/Makefile	Wed Oct 22 18:54:33 1997
+@@ -8,22 +8,23 @@
+ #   be expected in /etc/conf.* rather than /etc/default, modem locks 
+ #   will be created in /var/lock, and binaries will go in /sbin.
+ # 
+-# FSSTND=-DFSSTND
++FSSTND=-DFSSTND
+ 
+ SHELL=	/bin/sh
+ CC=	gcc
+ 
+ #CFLAGS=	-g -fpcc-struct-return ${FSSTND}
+ #LFLAGS=	-g
+-CFLAGS=	-O3 -fomit-frame-pointer -fpcc-struct-return ${FSSTND}
++CFLAGS=	$(RPM_OPT_FLAGS) -fomit-frame-pointer -fpcc-struct-return ${FSSTND}
+ LFLAGS=	-s
+ 
+ LIBS=	-ltermcap
+ LLIBS=	
+ 
+ # where things go
+-BIN=    /sbin
+-UUBIN=  /sbin
++BIN=    $(TOPDIR)/sbin
++UUBIN=  $(TOPDIR)/sbin
++MANDIR=	$(TOPDIR)/usr/man/man
+ 
+ # what are we making
+ SRC=	main.c funcs.c defaults.c table.c utmp2.c
+@@ -48,9 +49,15 @@
+ install:
+ 	-mv $(BIN)/getty $(BIN)/getty-
+ 	-mv $(UUBIN)/uugetty $(UUBIN)/uugetty-
+-	-cp getty $(BIN)
+-	-cp uugetty $(UUBIN)
+-	chmod 700 $(BIN)/getty $(UUBIN)/uugetty
++	-install -s -m 0755 getty $(BIN)
++	-install -s -m 0755 uugetty $(UUBIN)
++ifdef FSSTND
++	mv man/getty.1 man/getty.1x
++	cat man/getty.1x |\
++		 sed -e 's,/etc/default/,/etc/conf.,g'> man/getty.1
++endif
++	install -m 644 man/getty.1 $(MANDIR)1
++	install -m 644 man/gettydefs.5 $(MANDIR)5
+ 
+ clean:
+ 	rm -f *.o core *.out *~ .depend Make.Log Makefile.old

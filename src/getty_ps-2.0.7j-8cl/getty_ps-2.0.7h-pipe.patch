@@ -1,0 +1,11 @@
+--- getty_ps-2.0.7h/main.c.pipe	Wed Nov  1 23:37:38 1995
++++ getty_ps-2.0.7h/main.c	Tue Feb 27 21:42:32 1996
+@@ -81,7 +81,7 @@
+ 	(void) signal(SIGTERM, sterm);
+ 	(void) signal(SIGSEGV, ssegv);
+ 	(void) signal(SIGHUP, shangup);
+-	(void) signal(SIGPIPE, SIG_IGN);
++	(void) signal(SIGPIPE, SIG_DFL);
+ 
+ 	strcpy(term, 	"unknown");		/* tty type */
+ 	Device =	"unknown";		/* tty device */

@@ -1,0 +1,13 @@
+--- getty_ps-2.0.7j/extern.h.mike	Mon Dec 21 14:49:57 1998
++++ getty_ps-2.0.7j/extern.h	Mon Dec 21 14:55:09 1998
+@@ -75,10 +75,6 @@
+ extern	time_t	time();
+ #endif
+ 
+-#ifndef	STRDUP			/* Is There In Truth No Strdup() ? */
+-extern	char	*strdup();
+-#endif	/* STRDUP */
+-
+ #ifndef	GETUTENT		/* How about getutent() ? */
+ extern	struct utmp	*getutent();
+ extern	void		setutent(), endutent();
