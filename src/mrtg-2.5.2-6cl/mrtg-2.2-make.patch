@@ -1,0 +1,22 @@
+--- mrtg-2.2/Makefile.msf	Thu Apr 24 12:33:21 1997
++++ mrtg-2.2/Makefile	Thu Apr 24 12:34:11 1997
+@@ -6,16 +6,16 @@
+ # GD_INCLUDE 
+ # The path to the include files for the gd graphics library.
+ #GD_INCLUDE=/usr/local/include/gd
+-GD_INCLUDE=gd1.2
++#GD_INCLUDE=gd1.2
+ 
+ # GD_LIB
+ # The path to the gd graphics library: libgd.a
+ #GD_LIB=/usr/local/lib
+-GD_LIB=gd1.2
++#GD_LIB=gd1.2
+ 
+ # Where is perl 5 on this machine
+ # PERL=/usr/local/bin/perl
+-PERL=/usr/local/gnu/bin/perl5
++PERL=/usr/bin/perl
+ 
+ 
+ # CC

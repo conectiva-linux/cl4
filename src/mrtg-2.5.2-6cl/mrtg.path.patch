@@ -1,0 +1,112 @@
+--- mrtg-2.5.2/contrib/mrtgidx/mrtgidx.path	Fri Nov 29 06:39:49 1996
++++ mrtg-2.5.2/contrib/mrtgidx/mrtgidx	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/tardis/local/gnu/bin/perl5
++#!/usr/bin/perl
+ 
+ # mrtgidx - generate html index page based on mrtg.cfg
+ #
+--- mrtg-2.5.2/contrib/get-active/get-active.pl.path	Sat Jan 11 03:21:15 1997
++++ mrtg-2.5.2/contrib/get-active/get-active.pl	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Author: Russ Wright, Lawrence Berkeley National Laboratory December 1997
+ #
+--- mrtg-2.5.2/contrib/ping-probe/check-ping-fmt.path	Fri Aug 22 12:32:00 1997
++++ mrtg-2.5.2/contrib/ping-probe/check-ping-fmt	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl -w
++#!/usr/bin/perl -w
+ ##################################################################
+ # $Id$
+ # mrtg-ping-probe release $Name:  $
+--- mrtg-2.5.2/contrib/ping-probe/mrtg-ping-probe.path	Fri Aug 22 12:35:00 1997
++++ mrtg-2.5.2/contrib/ping-probe/mrtg-ping-probe	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ ##################################################################
+ # $Id: mrtg-ping-probe,v 1.11 1997/08/23 01:33:23 pwo Exp $
+ # mrtg-ping-probe release $Name: Release_1_6_0 $
+--- mrtg-2.5.2/contrib/get-multiserial/get-modems.pl.path	Mon Feb 24 13:05:21 1997
++++ mrtg-2.5.2/contrib/get-multiserial/get-modems.pl	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Returns number of active analog and digital dial-ins
+ #
+--- mrtg-2.5.2/contrib/mrtg-dynip/mrtg-dynip.path	Tue Jun  2 16:29:45 1998
++++ mrtg-2.5.2/contrib/mrtg-dynip/mrtg-dynip	Tue Jun  2 16:29:54 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ ##################################################################
+ # Multi Dynamic IP Traffic Grapher contibution to mrtg
+ ##################################################################
+--- mrtg-2.5.2/contrib/mrtg-dynip/mrtg-dynip-sydnet.path	Tue Jun  2 16:30:18 1998
++++ mrtg-2.5.2/contrib/mrtg-dynip/mrtg-dynip-sydnet	Tue Jun  2 16:30:25 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ ##################################################################
+ # Multi Dynamic IP Traffic Grapher contibution to mrtg
+ ##################################################################
+--- mrtg-2.5.2/contrib/mrtgindex.cgi/mrtgindx.cgi.path	Thu Mar 20 01:39:19 1997
++++ mrtg-2.5.2/contrib/mrtgindex.cgi/mrtgindx.cgi	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ # mrtgindex.cgi v 1.1
+ # (c) 1997, Mick Ghazey mick@lowdown.com
+--- mrtg-2.5.2/contrib/mrtg-mail/mailstats.path	Thu Jul 10 05:49:15 1997
++++ mrtg-2.5.2/contrib/mrtg-mail/mailstats	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Author:  Petter Reinholdtsen <pere@td.org.uit.no>
+ # Date:    1997-07-09
+--- mrtg-2.5.2/contrib/mrtg-mail/mqueue.path	Mon Jun 23 03:16:28 1997
++++ mrtg-2.5.2/contrib/mrtg-mail/mqueue	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/store/bin/perl
++#!/usr/bin/perl
+ # simple mqueue done with find2perl
+ 
+ $hostname = "apollo";
+--- mrtg-2.5.2/contrib/mrtg-mail/mqueue.orig.path	Thu Apr 17 11:16:30 1997
++++ mrtg-2.5.2/contrib/mrtg-mail/mqueue.orig	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ # simple mqueue done with find2perl
+ 
+ require "find.pl";
+--- mrtg-2.5.2/contrib/atmmaker/atmmaker.path	Tue Aug 26 11:12:47 1997
++++ mrtg-2.5.2/contrib/atmmaker/atmmaker	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/opt/gnu/bin/perl
++#!/usr/bin/perl
+ # -*- mode: Perl -*-
+ ##################################################################
+ # Config file creator
+--- mrtg-2.5.2/contrib/distrib/distrib.pl.path	Fri Jul  4 02:09:38 1997
++++ mrtg-2.5.2/contrib/distrib/distrib.pl	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ # version 1.1, 27.06.97, philippe.simonet@swisstelecom.com
+ 
+ $outFile = 'distrib.html';
+--- mrtg-2.5.2/contrib/ircstats/ircstats.pl.path	Wed Oct  8 01:22:53 1997
++++ mrtg-2.5.2/contrib/ircstats/ircstats.pl	Tue Jun  2 16:28:49 1998
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl5
++#!/usr/bin/perl
+ # client.pl  v1.5 7 Oct 1997 Matthew Ramsey <mjr@blackened.com>
+ # http://www.blackened.com/ircstats/
+ # A simple perl script I use to grab client info on IRC Servers.  While
