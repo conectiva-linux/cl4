@@ -1,0 +1,10 @@
+--- ./gqview.desktop~	Thu Mar  4 22:06:42 1999
++++ ./gqview.desktop	Tue Jun 29 23:42:18 1999
+@@ -1,6 +1,7 @@
+ [Desktop Entry]
+ Name=GQview
+ Comment=Image Viewer
++Comment[pt_BR]=Visualizador de Imagens
+ Exec=gqview
+ Icon=gqview.png
+ Terminal=0
