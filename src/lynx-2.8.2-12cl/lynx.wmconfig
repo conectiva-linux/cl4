@@ -1,0 +1,4 @@
+lynx name "lynx"
+lynx description "Leitor WWW modo texto"
+lynx exec "xterm -e lynx &"
+lynx group "Utilitários/Diversos"

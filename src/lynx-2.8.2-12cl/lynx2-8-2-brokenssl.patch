@@ -1,0 +1,64 @@
+diff -Nur lynx2-8-2.orig/WWW/Library/Implementation/HTNews.c lynx2-8-2/WWW/Library/Implementation/HTNews.c
+--- lynx2-8-2.orig/WWW/Library/Implementation/HTNews.c	Mon May 31 19:33:40 1999
++++ lynx2-8-2/WWW/Library/Implementation/HTNews.c	Mon May 31 19:34:51 1999
+@@ -2477,7 +2477,7 @@
+ 	    channel_s = -1;
+ 	    HTInitInput(s);		/* set up buffering */
+ 	    if (((status = response(NULL)) / 100) != 2) {
+-		char message[BIG];
++		char message[1025];
+ 		NEWS_NETCLOSE(s);
+ 		s = -1;
+ 		if (status == HT_INTERRUPTED) {
+Binary files lynx2-8-2.orig/WWW/Library/Implementation/HTNews.o and lynx2-8-2/WWW/Library/Implementation/HTNews.o differ
+diff -Nur lynx2-8-2.orig/WWW/Library/Implementation/HTAAUtil.c lynx2-8-2/WWW/Library/Implementation/HTAAUtil.c
+--- lynx2-8-2.orig/WWW/Library/Implementation/HTAAUtil.c	Tue Jun  1 13:34:30 1999
++++ lynx2-8-2/WWW/Library/Implementation/HTAAUtil.c	Tue Jun  1 14:02:54 1999
+@@ -51,7 +51,7 @@
+ 
+ #ifdef USE_SSL
+ #define free_func free__func
+-#include <ssl.h>
++#include <openssl/ssl.h>
+ #undef free_func
+ PRIVATE SSL * Handle = NULL;	/* The SSL Handle	*/
+ #endif /* USE_SSL */
+Binary files lynx2-8-2.orig/WWW/Library/Implementation/HTAnchor.o and lynx2-8-2/WWW/Library/Implementation/HTAnchor.o differ
+diff -Nur lynx2-8-2.orig/WWW/Library/Implementation/HTFormat.c lynx2-8-2/WWW/Library/Implementation/HTFormat.c
+--- lynx2-8-2.orig/WWW/Library/Implementation/HTFormat.c	Tue Jun  1 13:34:30 1999
++++ lynx2-8-2/WWW/Library/Implementation/HTFormat.c	Tue Jun  1 13:37:06 1999
+@@ -18,7 +18,7 @@
+ 
+ #ifdef USE_SSL
+ #define free_func free__func
+-#include <ssl.h>
++#include <openssl/ssl.h>
+ #undef free_func
+ #endif /* USE_SSL */
+ 
+diff -Nur lynx2-8-2.orig/WWW/Library/Implementation/HTNews.c lynx2-8-2/WWW/Library/Implementation/HTNews.c
+--- lynx2-8-2.orig/WWW/Library/Implementation/HTNews.c	Tue Jun  1 13:34:30 1999
++++ lynx2-8-2/WWW/Library/Implementation/HTNews.c	Tue Jun  1 13:46:55 1999
+@@ -37,7 +37,7 @@
+ 
+ #ifdef USE_SSL
+ #define free_func free__func
+-#include <ssl.h>
++#include <openssl/ssl.h>
+ #undef free_func
+ extern SSL_CTX * ssl_ctx;
+ extern SSL * HTGetSSLHandle NOPARAMS;
+diff -Nur lynx2-8-2.orig/WWW/Library/Implementation/HTTP.c lynx2-8-2/WWW/Library/Implementation/HTTP.c
+--- lynx2-8-2.orig/WWW/Library/Implementation/HTTP.c	Tue Jun  1 13:34:30 1999
++++ lynx2-8-2/WWW/Library/Implementation/HTTP.c	Tue Jun  1 13:34:54 1999
+@@ -12,8 +12,8 @@
+ 
+ #ifdef USE_SSL
+ #define free_func free__func
+-#include <ssl.h>
+-#include <crypto.h>
++#include <openssl/ssl.h>
++#include <openssl/crypto.h>
+ #undef free_func
+ #endif /* USE_SSL */
+ 

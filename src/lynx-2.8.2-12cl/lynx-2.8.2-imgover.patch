@@ -1,0 +1,20 @@
+diff -Nur lynx2-8-2.orig/src/HTML.c lynx2-8-2/src/HTML.c
+--- lynx2-8-2.orig/src/HTML.c	Mon May 31 19:28:42 1999
++++ lynx2-8-2/src/HTML.c	Mon May 31 19:29:24 1999
+@@ -7987,13 +7987,14 @@
+ 
+ PRIVATE char * MakeNewTitle ARGS2(CONST char **, value, int, src_type)
+ {
+-    char *ptr;
++    char *ptr = NULL;
+     char *newtitle = NULL;
+ 
+     StrAllocCopy(newtitle, "[");
+     if (value != 0 && value[src_type] != 0)
++    if(value[src_type] != NULL)
+ 	ptr = strrchr(value[src_type], '/');
+-    else
++	else
+ 	ptr = 0;
+     if (!ptr) {
+ 	StrAllocCat(newtitle, value[src_type]);

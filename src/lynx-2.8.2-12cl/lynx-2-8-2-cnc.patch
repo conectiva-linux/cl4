@@ -1,0 +1,79 @@
+diff -Nur lynx2-8-2.orig/lynx.cfg lynx2-8-2/lynx.cfg
+--- lynx2-8-2.orig/lynx.cfg	Mon May 31 18:53:09 1999
++++ lynx2-8-2/lynx.cfg	Mon May 31 18:54:01 1999
+@@ -73,7 +73,7 @@
+ #
+ # Normally we expect you will connect to a remote site, e.g., the Lynx starting
+ # site:
+-STARTFILE:http://lynx.browser.org/
++STARTFILE:file:/usr/doc/HTML/index.html
+ #
+ # As an alternative, you may want to use a local URL.  A good choice for this is
+ # the user's home directory:
+--- lynx2-8-1/userdefs.h.redhat	Mon Sep  7 06:02:16 1998
++++ lynx2-8-1/userdefs.h	Thu Sep 10 12:05:46 1998
+@@ -88,7 +88,7 @@
+  * mailcap files (see the examples in the samples directory).
+  */
+ #ifndef LYNX_CFG_FILE
+-#define LYNX_CFG_FILE "Lynx_Dir:lynx.cfg"
++#define LYNX_CFG_FILE "/etc/lynx.cfg"
+ #endif /* LYNX_CFG_FILE */
+ 
+ /**************************
+@@ -97,8 +97,8 @@
+  * These global and personal files override anything in
+  * lynx.cfg or src/HTInit.c
+  */
+-#define GLOBAL_EXTENSION_MAP "Lynx_Dir:mime.types"
+-#define PERSONAL_EXTENSION_MAP "mime.types"
++#define GLOBAL_EXTENSION_MAP "/etc/mime.types"
++#define PERSONAL_EXTENSION_MAP ".mime.types"
+ 
+ /**************************
+  * The MAILCAP file allows you to map file MIME types to
+@@ -106,7 +106,7 @@
+  * These global and personal files override anything in
+  * lynx.cfg or src/HTInit.c
+  */
+-#define GLOBAL_MAILCAP "Lynx_Dir:mailcap"
++#define GLOBAL_MAILCAP "/etc/mailcap"
+ #define PERSONAL_MAILCAP ".mailcap"
+ 
+ /**************************
+@@ -269,7 +269,7 @@
+ #ifdef DOSPATH
+ #define LYNX_CFG_FILE "./lynx.cfg"
+ #else
+-#define LYNX_CFG_FILE "/usr/local/lib/lynx.cfg"
++#define LYNX_CFG_FILE "/etc/lynx.cfg"
+ #endif /* DOSPATH */
+ #endif /* LYNX_CFG_FILE */
+ #endif /* HAVE_CONFIG_H */
+@@ -280,7 +280,7 @@
+  * These global and personal files override anything in
+  * lynx.cfg or src/HTInit.c
+  */
+-#define GLOBAL_EXTENSION_MAP "/usr/local/lib/mosaic/mime.types"
++#define GLOBAL_EXTENSION_MAP "/etc/mime.types"
+ #define PERSONAL_EXTENSION_MAP ".mime.types"
+ 
+ /**************************
+@@ -289,7 +289,7 @@
+  * These global and personal files override anything in
+  * lynx.cfg or src/HTInit.c
+  */
+-#define GLOBAL_MAILCAP "/usr/local/lib/mosaic/mailcap"
++#define GLOBAL_MAILCAP "/etc/mailcap"
+ #define PERSONAL_MAILCAP ".mailcap"
+ 
+ /**************************
+@@ -1012,7 +1012,7 @@
+  * lynxcgi:advice  as a G)oto URL for more information and links to the
+  * OSU server distribution.
+  */
+-/* #define LYNXCGI_LINKS */
++#define LYNXCGI_LINKS
+ 
+ #if defined(EXEC_LINKS) || defined(EXEC_SCRIPTS)
+ 

@@ -1,0 +1,12 @@
+diff -Nur lynx2-8-1.orig/WWW/Library/Implementation/HTTP.c lynx2-8-1/WWW/Library/Implementation/HTTP.c
+--- lynx2-8-1.orig/WWW/Library/Implementation/HTTP.c	Fri Apr  9 19:13:09 1999
++++ lynx2-8-1/WWW/Library/Implementation/HTTP.c	Fri Apr  9 19:14:07 1999
+@@ -90,7 +90,7 @@
+         ssl_ctx = SSL_CTX_new();
+ 	X509_set_default_verify_paths(ssl_ctx->cert);
+ #else
+-	SSLeay_add_ssl_algorithms();
++	SSL_library_init();
+ 	ssl_ctx = SSL_CTX_new(SSLv23_client_method());
+ 	SSL_CTX_set_options(ssl_ctx, SSL_OP_ALL);
+ 	SSL_CTX_set_default_verify_paths(ssl_ctx);
