@@ -1,0 +1,12 @@
+diff -uNr gtk+-1.0.6/Makefile.in gtk+-1.0.6-nodocs/Makefile.in
+--- gtk+-1.0.6/Makefile.in	Mon Sep 21 01:20:30 1998
++++ gtk+-1.0.6-nodocs/Makefile.in	Wed Jun 30 13:41:54 1999
+@@ -80,7 +80,7 @@
+ xinput_progs = @xinput_progs@
+ 
+ SRC_SUBDIRS = glib gdk gtk
+-SUBDIRS = $(SRC_SUBDIRS) docs
++SUBDIRS = $(SRC_SUBDIRS)
+ 
+ bin_SCRIPTS = gtk-config
+ 
