@@ -1,0 +1,6 @@
+cabaret name "Configuração de Sistemas de Arquivos - Modo Texto"
+cabaret description "Manutenção da configuração dos sistemas de arquivos"
+cabaret icon "cabaret.xpm"
+cabaret mini-icon "mini-cabaret.xpm"
+cabaret exec "xterm -e cabaret &"
+cabaret group Administração
