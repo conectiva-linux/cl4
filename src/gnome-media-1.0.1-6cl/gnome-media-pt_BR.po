@@ -1,0 +1,498 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gnome-Media\n"
+"POT-Creation-Date: 1999-03-01 17:36-0500\n"
+"PO-Revision-Date: 1999-04-07 23:00-0300\n"
+"Last-Translator: Elvis Pfützenreuter <epx@netville.com.br>\n"
+"Language-Team: Brazilian Portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso8859-1\n"
+"Content-Transfer-Encoding: base64\n"
+
+#: Revisão
+msgid ""
+msgstr "Revisão: Sandro Henrique <sandro@conectiva.com.br>\n" 
+
+#: cddbslave/main.c:43
+#, c-format
+msgid "Ready for command: %s\n"
+msgstr "Pronto para comando: %s\n"
+
+#: cddbslave/main.c:44
+#, c-format
+msgid "Connecting [%s]\n"
+msgstr "Conectando [%s]\n"
+
+#: cddbslave/main.c:45
+#, c-format
+msgid "Querying server [%s]\n"
+msgstr "Consultando servidor [%s]\n"
+
+#: cddbslave/main.c:46
+#, c-format
+msgid "Waiting for reply [%s]\n"
+msgstr "Aguardando resposta [%s]\n"
+
+#: cddbslave/main.c:47
+#, c-format
+msgid "Reading reply [%s]\n"
+msgstr "Lendo resposta [%s]\n"
+
+#: cddbslave/main.c:48
+#, c-format
+msgid "Disconnecting [%s]\n"
+msgstr "Desconectando [%s]\n"
+
+#: cddbslave/main.c:49
+#, c-format
+msgid "Error connecting [%s]\n"
+msgstr "Erro ao conectar [%s]\n"
+
+#: cddbslave/main.c:50
+#, c-format
+msgid "Error querying [%s]\n"
+msgstr "Erro ao consultar [%s]\n"
+
+#: cddbslave/main.c:51
+#, c-format
+msgid "Error reading [%s]\n"
+msgstr "Erro ao ler [%s]\n"
+
+#: cddbslave/main.c:52
+#, c-format
+msgid "No match found for %s\n"
+msgstr "Nenhum registro para %s\n"
+
+#: cddbslave/main.c:53
+#, c-format
+msgid "Timeout: %s\n"
+msgstr "Tempo máximo: %s\n"
+
+#: cddbslave/main.c:54
+#, c-format
+msgid "Inactive. %s\n"
+msgstr "Inativo. %s\n"
+
+#: gmix/gmix.c:77
+msgid "_About"
+msgstr "_Sobre"
+
+#: gmix/gmix.c:88
+msgid "_Program"
+msgstr "_Programa"
+
+#: gmix/gmix.c:89
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: gmix/gmix.c:139
+msgid "don't restore misturador-settings from configuration"
+msgstr "não restaurar configurações do misturador"
+
+#: gmix/gmix.c:140
+msgid "initialise the misturador(s) from stored configuration and exit"
+msgstr "inicializar o(s) misturador(es) a partir da configuração\n"
+"armazenada e sair"
+
+#: gmix/gmix.c:141
+msgid "don't save (modified) misturador-settings into configuration"
+msgstr "não salvar configurações (modificadas) do misturador"
+
+#: gmix/gmix.c:562
+msgid "GMIX 3.0"
+msgstr "GMIX 3.0"
+
+#. lock-button, only useful for stereo
+#: gmix/gmix.c:629
+msgid "Lock"
+msgstr "Travar"
+
+#: gmix/gmix.c:640
+msgid "Rec."
+msgstr "Gravar"
+
+#: gmix/gmix.c:647
+msgid "Mute"
+msgstr "Silenciar"
+
+#: gmix/gmix.c:797
+msgid "GMIX - The Gnome Misturador"
+msgstr "GMIX - O Misturador do Gnome"
+
+#: gmix/gmix.c:800
+msgid "This is a misturador for OSS sound-devices."
+msgstr "Este é um misturador para dispositivos de som OSS."
+
+#: tcd/callbacks.c:82
+msgid "TCD - The Gnome CD Player"
+msgstr "TCD - O Reprodutor de CDs do Gnome"
+
+#: tcd/callbacks.c:86
+msgid ""
+"GTCD is the Gnome CD player application. Includes CDDB support. Please see "
+"the 'Thanks' file included with the distribution for more credits."
+msgstr "GTCD é a aplicação de reprodução de CDs do Gnome.\n"
+"Inclui suporte a CDDB. Queira verificar outros créditos no arquivo\n"
+" de agradecimentos da distribuição."
+
+#: tcd/cddb_props.c:62
+msgid "Disc ID"
+msgstr "Identificação do Disco"
+
+#: tcd/cddb_props.c:62
+msgid "Disc Title"
+msgstr "Título do Disco"
+
+#: tcd/cddb_props.c:77
+msgid "Edit"
+msgstr "Editar"
+
+#: tcd/cddb_props.c:81
+msgid "Remove"
+msgstr "Remover"
+
+#: tcd/cddb_props.c:87
+msgid "Refresh List"
+msgstr "Atualizar Lista"
+
+#. server settings
+#: tcd/cddb_props.c:134
+msgid "Server Settings"
+msgstr "Configurações do Servidor"
+
+#: tcd/cddb_props.c:143
+msgid "Address"
+msgstr "Endereço"
+
+#: tcd/cddb_props.c:153
+msgid "Port"
+msgstr "Porta"
+
+#. local db
+#: tcd/cddb_props.c:163
+msgid "Local Database"
+msgstr "Base de dados local"
+
+#. frame
+#: tcd/cddb_props.c:205
+msgid "CDDB Data"
+msgstr "Dados CDDB"
+
+#: tcd/cddb_props.c:237
+msgid "CDDB Editor"
+msgstr "Editor CDDB"
+
+#: tcd/cddb_props.c:251
+msgid "Error reading $HOME/.cddbslave."
+msgstr "Erro ao ler $HOME/.cddbslave."
+
+#: tcd/cddb_props.c:367
+#, c-format
+msgid "Couldn't remove file: %s\n"
+msgstr "Impossível remover arquivo: %s\n"
+
+#: tcd/cddb_props.c:379
+msgid "Delete CDDB Entry?"
+msgstr "Remover Item do CDDB?"
+
+#. CDDB Status  button
+#: tcd/cddb_status.c:50 tcd/gtracked.c:242
+msgid "CDDB Status"
+msgstr "Estado do CDDB"
+
+#. grab button
+#: tcd/cddb_status.c:68
+msgid "Get CDDB Now"
+msgstr "Obter CDDB Agora"
+
+#: tcd/gtcd.c:59
+msgid "trk-e"
+msgstr "trk-e"
+
+#: tcd/gtcd.c:60
+msgid "trk-r"
+msgstr "trk-r"
+
+#: tcd/gtcd.c:61
+msgid "dsc-e"
+msgstr "dsc-e"
+
+#: tcd/gtcd.c:62
+msgid "dsc-r"
+msgstr "dsc-r"
+
+#: tcd/gtcd.c:67
+msgid "loop-cd"
+msgstr "repete CD"
+
+#: tcd/gtcd.c:68
+msgid "loop-t"
+msgstr "repete trilha"
+
+#: tcd/gtcd.c:69
+msgid "normal"
+msgstr "normal"
+
+#: tcd/gtcd.c:70
+msgid "random"
+msgstr "aleatório"
+
+#: tcd/gtcd.c:297
+msgid "Open track editor"
+msgstr "Abrir editor de trilhas"
+
+#: tcd/gtcd.c:298 tcd/prefs.c:578
+msgid "Preferences"
+msgstr "Preferências"
+
+#: tcd/gtcd.c:299 tcd/popup.c:23
+msgid "Quit"
+msgstr "Sair"
+
+#. TOP ROW
+#: tcd/gtcd.c:320
+msgid "Play/Pause"
+msgstr "Reproduzir/Pausar"
+
+#: tcd/gtcd.c:324 tcd/popup.c:16
+msgid "Stop"
+msgstr "Parar"
+
+#: tcd/gtcd.c:325 tcd/popup.c:17
+msgid "Eject"
+msgstr "Ejetar"
+
+#. MIDDLE ROW
+#: tcd/gtcd.c:332 tcd/gtcd.c:340
+msgid "Skip backwards"
+msgstr "Saltar para trás"
+
+#: tcd/gtcd.c:333 tcd/gtcd.c:341
+msgid "Skip forwards"
+msgstr "Saltar para frente"
+
+#: tcd/gtcd.c:472 tcd/gtcd.c:473 tcd/gtcd.c:474
+msgid "(Scanning)"
+msgstr "(Procurando)"
+
+#: tcd/gtcd.c:496
+msgid "No Disc"
+msgstr "Sem Disco"
+
+#: tcd/gtcd.c:524
+msgid "Error"
+msgstr "Erro"
+
+#: tcd/gtracked.c:137
+msgid "Trk"
+msgstr "Trl"
+
+#: tcd/gtracked.c:137
+msgid "Time"
+msgstr "Tempo"
+
+#: tcd/gtracked.c:137
+msgid "Title"
+msgstr "Título"
+
+#: tcd/gtracked.c:157
+msgid "Track Editor"
+msgstr "Editor de Trilhas"
+
+#: tcd/gtracked.c:168
+#, c-format
+msgid "Disc Information (%02u:%02u minutes)"
+msgstr "Informações do Disco (%02u:%02u minutos)"
+
+#: tcd/gtracked.c:173
+msgid "Artist / Title"
+msgstr "Artista / Título"
+
+#. ...
+#: tcd/gtracked.c:217
+msgid "Track Information"
+msgstr "Informações da trilha"
+
+#. Clear button
+#: tcd/gtracked.c:231
+msgid "Clear"
+msgstr "Limpar"
+
+#. Playlist button
+#: tcd/gtracked.c:236
+msgid "Playlist"
+msgstr "Lista de Reprodução"
+
+#: tcd/linux-cdrom.c:555
+#, c-format
+msgid ""
+"Error accessing cdrom device.\n"
+"Please check to make sure cdrom drive support\n"
+"is compiled into the kernel, and that you have\n"
+"permission to access the device.\n"
+"\n"
+"Reason: %s\n"
+msgstr ""
+"Erro ao acessar dispositivo de CD-ROM.\n"
+"Verifique se o suporte a CD-ROMs está incluído\n"
+"no kernel e se há permissão para\n"
+"acessar o dispositivo.\n"
+"\n"
+"Motivo: %s\n"
+
+#: tcd/linux-cdrom.c:624
+msgid "Unknown / Unknown"
+msgstr "Desconhecido / Desconhecido"
+
+#: tcd/linux-cdrom.c:628
+#, c-format
+msgid "Track %d"
+msgstr "Trilha %d"
+
+#: tcd/popup.c:15
+msgid "Play"
+msgstr "Reproduzir"
+
+#: tcd/popup.c:19
+msgid "Preferences..."
+msgstr "Preferências..."
+
+#: tcd/popup.c:20
+msgid "Track Editor..."
+msgstr "Editor de Trilhas..."
+
+#: tcd/popup.c:21
+msgid "About..."
+msgstr "Sobre..."
+
+#. do nothing
+#: tcd/prefs.c:174 tcd/prefs.c:229
+msgid "Do nothing"
+msgstr "Não fazer nada"
+
+#: tcd/prefs.c:180
+msgid "Start playing"
+msgstr "Reproduzir"
+
+#: tcd/prefs.c:186 tcd/prefs.c:235
+msgid "Stop playing"
+msgstr "Parar de reproduzir"
+
+#. close tray
+#: tcd/prefs.c:190 tcd/prefs.c:247
+msgid "Close tray"
+msgstr "Fechar gaveta"
+
+#: tcd/prefs.c:241
+msgid "Open tray"
+msgstr "Abrir gaveta"
+
+#. device entry
+#: tcd/prefs.c:320
+msgid "CDROM device"
+msgstr "Dispositivo CD-ROM"
+
+#. Color picker
+#: tcd/prefs.c:329
+msgid "Track/title color"
+msgstr "Cor da trilha/título"
+
+#. font picker
+#: tcd/prefs.c:341
+msgid "Track/title font"
+msgstr "Fonte da trilha/título"
+
+#: tcd/prefs.c:342
+msgid "Change font"
+msgstr "Mudar fonte"
+
+#. show handles
+#: tcd/prefs.c:349
+msgid "Show handles (restart required)"
+msgstr "Mostrar manuseadores (reinício obrigatório)"
+
+#. show tooltips
+#: tcd/prefs.c:356
+msgid "Show tooltips"
+msgstr "Mostrar dicas"
+
+#. use alternate play ioctl
+#: tcd/prefs.c:363
+msgid "Use alternate method to play CD"
+msgstr "Usar método alternativo para reproduzir CD"
+
+#. start frame
+#: tcd/prefs.c:383
+msgid "On startup"
+msgstr "No início"
+
+#. exit frame
+#: tcd/prefs.c:389
+msgid "On exit"
+msgstr "Na saída"
+
+#: tcd/prefs.c:497
+msgid "Key"
+msgstr "Tecla"
+
+#: tcd/prefs.c:498
+msgid "Action"
+msgstr "Ação"
+
+#: tcd/prefs.c:516
+msgid "Click here to change:"
+msgstr "Clique aqui para mudar:"
+
+#. Frame
+#: tcd/prefs.c:538 tcd/prefs.c:582
+msgid "Keybindings"
+msgstr "Ações de Teclado"
+
+#: tcd/prefs.c:586
+msgid "CDDB Settings"
+msgstr "Configurações CDDB"
+
+#: vu-meter/main.c:114
+msgid ""
+"Cannot connect to sound daemon.\n"
+"Please run 'esd' at a command prompt."
+msgstr "Impossível conectar ao servidor de som. \n"
+"Queira executar 'esd' na linha de comando."
+
+#: vu-meter/main.c:178
+msgid "Specify the X position of the meter."
+msgstr "Especificar a posição X do medidor."
+
+#: vu-meter/main.c:179
+msgid "X-Position"
+msgstr "Posição X"
+
+#: vu-meter/main.c:181
+msgid "Specify the Y position of the meter."
+msgstr "Especificar a posição Y do medidor."
+
+#: vu-meter/main.c:182
+msgid "Y-Position"
+msgstr "Posição Y"
+
+#: vu-meter/main.c:184
+msgid "Connect to the esd server on this host."
+msgstr "Conectar ao servidor esd desta máquina."
+
+#: vu-meter/main.c:185
+msgid "ESD Server Host"
+msgstr "Máquina do servidor ESD"
+
+#: vu-meter/main.c:187
+msgid "Open a vertical version of the meter."
+msgstr "Abrir uma versão vertical do medidor."
+
+#: vu-meter/main.c:195
+#, c-format
+msgid "Host is %s\n"
+msgstr "Máquina é %s\n"
+
+#: vu-meter/main.c:216
+msgid "Volume Meter"
+msgstr "Medidor de Volume"
+

@@ -1,0 +1,12 @@
+diff -uNr gnome-media-1.0.1/configure.in gnome-media-1.0.1-pt_BR/configure.in
+--- gnome-media-1.0.1/configure.in	Mon Mar  1 19:29:41 1999
++++ gnome-media-1.0.1-pt_BR/configure.in	Fri Jun 25 15:11:03 1999
+@@ -46,7 +46,7 @@
+ AM_PATH_ESD(0.2.7, AC_DEFINE(HAVE_ESD))
+ 
+ 
+-ALL_LINGUAS="da fi ko de fr it ja es no hu ga pt ru_RU nl"
++ALL_LINGUAS="da fi ko de fr it ja es no hu ga pt pt_BR ru_RU nl"
+ AM_GNOME_GETTEXT
+ 
+ AC_SUBST(CFLAGS)

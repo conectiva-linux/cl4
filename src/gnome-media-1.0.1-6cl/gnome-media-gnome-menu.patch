@@ -1,0 +1,57 @@
+--- ./extace/extace.desktop~	Mon Mar  1 15:42:43 1999
++++ ./extace/extace.desktop	Tue Jun 29 23:31:43 1999
+@@ -1,11 +1,13 @@
+ [Desktop Entry]
+ Name=Extace Waveform Display
++Name[pt_BR]=Visualizador de Forma de Ondas Extace
+ Name[es]=Extace
+ Name[no]=Extace Bølgeformvisning
+ Name[fr]=Extace Waveform
+ Name[ko]=ÀÍ½ºÅ×ÀÌ½º
+ Name[pt]=Extace
+ Comment=Audio Waveform Monitor
++Comment[pt_BR]=Monitor de Áudio em Forma de Ondas
+ Comment[es]Visualización gráfica de ondas sonoras
+ Comment[no]=Lydbølgemonitor
+ Comment[fr]=Visualisation graphique d'ondes sonores
+--- ./vu-meter/vumeter.desktop~	Mon Mar  1 15:42:43 1999
++++ ./vu-meter/vumeter.desktop	Tue Jun 29 23:32:03 1999
+@@ -1,9 +1,11 @@
+ [Desktop Entry]
+ Name=ESD Volume Meter
++Name[pt_BR]=Medidor de Volume ESD
+ Name[ko]=ESD º¼·ý º¸±â
+ Name[es]=Volúmen de ESD
+ Name[fr]=Volume d'ESD
+ Comment=A Volume Unit Meter for ESD 
++Comment[pt_BR]=Medidor de Volume para ESD
+ Comment[ko]=ESD¿ë º¼·ý º¸±â ÇÁ·Î±×·¥
+ Comment[es]=Un control de volume para el demonio de sonido ESD
+ Comment[fr]=Un contrôle du volume pour le daemon ESD
+--- ./gmix/gmix.desktop~	Mon Mar  1 15:42:43 1999
++++ ./gmix/gmix.desktop	Tue Jun 29 23:32:40 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Audio Mixer
++Name[pt_BR]=Misturador
+ Name[es]=Mesa de mezclado
+ Name[de]=Mischpult
+ Name[fr]=Mixer Audio
+@@ -8,6 +9,7 @@
+ Name[pt]=Mesa de Mistura
+ Name[ru]=áÕÄÉÏ íÉËÛÅÒ
+ Comment=Audio Mixer
++Comment[pt_BR]=Misturador de Áudio
+ Comment[es]=Mesa de mezclado
+ Comment[de]=Audiomischpult
+ Comment[fr]=Table de mixage Audio
+--- ./tcd/gtcd.desktop~	Mon Mar  1 15:42:43 1999
++++ ./tcd/gtcd.desktop	Tue Jun 29 23:32:53 1999
+@@ -7,6 +7,7 @@
+ Name[pt]=Leitor de CD
+ Name[ru]=CD ðÒÏÉÇÒÙ×ÁÔÅÌØ
+ Comment=Gnome CD Player
++Comment[pt_BR]=CD Player Gnome
+ Comment[es]=Lector de CD GNOME con soporte para CDDB
+ Comment[fr]=Lecteur CD GNOME
+ Comment[ko]=±×³ð ¾¾µð Àç»ý±â
