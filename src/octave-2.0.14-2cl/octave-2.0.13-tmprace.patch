@@ -1,0 +1,12 @@
+diff -Nur octave-2.0.13.orig/octave-bug.in octave-2.0.13/octave-bug.in
+--- octave-2.0.13.orig/octave-bug.in	Mon Nov 30 03:23:34 1998
++++ octave-2.0.13/octave-bug.in	Mon Nov 30 03:26:06 1998
+@@ -57,7 +57,7 @@
+ PATH=/bin:/usr/bin:/usr/ucb:/usr/local/bin:$PATH
+ export PATH
+ 
+-TEMP=/tmp/octave-bug.$$
++TEMP=`mktemp /tmp/octave.XXXXXX` 
+ 
+ : ${EDITOR=emacs}
+ : ${PAGER=more}
