@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/games/xzip /usr/lib/games/zcode/`basename $0`.z?

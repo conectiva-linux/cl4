@@ -1,0 +1,58 @@
+--- xzip/Makefile.patch	Sat Jul 11 18:27:32 1998
++++ xzip/Makefile	Wed Sep  2 17:13:37 1998
+@@ -51,7 +51,7 @@
+ #   BYTE_ORDER definitions installed. If AUTO_END_MODE doesn't
+ #   work, use LITTLE_END_MODE on an x86, BIG_END_MODE on a
+ #   680x0 or PPC machine.
+-#SYSTEMFLAGS = -DAUTO_END_MODE
++SYSTEMFLAGS = -DAUTO_END_MODE
+ 
+ # definitions for some arbitrary big-endian system
+ #SYSTEMFLAGS = -DBIG_END_MODE
+@@ -64,8 +64,8 @@
+ # definitions for where the X lib and include directories are.
+ # The following are defaults that might work.
+ 
+-XINCLUDE = /usr/include/X11
+-XLIB = /usr/lib/X11
++#XINCLUDE = /usr/include/X11
++#XLIB = /usr/lib/
+ 
+ # If your compiler can't find these things, try commenting out the
+ # above, and uncommenting various versions below. Also look around
+@@ -80,8 +80,8 @@
+ #XLIB = /usr/X11R6/lib
+ 
+ # for Red Hat Linux
+-#XINCLUDE = /usr/include/X11
+-#XLIB = /usr/X11/lib
++XINCLUDE = /usr/X11R6/include/X11
++XLIB = /usr/X11R6/lib
+ 
+ # for SparcStation / Solaris 
+ #XINCLUDE = /usr/openwin/include
+@@ -90,11 +90,11 @@
+ # --------------------
+ 
+ # definition for where to install xzip executable and man page
+-DESTDIR = /usr/local
++DESTDIR = /usr/games
+ 
+ # --------------------
+ 
+-CFLAGS = -O $(SYSTEMFLAGS) -I$(XINCLUDE)
++CFLAGS = $(RPM_OPT_FLAGS) $(SYSTEMFLAGS) -I$(XINCLUDE)
+ LDFLAGS =
+ LIBS = -L$(XLIB) -lX11 $(SYSTEMLIBS)
+ 
+@@ -152,8 +152,8 @@
+ 	$(CC) $(CFLAGS) $(FONTDEFAULTLIST) -c xinit.c
+ 
+ install: $(PROGRAM)
+-	install -s $(PROGRAM) $(DESTDIR)/bin
+-	install $(PROGRAM).1 $(DESTDIR)/man/man1
++	install -s $(PROGRAM) $(DESTDIR)/xzip
++	install $(PROGRAM).1 /usr/man/man6/$(PROGRAM).6
+ 
+ clean :
+ 	-rm -f *~ *.o $(PROGRAM) test
