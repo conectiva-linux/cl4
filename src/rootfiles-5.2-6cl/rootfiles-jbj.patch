@@ -1,0 +1,10 @@
+--- rootfiles/.cshrc.jbj	Sun Aug 23 18:18:14 1998
++++ rootfiles/.cshrc	Sun Aug 23 18:19:24 1998
+@@ -6,6 +6,6 @@
+ alias cp 'cp -i'
+ alias mv 'mv -i'
+ 
+-setenv PATH="/usr/sbin:/sbin:$PATH"
++setenv PATH "/usr/sbin:/sbin:${PATH}"
+ 
+ set prompt=\[`id -nu`@`hostname -s`\]\#\ 
