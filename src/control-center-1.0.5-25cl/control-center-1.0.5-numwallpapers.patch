@@ -1,0 +1,11 @@
+--- control-center-1.0.5/capplets/background-properties/property-background.c.numwallpapers	Wed Apr 14 14:29:59 1999
++++ control-center-1.0.5/capplets/background-properties/property-background.c	Wed Apr 14 14:30:09 1999
+@@ -1191,7 +1191,7 @@
+ 			gnome_config_set_string (buffer, (gchar *) list->data);
+ 			i++;
+ 	}
+-	gnome_config_set_int ("/Background/Default/wallpapers", i - 1);
++	gnome_config_set_int ("/Background/Default/wallpapers", i);
+     
+     gnome_config_sync ();
+ 	

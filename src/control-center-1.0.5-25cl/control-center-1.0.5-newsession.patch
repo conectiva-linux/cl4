@@ -1,0 +1,1680 @@
+--- control-center-1.0.5/capplets/session-properties/ChangeLog.newsession	Fri Mar 26 11:19:38 1999
++++ control-center-1.0.5/capplets/session-properties/ChangeLog	Fri Apr  2 13:16:56 1999
+@@ -1,3 +1,14 @@
++1999-03-30  Owen Taylor  <otaylor@redhat.com>
++	* Makefile.am chooser.c: Moved chooser GUI into separate file
++	* startup-programs.c: A simple list of programs to start manually
++	* session-properties.h: New file
++	* session-properties: Remove the active-client list from the
++	  capplet (but add a button to run session-properties), 
++	  add in options for operation-mode (autosave or not)
++	  and prompt-on-logout, add in simple startup-programs list.
++	* sesion-properties.desktop: Change name and description
++	  to match new appearance.
++	
+ 1999-03-22  Felix Bellaby  <felix@pooh.u-net.com> 
+ 
+ 	* session-properties.c: support a warning only mode.
+--- control-center-1.0.5/capplets/session-properties/Makefile.am.newsession	Fri Mar 26 11:19:38 1999
++++ control-center-1.0.5/capplets/session-properties/Makefile.am	Fri Apr  2 13:16:56 1999
+@@ -9,9 +9,21 @@
+ bin_PROGRAMS = session-properties-capplet
+ endif
+ 
+-session_properties_capplet_SOURCES = session-properties.c session.h \
+-gsm-protocol.c gsm-protocol.h gsm-client-list.c gsm-client-list.h \
+-gsm-client-row.c gsm-client-row.h gsm-client-editor.c gsm-client-editor.h 
++session_properties_capplet_SOURCES = \
++	chooser.c \
++	session-properties.c \
++	session-propertes.h \
++	startup-programs.c \
++	session.h \
++	gsm-protocol.c \
++	gsm-protocol.h \
++	gsm-client-list.c \
++	gsm-client-list.h \
++	gsm-client-row.c \
++	gsm-client-row.h \
++	gsm-client-editor.c \
++	gsm-client-editor.h
++
+ session_properties_capplet_LDADD = ../../control-center/libcapplet.la \
+ 		     $(GNOME_LIBDIR) $(ORB_LIBS) \
+ 		     $(GNOMEUI_LIBS) $(INTLLIBS) -lgnorba
+@@ -28,3 +40,4 @@
+ 
+ install-data-local:
+ 	$(INSTALL_DATA) $(srcdir)/session-properties.desktop $(DESTDIR)$(datadir)/gnome/apps/Settings/session-properties.desktop
++
+--- control-center-1.0.5/capplets/session-properties/chooser.c.newsession	Fri Apr  2 13:16:56 1999
++++ control-center-1.0.5/capplets/session-properties/chooser.c	Fri Apr  2 13:16:56 1999
+@@ -0,0 +1,233 @@
++/* session-properties.c - Edit session properties.
++
++   Copyright 1999 Free Software Foundation, Inc.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
++   02111-1307, USA. 
++
++   Authors: Felix Bellaby */
++
++#include <gnome.h>
++#include "capplet-widget.h"
++#include "gsm-client-list.h"
++#include "gsm-protocol.h"
++#include "session-properties.h"
++
++/* time waited before restarting the last session saved/selected */
++static gint chooser_delay = 10000;
++
++/* chooser widgets */
++static GtkObject *protocol;
++static GtkWidget *client_list;
++
++static GtkWidget *dialog;
++static GtkWidget *session_list;
++static GtkWidget *gnome_foot;
++static GtkWidget *left_scrolled;
++static GtkWidget *right_scrolled;
++
++/* session list callbacks */
++static void sess_select_row_cb (GtkWidget *widget, gint row);
++static void last_session_cb (GtkWidget *w, gchar* name);
++static void saved_sessions_cb (GtkWidget *w, GSList* session_names);
++
++/* other widget callback prototypes */
++static gint start_timeout (gpointer data);
++static void start_cb (GtkWidget *widget);
++static void cancel_cb (GtkWidget *widget);
++static void right_initialized_cb (GtkWidget *widget);
++
++void
++chooser_build (void)
++{
++  GtkWidget *paned;
++  gchar* foot_file = gnome_pixmap_file ("gnome-logo-large.png");
++  gchar* title = _("Session");
++  GtkRequisition req;
++
++  /* gnome foot */
++  gnome_foot = gnome_pixmap_new_from_file (foot_file);
++  gtk_widget_size_request (gnome_foot, &req);
++
++  /* session list */
++  session_list = gtk_clist_new_with_titles(1, &title);
++  gtk_widget_set_usize (session_list, req.width + GNOME_PAD, req.height);
++  gtk_signal_connect (GTK_OBJECT (session_list), "select_row",
++		      sess_select_row_cb, NULL);
++
++  /* left scrolled window */
++  left_scrolled = gtk_scrolled_window_new (NULL, NULL);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
++				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
++  gtk_container_add (GTK_CONTAINER (left_scrolled), session_list);
++
++  /* client list */
++  client_list = gsm_client_list_new ();
++
++  /* right scrolled window */
++  right_scrolled = gtk_scrolled_window_new (NULL, NULL);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (right_scrolled),
++				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
++  gtk_container_add (GTK_CONTAINER (right_scrolled), client_list);
++
++  /* paned window */
++  paned = gtk_hpaned_new();
++  gtk_paned_handle_size (GTK_PANED (paned), 10);
++  gtk_paned_gutter_size (GTK_PANED (paned), 10);
++  gtk_paned_add1 (GTK_PANED (paned), left_scrolled);
++  gtk_paned_add2 (GTK_PANED (paned), right_scrolled);
++
++  /* dialog */
++  dialog = gnome_dialog_new (_("Session Chooser"), NULL);
++  gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (dialog)->vbox), paned);
++  gnome_dialog_append_button_with_pixmap (GNOME_DIALOG (dialog),
++					  _("Start Session"),
++					  GNOME_STOCK_BUTTON_OK);
++  gnome_dialog_append_button_with_pixmap (GNOME_DIALOG (dialog),
++					  _("Cancel Login"),
++					  GNOME_STOCK_BUTTON_CANCEL);
++  gnome_dialog_set_default (GNOME_DIALOG (dialog), 0);
++  gnome_dialog_button_connect (GNOME_DIALOG (dialog), 0,
++			       GTK_SIGNAL_FUNC (start_cb), NULL);
++  gnome_dialog_button_connect (GNOME_DIALOG (dialog), 1,
++			       GTK_SIGNAL_FUNC (cancel_cb), NULL);
++
++  gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
++		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
++
++  gtk_signal_connect (GTK_OBJECT (protocol), "last_session", 
++		      GTK_SIGNAL_FUNC (last_session_cb), NULL);
++  gsm_protocol_get_last_session (GSM_PROTOCOL (protocol));
++
++  gtk_signal_connect (GTK_OBJECT (protocol), "saved_sessions", 
++		      GTK_SIGNAL_FUNC (saved_sessions_cb), NULL);
++  gsm_protocol_get_saved_sessions (GSM_PROTOCOL (protocol));
++}
++
++/* SESSION LIST CALLBACKS */
++static gint chooser_timeout = -1;
++
++static void
++start (void)
++{
++  GtkWidget *viewport;
++
++  gtk_signal_connect(GTK_OBJECT(client_list), "started",
++		     GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
++  gsm_client_list_start_session (GSM_CLIENT_LIST (client_list));
++  gnome_dialog_set_sensitive (GNOME_DIALOG (dialog), 0, FALSE);
++  gnome_dialog_set_sensitive (GNOME_DIALOG (dialog), 1, FALSE);
++  gtk_signal_disconnect_by_func (GTK_OBJECT (session_list), 
++				 sess_select_row_cb, NULL);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
++				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
++  gtk_container_remove (GTK_CONTAINER (left_scrolled), session_list);
++  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (left_scrolled)),
++			       gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (left_scrolled)));
++  gtk_container_add (GTK_CONTAINER (viewport), gnome_foot);
++  gtk_widget_show_all (viewport);
++  gtk_container_add (GTK_CONTAINER (left_scrolled), viewport);
++}
++
++static void
++start_cb (GtkWidget *widget)
++{
++  if (chooser_timeout != -1)
++    gtk_timeout_remove (chooser_timeout);
++
++  start ();
++}
++
++static gint
++start_timeout (gpointer data)
++{
++  start ();
++  return 0;
++}
++
++
++static void
++sess_select_row_cb (GtkWidget* widget, gint row)
++{
++  gchar* name;
++
++  gtk_clist_get_text (GTK_CLIST (widget), row, 0, &name);
++  gsm_client_list_saved_session (GSM_CLIENT_LIST (client_list), name);
++  if (chooser_timeout == -1)
++    {
++      gtk_signal_connect(GTK_OBJECT (client_list), "initialized",
++			 GTK_SIGNAL_FUNC (right_initialized_cb), NULL);
++    }
++  else
++    {
++      gtk_timeout_remove (chooser_timeout);
++      chooser_timeout = gtk_timeout_add (chooser_delay, start_timeout, NULL);
++    }
++}
++
++static void
++cancel_cb (GtkWidget *widget)
++{
++  gnome_client_request_save (gnome_master_client(), GNOME_SAVE_BOTH, 1, 
++			     GNOME_INTERACT_ANY, 0, 1);
++}
++
++static gchar* last_session = NULL;
++
++static void
++last_session_cb (GtkWidget *widget, gchar* name)
++{
++  last_session = g_strdup (name);
++}
++
++/* gnome-session is responsible for ensuring that there is always
++ * at least one session to choose. */  
++static void
++saved_sessions_cb (GtkWidget *widget, GSList* session_names)
++{
++  GSList *list;
++
++  gint selected_row = 0;
++  
++  for (list = session_names; list; list = list->next)
++    {
++      gint row;
++      gchar* name = (gchar*)list->data;
++      row = gtk_clist_append (GTK_CLIST (session_list), &name);
++      if (! strcmp (last_session, name))
++	selected_row = row;
++    }
++  gtk_clist_select_row (GTK_CLIST (session_list), selected_row, 0);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
++				  GTK_POLICY_AUTOMATIC, 
++				  GTK_POLICY_AUTOMATIC);
++}
++
++static void
++right_initialized_cb (GtkWidget *widget)
++{
++  gboolean wait = (GTK_CLIST (session_list)->rows > 1);
++  /* We are normally started BEFORE the WM: */
++  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
++  if (!wait)
++    start();
++  gtk_widget_show_all (dialog);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (right_scrolled),
++				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
++  if (wait)
++    chooser_timeout = gtk_timeout_add (chooser_delay, start_timeout, NULL); 
++  gtk_signal_disconnect_by_func (GTK_OBJECT (client_list), 
++				 right_initialized_cb, NULL);
++}
+--- control-center-1.0.5/capplets/session-properties/session-properties.c.newsession	Fri Mar 26 11:19:50 1999
++++ control-center-1.0.5/capplets/session-properties/session-properties.c	Fri Apr  2 13:16:56 1999
+@@ -17,7 +17,7 @@
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+    02111-1307, USA. 
+ 
+-   Authors: Felix Bellaby */
++   Authors: Felix Bellaby, Owen Taylor */
+ 
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+@@ -28,68 +28,89 @@
+ #include "capplet-widget.h"
+ #include "gsm-client-list.h"
+ #include "gsm-protocol.h"
++#include "session-properties.h"
+ 
+-/* time waited before restarting the last session saved/selected */
+-static gint chooser_delay = 10000;
++#define GSM_OPTION_CONFIG_PREFIX "session-options/Options/"
++
++/* Current state */
++static gboolean trash_changes;
++static gboolean trash_changes_revert;
++
++static gboolean logout_prompt;
++static gboolean logout_prompt_revert;
++
++static GSList *startup_list;
++static GSList *startup_list_revert;
+ 
+-/* common widgets */
+ static GtkObject *protocol;
+-static GtkWidget *client_list;
+ 
+ /* capplet widgets */
+ static GtkWidget *capplet;
+-static GtkWidget *entry;
+-static GtkWidget *add_button;
+-static GtkWidget *remove_button;
+-static GtkWidget *client_editor;
+-static GtkWidget *scrolled_window;
++static GtkWidget *trash_changes_button;
++static GtkWidget *logout_prompt_button;
++
++static GtkWidget *clist;
++
++static GtkWidget *startup_command_dialog;
+ 
+ /* CORBA callbacks and intialization */
+ static void capplet_build (void);
+ 
+-/* capplet callback prototypes */
++/* Capplet callback prototypes */
+ static void try (void);
+ static void revert (void);
+ static void ok (void);
+ static void cancel (void);
+ static void help (void);
++static void page_hidden (void);
++static void page_shown (void);
++
++/* Other callbacks */
+ 
+-/* chooser widgets */
+-static GtkWidget *dialog;
+-static GtkWidget *session_list;
+-static GtkWidget *gnome_foot;
+-static GtkWidget *left_scrolled;
+-static GtkWidget *right_scrolled;
+-
+-/* other widget callback prototypes */
+-static void entry_changed_cb (GtkWidget *widget);
+-static void add_cb (GtkWidget *widget);
+-static void remove_cb (GtkWidget *widget);
+-static void select_cb (GtkCList *clist);
+-static void unselect_cb (GtkCList *clist);
+-static void dirty_cb (GtkWidget *widget);
+-static void initialized_cb (GtkWidget *widget);
+-
+-/* chooser intialization */
+-static void chooser_build (void);
+-
+-/* session list callbacks */
+-static void sess_select_row_cb (GtkWidget *widget, gint row);
+-static void last_session_cb (GtkWidget *w, gchar* name);
+-static void saved_sessions_cb (GtkWidget *w, GSList* session_names);
+-
+-/* other widget callback prototypes */
+-static gint start_timeout (gpointer data);
+-static void start_cb (GtkWidget *widget);
+-static void cancel_cb (GtkWidget *widget);
+-static void right_initialized_cb (GtkWidget *widget);
++static void update_gui (void);
++static void dirty_cb (GtkWidget *widget, GtkWidget *capplet);
++static void add_cb (void);
++static void edit_cb (void);
++static void delete_cb (void);
++static void browse_session_cb (void);
++
++static GtkWidget *
++left_aligned_button (gchar *label)
++{
++  GtkWidget *button = gtk_button_new_with_label (label);
++  gtk_misc_set_alignment (GTK_MISC (GTK_BIN (button)->child),
++			  0.0, 0.5);
++  gtk_misc_set_padding (GTK_MISC (GTK_BIN (button)->child),
++			GNOME_PAD_SMALL, 0);
++
++  return button;
++}
+ 
+ static void
+ capplet_build (void)
+ {
+-  GtkWidget *table;
++  GtkWidget *hbox, *vbox;
++  GtkWidget *util_vbox;
++  GtkWidget *frame;
++  GtkWidget *button;
++  GtkWidget *scrolled_window;
++  GtkWidget *alignment;
++
++  /* Retrieve options */
++
++  gnome_config_push_prefix (GSM_OPTION_CONFIG_PREFIX);
++  trash_changes = gnome_config_get_bool ("TrashMode=true");
++  trash_changes_revert = trash_changes;
++
++  logout_prompt = gnome_config_get_bool ("LogoutPrompt=true");
++  logout_prompt_revert = logout_prompt;
++  gnome_config_pop_prefix ();
++
++  startup_list = NULL;
++  startup_list = startup_list_read ("Default");
++  startup_list_revert = startup_list_duplicate (startup_list);
+ 
+-  /* capplet */
++  /* capplet callbacks */
+   capplet = capplet_widget_new ();
+   gtk_signal_connect (GTK_OBJECT (capplet), "try",
+ 		      GTK_SIGNAL_FUNC (try), NULL);
+@@ -99,220 +120,165 @@
+ 		      GTK_SIGNAL_FUNC (cancel), NULL);
+   gtk_signal_connect (GTK_OBJECT (capplet), "ok",
+ 		      GTK_SIGNAL_FUNC (ok), NULL);
++  gtk_signal_connect (GTK_OBJECT (capplet), "page_hidden",
++		      GTK_SIGNAL_FUNC (page_hidden), NULL);
++  gtk_signal_connect (GTK_OBJECT (capplet), "page_shown",
++		      GTK_SIGNAL_FUNC (page_hidden), NULL);
+   gtk_signal_connect (GTK_OBJECT (capplet), "help",
+ 		      GTK_SIGNAL_FUNC (help), NULL);
+ 
+-  /* program entry box */
+-  entry = gtk_entry_new ();
+-  gtk_signal_connect (GTK_OBJECT (entry), "activate", 
+-		      GTK_SIGNAL_FUNC (add_cb), NULL);
+-  gtk_signal_connect (GTK_OBJECT (entry), "changed", 
+-		      GTK_SIGNAL_FUNC (entry_changed_cb), NULL);
++  /**** GUI ****/
+ 
+-  /* add/remove buttons */
+-  add_button = gnome_stock_button (GNOME_STOCK_PIXMAP_ADD);
+-  gtk_widget_set_sensitive (GTK_WIDGET (add_button), FALSE);
+-  gtk_signal_connect (GTK_OBJECT (add_button), "clicked",
+-		      GTK_SIGNAL_FUNC (add_cb), NULL);
+-  remove_button = gnome_stock_button (GNOME_STOCK_PIXMAP_REMOVE);
+-  gtk_widget_set_sensitive (GTK_WIDGET (remove_button), FALSE);
+-  gtk_signal_connect(GTK_OBJECT (remove_button), "clicked",
+-		     GTK_SIGNAL_FUNC (remove_cb), NULL);
+-  /* client list */
+-  client_list = gsm_client_list_new ();
+-  gsm_client_list_live_session (GSM_CLIENT_LIST (client_list));
+-  gtk_signal_connect(GTK_OBJECT(client_list), "select_row",
+-		     GTK_SIGNAL_FUNC (select_cb), NULL);
+-  gtk_signal_connect(GTK_OBJECT(client_list), "unselect_row",
+-		     GTK_SIGNAL_FUNC (unselect_cb), NULL);
+-  gtk_signal_connect(GTK_OBJECT(client_list), "dirty",
+-		     GTK_SIGNAL_FUNC (dirty_cb), NULL);
+-  gtk_signal_connect(GTK_OBJECT(client_list), "initialized",
+-		     GTK_SIGNAL_FUNC (initialized_cb), NULL);
++  vbox = gtk_vbox_new (FALSE, GNOME_PAD);
++  gtk_container_add (GTK_CONTAINER (capplet), vbox);
++  gtk_container_set_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
++  
++  /* frame for options */
+ 
+-  client_editor = gsm_client_list_get_editor (GSM_CLIENT_LIST (client_list));
++  frame = gtk_frame_new ("Options");
++  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+ 
+-  /* startup program list */
+-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+-				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+-  gtk_container_add (GTK_CONTAINER (scrolled_window), client_list);
+-  gtk_signal_connect(GTK_OBJECT(client_list), "select_row",
+-		     GTK_SIGNAL_FUNC (select_cb), NULL);
+-  gtk_signal_connect(GTK_OBJECT(client_list), "unselect_row",
+-		     GTK_SIGNAL_FUNC (unselect_cb), NULL);
+-
+-  /* table */
+-  table = gtk_table_new (3, 5, FALSE);
+-  gtk_table_attach (GTK_TABLE (table), gtk_label_new (_("Program:")),
+-		    0, 1, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
+-  gtk_table_attach (GTK_TABLE (table), gtk_hbox_new (FALSE, 0), 
+-		    1, 2, 0, 1, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+-  gtk_table_attach (GTK_TABLE (table), add_button, 
+-		    2, 3, 0, 1, GTK_FILL, GTK_FILL, 0, 0); 
+-  gtk_table_attach (GTK_TABLE (table), remove_button, 
+-		    3, 4, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
+-  gtk_table_attach (GTK_TABLE (table), entry, 
+-		    0, 4, 1, 2, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+-  gtk_table_attach (GTK_TABLE (table), client_editor, 
+-		    0, 4, 2, 3, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+-  gtk_table_attach (GTK_TABLE (table), scrolled_window,
+-		    0, 4, 3, 4, GTK_FILL|GTK_EXPAND, GTK_FILL|GTK_EXPAND,0, 0);
+-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOME_PAD);
+-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOME_PAD);
+-  gtk_container_add (GTK_CONTAINER(capplet), table);
+-}
+-
+-static void
+-chooser_build (void)
+-{
+-  GtkWidget *paned;
+-  gchar* foot_file = gnome_pixmap_file ("gnome-logo-large.png");
+-  gchar* title = _("Session");
+-  GtkRequisition req;
+-
+-  /* gnome foot */
+-  gnome_foot = gnome_pixmap_new_from_file (foot_file);
+-  gtk_widget_size_request (gnome_foot, &req);
+-
+-  /* session list */
+-  session_list = gtk_clist_new_with_titles(1, &title);
+-  gtk_widget_set_usize (session_list, req.width + GNOME_PAD, req.height);
+-  gtk_signal_connect (GTK_OBJECT (session_list), "select_row",
+-		      sess_select_row_cb, NULL);
+-
+-  /* left scrolled window */
+-  left_scrolled = gtk_scrolled_window_new (NULL, NULL);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
+-				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+-  gtk_container_add (GTK_CONTAINER (left_scrolled), session_list);
+-
+-  /* client list */
+-  client_list = gsm_client_list_new ();
+-
+-  /* right scrolled window */
+-  right_scrolled = gtk_scrolled_window_new (NULL, NULL);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (right_scrolled),
+-				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+-  gtk_container_add (GTK_CONTAINER (right_scrolled), client_list);
+-
+-  /* paned window */
+-  paned = gtk_hpaned_new();
+-  gtk_paned_handle_size (GTK_PANED (paned), 10);
+-  gtk_paned_gutter_size (GTK_PANED (paned), 10);
+-  gtk_paned_add1 (GTK_PANED (paned), left_scrolled);
+-  gtk_paned_add2 (GTK_PANED (paned), right_scrolled);
+-
+-  /* dialog */
+-  dialog = gnome_dialog_new (_("Session Chooser"), NULL);
+-  gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (dialog)->vbox), paned);
+-  gnome_dialog_append_button_with_pixmap (GNOME_DIALOG (dialog),
+-					  _("Start Session"),
+-					  GNOME_STOCK_BUTTON_OK);
+-  gnome_dialog_append_button_with_pixmap (GNOME_DIALOG (dialog),
+-					  _("Cancel Login"),
+-					  GNOME_STOCK_BUTTON_CANCEL);
+-  gnome_dialog_set_default (GNOME_DIALOG (dialog), 0);
+-  gnome_dialog_button_connect (GNOME_DIALOG (dialog), 0,
+-			       GTK_SIGNAL_FUNC (start_cb), NULL);
+-  gnome_dialog_button_connect (GNOME_DIALOG (dialog), 1,
+-			       GTK_SIGNAL_FUNC (cancel_cb), NULL);
++  util_vbox = gtk_vbox_new (FALSE, 0);
++  gtk_container_add (GTK_CONTAINER (frame), util_vbox);
++  gtk_container_set_border_width (GTK_CONTAINER (util_vbox), GNOME_PAD_SMALL);
++  
++  alignment = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
++  gtk_box_pack_start (GTK_BOX (util_vbox), alignment, FALSE, FALSE, 0);
+ 
+-  gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+-		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
++  logout_prompt_button = gtk_check_button_new_with_label
++    (_("Prompt on logout"));
++  gtk_container_add (GTK_CONTAINER (alignment), logout_prompt_button);
+ 
+-  gtk_signal_connect (GTK_OBJECT (protocol), "last_session", 
+-		      GTK_SIGNAL_FUNC (last_session_cb), NULL);
+-  gsm_protocol_get_last_session (GSM_PROTOCOL (protocol));
++  alignment = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
++  gtk_box_pack_start (GTK_BOX (util_vbox), alignment, FALSE, FALSE, 0);
+ 
+-  gtk_signal_connect (GTK_OBJECT (protocol), "saved_sessions", 
+-		      GTK_SIGNAL_FUNC (saved_sessions_cb), NULL);
+-  gsm_protocol_get_saved_sessions (GSM_PROTOCOL (protocol));
+-}
++  trash_changes_button = gtk_check_button_new_with_label
++    (_("Automatically save changes to session"));
++  gtk_container_add (GTK_CONTAINER (alignment), trash_changes_button);
+ 
+-static gboolean warner = FALSE;
++  gtk_signal_connect (GTK_OBJECT (trash_changes_button), "toggled",
++		      GTK_SIGNAL_FUNC (dirty_cb), capplet);
++  gtk_signal_connect (GTK_OBJECT (logout_prompt_button), "toggled",
++		      GTK_SIGNAL_FUNC (dirty_cb), capplet);
+ 
+-static struct poptOption options[] = {
+-  {"warner", '\0', POPT_ARG_NONE, &warner, 0, N_("Only display warnings."), NULL},
+-  {NULL, '\0', 0, NULL, 0}
+-};
++  /* frame for manually started programs */
+ 
+-int
+-main (int argc, char *argv[])
+-{
+-  gchar* name;
+-  gint init_result;
++  frame = gtk_frame_new ("Non-session-managed Startup Programs");
++  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+ 
+-  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+-  textdomain (PACKAGE);
++  hbox = gtk_hbox_new (FALSE, GNOME_PAD);
++  gtk_container_set_border_width (GTK_CONTAINER (hbox), GNOME_PAD);
++  gtk_container_add (GTK_CONTAINER (frame), hbox);
+ 
+-  init_result = gnome_capplet_init("session-properties", VERSION, argc, argv,
+-				   options, 0, NULL);
++  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
++  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
++				  GTK_POLICY_AUTOMATIC,
++				  GTK_POLICY_AUTOMATIC);
++        
++  clist = gtk_clist_new (2);
+ 
+-  gtk_signal_connect (GTK_OBJECT (gnome_master_client ()), "die",
+-		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+-  gnome_client_set_restart_style (gnome_master_client(), GNOME_RESTART_NEVER);
+-  switch(init_result) 
+-    {
+-    case 0:
+-    case 1:
+-      break;
++  gtk_clist_column_titles_show (GTK_CLIST (clist));
++  gtk_clist_set_column_auto_resize (GTK_CLIST (clist), 0, TRUE);
++  gtk_clist_set_selection_mode (GTK_CLIST (clist), GTK_SELECTION_BROWSE);
++  gtk_clist_set_column_title (GTK_CLIST (clist), 0, _("Priority"));
++  gtk_clist_set_column_title (GTK_CLIST (clist), 1, _("Command"));
+ 
+-    default:
+-      g_error ("an initialization error occurred while "
+-	       "starting 'session-properties-capplet'.");
+-    }
++  gtk_container_add (GTK_CONTAINER (scrolled_window), clist);
++  
++  gtk_box_pack_start (GTK_BOX (hbox), scrolled_window, TRUE, TRUE, 0);
++  
++  util_vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++  gtk_box_pack_start (GTK_BOX (hbox), util_vbox, FALSE, FALSE, 0);
+ 
+-  protocol = gsm_protocol_new (gnome_master_client());
+-  if (!protocol)
+-    {
+-      g_warning ("Could not connect to gnome-session.");
+-      exit (1);
+-    }
++  button = left_aligned_button (_("Add..."));
++  gtk_signal_connect (GTK_OBJECT (button), "clicked",
++		      GTK_SIGNAL_FUNC (add_cb), NULL);
++  gtk_box_pack_start (GTK_BOX (util_vbox), button, FALSE, FALSE, 0);
++  
++  button = left_aligned_button (_("Edit..."));
++  gtk_signal_connect (GTK_OBJECT (button), "clicked",
++		      GTK_SIGNAL_FUNC (edit_cb), NULL);
++  gtk_box_pack_start (GTK_BOX (util_vbox), button, FALSE, FALSE, 0);
++  
++  button = left_aligned_button (_("Delete"));
++  gtk_signal_connect (GTK_OBJECT (button), "clicked",
++		      GTK_SIGNAL_FUNC (delete_cb), NULL);
++  gtk_box_pack_start (GTK_BOX (util_vbox), button, FALSE, FALSE, 0);
+ 
+-  switch(init_result) 
+-    {
+-    case 0:
+-      capplet_build ();
+-      capplet_gtk_main ();
+-      break;
++  /* Button for running session-properties */
+ 
+-    case 1:
+-      if (warner)
+-	gsm_session_live (gsm_client_new, NULL) ;
+-      else
+-	chooser_build ();
+-      gtk_main ();
+-      break;
+-    }
+-  return 0;
++  alignment = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
++  gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
++  
++  button = gtk_button_new_with_label (_("Browse Currently Running Programs..."));
++  gtk_misc_set_padding (GTK_MISC (GTK_BIN (button)->child),
++			GNOME_PAD, 0);
++  
++  gtk_container_add (GTK_CONTAINER (alignment), button);
++
++  gtk_signal_connect (GTK_OBJECT (button), "clicked",
++  		      GTK_SIGNAL_FUNC (browse_session_cb), NULL);
++
++  update_gui ();
++  gtk_widget_show_all (capplet);
+ }
+ 
+ /* CAPPLET CALLBACKS */
+ static void
++write_state (void)
++{
++  trash_changes = !GTK_TOGGLE_BUTTON (trash_changes_button)->active;
++  logout_prompt = GTK_TOGGLE_BUTTON (logout_prompt_button)->active;
++  
++  gnome_config_push_prefix (GSM_OPTION_CONFIG_PREFIX);
++  gnome_config_set_bool ("TrashMode", trash_changes);
++  gnome_config_set_bool ("LogoutPrompt", logout_prompt);
++  gnome_config_pop_prefix ();
++  
++  gnome_config_sync ();
++
++  startup_list_write (startup_list, "Default");
++}
++
++static void
++revert_state (void)
++{
++  trash_changes = trash_changes_revert;
++  logout_prompt = logout_prompt_revert;
++
++  startup_list_free (startup_list);
++  startup_list = startup_list_duplicate (startup_list_revert);
++}
++
++static void
+ try (void)
+ {
+-  gsm_client_list_commit_changes (GSM_CLIENT_LIST (client_list));
+-  capplet_widget_state_changed (CAPPLET_WIDGET (capplet), FALSE);
++  write_state ();
+ }
+ 
+ static void
+ revert (void)
+ {
+-  gsm_client_list_revert_changes (GSM_CLIENT_LIST (client_list));
++  revert_state ();
++  write_state ();
++
++  update_gui ();
+ }
+ 
+ static void
+ ok (void)
+ {
+-  try();
++  write_state ();
++
+   gtk_main_quit();
+ }
+ 
+ static void
+ cancel (void)
+ {
+-  revert();
++  revert_state ();
++  write_state ();
++  
+   gtk_main_quit();  
+ }
+ 
+@@ -325,177 +291,153 @@
+     gnome_help_goto (NULL, file);
+ }
+ 
+-/* This is called when user has changed the entry  */
+ static void
+-entry_changed_cb (GtkWidget *widget)
++page_shown (void)
+ {
+-  gchar *value = gtk_entry_get_text (GTK_ENTRY (entry));
+-  gtk_widget_set_sensitive (GTK_WIDGET (add_button), (value && *value));
++  if (startup_command_dialog)
++    gtk_widget_hide (startup_command_dialog);
+ }
+ 
+-/* Add a new client. */
+ static void
+-add_cb (GtkWidget *widget)
++page_hidden (void)
+ {
+-  gchar *command = gtk_entry_get_text (GTK_ENTRY (entry));
+-
+-  if (gsm_client_list_add_program (GSM_CLIENT_LIST (client_list), command))
+-    {
+-      gtk_entry_set_text (GTK_ENTRY (entry), "");
+-      gtk_widget_set_sensitive (GTK_WIDGET (add_button), FALSE);
+-    }
++  if (startup_command_dialog)
++    gtk_widget_show (startup_command_dialog);
+ }
+ 
+-/* Remove the selected clients. */
++/* Called to make the contents of the GUI reflect the current settings */
+ static void
+-remove_cb (GtkWidget *widget)
++update_gui (void)
+ {
+-  gsm_client_list_remove_selection (GSM_CLIENT_LIST (client_list));
++  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trash_changes_button),
++				!trash_changes);
++  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (logout_prompt_button),
++				logout_prompt);
++  
++  startup_list_update_gui (startup_list, clist);
+ }
+ 
+-/* This is called when a client is selected.  */
++/* This is called when an change is made in the client list.  */
+ static void
+-select_cb (GtkCList *clist)
++dirty_cb (GtkWidget *widget, GtkWidget *capplet)
+ {
+-  gtk_widget_set_sensitive (GTK_WIDGET (remove_button), TRUE);
++  capplet_widget_state_changed (CAPPLET_WIDGET (capplet), TRUE);
+ }
+ 
+-/* This is called when no clients are selected.  */
++/* Add a startup program to the list */
+ static void
+-unselect_cb (GtkCList *clist)
++add_cb (void)
+ {
+-  if (! clist->selection)
+-    gtk_widget_set_sensitive (GTK_WIDGET (remove_button), FALSE);
++  /* This is bad, bad, bad. We mark the capplet as changed at
++   * this point so our dialog doesn't die if the user switches
++   * away to a different capplet
++   */
++  dirty_cb (NULL, capplet);
++  startup_list_add_dialog (&startup_list, clist, &startup_command_dialog);
++  update_gui ();
+ }
+ 
+-/* This is called when an change is made in the client list.  */
++/* Edit a startup program in the list */
+ static void
+-dirty_cb (GtkWidget *widget)
++edit_cb (void)
+ {
+-  capplet_widget_state_changed (CAPPLET_WIDGET (capplet), TRUE);
++  /* This is bad, bad, bad. We mark the capplet as changed at
++   * this point so our dialog doesn't die if the user switches
++   * away to a different capplet
++   */
++  dirty_cb (NULL, capplet);
++  startup_list_edit_dialog (&startup_list, clist, &startup_command_dialog);
++  update_gui ();
+ }
+ 
+-/* This is called when the client_list has been filled by gnome-session */
++/* Remove a startup program from the list */
+ static void
+-initialized_cb (GtkWidget *widget)
++delete_cb (void)
+ {
+-  gtk_widget_show_all (GTK_WIDGET (capplet));
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
++  dirty_cb (NULL, capplet);
++  startup_list_delete (&startup_list, clist);
++  update_gui ();
+ }
+ 
+-/* SESSION LIST CALLBACKS */
+-static gint chooser_timeout = -1;
+-
++/* Run a browser for the currently running session managed clients */
+ static void
+-start (void)
++browse_session_cb (void)
+ {
+-  GtkWidget *viewport;
++  static char *const command[] = {
++    "session-properties"
++  };
+ 
+-  gtk_signal_connect(GTK_OBJECT(client_list), "started",
+-		     GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+-  gsm_client_list_start_session (GSM_CLIENT_LIST (client_list));
+-  gnome_dialog_set_sensitive (GNOME_DIALOG (dialog), 0, FALSE);
+-  gnome_dialog_set_sensitive (GNOME_DIALOG (dialog), 1, FALSE);
+-  gtk_signal_disconnect_by_func (GTK_OBJECT (session_list), 
+-				 sess_select_row_cb, NULL);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
+-				  GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+-  gtk_container_remove (GTK_CONTAINER (left_scrolled), session_list);
+-  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (left_scrolled)),
+-			       gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (left_scrolled)));
+-  gtk_container_add (GTK_CONTAINER (viewport), gnome_foot);
+-  gtk_widget_show_all (viewport);
+-  gtk_container_add (GTK_CONTAINER (left_scrolled), viewport);
++  gnome_execute_async (NULL, 1, command);
+ }
+ 
+-static void
+-start_cb (GtkWidget *widget)
+-{
+-  if (chooser_timeout != -1)
+-    gtk_timeout_remove (chooser_timeout);
+ 
+-  start ();
+-}
++/* STARTUP CODE */
+ 
+-static gint
+-start_timeout (gpointer data)
+-{
+-  start ();
+-  return 0;
+-}
++static gboolean warner = FALSE;
+ 
++static struct poptOption options[] = {
++  {"warner", '\0', POPT_ARG_NONE, &warner, 0, N_("Only display warnings."), NULL},
++  {NULL, '\0', 0, NULL, 0}
++};
+ 
+-static void
+-sess_select_row_cb (GtkWidget* widget, gint row)
++int
++main (int argc, char *argv[])
+ {
+   gchar* name;
++  gint init_result;
+ 
+-  gtk_clist_get_text (GTK_CLIST (widget), row, 0, &name);
+-  gsm_client_list_saved_session (GSM_CLIENT_LIST (client_list), name);
+-  if (chooser_timeout == -1)
++  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
++  textdomain (PACKAGE);
++
++  init_result = gnome_capplet_init("session-properties", VERSION, argc, argv,
++				   options, 0, NULL);
++
++  gtk_signal_connect (GTK_OBJECT (gnome_master_client ()), "die",
++		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
++  gnome_client_set_restart_style (gnome_master_client(), GNOME_RESTART_NEVER);
++  switch(init_result) 
+     {
+-      gtk_signal_connect(GTK_OBJECT (client_list), "initialized",
+-			 GTK_SIGNAL_FUNC (right_initialized_cb), NULL);
++    case 0:
++    case 1:
++      break;
++
++    default:
++      g_error ("an initialization error occurred while "
++	       "starting 'session-properties-capplet'.");
+     }
+-  else
++
++  protocol = gsm_protocol_new (gnome_master_client());
++  if (!protocol)
+     {
+-      gtk_timeout_remove (chooser_timeout);
+-      chooser_timeout = gtk_timeout_add (chooser_delay, start_timeout, NULL);
++      g_warning ("Could not connect to gnome-session.");
++      exit (1);
+     }
+-}
+ 
+-static void
+-cancel_cb (GtkWidget *widget)
+-{
+-  gnome_client_request_save (gnome_master_client(), GNOME_SAVE_BOTH, 1, 
+-			     GNOME_INTERACT_ANY, 0, 1);
+-}
+-
+-static gchar* last_session = NULL;
+-
+-static void
+-last_session_cb (GtkWidget *widget, gchar* name)
+-{
+-  last_session = g_strdup (name);
+-}
+-
+-/* gnome-session is responsible for ensuring that there is always
+- * at least one session to choose. */  
+-static void
+-saved_sessions_cb (GtkWidget *widget, GSList* session_names)
+-{
+-  GSList *list;
++  /* We make this call immediately, as a convenient way
++   * of putting ourselves into command mode; if we
++   * don't do this, then the "event loop" that
++   * GsmProtocol creates will leak memory all over the
++   * place.
++   
++   * We ignore the resulting "last_session" signal.
++   */
++  gsm_protocol_get_last_session (GSM_PROTOCOL (protocol));
+ 
+-  gint selected_row = 0;
+-  
+-  for (list = session_names; list; list = list->next)
++  switch(init_result) 
+     {
+-      gint row;
+-      gchar* name = (gchar*)list->data;
+-      row = gtk_clist_append (GTK_CLIST (session_list), &name);
+-      if (! strcmp (last_session, name))
+-	selected_row = row;
++    case 0:
++      capplet_build ();
++      capplet_gtk_main ();
++      break;
++
++    case 1:
++      if (warner)
++	gsm_session_live (gsm_client_new, NULL) ;
++      else
++	chooser_build ();
++      gtk_main ();
++      break;
+     }
+-  gtk_clist_select_row (GTK_CLIST (session_list), selected_row, 0);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (left_scrolled),
+-				  GTK_POLICY_AUTOMATIC, 
+-				  GTK_POLICY_AUTOMATIC);
++  return 0;
+ }
+ 
+-static void
+-right_initialized_cb (GtkWidget *widget)
+-{
+-  gboolean wait = (GTK_CLIST (session_list)->rows > 1);
+-  /* We are normally started BEFORE the WM: */
+-  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+-  if (!wait)
+-    start();
+-  gtk_widget_show_all (dialog);
+-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (right_scrolled),
+-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+-  if (wait)
+-    chooser_timeout = gtk_timeout_add (chooser_delay, start_timeout, NULL); 
+-  gtk_signal_disconnect_by_func (GTK_OBJECT (client_list), 
+-				 right_initialized_cb, NULL);
+-}
+--- control-center-1.0.5/capplets/session-properties/session-properties.desktop.newsession	Sun Feb 28 16:43:20 1999
++++ control-center-1.0.5/capplets/session-properties/session-properties.desktop	Fri Apr  2 13:16:56 1999
+@@ -1,18 +1,6 @@
+ [Desktop Entry]
+-Name=Startup Programs
+-Name[es]=Programas de Inicio
+-Name[fr]=Startup Programs
+-Name[ja]="╔╧╔©║╪╔х╔╒╔ц╔в"
+-Name[ko]=╫цюш га╥н╠в╥╔
+-Name[no]=Oppstart
+-Name[pt]=Programmas iniciais
+-Name[sv]=Uppstart
+-Name[ru]=Программы запуска
+-Comment=Configure which non-session aware programs are started up
+-Comment[es]=Indicar cuales programas (de aquellos que no reconocen al gestor de sesiones) arrancar al inicio
+-Comment[fr]=Indiquer quels programmes (parmi ceux qui ne reconnaissent pas le gestionnaire de sessions) lancer au dИmarrage
+-Comment[ko]=╪╪╪гю╩ аЖ©ЬгоаЖ ╬й╢б га╥н╠в╥╔аъ©║ цЁю╫©║ ╫цюшгр га╥н╠в╥╔ аЖа╓го╠Б
+-Comment[ru]=Определить список программ не умеющих работать с диспетчером сеансов, но запускаемых одновременно с ним.
++Name=Session Manager
++Comment=Configure the session manager and startup programs
+ Exec=session-properties-capplet
+ Icon=
+ Terminal=0
+--- control-center-1.0.5/capplets/session-properties/session-properties.h.newsession	Fri Apr  2 13:16:56 1999
++++ control-center-1.0.5/capplets/session-properties/session-properties.h	Fri Apr  2 13:16:56 1999
+@@ -0,0 +1,21 @@
++#include <gtk/gtk.h>
++
++/* Create the chooser */
++void chooser_build (void);
++
++/* Functions for manipulating a list of non-session-managed
++ * programs to be started.
++ */
++
++/* Startup list maintanence */
++GSList *startup_list_read (const gchar *name);
++void    startup_list_write (GSList *cl, const gchar *name);
++GSList *startup_list_duplicate (GSList *sl);
++void startup_list_free (GSList *sl);
++
++/* Display the list in a CList, and modify it */
++void startup_list_update_gui (GSList *sl, GtkWidget *clist);
++
++void startup_list_add_dialog (GSList **sl, GtkWidget *clist, GtkWidget **dialog);
++void startup_list_edit_dialog (GSList **sl, GtkWidget *clist, GtkWidget **dialog);
++void startup_list_delete (GSList **sl, GtkWidget *clist);
+--- control-center-1.0.5/capplets/session-properties/startup-programs.c.newsession	Fri Apr  2 13:16:56 1999
++++ control-center-1.0.5/capplets/session-properties/startup-programs.c	Fri Apr  2 13:16:56 1999
+@@ -0,0 +1,413 @@
++/* session-properties.c - Edit session properties.
++
++   Copyright 1999 Free Software Foundation, Inc.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
++   02111-1307, USA. 
++
++   Authors: Owen Taylor */
++
++#include <ctype.h>
++#include <stdlib.h>
++#include <gnome.h>
++#include "capplet-widget.h"
++#include "session-properties.h"
++#include "gsm-protocol.h"
++
++/* Structure for storing information about one client */
++typedef struct _ManualClient ManualClient;
++
++struct _ManualClient
++{
++  int    priority;
++  int    argc;
++  char **argv;
++};
++
++/* File in which we store non-session-managed clients for startup
++ */
++#define MANUAL_CONFIG_PREFIX "session-manual/"
++
++/* Free client record */
++static void
++client_free (ManualClient *client)
++{
++  int i;
++  
++  for (i=0; i<client->argc; i++)
++    g_free (client->argv[i]);
++  
++  g_free (client->argv);
++  g_free (client);
++}
++
++/* Compare client records by priority */
++static gint
++client_compare (gconstpointer a, gconstpointer b)
++{
++  const ManualClient *client_a = a;
++  const ManualClient *client_b = b;
++  
++  return client_a->priority - client_b->priority;
++}
++
++/* Read in the client record for a given session */
++GSList *
++startup_list_read (const gchar *name)
++{
++  GSList *result = NULL;
++  void *iterator;
++  gchar *p;
++  ManualClient *current = NULL;
++  gchar *handle = NULL;
++  
++  gnome_config_push_prefix (MANUAL_CONFIG_PREFIX);
++  
++  iterator = gnome_config_init_iterator (name);
++  while (iterator)
++    {
++      gchar *key;
++      gchar *value;
++      
++      iterator = gnome_config_iterator_next (iterator, &key, &value);
++      if (!iterator)
++	      break;
++      
++      p = strchr (key, ',');
++      if (p)
++	{
++	  *p = '\0';
++
++	  if (!current || strcmp (handle, key) != 0) 
++	    {
++	      if (handle)
++		g_free (handle);
++	      
++	      current = g_new0 (ManualClient, 1);
++	      handle = g_strdup (key);
++
++	      result = g_slist_prepend (result, current);
++	    }
++
++	  if (strcmp (p+1, "Priority") == 0)
++	    current->priority = atoi (value);
++	  else if (strcmp (p+1, "RestartCommand") == 0)
++	    gnome_config_make_vector (value, &current->argc, &current->argv);
++	}
++      
++      g_free (key);
++      g_free (value);
++  }
++  
++  gnome_config_pop_prefix ();
++  
++  return g_slist_sort (result, client_compare);
++}
++
++/* Write out a client list for under a given name */
++void
++startup_list_write (GSList *sl, const gchar *name)
++{
++  GSList *tmp_list;
++  GSList *result;
++  gchar *prefix;
++  int i;
++
++  gnome_config_push_prefix (MANUAL_CONFIG_PREFIX);
++  gnome_config_clean_section (name);
++  gnome_config_pop_prefix ();
++
++  prefix = g_strconcat (MANUAL_CONFIG_PREFIX, name, "/", NULL);
++  gnome_config_push_prefix (prefix);
++  g_free (prefix);
++
++  gnome_config_set_int ("num_clients", g_slist_length (sl));
++  
++  tmp_list = sl;
++  i = 0;
++  while (tmp_list)
++    {
++      ManualClient *client = tmp_list->data;
++      gchar *key;
++
++      key = g_strdup_printf ("%d,%s", i, "RestartStyleHint");
++      gnome_config_set_int (key, 3);   /* RestartNever */
++      g_free (key);
++
++      key = g_strdup_printf ("%d,%s", i, "Priority");
++      gnome_config_set_int (key, client->priority);
++      g_free (key);
++
++      key = g_strdup_printf ("%d,%s", i, "RestartCommand");
++      gnome_config_set_vector (key, client->argc,
++			       (const char * const *)client->argv);
++      g_free (key);
++
++      tmp_list = tmp_list->next;
++      i++;
++    }
++
++  gnome_config_pop_prefix ();
++  gnome_config_sync ();
++}
++
++/* Duplicate a client list */
++GSList *
++startup_list_duplicate (GSList *sl)
++{
++  GSList *tmp_list;
++  GSList *result = NULL;
++  int i;
++
++  tmp_list = sl;
++  while (tmp_list)
++    {
++      ManualClient *client = tmp_list->data;
++      ManualClient *new_client = g_new (ManualClient, 1);
++
++      new_client->priority = client->priority;
++      new_client->argc = client->argc;
++      new_client->argv = g_new (gchar *, client->argc);
++      
++      for (i=0; i<client->argc; i++)
++	new_client->argv[i] = g_strdup (client->argv[i]);
++
++      result = g_slist_prepend (result, new_client);
++      
++      tmp_list = tmp_list->next;
++    }
++
++  return g_slist_reverse (result);
++}
++
++/* Free a client list */
++void
++startup_list_free  (GSList *sl)
++{
++  GSList *tmp_list;
++  int i;
++
++  tmp_list = sl;
++  while (tmp_list)
++    {
++      ManualClient *client = tmp_list->data;
++
++      client_free (client);
++      tmp_list = tmp_list->next;
++    }
++
++  g_slist_free (sl);
++}
++
++/* Update the given clist to display the given client list */
++void
++startup_list_update_gui (GSList *sl, GtkWidget *clist)
++{
++  GSList *tmp_list;
++  gint new_row;
++  
++  gtk_clist_clear (GTK_CLIST (clist));
++
++  tmp_list = sl;
++  while (tmp_list)
++    {
++      gchar *vals[2];
++      ManualClient *client = tmp_list->data;
++      
++      vals[0] = g_strdup_printf ("%d", client->priority);
++      vals[1] = gnome_config_assemble_vector (client->argc,
++					      (const char * const *)client->argv);
++      new_row = gtk_clist_append (GTK_CLIST (clist), vals);
++      gtk_clist_set_row_data (GTK_CLIST (clist), new_row, client);
++      
++      g_free (vals[0]);
++      g_free (vals[1]);
++
++      tmp_list = tmp_list->next;
++    }
++}
++
++/* Util function - check if a string is blank */
++static gboolean
++is_blank (gchar *str)
++{
++        while (*str) {
++                if (!isspace(*str))
++                        return FALSE;
++                str++;
++        }
++        return TRUE;
++}
++
++/* Display a dialog for editing a client. The dialog parameter
++ * is used to implement hiding the dialog when the user switches
++ * away to another page of the control center */
++static gboolean
++edit_client (gchar *title, ManualClient *client, GtkWidget **dialog)
++{
++  GtkWidget *entry;
++  GtkWidget *spinbutton;
++  GtkWidget *label;
++  GtkWidget *frame;
++  GtkWidget *vbox;
++  GtkWidget *util_vbox;
++  GtkWidget *alignment;
++  GtkWidget *gnome_entry;
++  
++  GtkObject *adjustment;
++
++  gchar *tmp;
++
++  *dialog = gnome_dialog_new (title,
++			     GNOME_STOCK_BUTTON_OK,
++			     GNOME_STOCK_BUTTON_CANCEL,
++			     NULL);
++
++  gnome_dialog_close_hides (GNOME_DIALOG (*dialog), TRUE);
++  gtk_window_set_policy (GTK_WINDOW (*dialog), FALSE, TRUE, FALSE);
++  gtk_window_set_default_size (GTK_WINDOW (*dialog), 400, -1);
++  
++  vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++  gtk_container_set_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
++  
++  gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (*dialog)->vbox), vbox,
++		      TRUE, TRUE, 0);
++
++  frame = gtk_frame_new ("Startup Command");
++  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
++
++  util_vbox = gtk_vbox_new (FALSE, 0);
++  gtk_container_set_border_width (GTK_CONTAINER (util_vbox), GNOME_PAD_SMALL);
++  gtk_container_add (GTK_CONTAINER (frame), util_vbox);
++
++  gnome_entry = gnome_file_entry_new ("startup-commands", "Startup Command");
++  entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (gnome_entry));
++  gtk_box_pack_start (GTK_BOX (util_vbox), gnome_entry, TRUE, TRUE, 0);
++
++  tmp = gnome_config_assemble_vector (client->argc,
++				      (const char * const *)client->argv);
++  gtk_entry_set_text (GTK_ENTRY (entry), tmp);
++  g_free (tmp);
++  
++  frame = gtk_frame_new ("Priority");
++  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
++
++  util_vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++  gtk_container_set_border_width (GTK_CONTAINER (util_vbox), GNOME_PAD_SMALL);
++  gtk_container_add (GTK_CONTAINER (frame), util_vbox);
++
++  alignment = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
++  gtk_box_pack_start (GTK_BOX (util_vbox), alignment, FALSE, FALSE, 0);
++
++  adjustment = gtk_adjustment_new (client->priority,
++				   -200.0, 200.0, 1.0, 10.0, 10.0); 
++  spinbutton = gtk_spin_button_new (GTK_ADJUSTMENT (adjustment), 1.0, 0);
++  gtk_container_add (GTK_CONTAINER (alignment), spinbutton);
++  
++  label = gtk_label_new (_("Programs with smaller values are started before programs with higher values. The default value should be OK"));
++  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
++  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
++  
++  gtk_box_pack_start (GTK_BOX (util_vbox), label, FALSE, FALSE, 0);
++  
++  gtk_widget_show_all (*dialog);
++
++  while (gnome_dialog_run (GNOME_DIALOG (*dialog)) == 0)
++    {
++      gchar *tmp = gtk_entry_get_text (GTK_ENTRY (entry));
++
++      if (is_blank (tmp))
++	{
++	  GtkWidget *msgbox;
++	  
++	  gtk_widget_show (*dialog);
++	  
++	  msgbox = gnome_message_box_new (_("The startup command cannot be empty"),
++					  GNOME_MESSAGE_BOX_ERROR,
++					  GNOME_STOCK_BUTTON_OK,
++					  NULL);
++	  
++	  gnome_dialog_set_parent (GNOME_DIALOG (msgbox), GTK_WINDOW (*dialog));
++	  gnome_dialog_run (GNOME_DIALOG (msgbox));
++	}
++      else
++	{
++	  int i;
++
++	  for (i = 0; i < client->argc; i++)
++	    g_free (client->argv[i]);
++	  g_free (client->argv);
++	  
++	  gnome_config_make_vector (tmp, &client->argc, &client->argv);
++	  client->priority = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spinbutton));
++
++	  gtk_widget_destroy (*dialog);
++	  *dialog = NULL;
++	  return TRUE;
++	}
++    }
++
++  gtk_widget_destroy (*dialog);
++  *dialog = NULL;
++  
++  return FALSE;
++}
++
++/* Prompt the user with a dialog for adding a new client */
++void
++startup_list_add_dialog (GSList **sl, GtkWidget *clist, GtkWidget **dialog)
++{
++  ManualClient *client = g_new (ManualClient, 1);
++  client->priority = 50;
++  client->argc = 0;
++  client->argv = NULL;
++
++  if (edit_client (_("Add Startup Program"), client, dialog))
++    {
++      *sl = g_slist_prepend (*sl, client);
++      *sl = g_slist_sort (*sl, client_compare);
++    }
++  else
++    client_free (client);
++}
++
++/* Prompt the user with a dialog for editing the currently selected client */
++void
++startup_list_edit_dialog (GSList **sl, GtkWidget *clist, GtkWidget **dialog)
++{
++  if (GTK_CLIST (clist)->selection)
++    {
++      gint selected_row = GPOINTER_TO_UINT (GTK_CLIST (clist)->selection->data);
++      ManualClient *client = gtk_clist_get_row_data (GTK_CLIST (clist), selected_row);
++
++      if (edit_client (_("Edit Startup Program"), client, dialog))
++	*sl = g_slist_sort (*sl, client_compare);
++    }
++}
++
++/* Delete the currently selected client */
++void
++startup_list_delete (GSList **sl, GtkWidget *clist)
++{
++  if (GTK_CLIST (clist)->selection)
++    {
++      gint selected_row = GPOINTER_TO_UINT (GTK_CLIST (clist)->selection->data);
++      ManualClient *client = gtk_clist_get_row_data (GTK_CLIST (clist), selected_row);
++
++      *sl = g_slist_remove (*sl, client);
++      client_free (client);
++    }
++}
+--- control-center-1.0.5/capplets/session-properties/Makefile.in.newsession	Fri Apr  2 13:23:48 1999
++++ control-center-1.0.5/capplets/session-properties/Makefile.in	Fri Apr  2 13:24:12 1999
+@@ -137,7 +137,8 @@
+ 
+ @SESSION_TRUE@bin_PROGRAMS = session-properties-capplet
+ 
+-session_properties_capplet_SOURCES = session-properties.c session.h gsm-protocol.c gsm-protocol.h gsm-client-list.c gsm-client-list.h gsm-client-row.c gsm-client-row.h gsm-client-editor.c gsm-client-editor.h 
++session_properties_capplet_SOURCES =  	chooser.c 	session-properties.c 	session-propertes.h 	startup-programs.c 	session.h 	gsm-protocol.c 	gsm-protocol.h 	gsm-client-list.c 	gsm-client-list.h 	gsm-client-row.c 	gsm-client-row.h 	gsm-client-editor.c 	gsm-client-editor.h
++
+ 
+ session_properties_capplet_LDADD = ../../control-center/libcapplet.la 		     $(GNOME_LIBDIR) $(ORB_LIBS) 		     $(GNOMEUI_LIBS) $(INTLLIBS) -lgnorba
+ 
+@@ -157,8 +158,9 @@
+ DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+ CPPFLAGS = @CPPFLAGS@
+ LIBS = @LIBS@
+-session_properties_capplet_OBJECTS =  session-properties.o \
+-gsm-protocol.o gsm-client-list.o gsm-client-row.o gsm-client-editor.o
++session_properties_capplet_OBJECTS =  chooser.o session-properties.o \
++startup-programs.o gsm-protocol.o gsm-client-list.o gsm-client-row.o \
++gsm-client-editor.o
+ session_properties_capplet_DEPENDENCIES =  \
+ ../../control-center/libcapplet.la
+ session_properties_capplet_LDFLAGS = 
+@@ -175,6 +177,9 @@
+ 
+ TAR = gtar
+ GZIP_ENV = --best
++DEP_FILES =  .deps/chooser.P .deps/gsm-client-editor.P \
++.deps/gsm-client-list.P .deps/gsm-client-row.P .deps/gsm-protocol.P \
++.deps/session-properties.P .deps/startup-programs.P
+ SOURCES = $(session_properties_capplet_SOURCES)
+ OBJECTS = $(session_properties_capplet_OBJECTS)
+ 
+@@ -182,9 +187,9 @@
+ .SUFFIXES:
+ .SUFFIXES: .S .c .lo .o .s
+ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps capplets/session-properties/Makefile
++	cd $(top_srcdir) && $(AUTOMAKE) --gnu capplets/session-properties/Makefile
+ 
+-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
++Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+ 	cd $(top_builddir) \
+ 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+ 
+@@ -214,9 +219,6 @@
+ 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+ 	done
+ 
+-.c.o:
+-	$(COMPILE) -c $<
+-
+ .s.o:
+ 	$(COMPILE) -c $<
+ 
+@@ -233,9 +235,6 @@
+ 
+ maintainer-clean-compile:
+ 
+-.c.lo:
+-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+-
+ .s.lo:
+ 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+ 
+@@ -309,6 +308,11 @@
+ subdir = capplets/session-properties
+ 
+ distdir: $(DISTFILES)
++	here=`cd $(top_builddir) && pwd`; \
++	top_distdir=`cd $(top_distdir) && pwd`; \
++	distdir=`cd $(distdir) && pwd`; \
++	cd $(top_srcdir) \
++	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu capplets/session-properties/Makefile
+ 	@for file in $(DISTFILES); do \
+ 	  d=$(srcdir); \
+ 	  if test -d $$d/$$file; then \
+@@ -319,18 +323,38 @@
+ 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+ 	  fi; \
+ 	done
+-gsm-client-editor.o: gsm-client-editor.c ../../config.h \
+-	gsm-client-editor.h gsm-protocol.h gsm-client-row.h \
+-	gsm-client-list.h
+-gsm-client-list.o: gsm-client-list.c ../../config.h gsm-client-list.h \
+-	gsm-client-row.h gsm-protocol.h gsm-client-editor.h
+-gsm-client-row.o: gsm-client-row.c ../../config.h gsm-client-row.h \
+-	gsm-protocol.h gsm-client-list.h gsm-client-editor.h
+-gsm-protocol.o: gsm-protocol.c ../../config.h session.h gsm-protocol.h
+-session-properties.o: session-properties.c ../../config.h \
+-	../../control-center/capplet-widget.h gsm-client-list.h \
+-	gsm-protocol.h
+ 
++DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
++
++-include $(DEP_FILES)
++
++mostlyclean-depend:
++
++clean-depend:
++
++distclean-depend:
++	-rm -rf .deps
++
++maintainer-clean-depend:
++
++%.o: %.c
++	@echo '$(COMPILE) -c $<'; \
++	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
++	@-cp .deps/$(*F).pp .deps/$(*F).P; \
++	tr ' ' '\012' < .deps/$(*F).pp \
++	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
++	    >> .deps/$(*F).P; \
++	rm .deps/$(*F).pp
++
++%.lo: %.c
++	@echo '$(LTCOMPILE) -c $<'; \
++	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
++	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
++	  < .deps/$(*F).pp > .deps/$(*F).P; \
++	tr ' ' '\012' < .deps/$(*F).pp \
++	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
++	    >> .deps/$(*F).P; \
++	rm -f .deps/$(*F).pp
+ info-am:
+ info: info-am
+ dvi-am:
+@@ -368,26 +392,27 @@
+ 
+ maintainer-clean-generic:
+ mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+-		mostlyclean-libtool mostlyclean-tags \
++		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
+ 		mostlyclean-generic
+ 
+ mostlyclean: mostlyclean-am
+ 
+ clean-am:  clean-binPROGRAMS clean-compile clean-libtool clean-tags \
+-		clean-generic mostlyclean-am
++		clean-depend clean-generic mostlyclean-am
+ 
+ clean: clean-am
+ 
+ distclean-am:  distclean-binPROGRAMS distclean-compile distclean-libtool \
+-		distclean-tags distclean-generic clean-am
++		distclean-tags distclean-depend distclean-generic \
++		clean-am
+ 	-rm -f libtool
+ 
+ distclean: distclean-am
+ 
+ maintainer-clean-am:  maintainer-clean-binPROGRAMS \
+ 		maintainer-clean-compile maintainer-clean-libtool \
+-		maintainer-clean-tags maintainer-clean-generic \
+-		distclean-am
++		maintainer-clean-tags maintainer-clean-depend \
++		maintainer-clean-generic distclean-am
+ 	@echo "This command is intended for maintainers to use;"
+ 	@echo "it deletes files that may require special tools to rebuild."
+ 
+@@ -399,8 +424,9 @@
+ maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+ clean-libtool maintainer-clean-libtool uninstall-sysDATA \
+ install-sysDATA tags mostlyclean-tags distclean-tags clean-tags \
+-maintainer-clean-tags distdir info-am info dvi-am dvi check check-am \
+-installcheck-am installcheck install-exec-am install-exec \
++maintainer-clean-tags distdir mostlyclean-depend distclean-depend \
++clean-depend maintainer-clean-depend info-am info dvi-am dvi check \
++check-am installcheck-am installcheck install-exec-am install-exec \
+ install-data-local install-data-am install-data install-am install \
+ uninstall-am uninstall all-redirect all-am all installdirs \
+ mostlyclean-generic distclean-generic clean-generic \

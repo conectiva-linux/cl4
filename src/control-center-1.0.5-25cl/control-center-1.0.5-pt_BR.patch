@@ -1,0 +1,12 @@
+diff -uNr control-center-1.0.5/configure.in control-center-1.0.5-pt_BR/configure.in
+--- control-center-1.0.5/configure.in	Thu Apr  1 20:09:39 1999
++++ control-center-1.0.5-pt_BR/configure.in	Wed Jun 23 20:49:51 1999
+@@ -29,7 +29,7 @@
+ dnl utility conditional
+ AM_CONDITIONAL(FALSE, test "x" = "y")
+ 
+-ALL_LINGUAS="cs da de es fi fr ga hu it ja ko no pl pt sv ru"
++ALL_LINGUAS="cs da de es fi fr ga hu it ja ko no pl pt pt_BR sv ru"
+ AM_GNOME_GETTEXT
+ 
+ AC_SUBST(CFLAGS)

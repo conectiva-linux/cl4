@@ -1,0 +1,14 @@
+--- control-center-1.0.5/control-center/corba-glue.c.newfocus	Thu Apr 15 15:53:32 1999
++++ control-center-1.0.5/control-center/corba-glue.c	Thu Apr 15 16:01:16 1999
+@@ -216,9 +216,9 @@
+         workspace = gnome_win_hints_get_current_workspace ();
+         if (workspace != gnome_win_hints_get_workspace (main_window))
+                 gnome_win_hints_set_workspace (main_window, workspace);
+-        
++
+         gdk_window_get_position (main_window->window, &x, &y);
+-        if (x > gdk_screen_width () || y > gdk_screen_height ()) {
++        if (x > gdk_screen_width () || y > gdk_screen_height () || x < 0 || y < 0) {
+                 gtk_widget_unmap (main_window);
+                 gtk_widget_map (main_window);
+         }

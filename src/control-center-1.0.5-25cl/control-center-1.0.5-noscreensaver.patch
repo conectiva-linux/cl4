@@ -1,0 +1,44 @@
+--- control-center-1.0.5/capplets/screensaver-properties/callbacks.c.noscreensaver	Thu Apr  1 16:58:23 1999
++++ control-center-1.0.5/capplets/screensaver-properties/callbacks.c	Wed Apr 14 13:16:33 1999
+@@ -63,7 +63,7 @@
+         else if (dpmsmins < 1)
+                 dpmsmins = 1;
+         dpms = gnome_config_get_bool ("/Screensaver/Default/dpms=false");
+-        password = gnome_config_get_bool ("/Screensaver/Default/password=true");
++        password = gnome_config_get_bool ("/Screensaver/Default/password=false");
+         screensaver = gnome_config_get_string_with_default ("/Screensaver/Default/mode", &defval);
+         if (defval) {
+                 screensaver = random_screensaver;
+@@ -723,8 +723,10 @@
+         gnome_config_set_bool ("/Screensaver/Default/password", password);
+         if (screensaver)
+                 gnome_config_set_string ("/Screensaver/Default/mode", screensaver);
+-        else
++        else {
+                 gnome_config_set_string ("/Screensaver/Default/mode", "NONE");
++                gnome_config_set_string ("/Screensaver/Default/command", "NONE");
++        }
+ 
+         system ("xscreensaver-command -exit");
+         if (sd && waitmins) {
+--- control-center-1.0.5/capplets/screensaver-properties/screensaver-properties-capplet.c.noscreensaver	Wed Mar 31 20:05:22 1999
++++ control-center-1.0.5/capplets/screensaver-properties/screensaver-properties-capplet.c	Wed Apr 14 13:16:40 1999
+@@ -237,12 +237,13 @@
+                 gchar dpmstime[11];
+                 gint mypid;
+                 command = gnome_config_get_string ("/Screensaver/Default/command=xscreensaver -no-splash -timeout 20 -nice 10 -lock-mode");
+-                r_command = g_strconcat (command, " &", NULL);
+-                system ("xscreensaver-command -exit");
+-
+-                system (r_command);
++                if (strcmp (command, "NONE")) {
++                        r_command = g_strconcat (command, " &", NULL);
++                        system ("xscreensaver-command -exit");
++                        system (r_command);
++                        g_free (r_command);
++                }
+                 g_free (command);
+-                g_free (r_command);
+                 
+                 /* and now, a shameful reuse of variables to handle dpm. (: */
+                 mypid = 0;

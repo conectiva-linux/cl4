@@ -1,0 +1,993 @@
+--- ./control-center/gnomecc.desktop~	Tue Jun 29 22:17:21 1999
++++ ./control-center/gnomecc.desktop	Tue Jun 29 22:22:11 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=GNOME Control Center
++Name[pt_BR]=Centro de Controle GNOME
+ Name[es]=Centro de Control GNOME
+ Name[fr]=Centre de contrÙle GNOME
+ Name[ko]=±◊≥ ¡∂¡æ∆«
+@@ -7,6 +8,7 @@
+ Name[pt]=Centro de Controlo GNOME
+ Name[ru]=„≈Œ‘“ ı–“¡◊Ã≈Œ…— GNOME
+ Comment=The GNOME configuration tool.
++Comment[pt_BR]=Ferramenta de ConfiguraÁ„o GNOME
+ Comment[es]=Herramienta de configuraciÛn del entorno GNOME
+ Comment[fr]=Outil de configuration de GNOME.
+ Comment[ko]=±◊≥ º≥¡§ «¡∑Œ±◊∑•
+--- ./capplets/mouse-properties/mouse-properties.desktop~	Thu Feb 25 03:42:46 1999
++++ ./capplets/mouse-properties/mouse-properties.desktop	Tue Jun 29 22:23:00 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Mouse
++Name[pt_BR]=Mouse
+ Name[es]=Propiedades del ratÛn
+ Name[de]=Maus
+ Name[hu]=EgÈr
+@@ -9,6 +10,7 @@
+ Name[pt]=Propriedades do Rato
+ Name[ru]=ÌŸ€ÿ
+ Comment=Mouse Properties
++Comment[pt_BR]=Propriedades do Mouse
+ Comment[es]=Modifica las propiedades del ratÛn
+ Comment[de]=Einstellungen f¸r die Maus
+ Comment[hu]=Az egÈr be·llÌt·sa
+--- ./capplets/screensaver-properties/screensaver-desktops/Qix.desktop~	Mon Mar 22 13:51:58 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Qix.desktop	Tue Jun 29 22:29:33 1999
+@@ -1,9 +1,11 @@
+ [Desktop Entry]
+ Name=Qix
++Name[pt_BR]=AleatÛrio
+ Name[es]=Qix
+ Name[fr]=Qix
+ Name[no]=Qix
+ Comment=Bounce colored lines around a window.
++Comment[pt_BR]=Determina se as linhas movem-se erraticamente, ou ao redor das paredes linearmente.
+ Comment[es]=Rebota lineas de colores en una ventana
+ Comment[fr]=Des lignes de couleurs qui rebondissent ‡ l'Ècran
+ Comment[no]=Fargede linjer spretter rundt i et vindu.
+--- ./capplets/screensaver-properties/screensaver-desktops/Deco.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Deco.desktop	Tue Jun 29 22:31:22 1999
+@@ -1,10 +1,12 @@
+ [Desktop Entry]
+ Name=Deco
++Name[pt_BR]=ciclo de cores
+ Name[es]=Deco
+ Name[fr]=DÈco
+ Name[no]=Deco
+ Name[ru]=‰≈Àœ
+ Comment=Draw tacky 70s basement wall panelling.
++Comment[pt_BR]=Esta opÁ„o provoca o piscar da tela
+ Comment[es]=Dibuja motivos murales de lso aÒos 70
+ Comment[fr]=Dessine des motifs muraux des annÈes 70
+ Comment[no]=Tegn 70-talls kjellerveggpanel
+--- ./capplets/screensaver-properties/screensaver-desktops/Attraction.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Attraction.desktop	Tue Jun 29 22:35:12 1999
+@@ -168,6 +168,7 @@
+ 
+ [Arg6]
+ Name=Orbit
++Name[pt_BR]=”rbita
+ Name[es]=”rbita
+ Name[fr]=Orbite
+ Name[no]=Bane
+@@ -179,6 +180,7 @@
+ LeftLabel[fr]=Faire que les forces soient au dÈpart tangentielles au cercle.
+ LeftLabel[no]=La kreftene pÂ hvert punkt vÊre en tangent til den originale sirkelen.
+ Comment=Have initial forces on each point be tangential to original circle.
++Comment[pt_BR]=Existem forÁas iniciais em cada ponto tangente ao cÌrculo original.
+ Comment[es]=Hacer que las fuerzas sean inicialmente tangenciales al cÌrculo
+ Comment[fr]=Faire que les forces soient au dÈpart tangentielles au cercle.
+ Comment[no]=La kreftene pÂ hvert punkt vÊre en tangent til den originale sirkelen.
+--- ./capplets/screensaver-properties/screensaver-desktops/Blitspin.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Blitspin.desktop	Tue Jun 29 22:35:58 1999
+@@ -72,6 +72,7 @@
+ 
+ [Arg2]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -87,6 +88,7 @@
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ LeftLabel[wa]=CandjÓz li hÂynaedje Ë monocrome.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[eu]=Pantaila babesle monokromoa.
+ Comment[fr]=Changez l'affichage en monochrome.
+--- ./capplets/screensaver-properties/screensaver-desktops/Bouboule.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Bouboule.desktop	Tue Jun 29 22:36:43 1999
+@@ -154,6 +154,7 @@
+ 
+ [Arg4]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -169,6 +170,7 @@
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ LeftLabel[wa]=CandjÓz li hÂynaedje Ë monocrome.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[eu]=Pantaila babesle monokromoa.
+ Comment[fr]=Changez l'affichage en monochrome.
+--- ./capplets/screensaver-properties/screensaver-desktops/Braid.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Braid.desktop	Tue Jun 29 22:37:44 1999
+@@ -57,6 +57,7 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -72,6 +73,7 @@
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ LeftLabel[wa]=CandjÓz li hÂynaedje Ë monocrome.
+ Comment=Change to display in monochrome.
++Name[pt_BR]=Monocrom·tico
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[eu]=Pantaila babesle monokromoa.
+ Comment[fr]=Changez l'affichage en monochrome.
+--- ./capplets/screensaver-properties/screensaver-desktops/Bsod.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Bsod.desktop	Tue Jun 29 22:39:13 1999
+@@ -60,6 +60,7 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -75,6 +76,7 @@
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ LeftLabel[wa]=CandjÓz li hÂynaedje Ë monocrome.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[eu]=Pantaila babesle monokromoa.
+ Comment[fr]=Changez l'affichage en monochrome.
+--- ./capplets/screensaver-properties/screensaver-desktops/Bubbles.desktop~	Thu Apr  1 19:17:31 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Bubbles.desktop	Tue Jun 29 22:39:56 1999
+@@ -109,6 +109,7 @@
+ 
+ [Arg4]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -124,6 +125,7 @@
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ LeftLabel[wa]=CandjÓz li hÂynaedje Ë monocrome.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[eu]=Pantaila babesle monokromoa.
+ Comment[fr]=Changez l'affichage en monochrome.
+--- ./capplets/screensaver-properties/screensaver-desktops/Coral.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Coral.desktop	Tue Jun 29 22:41:22 1999
+@@ -66,6 +66,7 @@
+ 
+ [Arg2]
+ Name=Delay
++Name[pt_BR]=Espera
+ Type=LRange
+ Flag=-delay
+ LeftLabel=Faster
+@@ -82,6 +83,7 @@
+ Label[fr]=Vitesse
+ Label[no]=Bevegelseshastighet.
+ Comment=Change the delay in cycles.
++Comment[pt_BR]=Alterar a espera em ciclos.
+ Comment[es]=Cambiar la velocidad de crecimiento.
+ Comment[fr]=Changer la vitesse de croissance du corail.
+ Comment[no]=Endre pausene i sykluser.
+--- ./capplets/screensaver-properties/screensaver-desktops/Cynosure.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Cynosure.desktop	Tue Jun 29 22:42:14 1999
+@@ -88,6 +88,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[no]=Monokrom
+@@ -101,6 +102,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Decayscreen.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Decayscreen.desktop	Tue Jun 29 22:42:59 1999
+@@ -52,6 +52,7 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -61,6 +62,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Discrete.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Discrete.desktop	Tue Jun 29 22:43:33 1999
+@@ -91,6 +91,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -100,6 +101,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Distort.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Distort.desktop	Tue Jun 29 22:43:56 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Distort
++Name[pt_BR]=DistorÁ„o
+ Name[es]=DistorciÛn
+ Name[fr]=Distortion
+ Name[no]=Forvreng
+--- ./capplets/screensaver-properties/screensaver-desktops/Drift.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Drift.desktop	Tue Jun 29 22:44:44 1999
+@@ -128,6 +128,7 @@
+ 
+ [Arg5]
+ Name=Lissojous
++Name[pt_BR]=Lissojous
+ Type=Check
+ Flag=-liss
+ Flag2=-no-liss
+@@ -136,6 +137,7 @@
+ LeftLabel[fr]=Utiliser des figures de lissajous pour obtenir les points.
+ LeftLabel[no]=Bruk lissojous figurer til Â hente punkter.
+ Comment=Change whether to use lissojous figures to get points.
++Comment[pt_BR]=Alterar para usar figuras lissojous para obter pontos.
+ Comment[es]=Usar figuras de lissojous para obtener los puntos.
+ Comment[fr]=Utiliser des figures de lissajous pour obtenir les points.
+ Comment[no]=Endre til Â bruke lissojous figurer for Â fÂ punkter.
+--- ./capplets/screensaver-properties/screensaver-desktops/Epicycle.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Epicycle.desktop	Tue Jun 29 22:45:24 1999
+@@ -95,6 +95,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -104,6 +105,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Fadeplot.desktop~	Sat Oct  3 09:39:27 1998
++++ ./capplets/screensaver-properties/screensaver-desktops/Fadeplot.desktop	Tue Jun 29 22:45:47 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Fadeplot
++Name[pt_BR]=Fadeplot
+ Name[no]=Fadeplot
+ Comment=
+ Exec=xscreensaver-command -activate
+--- ./capplets/screensaver-properties/screensaver-desktops/Flag.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Flag.desktop	Tue Jun 29 22:47:00 1999
+@@ -96,6 +96,7 @@
+ 
+ [Arg4]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -105,6 +106,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Flame.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Flame.desktop	Tue Jun 29 22:47:46 1999
+@@ -132,6 +132,7 @@
+ 
+ [Arg5]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -141,6 +142,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Flow.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Flow.desktop	Tue Jun 29 22:48:09 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Flow
++Name[pt_BR]=Fluxo
+ Name[es]=Flujo
+ Name[fr]=Flux
+ Name[no]=Flyt
+--- ./capplets/screensaver-properties/screensaver-desktops/Forest.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Forest.desktop	Tue Jun 29 22:49:00 1999
+@@ -87,6 +87,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -96,6 +97,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Galaxy.desktop~	Thu Feb 25 03:43:07 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Galaxy.desktop	Tue Jun 29 22:49:41 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Galaxy
++Name[pt_BR]=Gal·xia
+ Name[es]=Galaxia
+ Name[fr]=Galaxie
+ Name[ja]=∂‰≤œ
+--- ./capplets/screensaver-properties/screensaver-desktops/Goop.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Goop.desktop	Tue Jun 29 22:50:30 1999
+@@ -85,11 +85,13 @@
+ LeftLabel[es]=Gotas transparentes.
+ LeftLabel[fr]=Gouttes transparentes.
+ Comment=Causes the colors to mix when overlapped.
++Comment[pt_BR]=Provoca a mistura das cores quando sobrepostas.
+ Comment[es]=Hace que los colores se mezclen cuando las gotas se superponen.
+ Comment[fr]=Fait que les couleurs se mÈlangent quand les gouttes se superposent.
+ 
+ [Arg4]
+ Name=Additive
++Name[pt_BR]=Aditivo
+ Type=Check
+ Flag=-additive
+ Flag2=-subtractive
+--- ./capplets/screensaver-properties/screensaver-desktops/Grav.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Grav.desktop	Tue Jun 29 22:51:01 1999
+@@ -92,6 +92,7 @@
+ 
+ [Arg5]
+ Name=Trail
++Name[pt_BR]=Trilha
+ Type=Check
+ Flag=-trail
+ Flag2=-no-trail
+@@ -99,6 +100,7 @@
+ LeftLabel[es]=Los objetos dejan cola.
+ LeftLabel[fr]=Les objets laissent une traÓne.
+ Comment=Change whether objects should leave a trail.
++Comment[pt_BR]=Muda quando os objetos devem deixar uma trilha
+ Comment[es]=Los objetos dejan cola.
+ Comment[fr]=Les objets laissent une traÓne.
+ 
+--- ./capplets/screensaver-properties/screensaver-desktops/Ifs.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Ifs.desktop	Tue Jun 29 22:55:19 1999
+@@ -26,8 +26,10 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+ LeftLabel=Display screensaver in monochrome.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+--- ./capplets/screensaver-properties/screensaver-desktops/Greynetic.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Greynetic.desktop	Tue Jun 29 22:51:47 1999
+@@ -47,6 +47,7 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -56,6 +57,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Halo.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Halo.desktop	Tue Jun 29 22:53:06 1999
+@@ -131,6 +131,7 @@
+ 
+ [Arg6]
+ Name=Cycle
++Name[pt_BR]=CÌclo
+ Type=Check
+ Flag=-cycle
+ Flag2=-no-cycle
+@@ -138,5 +139,6 @@
+ LeftLabel[es]=Colores cÌclicos.
+ LeftLabel[fr]=Cycle de couleurs.
+ Comment=Change to cycle through colormap.
++Comment[pt_BR]=Altera para alternar atravÈs do mapa de cores.
+ Comment[es]=Colores cÌclicos.
+ Comment[fr]=Cycle de couleurs.
+--- ./capplets/screensaver-properties/screensaver-desktops/Helix.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Helix.desktop	Tue Jun 29 22:53:52 1999
+@@ -45,6 +45,7 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -54,6 +55,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Hopalong.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Hopalong.desktop	Tue Jun 29 22:54:19 1999
+@@ -91,6 +91,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -100,6 +101,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Hypercube.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Hypercube.desktop	Tue Jun 29 22:54:48 1999
+@@ -68,6 +68,7 @@
+ 
+ [Arg2]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+@@ -77,6 +78,7 @@
+ LeftLabel[no]=Vis skjermspareren i monokrom.
+ LeftLabel[ru]=≈“≈ÀÃ¿ﬁ…‘ÿ ◊ œƒŒœ‘œŒŒŸ  “≈÷…Õ.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambiar a la visualizaciÛn en monocromo.
+ Comment[fr]=Changez l'affichage en monochrome.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Interference.desktop~	Thu Feb 25 03:43:11 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Interference.desktop	Tue Jun 29 22:55:38 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Interference
++Name[pt_BR]=InterferÍncia
+ Name[es]=Interferencias
+ Name[fr]=Interferences
+ Name[no]=Forstyrrelser
+--- ./capplets/screensaver-properties/screensaver-desktops/Jigsaw.desktop~	Thu Feb 25 20:42:09 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Jigsaw.desktop	Tue Jun 29 22:56:09 1999
+@@ -17,10 +17,12 @@
+ 
+ [Arg0]
+ Name=Delay
++Name[pt_BR]=Espera
+ Type=LRange
+ Flag=-delay
+ LeftLabel=Faster
+ RightLabel=Slower
+ ValType=I[1-500000]=2
+ Label=Speed of Motion.
+-Comment=Change the delay in cycles.
+\ No newline at end of file
++Comment=Change the delay in cycles.
++Comment[pt_BR]=Altera a espera em ciclos.
+--- ./capplets/screensaver-properties/screensaver-desktops/Julia.desktop~	Thu Feb 25 20:42:10 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Julia.desktop	Tue Jun 29 22:56:46 1999
+@@ -47,8 +47,10 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+ LeftLabel=Display screensaver in monochrome.
+-Comment=Change to display in monochrome.
+\ No newline at end of file
++Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+--- ./capplets/screensaver-properties/screensaver-desktops/Kaleidescope.desktop~	Thu Feb 25 20:42:11 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Kaleidescope.desktop	Tue Jun 29 22:57:15 1999
+@@ -49,8 +49,10 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-color_mode mono
+ Flag2=-color_mode nice
+ LeftLabel=Display screensaver in monochrome.
+-Comment=Change to display in monochrome.
+\ No newline at end of file
++Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+--- ./capplets/screensaver-properties/screensaver-desktops/Laser.desktop~	Thu Feb 25 03:43:15 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Laser.desktop	Tue Jun 29 22:58:18 1999
+@@ -55,4 +55,5 @@
+ LeftLabel=Display screensaver in monochrome?
+ LeftLabel[ru]=È”–œÃÿ⁄œ◊¡‘ÿ œƒ…Œ √◊≈‘?
+ Comment=If on a color display, pretend we're on a monochrome display.
++Comment[pt_BR]=No caso de um monitor colorido, simula ser um monocrom·tico.
+ Comment[ru]=“…‘◊œ“…‘ÿ”— ﬁ‘œ ‹À“¡Œ ﬁ≈“Œœ-¬≈ÃŸ .
+--- ./capplets/screensaver-properties/screensaver-desktops/Lightning.desktop~	Thu Feb 25 20:42:12 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Lightning.desktop	Tue Jun 29 22:58:42 1999
+@@ -29,8 +29,10 @@
+ 
+ [Arg1]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+ LeftLabel=Display screensaver in monochrome.
+-Comment=Change to display in monochrome.
+\ No newline at end of file
++Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para mostrar monocrom·tico.
+--- ./capplets/screensaver-properties/screensaver-desktops/Lisa.desktop~	Fri Feb 26 01:18:12 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Lisa.desktop	Tue Jun 29 22:59:12 1999
+@@ -56,8 +56,10 @@
+ 
+ [Arg4]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Type=Check
+ Flag=-mono
+ Flag2=
+ LeftLabel=Display screensaver in monochrome.
+-Comment=Change to display in monochrome.
+\ No newline at end of file
++Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para mostrar monocrom·tico.
+--- ./capplets/screensaver-properties/screensaver-desktops/Lmorph.desktop~	Mon Mar 22 13:51:57 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Lmorph.desktop	Tue Jun 29 23:05:34 1999
+@@ -73,6 +73,7 @@
+ 
+ [Arg4]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[no]=Monokrom
+ Type=Check
+ Flag=-mono
+@@ -80,4 +81,5 @@
+ LeftLabel=Display screensaver in monochrome.
+ LeftLabel[no]=Vis skjermsparer som monokrom.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Moire.desktop~	Mon Mar 22 13:51:57 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Moire.desktop	Tue Jun 29 23:06:08 1999
+@@ -62,6 +62,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[no]=Monokrom
+ Type=Check
+ Flag=-mono
+@@ -69,4 +70,5 @@
+ LeftLabel=Display screensaver in monochrome.
+ LeftLabel[no]=Vis skjermsparer som monokrom.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Mountain.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Mountain.desktop	Tue Jun 29 23:06:22 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Mountain
++Name[pt_BR]=Montanha
+ Name[es]=MontaÒas
+ Name[eu]=Mendiak
+ Name[fr]=Montagnes
+--- ./capplets/screensaver-properties/screensaver-desktops/Munch.desktop~	Mon Mar 22 13:51:57 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Munch.desktop	Tue Jun 29 23:06:52 1999
+@@ -56,6 +56,7 @@
+ 
+ [Arg3]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[no]=Monokrom
+ Type=Check
+ Flag=-mono
+@@ -63,5 +64,6 @@
+ LeftLabel=Display screensaver in monochrome.
+ LeftLabel[no]=Vis skjermsparer som monokrom.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[no]=Endre til monokrom visning.
+ 
+--- ./capplets/screensaver-properties/screensaver-desktops/Noseguy.desktop~	Thu Feb 25 03:43:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Noseguy.desktop	Tue Jun 29 23:07:12 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Noseguy
++Name[pt_BR]=Rapaz Narigudo
+ Name[es]=Narigudo
+ Name[no]=Nesetype
+ Name[ru]=Óœ”
+--- ./capplets/screensaver-properties/screensaver-desktops/Pedal.desktop~	Mon Mar 22 13:51:58 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Pedal.desktop	Tue Jun 29 23:07:42 1999
+@@ -64,6 +64,7 @@
+ 
+ [Arg2]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[no]=Monokrom
+ Type=Check
+ Flag=-mono
+@@ -71,4 +72,5 @@
+ LeftLabel=Display screensaver in monochrome.
+ LeftLabel[no]=Vis skjermsparer som monokrom.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[no]=Endre til monokrom visning.
+--- ./capplets/screensaver-properties/screensaver-desktops/Pyro.desktop~	Fri Feb 26 01:18:14 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Pyro.desktop	Tue Jun 29 23:08:01 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Pyro
++Name[pt_BR]=PirotÈcnico
+ Name[no]=Pyro
+ Name[ru]=Û¡Ã¿‘
+ Comment=
+--- ./capplets/screensaver-properties/screensaver-desktops/Rocks.desktop~	Thu Feb 25 03:43:26 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Rocks.desktop	Tue Jun 29 23:08:16 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Rocks
++Name[pt_BR]=Pedras
+ Name[es]=Rocas
+ Name[eu]=Harriak
+ Name[fr]=Rochers
+--- ./capplets/screensaver-properties/screensaver-desktops/Slidescreen.desktop~	Sat Oct  3 09:40:07 1998
++++ ./capplets/screensaver-properties/screensaver-desktops/Slidescreen.desktop	Tue Jun 29 23:09:18 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Slidescreen
++Name[pt_BR]=Tela em Slides
+ Name[no]=Lysbildeskjerm
+ Comment=
+ Exec=xscreensaver-command -activate
+--- ./capplets/screensaver-properties/screensaver-desktops/Sphere.desktop~	Thu Feb 25 03:43:29 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Sphere.desktop	Tue Jun 29 23:09:32 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Sphere
++Name[pt_BR]=Esfera
+ Name[es]=Esfera
+ Name[fr]=SphËre
+ Name[ja]=µÂ¬Œ
+--- ./capplets/screensaver-properties/screensaver-desktops/Spiral.desktop~	Thu Feb 25 03:43:30 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Spiral.desktop	Tue Jun 29 23:09:54 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Spiral
++Name[pt_BR]=Espiral
+ Name[es]=Espiral
+ Name[fr]=Spirale
+ Name[ja]=±≤¥¨¿˛
+--- ./capplets/screensaver-properties/screensaver-desktops/Starfish.desktop~	Thu Apr  1 04:07:19 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Starfish.desktop	Tue Jun 29 23:10:27 1999
+@@ -160,6 +160,7 @@
+ 
+ [Arg8]
+ Name=Monochrome
++Name[pt_BR]=Monocrom·tico
+ Name[es]=Monocromo
+ Name[fr]=Monochrome
+ Name[ru]=ÔƒŒœ‘œŒŒ¡—
+@@ -173,6 +174,7 @@
+ LeftLabel[ru]=È”–œÃÿ⁄œ◊¡‘ÿ œƒ…Œ √◊≈‘.
+ LeftLabel[no]=Endre til monokrom visning.
+ Comment=Change to display in monochrome.
++Comment[pt_BR]=Alterar para modo monocrom·tico.
+ Comment[es]=Cambia a la visualizaciÛn en monocromo.
+ Comment[fr]=Change en l'affichage en monochrome.
+ Comment[ru]=È”–œÃÿ⁄œ◊¡‘ÿ œƒ…Œ √◊≈‘.
+--- ./capplets/screensaver-properties/screensaver-desktops/Strange.desktop~	Thu Feb 25 03:43:32 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Strange.desktop	Tue Jun 29 23:10:41 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Strange
++Name[pt_BR]=Estranho
+ Name[es]=ExtraÒo
+ Name[fr]=…trange
+ Name[ja]=…‘ª◊µƒ
+--- ./capplets/screensaver-properties/screensaver-desktops/Triangle.desktop~	Thu Feb 25 03:43:33 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Triangle.desktop	Tue Jun 29 23:10:53 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Triangle
++Name[pt_BR]=Tri‚ngulo
+ Name[es]=Tri·ngulo
+ Name[fr]=Triangle
+ Name[ja]=ª∞≥—∑¡
+--- ./capplets/screensaver-properties/screensaver-desktops/Vines.desktop~	Sat Oct  3 09:40:16 1998
++++ ./capplets/screensaver-properties/screensaver-desktops/Vines.desktop	Tue Jun 29 23:11:07 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Vines
++Name[pt_BR]=Vinhas
+ Name[no]=Viner
+ Comment=
+ Exec=xscreensaver-command -activate
+--- ./capplets/screensaver-properties/screensaver-desktops/Worm.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/Worm.desktop	Tue Jun 29 23:11:20 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Worm
++Name[pt_BR]=Verme
+ Name[es]=Orugas
+ Name[fr]=Chenilles
+ Name[ja]=Ã”√Ó
+--- ./capplets/screensaver-properties/screensaver-desktops/screensaver-properties.desktop~	Wed Mar 31 22:05:22 1999
++++ ./capplets/screensaver-properties/screensaver-desktops/screensaver-properties.desktop	Tue Jun 29 23:11:57 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Screensaver Properties
++Name[pt_BR]=Propriedades da ProteÁ„o de Tela
+ Name[cs]=NastavenÌ πet¯iËe obrazovky
+ Name[da]=Indstil skÊrmskÂneren
+ Name[de]=Einstellung des Bildschirmschoners
+@@ -18,6 +19,7 @@
+ Name[wa]=Tch˚zes do spÂrgneu di waitro˚le
+ Name[zh_CN.GB2312]=∆¡ƒª±£ª§≥Ã–Ú…Ë÷√
+ Comment=Configure the settings of the screensaver.
++Comment[pt_BR]=Configura as opÁıes da proteÁ„o de tela
+ Comment[cs]=NastavenÌ πet¯iËe obrazovky
+ Comment[da]=Indstil skÊrmskÂneren
+ Comment[de]=Einstellung des Bildschirmschoners
+--- ./capplets/screensaver-properties/screensaver-properties.desktop~	Thu Feb 25 03:42:47 1999
++++ ./capplets/screensaver-properties/screensaver-properties.desktop	Tue Jun 29 22:24:07 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Screensaver
++Name[pt_BR]=ProteÁ„o de Tela
+ Name[de]=Bildschirmschoner
+ Name[es]=Propiedades Protege pantalla
+ Name[hu]=KÈpernyıvÈdı
+@@ -9,6 +10,7 @@
+ Name[ru]=Ë“¡Œ…‘≈Ãÿ ‹À“¡Œ¡
+ Name[no]=Skjermsparer
+ Comment=Configure the settings of the screensaver.
++Comment[pt_BR]=Configura as opÁıes da proteÁ„o de tela
+ Comment[de]=Bildschirmschoner einrichten
+ Comment[es]=Configurar el protector de pantalla
+ Comment[hu]=KÈpernyıvÈdı be·llÌt·sok
+--- ./capplets/background-properties/background-properties.desktop~	Sun Feb 28 18:43:13 1999
++++ ./capplets/background-properties/background-properties.desktop	Tue Jun 29 23:12:10 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Background
++Name[pt_BR]=Fundo
+ Name[es]=Propiedades del tapiz
+ Name[de]=Hintergrund
+ Name[ko]=πË∞Ê
+--- ./capplets/theme-switcher/theme-selector.desktop~	Thu Feb 25 03:43:45 1999
++++ ./capplets/theme-switcher/theme-selector.desktop	Tue Jun 29 23:12:35 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Theme Selector
++Name[pt_BR]=Seletor de Temas
+ Name[de]=Thema ausw‰hlen
+ Name[es]=Selector de Temas
+ Name[hu]=TÈmav·lasztÛ
+@@ -9,6 +10,7 @@
+ Name[pt]=Selector de Temas
+ Name[ru]=≈“≈ÀÃ¿ﬁ¡‘≈Ãÿ ‘≈Õ
+ Comment=Select which desktop theme to use.
++Comment[pt_BR]=Seleciona o tema de ·rea de trabalho
+ Comment[de]=Desktop-Thema ausw‰hlen
+ Comment[es]=Seleccionar el tema deseado para el escritorio
+ Comment[hu]=A GNOME alkalmaz·sok kinÈzetÈt meghat·rozÛ tÈma
+--- ./capplets/sound-properties/sound-properties.desktop~	Thu Feb 25 03:43:43 1999
++++ ./capplets/sound-properties/sound-properties.desktop	Tue Jun 29 23:12:55 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Sound
++Name[pt_BR]=Som
+ Name[de]=Klang
+ Name[es]=Propiedades Sonidos
+ Name[hu]=Hang
+@@ -9,6 +10,7 @@
+ Name[pt]=Propriedades de Som
+ Name[ru]=˙◊’À
+ Comment=Configure GNOME's use of sound.
++Comment[pt_BR]=Configura o uso do som.
+ Comment[de]=GNOME's Systemkl‰nge bearbeiten
+ Comment[es]=Configurar los sonidos de GNOME
+ Comment[hu]=A GNOME hangjai
+--- ./capplets/bell-properties/bell-properties.desktop~	Sun Feb 28 18:43:15 1999
++++ ./capplets/bell-properties/bell-properties.desktop	Tue Jun 29 23:13:17 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Keyboard Bell
++Name[pt_BR]=Som do Teclado 
+ Name[es]=Propriedades del "bip"
+ Name[de]=Klingel
+ Name[ko]=≈∞∫∏µÂ ª‡º“∏Æ
+@@ -10,6 +11,7 @@
+ Name[pt]=Propriedades do Beep
+ Name[ru]=˙◊œŒœÀ ÀÃ¡◊…¡‘’“Ÿ
+ Comment=Modify the properties of your keyboard bell.
++Comment[pt_BR]=Modifica as propriedades do som de teclado.
+ Comment[es]=Modifica las propiedades de los sÛnidos relacionados con eventos del sistema
+ Comment[de]=Eigenschaften der Klingel bearbeiten
+ Comment[ko]=≈∞∫∏µÂ ª‡º“∏Æ º≥¡§ªÁ«◊ ∫Ø∞Ê
+--- ./capplets/ui-properties/application.desktop~	Sun Feb 28 18:43:23 1999
++++ ./capplets/ui-properties/application.desktop	Tue Jun 29 23:13:40 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Application Defaults
++Name[pt_BR]=Padrıes da AplicaÁ„o
+ Name[ca]=Aplicacions
+ Name[da]=Applikation
+ Name[de]=Mitteilung
+@@ -17,6 +18,7 @@
+ Name[ru]=“…Ãœ÷≈Œ…—
+ Name[no]=Standardverdier for applikasjoner
+ Comment=Sets the default feel of GNOME applications.
++Comment[pt_BR]=Define os padrıes das aplicaÁıes GNOME
+ Comment[es]=ConfiguraciÛn del comportamiento de las aplicaciones Gnome.
+ Comment[fr]=Configuration du comportement des applications GNOME.
+ Comment[hu]=Alkalmaz·sok megjelenÈsÈnek meghat·roz·sa
+--- ./capplets/ui-properties/dialogs.desktop~	Thu Feb 25 03:43:47 1999
++++ ./capplets/ui-properties/dialogs.desktop	Tue Jun 29 23:13:55 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Dialogs
++Name[pt_BR]=Di·logos
+ Name[ca]=Quadres de di‡leg
+ Name[da]=Dialoger
+ Name[es]=Di·logos
+--- ./capplets/url-properties/url-properties.desktop~	Thu Feb 25 03:43:51 1999
++++ ./capplets/url-properties/url-properties.desktop	Tue Jun 29 23:14:17 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=URL Handlers
++Name[pt_BR]=Manipuladores de URL
+ Name[pt]=URL Handlers
+ Name[fr]=Gestionnaires d'URLs
+ Name[hu]=URL kezelık
+@@ -7,6 +8,7 @@
+ Name[no]=URL-hÂndtering
+ Name[ru]=Ô¬“¡¬œ‘ﬁ…À… URL
+ Comment=Configure which programs are used to display URLs
++Comment[pt_BR]=Configura quais programas sser„o usados para mostrar URLs
+ Comment[pt]=Permite configurar quais os programas usados para mostrar URLs
+ Comment[fr]=Permet de choisir quels applications sont utilisÈes pour afficher les URLs
+ Comment[hu]=A k¸lˆmbˆzı webhelyek-dokumentumok kezelÈsÈnek be·llÌt·sa
+--- ./capplets/gnome-edit-properties/gnome-edit-properties.desktop~	Thu Feb 25 03:42:43 1999
++++ ./capplets/gnome-edit-properties/gnome-edit-properties.desktop	Tue Jun 29 23:14:39 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Gnome Edit Properties
++Name[pt_BR]=Propriedades Editar GNOME
+ Name[es]=Propiedades Gnome Edit
+ Name[fr]=PropiÈtÈs Gnome Edit
+ Name[ko]=±◊≥ ∆Ì¡˝±‚ º±≈√
+@@ -8,6 +9,7 @@
+ Name[pt]=Editor GNOME
+ Name[ru]=Ú≈ƒ¡À‘œ“ GNOME
+ Comment=Choose the editor that is invoked by gnome-edit.
++Comment[pt_BR]=Escolhe o editor acionado pelo gnome-edit.
+ Comment[es]=Elegir el editor invocado por gnome-edit.
+ Comment[fr]=Choisir l'Èditeur appellÈ par gnome-edit.
+ Comment[ko]=gnome-edit∞° ªÁøÎ«“ ∆Ì¡˝±‚ º±≈√
+--- ./capplets/session-properties/session-properties.desktop~	Tue Jun 29 22:17:21 1999
++++ ./capplets/session-properties/session-properties.desktop	Tue Jun 29 23:15:14 1999
+@@ -1,6 +1,8 @@
+ [Desktop Entry]
+ Name=Session Manager
++Name[pt_BR]=Programas de InÌcio
+ Comment=Configure the session manager and startup programs
++Comment[pt_BR]=Configura quais programas fora da sess„o s„o inicializados no inÌcio
+ Exec=session-properties-capplet
+ Icon=
+ Terminal=0
+--- ./capplets/wm-properties/wm-properties.desktop~	Sun Feb 28 18:43:25 1999
++++ ./capplets/wm-properties/wm-properties.desktop	Tue Jun 29 23:15:36 1999
+@@ -1,8 +1,10 @@
+ [Desktop Entry]
+ Name=Window Manager
++Name[pt_BR]=Gerenciador de Janelas
+ Name[ko]=√¢ ∞¸∏Æ¿⁄
+ Name[no]=VindushÂndterer
+ Comment=Choose a window manager
++Comment[pt_BR]=Escolher um gerenciador de janelas
+ Comment[ko]=√¢ ∞¸∏Æ¿⁄ º±≈√
+ Comment[no]=Velg en vindushÂndterer
+ Exec=wm-properties-capplet --sync
+--- ./capplets/keyboard-properties/keyboard-properties.desktop~	Tue Mar  2 16:01:12 1999
++++ ./capplets/keyboard-properties/keyboard-properties.desktop	Tue Jun 29 23:15:58 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Keyboard
++Name[pt_BR]=Teclado
+ Name[de]=Tastatur
+ Name[es]=Propiedades del Teclado
+ Name[fr]=PropriÈtÈs du Clavier
+@@ -9,6 +10,7 @@
+ Name[pt]=Propriedades do Teclado
+ Name[ru]=ÎÃ¡◊…¡‘’“¡
+ Comment=Keyboard Properties
++Comment[pt_BR]=Propriedades do Teclado
+ Comment[de]=Tastatur Einstellungen
+ Comment[es]=Modifica las propiedades del teclado
+ Comment[fr]=Modifie les propriÈtÈs du clavier
+--- ./capplets/mime-type/mime-type.desktop~	Tue Jun 29 22:17:21 1999
++++ ./capplets/mime-type/mime-type.desktop	Tue Jun 29 23:16:17 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Mime Types
++Name[pt_BR]=Tipos Mime
+ Name[es]=Tipos MIME
+ Name[fi]=MIME-tyypit
+ Name[fr]=Types MIME
+@@ -7,6 +8,7 @@
+ Name[no]=Mime typer
+ Name[wa]=SÙrtes MIME
+ Comment=Configure how files are associated and started.
++Comment[pt_BR]=Configura como os arquivos s„o associados e inicializados.
+ Comment[es]=Configura los tipos de archivos y los programas asociados para manejarlos.
+ Comment[fi]=Aseta tiedostoassosiaatiot ja avaajat.
+ Comment[fr]=Configure les types de fichier et les programmes y associÈs

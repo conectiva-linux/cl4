@@ -1,0 +1,19 @@
+--- control-center-1.0.5/control-center/callbacks.c.fixclosedlg	Mon Apr  5 12:52:53 1999
++++ control-center-1.0.5/control-center/callbacks.c	Mon Apr  5 13:00:09 1999
+@@ -43,6 +43,16 @@
+ void
+ exit_dialog_ok_callback(GtkWidget *widget, gpointer data)
+ {
++        GList *list;
++        node_data *nd;
++        CORBA_Environment ev;
++
++        for (list = capplet_list; list; list = list->next) {
++                nd = (node_data *) list->data;
++                if (nd->modified == TRUE && nd->capplet) {
++                        GNOME_capplet_cancel (nd->capplet,nd->id, &ev);
++                }
++        }
+         gtk_widget_destroy (main_window);
+         control_center_corba_gtk_main_quit();
+ }

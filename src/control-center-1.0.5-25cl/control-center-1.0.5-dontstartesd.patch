@@ -1,0 +1,39 @@
+--- control-center-1.0.5/capplets/sound-properties/sound-properties.c.dontstartesd	Thu Apr  8 14:45:49 1999
++++ control-center-1.0.5/capplets/sound-properties/sound-properties.c	Thu Apr  8 14:46:05 1999
+@@ -84,11 +84,34 @@
+     int token, init_results;
+     SoundProps *sound_properties;
+ 
++    char **myargv;
++    int  myargc, i;
++    gboolean  in_init_mode=FALSE;
++
+     bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+     textdomain (PACKAGE);
+ 
+-    init_results = gnome_capplet_init("sound-properties", VERSION,
+-                                      argc, argv, NULL, 0, NULL);
++    /* disable sound completely if in init-settings mode - bad HACK */
++    for (i=0; i < argc; i++)
++        if (!strcmp(argv[i], "--init-session-settings")) {
++            in_init_mode=TRUE;
++            break;
++        }
++
++    if (in_init_mode) {
++        myargc = argc + 1;
++        myargv = (char **) g_new0(char *, myargc+1);
++        for (i=0; i < argc; i++)
++            myargv[i] = argv[i];
++        
++        myargv[myargc-1] = "--disable-sound";
++        init_results = gnome_capplet_init("sound-properties", VERSION,
++                                          myargc, myargv, NULL, 0, NULL);
++        g_free(myargv);
++    } else {
++        init_results = gnome_capplet_init("sound-properties", VERSION,
++                                          argc, argv, NULL, 0, NULL);
++    }
+ 
+     if (init_results < 0)
+         g_error ("an initialization error occurred while "

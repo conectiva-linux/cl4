@@ -1,0 +1,58 @@
+--- control-center-1.0.5/control-center/capplet-widget.c.quietdebug	Wed Apr  7 17:13:47 1999
++++ control-center-1.0.5/control-center/capplet-widget.c	Wed Apr  7 17:13:57 1999
+@@ -186,9 +186,7 @@
+ void
+ capplet_widget_state_changed(CappletWidget *cap, gboolean undoable)
+ {
+-        g_print ("in capplet_widget_state_changed\n");
+         if (cap->changed == FALSE) {
+-                g_print ("\tchanging state\n");
+                 capplet_corba_state_changed (cap->control_center_id, undoable);
+                 cap->changed = TRUE;
+         }
+--- control-center-1.0.5/capplets/theme-switcher/gui.c.quietdebug	Wed Apr  7 15:44:45 1999
++++ control-center-1.0.5/capplets/theme-switcher/gui.c	Wed Apr  7 17:11:57 1999
+@@ -237,10 +237,26 @@
+   gnome_font_picker_set_mode (GNOME_FONT_PICKER (font_sel),
+ 			      GNOME_FONT_PICKER_MODE_FONT_INFO);
+   initial_font = gnome_config_get_string_with_default ("/theme-switcher-capplet/settings/font",&default_used);
++
++
+   if (initial_font == NULL) {
+-	  gnome_font_picker_set_font_name (GNOME_FONT_PICKER (font_sel),
+-					   initial_font);
++
++    GtkStyle *style;
++    
++    gtk_widget_ensure_style (frame);
++    style = gtk_widget_get_style (frame);
++
++    if (style->rc_style == NULL) {
++      /* FIXME - should really get this from X somehow   */
++      /*         for now we just assume default gtk font */
++      initial_font = g_strdup("-adobe-helvetica-medium-r-normal--*-120-*-*-*-*-*-*");
++    } else {
++      initial_font = style->rc_style->font_name;
++    }
+   }
++
++  gnome_font_picker_set_font_name (GNOME_FONT_PICKER (font_sel), initial_font);
++
+   gnome_font_picker_fi_set_use_font_in_label (GNOME_FONT_PICKER (font_sel),
+ 					      TRUE,
+ 					      12);
+@@ -425,10 +441,12 @@
+   ignore_change = TRUE;
+   gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (auto_preview),
+ 			       initial_preview);
++  
+   gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (font_cbox),
+ 			       initial_font_cbox);
+-  gnome_font_picker_set_font_name (GNOME_FONT_PICKER (font_sel),
+-				   initial_font);
++  if (initial_font)
++    gnome_font_picker_set_font_name (GNOME_FONT_PICKER (font_sel),
++				     initial_font);
+   gtk_list_select_child (GTK_LIST (theme_list), initial_theme);
+   test_theme(rc, initial_font);
+   send_reread();

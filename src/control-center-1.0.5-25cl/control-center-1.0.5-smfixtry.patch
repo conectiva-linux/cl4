@@ -1,0 +1,59 @@
+--- control-center-1.0.5/capplets/session-properties/session-properties.c.smfixtry	Wed Apr  7 18:18:32 1999
++++ control-center-1.0.5/capplets/session-properties/session-properties.c	Wed Apr  7 18:32:53 1999
+@@ -53,6 +53,9 @@
+ 
+ static GtkWidget *startup_command_dialog;
+ 
++/* if TRUE we should ignore signals that appear to tell us we're dirty */
++static gboolean ignore_changes=FALSE;
++
+ /* CORBA callbacks and intialization */
+ static void capplet_build (void);
+ 
+@@ -246,6 +249,15 @@
+   trash_changes = trash_changes_revert;
+   logout_prompt = logout_prompt_revert;
+ 
++  /* have to do this here, because write_state will determine values     */
++  /* from buttons, not current values of trash_changes and logout_prompt */
++  ignore_changes = TRUE;
++  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trash_changes_button),
++				!trash_changes);
++  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (logout_prompt_button),
++				logout_prompt);
++  ignore_changes = TRUE;
++  
+   startup_list_free (startup_list);
+   startup_list = startup_list_duplicate (startup_list_revert);
+ }
+@@ -259,6 +271,7 @@
+ static void
+ revert (void)
+ {
++  
+   revert_state ();
+   write_state ();
+ 
+@@ -309,18 +322,22 @@
+ static void
+ update_gui (void)
+ {
++  ignore_changes = TRUE;
+   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trash_changes_button),
+ 				!trash_changes);
+   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (logout_prompt_button),
+ 				logout_prompt);
+   
+   startup_list_update_gui (startup_list, clist);
++  ignore_changes = FALSE;
+ }
+ 
+ /* This is called when an change is made in the client list.  */
+ static void
+ dirty_cb (GtkWidget *widget, GtkWidget *capplet)
+ {
++  if (ignore_changes)
++    return;
+   capplet_widget_state_changed (CAPPLET_WIDGET (capplet), TRUE);
+ }
+ 

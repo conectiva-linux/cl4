@@ -1,0 +1,59 @@
+--- control-center-1.0.5/capplets/gnome-edit-properties/gnome-edit-properties.c.geditfixtry	Wed Apr  7 18:35:33 1999
++++ control-center-1.0.5/capplets/gnome-edit-properties/gnome-edit-properties.c	Wed Apr  7 19:41:32 1999
+@@ -100,17 +100,50 @@
+ {
+ 	gchar *original_name
+                 = gnome_config_get_string("/editor/Editor/EDITOR=emacs");
++        gboolean was_set;
++        gchar    *key;
++        gint     i;
++
+         original_info.executable_name = original_name;
+         set_combo( original_name );
+         if(original_info.name)
+                 g_free(original_info.name);
++
+         original_info.name = g_strdup(gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(combo)->entry)));
+-        original_info.needs_term
+-                = gnome_config_get_bool("/editor/Editor/NEEDS_TERM=TRUE");
+-        original_info.execution_type
+-                = gnome_config_get_string("/editor/Editor/EDITOR_TYPE=executable");
+-        original_info.accepts_lineno
+-                = gnome_config_get_bool("/editor/Editor/ACCEPTS_LINE_NO=TRUE");
++
++        for ( i=0; i < sizeof(possible_editors) / sizeof(possible_editors[0]); i++ ) {
++                if (!strcmp(possible_editors[i].name,original_info.name)) {
++                        break;
++                }
++        }
++
++        /* if no match, we pick reasonable defaults */
++        if ( i == sizeof(possible_editors) / sizeof(possible_editors[0])) {
++                original_info.needs_term = TRUE;
++                original_info.execution_type = g_strdup("executable");
++                original_info.accepts_lineno = FALSE;
++        } else {
++                original_info.needs_term = possible_editors[i].needs_term;
++                original_info.execution_type = g_strdup(possible_editors[i].execution_type);
++                original_info.accepts_lineno = possible_editors[i].accepts_lineno;
++        }
++
++        key = g_strconcat("/editor/Editor/NEEDS_TERM=", (original_info.needs_term) ?
++                          "TRUE" : "FALSE", NULL);
++        original_info.needs_term = gnome_config_get_bool_with_default(key, NULL);
++        g_free(key);
++
++        key = g_strconcat("/editor/Editor/EDITOR_TYPE=",original_info.execution_type,
++                          NULL);
++        if (original_info.execution_type)
++                g_free(original_info.execution_type);
++        original_info.execution_type = gnome_config_get_string_with_default(key, NULL);
++        g_free(key);
++
++        key = g_strconcat("/editor/Editor/ACCEPTS_LINE_NO=", 
++                          (original_info.accepts_lineno) ? "TRUE" : "FALSE", NULL);
++        original_info.accepts_lineno = gnome_config_get_bool_with_default(key, NULL);
++        g_free(key);
+ }
+ 
+ static void

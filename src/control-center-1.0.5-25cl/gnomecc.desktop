@@ -1,0 +1,19 @@
+[Desktop Entry]
+Name=GNOME Control Center
+Name[es]=Centro de Control GNOME
+Name[fr]=Centre de contrôle GNOME
+Name[ko]=±×³ğ Á¶Á¾ÆÇ
+Name[no]=GNOME kontrollsenter
+Name[pt]=Centro de Controlo GNOME
+Name[ru]=ãÅÎÔÒ õĞÒÁ×ÌÅÎÉÑ GNOME
+Comment=The GNOME configuration tool.
+Comment[es]=Herramienta de configuración del entorno GNOME
+Comment[fr]=Outil de configuration de GNOME.
+Comment[ko]=±×³ğ ¼³Á¤ ÇÁ·Î±×·¥
+Comment[no]=Konfigurasjonsverktøy for GNOME
+Comment[pt]=A ferramenta de configuração GNOME.
+Comment[ru]=óÒÅÄÓÔ×Ï ËÏÎÆÉÇÕÒÁÃÉÉ GNOME
+Icon=control-center.png
+Exec=gnomecc
+Terminal=0
+Type=Application

@@ -1,0 +1,1023 @@
+--- control-center-1.0.5/capplets/mime-type/edit-window.c.addmime	Mon Mar 15 13:30:54 1999
++++ control-center-1.0.5/capplets/mime-type/edit-window.c	Tue Apr 13 15:46:30 1999
+@@ -145,12 +145,18 @@
+ 	gtk_box_pack_start (GTK_BOX (hbox), main_win->regexp2_label, FALSE, FALSE, 0);
+ 
+ 	/* Actions box */
+-	frame = gtk_frame_new (_("Mime-Type Actions"));
++	frame = gtk_frame_new (_("Mime Type Actions"));
++	vbox2 = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+ 	gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+ 	table = gtk_table_new (3, 2, FALSE);
+ 	gtk_table_set_row_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
+ 	gtk_container_set_border_width (GTK_CONTAINER (table), GNOME_PAD_SMALL);
+-	gtk_container_add (GTK_CONTAINER (frame), table);
++	gtk_container_add (GTK_CONTAINER (frame), vbox2);
++	label = gtk_label_new (_("Example: emacs %f"));
++	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
++	gtk_misc_set_padding (GTK_MISC (label), 2, 0);
++	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
++	gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
+ 	label = gtk_label_new (_("Open"));
+ 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+ 	gtk_misc_set_padding (GTK_MISC (label), 2, 0);
+@@ -213,8 +219,11 @@
+ void
+ initialize_main_win_vals (void)
+ {
+-	MimeInfo *mi = main_win->mi;
++	MimeInfo *mi;
+ 	gchar *title;
++	if (main_win == NULL)
++		return;
++	mi = main_win->mi;
+ 	if (mi == NULL)
+ 		return;
+ 	/* now we fill in the fields with the mi stuff. */
+@@ -277,11 +286,14 @@
+ 	main_win->mi = mi;
+ 	initialize_main_win_vals ();
+ 
+-	if  ((gnome_dialog_run (GNOME_DIALOG (main_win->window))) == 0) {
++	switch(gnome_dialog_run (GNOME_DIALOG (main_win->window))) {
++	case 0:
+ 		apply_changes (mi);
++	case 1:
++		main_win->mi = NULL;
++		gtk_widget_hide (main_win->window);
++		break;
+ 	}
+-	main_win->mi = NULL;
+-	gtk_widget_hide (main_win->window);
+ }
+ 
+ void
+--- control-center-1.0.5/capplets/mime-type/mime-info.h.addmime	Mon Mar 15 13:32:48 1999
++++ control-center-1.0.5/capplets/mime-type/mime-info.h	Tue Apr 13 15:46:31 1999
+@@ -8,10 +8,10 @@
+ #include <regex.h>
+ /* Typedefs */
+ void init_mime_info (void);
+-void discard_mime_info (void);
++void discard_key_info (void);
+ void set_mime_key_value (gchar *mime_type, gchar *key, gchar *value);
+ const char * local_mime_get_value (const char *mime_type, char *key);
+ void write_user_keys (void);
+ void write_initial_keys (void);
+-
++void remove_mime_info (gchar *mime_type);
+ #endif
+--- control-center-1.0.5/capplets/mime-type/mime-type.desktop.addmime	Sun Mar 14 21:55:45 1999
++++ control-center-1.0.5/capplets/mime-type/mime-type.desktop	Tue Apr 13 15:46:31 1999
+@@ -1,8 +1,18 @@
+ [Desktop Entry]
+ Name=Mime Types
++Name[es]=Tipos MIME
++Name[fi]=MIME-tyypit
++Name[fr]=Types MIME
++Name[it]=Tipi MIME
+ Name[no]=Mime typer
++Name[wa]=Sôrtes MIME
+ Comment=Configure how files are associated and started.
++Comment[es]=Configura los tipos de archivos y los programas asociados para manejarlos.
++Comment[fi]=Aseta tiedostoassosiaatiot ja avaajat.
++Comment[fr]=Configure les types de fichier et les programmes y associés
++Comment[it]=Configura i tipi di files e le applicazioni usate per aprirli
+ Comment[no]=Konfigurer hvordan filer er assosiert og startet.
++Comment[wa]=Apontyî les sôrtes di fitchî èt les programes po les drovî.
+ Exec=mime-type-capplet
+ Terminal=0
+ Type=Application
+--- control-center-1.0.5/capplets/mime-type/Makefile.am.addmime	Fri Mar 26 11:19:38 1999
++++ control-center-1.0.5/capplets/mime-type/Makefile.am	Tue Apr 13 15:46:30 1999
+@@ -8,7 +8,8 @@
+ 
+ mime_type_capplet_SOURCES = mime-type-capplet.c\
+ 	mime-data.h mime-data.c edit-window.c\
+-	edit-window.h mime-info.c mime-info.h
++	edit-window.h mime-info.c mime-info.h \
++	new-mime-window.h new-mime-window.c
+ 
+ mime_type_capplet_LDADD = ../../control-center/libcapplet.la \
+ 			     $(GNOME_LIBDIR) $(ORB_LIBS) \
+--- control-center-1.0.5/capplets/mime-type/mime-data.c.addmime	Mon Mar 15 13:31:55 1999
++++ control-center-1.0.5/capplets/mime-type/mime-data.c	Tue Apr 13 15:46:30 1999
+@@ -13,19 +13,40 @@
+ #include "edit-window.h"
+ #include "mime-data.h"
+ #include "mime-info.h"
++#include "new-mime-window.h"
++#include <sys/stat.h>
++#include <unistd.h>
++#include <errno.h>
++
++
+ /* Prototypes */
+-static void mime_fill_from_file (const char *filename);
++static void mime_fill_from_file (const char *filename, gboolean init_user);
+ static void mime_load_from_dir (const char *mime_info_dir, gboolean system_dir);
+-static void add_to_key (char *mime_type, char *def);
++static void add_to_key (char *mime_type, char *def, GHashTable *table);
+ static char *get_priority (char *def, int *priority);
+ 
+ 
+ /* Global variables */
+ static char *current_lang;
+ static GHashTable *mime_types = NULL;
++static GHashTable *initial_user_mime_types = NULL;
++static GHashTable *user_mime_types = NULL;
+ static GtkWidget *clist = NULL;
+-
++extern GtkWidget *delete_button;
++extern GtkWidget *capplet;
+ /* Initialization functions */
++static void
++run_error (gchar *message)
++{
++	GtkWidget *error_box;
++
++	error_box = gnome_message_box_new (
++		message,
++		GNOME_MESSAGE_BOX_ERROR,
++		GNOME_STOCK_BUTTON_OK,
++		NULL);
++	gnome_dialog_run_and_close (GNOME_DIALOG (error_box));
++}
+ static char *
+ get_priority (char *def, int *priority)
+ {
+@@ -48,14 +69,19 @@
+ 	return def;
+ }
+ static void
+-add_to_key (char *mime_type, char *def)
++free_mime_info (MimeInfo *mi)
++{
++
++}
++static void
++add_to_key (char *mime_type, char *def, GHashTable *table)
+ {
+ 	int priority = 1;
+ 	char *s, *p, *ext;
+ 	int used;
+ 	MimeInfo *info;
+ 
+-	info = g_hash_table_lookup (mime_types, (const void *) mime_type);
++	info = g_hash_table_lookup (table, (const void *) mime_type);
+ 	if (info == NULL) {
+ 		info = g_malloc (sizeof (MimeInfo));
+ 		info->mime_type = g_strdup (mime_type);
+@@ -68,7 +94,7 @@
+                 info->ext_readable[0] = NULL;
+                 info->ext_readable[1] = NULL;
+                 info->keys = gnome_mime_get_keys (mime_type);
+-		g_hash_table_insert (mime_types, mime_type, info);
++		g_hash_table_insert (table, info->mime_type, info);
+ 	}
+ 	if (strncmp (def, "ext", 3) == 0){
+ 		char *tokp;
+@@ -111,7 +137,7 @@
+ 	}
+ }
+ static void
+-mime_fill_from_file (const char *filename)
++mime_fill_from_file (const char *filename, gboolean init_user)
+ {
+ 	FILE *f;
+ 	char buf [1024];
+@@ -152,8 +178,11 @@
+ 
+ 				if (*p == 0)
+ 					continue;
+-				
+-				add_to_key (current_key, p);
++				add_to_key (current_key, p, mime_types);
++				if (init_user) {
++                                        add_to_key (current_key, p, initial_user_mime_types);
++                                        add_to_key (current_key, p, user_mime_types);
++                                }
+ 				used = TRUE;
+ 			}
+ 		} else {
+@@ -182,7 +211,7 @@
+ 		return;
+ 	if (system_dir) {
+ 		filename = g_concat_dir_and_file (mime_info_dir, "gnome.mime");
+-		mime_fill_from_file (filename);
++		mime_fill_from_file (filename, FALSE);
+ 		g_free (filename);
+ 	}
+ 	while ((dent = readdir (dir)) != NULL){
+@@ -200,17 +229,17 @@
+ 			continue;
+ 		
+ 		filename = g_concat_dir_and_file (mime_info_dir, dent->d_name);
+-		mime_fill_from_file (filename);
++		mime_fill_from_file (filename, FALSE);
+ 		g_free (filename);
+ 	}
+ 	if (!system_dir) {
+ 		filename = g_concat_dir_and_file (mime_info_dir, "user.mime");
+-		mime_fill_from_file (filename);
++		mime_fill_from_file (filename, TRUE);
+ 		g_free (filename);
+ 	}
+ 	closedir (dir);
+ }
+-static void
++static int
+ add_mime_vals_to_clist (gchar *mime_type, gpointer mi, gpointer cl)
+ {
+         /* we also finalize the MimeInfo structure here, now that we're done
+@@ -255,8 +284,8 @@
+         row = gtk_clist_insert (GTK_CLIST (cl), 1, text);
+         gtk_clist_set_row_data (GTK_CLIST (cl), row, mi);
+         g_string_free (extension, TRUE);
++        return row;
+ }
+-
+ static void
+ selected_row_callback (GtkWidget *widget, gint row, gint column, GdkEvent *event, gpointer data)
+ {
+@@ -268,11 +297,36 @@
+         
+         if (event && event->type == GDK_2BUTTON_PRESS)
+                 launch_edit_window (mi);
++
++        if (g_hash_table_lookup (user_mime_types, mi->mime_type)) {
++                gtk_widget_set_sensitive (delete_button, TRUE);
++        } else
++                gtk_widget_set_sensitive (delete_button, FALSE);
+ }
+ 
+ /* public functions */
+ void
+-edit_clicked ()
++delete_clicked (GtkWidget *widget, gpointer data)
++{
++        MimeInfo *mi;
++        gint row = 0;
++
++        if (GTK_CLIST (clist)->selection)
++                row = GPOINTER_TO_INT ((GTK_CLIST (clist)->selection)->data);
++        else
++                return;
++        mi = (MimeInfo *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
++
++        gtk_clist_remove (GTK_CLIST (clist), row);
++        g_hash_table_remove (user_mime_types, mi->mime_type);
++        remove_mime_info (mi->mime_type);
++        free_mime_info (mi);
++        capplet_widget_state_changed (CAPPLET_WIDGET (capplet),
++                                      TRUE);
++}
++
++void
++edit_clicked (GtkWidget *widget, gpointer data)
+ {
+         MimeInfo *mi;
+         gint row = 0;
+@@ -285,6 +339,11 @@
+         if (mi)
+                 launch_edit_window (mi);
+ }
++void
++add_clicked (GtkWidget *widget, gpointer data)
++{
++        launch_new_mime_window ();
++}
+ 
+ GtkWidget *
+ get_mime_clist (void)
+@@ -312,12 +371,59 @@
+         gtk_container_add (GTK_CONTAINER (retval), clist);
+         return retval;
+ }
++
++static void
++finalize_mime_type_foreach (gpointer mime_type, gpointer info, gpointer data)
++{
++        MimeInfo *mi = (MimeInfo *)info;
++        GList *list;
++        GString *extension;
++        gint row;
++        
++        extension = g_string_new ("");
++        for (list = ((MimeInfo *) mi)->ext[0];list; list=list->next) {
++                g_string_append (extension, (gchar *) list->data);
++                if (list->next != NULL)
++                        g_string_append (extension, ", ");
++        }
++        ((MimeInfo *) mi)->ext_readable[0] = extension->str;
++        g_string_free (extension, FALSE);
++        
++        extension = g_string_new ("");
++        for (list = ((MimeInfo *) mi)->ext[1];list; list=list->next) {
++                g_string_append (extension, (gchar *) list->data);
++                if (list->next)
++                        g_string_append (extension, ", ");
++        }
++        ((MimeInfo *) mi)->ext_readable[1] = extension->str;
++        g_string_free (extension, FALSE);
++
++        if (((MimeInfo *) mi)->ext[0]) {
++                extension = g_string_new ((((MimeInfo *) mi)->ext_readable[0]));
++                if (((MimeInfo *) mi)->ext[1]) {
++                        g_string_append (extension, ", ");
++                        g_string_append (extension, (((MimeInfo *) mi)->ext_readable[1]));
++                }
++        } else if (((MimeInfo *) mi)->ext[1])
++                extension = g_string_new ((((MimeInfo *) mi)->ext_readable[1]));
++        else
++                extension = g_string_new ("");
++        g_string_free (extension, TRUE);
++}
++static void
++finalize_user_mime ()
++{
++        g_hash_table_foreach (user_mime_types, finalize_mime_type_foreach, NULL);
++        g_hash_table_foreach (initial_user_mime_types, finalize_mime_type_foreach, NULL);
++}
+ void
+ init_mime_type (void)
+ {
+ 	char *mime_info_dir;
+ 	
+ 	mime_types = g_hash_table_new (g_str_hash, g_str_equal);
++	initial_user_mime_types = g_hash_table_new (g_str_hash, g_str_equal);
++	user_mime_types = g_hash_table_new (g_str_hash, g_str_equal);
+ 
+ 	mime_info_dir = gnome_unconditional_datadir_file ("mime-info");
+ 	mime_load_from_dir (mime_info_dir, TRUE);
+@@ -326,5 +432,180 @@
+ 	mime_info_dir = g_concat_dir_and_file (gnome_util_user_home (), ".gnome/mime-info");
+ 	mime_load_from_dir (mime_info_dir, FALSE);
+ 	g_free (mime_info_dir);
++        finalize_user_mime ();
+         init_mime_info ();
+ }
++void
++add_new_mime_type (gchar *mime_type, gchar *raw_ext, gchar *regexp1, gchar *regexp2)
++{
++        gchar *temp;
++        MimeInfo *mi = NULL;
++        gint row;
++        gchar *ext = NULL;
++        gchar *ptr, *ptr2;
++        
++        /* first we make sure that the information is good */
++        if (mime_type == NULL || *mime_type == '\000') {
++                run_error (_("You must enter a mime-type"));
++                return;
++        } else if ((raw_ext == NULL || *raw_ext == '\000') &&
++                   (regexp1 == NULL || *regexp1 == '\000') &&
++                   (regexp2 == NULL || *regexp2 == '\000')){
++                run_error (_("You must add either a regular-expression or\na file-name extension"));
++                return;
++        }
++        if (strchr (mime_type, '/') == NULL) {
++                run_error (_("Please put your mime-type in the format:\nCATEGORY/TYPE\n\nFor Example:\nimage/x-png"));
++                return;
++        }
++        if (g_hash_table_lookup (user_mime_types, mime_type) ||
++            g_hash_table_lookup (mime_types, mime_type)) {
++                run_error (_("This mime-type already exists"));
++                return;
++        }
++        if (raw_ext || *raw_ext) {
++                ptr2 = ext = g_malloc (sizeof (raw_ext));
++                for (ptr = raw_ext;*ptr; ptr++) {
++                        if (*ptr != '.' && *ptr != ',') {
++                                *ptr2 = *ptr;
++                                ptr2 += 1;
++                        }
++                }
++                *ptr2 = '\000';
++        }
++        /* passed check, now we add it. */
++        if (ext) {
++                temp = g_strconcat ("ext: ", ext, NULL);
++                add_to_key (mime_type, temp, user_mime_types);
++                mi = (MimeInfo *) g_hash_table_lookup (user_mime_types, mime_type);
++                g_free (temp);
++        }
++        if (regexp1) {
++                temp = g_strconcat ("regex: ", regexp1, NULL);
++                add_to_key (mime_type, temp, user_mime_types);
++                g_free (temp);
++        }
++        if (regexp2) {
++                temp = g_strconcat ("regex,2: ", regexp2, NULL);
++                add_to_key (mime_type, temp, user_mime_types);
++                g_free (temp);
++        }
++        /* Finally add it to the clist */
++        if (mi) {
++                row = add_mime_vals_to_clist (mime_type, mi, clist);
++                gtk_clist_select_row (GTK_CLIST (clist), row, 0);
++                gtk_clist_moveto (GTK_CLIST (clist), row, 0, 0.5, 0.0);
++        }
++        g_free (ext);
++}
++static void
++write_mime_foreach (gpointer mime_type, gpointer info, gpointer data)
++{
++	gchar *buf;
++	MimeInfo *mi = (MimeInfo *) info;
++	fwrite ((char *) mi->mime_type, 1, strlen ((char *) mi->mime_type), (FILE *) data);
++	fwrite ("\n", 1, 1, (FILE *) data);
++        if (mi->ext_readable[0]) {
++                fwrite ("\text: ", 1, strlen ("\text: "), (FILE *) data);
++                fwrite (mi->ext_readable[0], 1,
++                        strlen (mi->ext_readable[0]),
++                        (FILE *) data);
++                fwrite ("\n", 1, 1, (FILE *) data);
++        }
++        if (mi->regex_readable[0]) {
++                fwrite ("\tregex: ", 1, strlen ("\tregex: "), (FILE *) data);
++                fwrite (mi->regex_readable[0], 1,
++                        strlen (mi->regex_readable[0]),
++                        (FILE *) data);
++                fwrite ("\n", 1, 1, (FILE *) data);
++        }
++        if (mi->regex_readable[1]) {
++                fwrite ("\tregex,2: ", 1, strlen ("\tregex,2: "), (FILE *) data);
++                fwrite (mi->regex_readable[1], 1,
++                        strlen (mi->regex_readable[1]),
++                        (FILE *) data);
++                fwrite ("\n", 1, 1, (FILE *) data);
++        }
++        fwrite ("\n", 1, 1, (FILE *) data);
++}
++
++static void
++write_mime (GHashTable *hash)
++{
++	struct stat s;
++	gchar *dirname, *filename;
++	FILE *file;
++	GtkWidget *error_box;
++
++	dirname = g_concat_dir_and_file (gnome_util_user_home (), ".gnome/mime-info");
++	if ((stat (dirname, &s) < 0) || !(S_ISDIR (s.st_mode))){
++		if (errno == ENOENT) {
++			if (mkdir (dirname, S_IRWXU) < 0) {
++				run_error ("We are unable to create the directory\n"
++					   "~/.gnome/mime-info\n\n"
++					   "We will not be able to save the state.");
++				return;
++			}
++		} else {
++			run_error ("We are unable to access the directory\n"
++				   "~/.gnome/mime-info\n\n"
++				   "We will not be able to save the state.");
++			return;
++		}
++	}
++	filename = g_concat_dir_and_file (dirname, "user.mime");
++        
++        remove (filename);
++	file = fopen (filename, "w");
++	if (file == NULL) {
++		run_error (_("Cannot create the file\n~/.gnome/mime-info/user.mime\n\n"
++			     "We will not be able to save the state"));
++		return;
++	}
++	g_hash_table_foreach (hash, write_mime_foreach, file);
++	fclose (file);
++}
++
++void
++write_user_mime (void)
++{
++        write_mime (user_mime_types);
++}
++
++void
++write_initial_mime (void)
++{
++        write_mime (initial_user_mime_types);
++}
++
++void
++reread_list ()
++{
++        gtk_clist_freeze (GTK_CLIST (clist));
++        gtk_clist_clear (GTK_CLIST (clist));
++        g_hash_table_foreach (mime_types, (GHFunc) add_mime_vals_to_clist, clist);
++        gtk_clist_thaw (GTK_CLIST (clist));
++}
++static void
++clean_mime_type (gpointer mime_type, gpointer mime_info, gpointer data)
++{
++        /* we should write this )-: */
++}
++void
++discard_mime_info ()
++{
++        gchar *filename;
++	g_hash_table_foreach (user_mime_types, clean_mime_type, NULL);
++	g_hash_table_destroy (user_mime_types);
++	g_hash_table_foreach (initial_user_mime_types, clean_mime_type, NULL);
++	g_hash_table_destroy (initial_user_mime_types);
++	user_mime_types = g_hash_table_new (g_str_hash, g_str_equal);
++        initial_user_mime_types = g_hash_table_new (g_str_hash, g_str_equal);
++        
++	filename = g_concat_dir_and_file (gnome_util_user_home (), "/.gnome/mime-info/user.keys");
++	mime_fill_from_file (filename, TRUE);
++        finalize_user_mime ();
++        reread_list ();
++	g_free (filename);
++}
++
+--- control-center-1.0.5/capplets/mime-type/new-mime-window.c.addmime	Tue Apr 13 15:42:01 1999
++++ control-center-1.0.5/capplets/mime-type/new-mime-window.c	Tue Apr 13 15:46:31 1999
+@@ -0,0 +1,115 @@
++#include "new-mime-window.h"
++#include "capplet-widget.h"
++static GtkWidget *add_dialog = NULL;
++extern GtkWidget *capplet;
++
++/*Public functions */
++void
++launch_new_mime_window (void)
++{
++        GtkWidget *mime_entry;
++	GtkWidget *label;
++	GtkWidget *frame;
++	GtkWidget *ext_entry;
++	GtkWidget *regex1_entry;
++	GtkWidget *regex2_entry;
++	GtkWidget *hbox;
++	GtkWidget *vbox;
++	GtkWidget *table;
++	
++        add_dialog = gnome_dialog_new (_("Add Mime Type"), GNOME_STOCK_BUTTON_OK, GNOME_STOCK_BUTTON_CANCEL, NULL);
++	label = gtk_label_new (_("Add a new Mime Type\nFor example:  image/tiff; text/x-scheme"));
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
++        gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (add_dialog)->vbox), hbox, FALSE, FALSE, 0);
++	label = gtk_label_new (_("Mime Type:"));
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
++	mime_entry = gtk_entry_new ();
++        gtk_box_pack_start (GTK_BOX (hbox), mime_entry, TRUE, TRUE, 0);
++        gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (add_dialog)->vbox), hbox, FALSE, FALSE, 0);
++	
++	frame = gtk_frame_new (_("Extensions"));
++        gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (add_dialog)->vbox), frame, FALSE, FALSE, 0);
++	vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_container_set_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
++	label = gtk_label_new (_("Type in the extensions for this mime-type.\nFor example:  .html, .htm"));
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
++	gtk_container_add (GTK_CONTAINER (frame), vbox);
++	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
++	hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_box_pack_start (GTK_BOX (hbox), gtk_label_new (_("Extension:")), FALSE, FALSE, 0);
++	ext_entry = gtk_entry_new ();
++	gtk_box_pack_start (GTK_BOX (hbox), ext_entry, TRUE, TRUE, 0);
++	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
++
++	frame = gtk_frame_new (_("Regular Expresions"));
++        gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (add_dialog)->vbox), frame, FALSE, FALSE, 0);
++	vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_container_set_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
++	label = gtk_label_new (_("You can set up two regular expressions here to identify the Mime Type\nby.  These fields are optional."));
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
++	gtk_container_add (GTK_CONTAINER (frame), vbox);
++	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
++	gtk_box_pack_start (GTK_BOX (vbox), gtk_hseparator_new (), FALSE, FALSE, 0);
++	table = gtk_table_new (2, 2, FALSE);
++	gtk_table_set_row_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
++/*	gtk_container_set_border_width (GTK_CONTAINER (table), GNOME_PAD_SMALL);*/
++	label = gtk_label_new (_("First Regular Expression: "));
++	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	gtk_table_attach (GTK_TABLE (table),
++			  label,
++			  0, 1, 0, 1,
++			  GTK_FILL, GTK_FILL, 0, 0);
++	regex1_entry = gtk_entry_new ();
++	gtk_table_attach_defaults (GTK_TABLE (table),
++				   regex1_entry,
++				   1, 2, 0, 1);
++	label = gtk_label_new (_("Second Regular Expression: "));
++	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
++	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
++	gtk_table_attach (GTK_TABLE (table),
++			  label,
++			  0, 1, 1, 2,
++			  GTK_FILL, GTK_FILL, 0, 0);
++	regex2_entry = gtk_entry_new ();
++	gtk_table_attach_defaults (GTK_TABLE (table),
++				   regex2_entry,
++				   1, 2, 1, 2);
++	gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
++	
++	
++        gtk_widget_show_all (GNOME_DIALOG (add_dialog)->vbox);
++        switch (gnome_dialog_run (GNOME_DIALOG (add_dialog))) {
++        case 0:
++		capplet_widget_state_changed (CAPPLET_WIDGET (capplet),
++					      TRUE);
++                add_new_mime_type (gtk_entry_get_text (GTK_ENTRY (mime_entry)),
++				   gtk_entry_get_text (GTK_ENTRY (ext_entry)),
++				   gtk_entry_get_text (GTK_ENTRY (regex1_entry)),
++				   gtk_entry_get_text (GTK_ENTRY (regex2_entry)));
++        case 1:
++                gtk_widget_destroy (add_dialog);
++        default:;
++        }
++	add_dialog = NULL;
++}
++void
++hide_new_mime_window (void)
++{
++	if (add_dialog != NULL)
++		gtk_widget_hide (add_dialog);
++}
++void
++show_new_mime_window (void)
++{
++	if (add_dialog != NULL)
++		gtk_widget_show (add_dialog);
++}
+--- control-center-1.0.5/capplets/mime-type/new-mime-window.h.addmime	Tue Apr 13 15:42:04 1999
++++ control-center-1.0.5/capplets/mime-type/new-mime-window.h	Tue Apr 13 15:46:31 1999
+@@ -0,0 +1,14 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*- */
++/* Copyright (C) 1998 Redhat Software Inc. 
++ * Authors: Jonathan Blandford <jrb@redhat.com>
++ */
++#include "mime-data.h"
++#ifndef _NEW_MIME_WINDOW_H_
++#define _NEW_MIME_WINDOW_H_
++
++void launch_new_mime_window (void);
++void hide_new_mime_window (void);
++void show_new_mime_window (void);
++
++#endif
++
+--- control-center-1.0.5/capplets/mime-type/mime-info.c.addmime	Mon Mar 15 13:32:38 1999
++++ control-center-1.0.5/capplets/mime-type/mime-info.c	Tue Apr 13 15:46:31 1999
+@@ -103,7 +103,7 @@
+ static gboolean
+ remove_this_key (gpointer key, gpointer value, gpointer user_data)
+ {
+-	if (strcmp (key, user_data) == 0){
++	if (strcmp ((gchar *)key, (gchar *)user_data) == 0){
+ 		g_free (key);
+ 		g_free (value);
+ 		return TRUE;
+@@ -307,10 +307,8 @@
+ 		GString *str = g_string_new (mime_type);
+ 		context = context_new (str, FALSE);
+ 		g_string_free (str, TRUE);
+-		g_hash_table_insert (specific_types, mime_type, context);
+ 	}
+ 	context_add_key (context, key, value);
+-	
+ }
+ void
+ init_mime_info (void)
+@@ -326,7 +324,6 @@
+ 	filename = g_concat_dir_and_file (gnome_util_user_home (), "/.gnome/mime-info/user.keys");
+ 	load_mime_type_info_from (filename);
+ 	g_free (filename);
+-
+ }
+ 
+ const char *
+@@ -458,23 +455,34 @@
+ {
+ 	write_keys (generic_types, specific_types);
+ }
++static void
++print_mime_foreach (gpointer mime_info, gpointer mi, gpointer data)
++{
++        g_print ("mime_info:%s:\n", (char *)mime_info);
++        g_print ("\t:%s:\n", ((MimeInfo *)mi)->mime_type);
++}
+ void
+-discard_mime_info (void)
++discard_key_info (void)
+ {
+ 	gchar *filename;
+ 	
+ 	current_lang = getenv ("LANG");
+ 	g_hash_table_foreach (generic_types, clean_mime_foreach, NULL);
++/*        g_hash_table_foreach (specific_types, print_mime_foreach, NULL);*/
+ 	g_hash_table_foreach (specific_types, clean_mime_foreach, NULL);
+ 	g_hash_table_destroy (generic_types);
+ 	g_hash_table_destroy (specific_types);
+ 	specific_types = g_hash_table_new (g_str_hash, g_str_equal);
+ 	generic_types  = g_hash_table_new (g_str_hash, g_str_equal);
+-	initial_specific_types = g_hash_table_new (g_str_hash, g_str_equal);
+-	initial_generic_types  = g_hash_table_new (g_str_hash, g_str_equal);
+ 
+ 	filename = g_concat_dir_and_file (gnome_util_user_home (), "/.gnome/mime-info/user.keys");
+ 	load_mime_type_info_from (filename);
++        reread_list ();
+ 	g_free (filename);
+-
++}
++void
++remove_mime_info (gchar *mime_type)
++{
++        g_hash_table_remove (generic_types, mime_type);
++        g_hash_table_remove (specific_types, mime_type);
+ }
+--- control-center-1.0.5/capplets/mime-type/Makefile.in.addmime	Thu Apr  1 19:19:02 1999
++++ control-center-1.0.5/capplets/mime-type/Makefile.in	Tue Apr 13 15:46:30 1999
+@@ -137,7 +137,7 @@
+ 
+ bin_PROGRAMS = mime-type-capplet
+ 
+-mime_type_capplet_SOURCES = mime-type-capplet.c 	mime-data.h mime-data.c edit-window.c 	edit-window.h mime-info.c mime-info.h
++mime_type_capplet_SOURCES = mime-type-capplet.c 	mime-data.h mime-data.c edit-window.c 	edit-window.h mime-info.c mime-info.h 	new-mime-window.h new-mime-window.c
+ 
+ 
+ mime_type_capplet_LDADD = ../../control-center/libcapplet.la 			     $(GNOME_LIBDIR) $(ORB_LIBS) 			     $(GNOMEUI_LIBS) $(INTLLIBS) -lgnorba
+@@ -158,7 +158,7 @@
+ CPPFLAGS = @CPPFLAGS@
+ LIBS = @LIBS@
+ mime_type_capplet_OBJECTS =  mime-type-capplet.o mime-data.o \
+-edit-window.o mime-info.o
++edit-window.o mime-info.o new-mime-window.o
+ mime_type_capplet_DEPENDENCIES =  ../../control-center/libcapplet.la
+ mime_type_capplet_LDFLAGS = 
+ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@@ -167,13 +167,15 @@
+ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+ DATA =  $(sys_DATA)
+ 
+-DIST_COMMON =  README Makefile.am Makefile.in
++DIST_COMMON =  Makefile.am Makefile.in
+ 
+ 
+ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+ 
+ TAR = gtar
+ GZIP_ENV = --best
++DEP_FILES =  .deps/edit-window.P .deps/mime-data.P .deps/mime-info.P \
++.deps/mime-type-capplet.P .deps/new-mime-window.P
+ SOURCES = $(mime_type_capplet_SOURCES)
+ OBJECTS = $(mime_type_capplet_OBJECTS)
+ 
+@@ -181,9 +183,9 @@
+ .SUFFIXES:
+ .SUFFIXES: .S .c .lo .o .s
+ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps capplets/mime-type/Makefile
++	cd $(top_srcdir) && $(AUTOMAKE) --gnu capplets/mime-type/Makefile
+ 
+-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
++Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+ 	cd $(top_builddir) \
+ 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+ 
+@@ -213,9 +215,6 @@
+ 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+ 	done
+ 
+-.c.o:
+-	$(COMPILE) -c $<
+-
+ .s.o:
+ 	$(COMPILE) -c $<
+ 
+@@ -232,9 +231,6 @@
+ 
+ maintainer-clean-compile:
+ 
+-.c.lo:
+-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+-
+ .s.lo:
+ 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+ 
+@@ -308,6 +304,11 @@
+ subdir = capplets/mime-type
+ 
+ distdir: $(DISTFILES)
++	here=`cd $(top_builddir) && pwd`; \
++	top_distdir=`cd $(top_distdir) && pwd`; \
++	distdir=`cd $(distdir) && pwd`; \
++	cd $(top_srcdir) \
++	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu capplets/mime-type/Makefile
+ 	@for file in $(DISTFILES); do \
+ 	  d=$(srcdir); \
+ 	  if test -d $$d/$$file; then \
+@@ -318,19 +319,38 @@
+ 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+ 	  fi; \
+ 	done
+-edit-window.o: edit-window.c edit-window.h mime-data.h mime-info.h \
+-	../../control-center/capplet-widget.h
+-mime-data.o: mime-data.c ../../config.h \
+-	../../control-center/capplet-widget.h edit-window.h mime-data.h \
+-	mime-info.h
+-mime-info.o: mime-info.c ../../config.h \
+-	../../control-center/capplet-widget.h mime-info.h mime-data.h
+-mime-type-capplet.o: mime-type-capplet.c ../../config.h \
+-	../../control-center/capplet-widget.h mime-data.h mime-info.h \
+-	edit-window.h
+-mime-type.o: mime-type.c ../../config.h \
+-	../../control-center/capplet-widget.h
+ 
++DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
++
++-include $(DEP_FILES)
++
++mostlyclean-depend:
++
++clean-depend:
++
++distclean-depend:
++	-rm -rf .deps
++
++maintainer-clean-depend:
++
++%.o: %.c
++	@echo '$(COMPILE) -c $<'; \
++	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
++	@-cp .deps/$(*F).pp .deps/$(*F).P; \
++	tr ' ' '\012' < .deps/$(*F).pp \
++	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
++	    >> .deps/$(*F).P; \
++	rm .deps/$(*F).pp
++
++%.lo: %.c
++	@echo '$(LTCOMPILE) -c $<'; \
++	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
++	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
++	  < .deps/$(*F).pp > .deps/$(*F).P; \
++	tr ' ' '\012' < .deps/$(*F).pp \
++	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
++	    >> .deps/$(*F).P; \
++	rm -f .deps/$(*F).pp
+ info-am:
+ info: info-am
+ dvi-am:
+@@ -368,26 +388,27 @@
+ 
+ maintainer-clean-generic:
+ mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+-		mostlyclean-libtool mostlyclean-tags \
++		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
+ 		mostlyclean-generic
+ 
+ mostlyclean: mostlyclean-am
+ 
+ clean-am:  clean-binPROGRAMS clean-compile clean-libtool clean-tags \
+-		clean-generic mostlyclean-am
++		clean-depend clean-generic mostlyclean-am
+ 
+ clean: clean-am
+ 
+ distclean-am:  distclean-binPROGRAMS distclean-compile distclean-libtool \
+-		distclean-tags distclean-generic clean-am
++		distclean-tags distclean-depend distclean-generic \
++		clean-am
+ 	-rm -f libtool
+ 
+ distclean: distclean-am
+ 
+ maintainer-clean-am:  maintainer-clean-binPROGRAMS \
+ 		maintainer-clean-compile maintainer-clean-libtool \
+-		maintainer-clean-tags maintainer-clean-generic \
+-		distclean-am
++		maintainer-clean-tags maintainer-clean-depend \
++		maintainer-clean-generic distclean-am
+ 	@echo "This command is intended for maintainers to use;"
+ 	@echo "it deletes files that may require special tools to rebuild."
+ 
+@@ -399,8 +420,9 @@
+ maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+ clean-libtool maintainer-clean-libtool uninstall-sysDATA \
+ install-sysDATA tags mostlyclean-tags distclean-tags clean-tags \
+-maintainer-clean-tags distdir info-am info dvi-am dvi check check-am \
+-installcheck-am installcheck install-exec-am install-exec \
++maintainer-clean-tags distdir mostlyclean-depend distclean-depend \
++clean-depend maintainer-clean-depend info-am info dvi-am dvi check \
++check-am installcheck-am installcheck install-exec-am install-exec \
+ install-data-local install-data-am install-data install-am install \
+ uninstall-am uninstall all-redirect all-am all installdirs \
+ mostlyclean-generic distclean-generic clean-generic \
+--- control-center-1.0.5/capplets/mime-type/mime-type-capplet.c.addmime	Fri Mar 26 11:21:15 1999
++++ control-center-1.0.5/capplets/mime-type/mime-type-capplet.c	Tue Apr 13 15:46:31 1999
+@@ -19,17 +19,33 @@
+ static void ok_callback ();
+ static void cancel_callback ();
+ static void help_callback ();
+-GtkWidget *capplet;
++GtkWidget *capplet = NULL;
++GtkWidget *delete_button = NULL;
++
++static GtkWidget *
++left_aligned_button (gchar *label)
++{
++  GtkWidget *button = gtk_button_new_with_label (label);
++  gtk_misc_set_alignment (GTK_MISC (GTK_BIN (button)->child),
++			  0.0, 0.5);
++  gtk_misc_set_padding (GTK_MISC (GTK_BIN (button)->child),
++			GNOME_PAD_SMALL, 0);
++
++  return button;
++}
+ 
+ static void
+ try_callback ()
+ {
+         write_user_keys ();
++        write_user_mime ();
+ }
+ static void
+ revert_callback ()
+ {
+         write_initial_keys ();
++        write_initial_mime ();
++        discard_key_info ();
+         discard_mime_info ();
+         initialize_main_win_vals ();
+ }
+@@ -37,11 +53,13 @@
+ ok_callback ()
+ {
+         write_user_keys ();
++        write_user_mime ();
+ }
+ static void
+ cancel_callback ()
+ {
+         write_initial_keys ();
++        write_initial_mime ();
+ }
+ static void
+ help_callback ()
+@@ -56,15 +74,25 @@
+         GtkWidget *button;
+ 
+ 	capplet = capplet_widget_new ();
++        delete_button = left_aligned_button (_("Delete"));
++        gtk_signal_connect (GTK_OBJECT (delete_button), "clicked",
++                            delete_clicked, NULL);
++                            
++        hbox = gtk_hbox_new (FALSE, GNOME_PAD);
++	gtk_container_set_border_width (GTK_CONTAINER (hbox), GNOME_PAD_SMALL);
++        gtk_container_add (GTK_CONTAINER (capplet), hbox);
++        gtk_box_pack_start (GTK_BOX (hbox), get_mime_clist (), TRUE, TRUE, 0);
+         vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+-        gtk_container_add (GTK_CONTAINER (capplet), vbox);
+-        gtk_box_pack_start (GTK_BOX (vbox), get_mime_clist (), TRUE, TRUE, 0);
+-        hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
+-        gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+-        button = gtk_button_new_with_label (_("Edit"));
+-        gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
++        gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
++        button = left_aligned_button (_("Add..."));
++        gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
++        gtk_signal_connect (GTK_OBJECT (button), "clicked",
++                            add_clicked, NULL);
++        button = left_aligned_button (_("Edit..."));
++        gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+         gtk_signal_connect (GTK_OBJECT (button), "clicked",
+                             edit_clicked, NULL);
++        gtk_box_pack_start (GTK_BOX (vbox), delete_button, FALSE, FALSE, 0);
+         gtk_widget_show_all (capplet);
+         gtk_signal_connect(GTK_OBJECT(capplet), "try",
+                            GTK_SIGNAL_FUNC(try_callback), NULL);
+--- control-center-1.0.5/capplets/mime-type/mime-data.h.addmime	Mon Mar 15 13:31:51 1999
++++ control-center-1.0.5/capplets/mime-type/mime-data.h	Tue Apr 13 15:46:30 1999
+@@ -19,6 +19,12 @@
+ 
+ GtkWidget *get_mime_clist (void);
+ void init_mime_type (void);
+-
+-
++void delete_clicked (GtkWidget *widget, gpointer data);
++void add_clicked (GtkWidget *widget, gpointer data);
++void edit_clicked (GtkWidget *widget, gpointer data);
++void add_new_mime_type (gchar *mime_type, gchar *ext, gchar *regexp1, gchar *regexp2);
++void write_user_mime (void);
++void write_initial_mime (void);
++void reread_list (void);
++void discard_mime_info (void);
+ #endif
+--- control-center-1.0.5/capplets/mime-type/edit-window.h.addmime	Mon Mar 15 13:31:02 1999
++++ control-center-1.0.5/capplets/mime-type/edit-window.h	Tue Apr 13 15:46:30 1999
+@@ -11,6 +11,5 @@
+ void initialize_main_win_vals (void);
+ void hide_edit_window (void);
+ void show_edit_window (void);
+-void edit_clicked (void);
+ 
+ #endif

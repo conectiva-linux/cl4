@@ -1,0 +1,118 @@
+diff -ru control-center-1.0.5.old/capplets/mouse-properties/mouse-properties.desktop control-center-1.0.5/capplets/mouse-properties/mouse-properties.desktop
+--- control-center-1.0.5.old/capplets/mouse-properties/mouse-properties.desktop	Thu Feb 25 03:42:46 1999
++++ control-center-1.0.5/capplets/mouse-properties/mouse-properties.desktop	Thu Jul  1 14:57:57 1999
+@@ -7,6 +7,7 @@
+ Name[fr]=Propriétés de la souris
+ Name[no]=Mus
+ Name[pt]=Propriedades do Rato
++Name[pt_BR]=Propriedades do Mouse
+ Name[ru]=íÙÛØ
+ Comment=Mouse Properties
+ Comment[es]=Modifica las propiedades del ratón
+@@ -16,6 +17,7 @@
+ Comment[fr]=Propriétés de la souris
+ Comment[no]=Egenskaper for mus
+ Comment[pt]=Modifica as propriedades do rato
++Comment[pt_BR]=Modifica as propriedades do Mouse
+ Comment[ru]=ó×ÏÊÓÔ×Á ÍÙÛÉ
+ Exec=mouse-properties-capplet
+ Icon=gnome-mouse.png
+diff -ru control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Ant.desktop control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Ant.desktop
+--- control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Ant.desktop	Mon Mar 22 13:51:57 1999
++++ control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Ant.desktop	Thu Jul  1 15:01:27 1999
+@@ -1,11 +1,13 @@
+ [Desktop Entry]
+ Name=Ant
+ Name[es]=Hormigas
++Name[pt_BR]=Formigas
+ Name[fr]=Fourmis
+ Name[ja]=µÂ
+ Name[no]=Maur
+ Name[ru]=íÕÒÁ×ÅÊ
+ Comment=Little Ants walk around, leaving colored trails.
++Comment[pt_BR]=Pequenas formigas deixando um rastro colorido.
+ Comment[es]=Pequeñas hormigas paseandose por la pantalla y dejando huellas de colores.
+ Comment[fr]=Petites fourmis qui se balladent sur l'écran et qui laissent des traces colorées.
+ Comment[no]=Små maur går rundt og etterlater seg fargede spor.
+diff -ru control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Attraction.desktop control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Attraction.desktop
+--- control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Attraction.desktop	Thu Apr  1 19:17:31 1999
++++ control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Attraction.desktop	Thu Jul  1 15:02:12 1999
+@@ -1,11 +1,13 @@
+ [Desktop Entry]
+ Name=Attraction
+ Name[es]=Atracción
++Name[pt_BR]=Atração
+ Name[fr]=Attraction
+ Name[no]=Attraksjon
+ Name[ru]=ğÒÉÔÑÖÅÎÉÅ
+ Comment= A show of objects interacting through attractive and repulsive forces.
+ Comment[es]=Varios objetos que interaccionan con fuerzas atractivas y repulsivas.
++Comment[pt_BR]=Vários objetos que interagem com forças de atração e repulsão.
+ Comment[fr]=Un show qui montre pluisuers objets qui interagissent avec des forces attractives et répulsives.
+ Comment[no]=En visning av objekter som blir påvirket av tiltrekkende og frastøtende krefter.
+ Exec=xscreensaver-command -activate
+diff -ru control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Qix.desktop control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Qix.desktop
+--- control-center-1.0.5.old/capplets/screensaver-properties/screensaver-desktops/Qix.desktop	Mon Mar 22 13:51:58 1999
++++ control-center-1.0.5/capplets/screensaver-properties/screensaver-desktops/Qix.desktop	Thu Jul  1 15:00:08 1999
+@@ -47,6 +47,7 @@
+ Label[no]=Hastighet:
+ Label[ru]=óËÏÒÏÓÔØ:
+ Comment=Changes the speed at which the Qix moves.
++Comment[pt_BR]=Muda a velocidade que o Qix se mexe
+ Comment[es]=Cambia la velocidad a la que se mueve la estructura
+ Comment[fr]=Change la vitesse de deplacement de la structure
+ Comment[no]=Endre hastigheten som Qix beveger seg i.
+@@ -58,6 +59,7 @@
+ ValType=I[1-8]=1
+ Flag=-count
+ Label=Count:
++Label[pt_BR]=Contador:
+ Label[es]=Conteo:
+ Label[fr]=Quantité:
+ Label[no]=Antall:
+@@ -68,6 +70,7 @@
+ LeftLabel[no]=Antall Qix:
+ LeftLabel[ru]=ëÏÌÌÉŞÅÓÔ×Ï Qix-Ï×:
+ Comment=Sets the number of Qix you have running at once.
++Comment[pt_BR]=Configura o número de Qix 
+ Comment[es]=Define la cantidad de "Qix" que corren por la pantalla al mismo tiempo.
+ Comment[fr]=Definit le nombre de « Qix » présents en même temps.
+ Comment[no]=Setter antallet qix som kjører samtidig.
+diff -ru control-center-1.0.5.old/capplets/screensaver-properties/screensaver-properties.desktop control-center-1.0.5/capplets/screensaver-properties/screensaver-properties.desktop
+--- control-center-1.0.5.old/capplets/screensaver-properties/screensaver-properties.desktop	Thu Feb 25 03:42:47 1999
++++ control-center-1.0.5/capplets/screensaver-properties/screensaver-properties.desktop	Thu Jul  1 14:58:30 1999
+@@ -6,6 +6,7 @@
+ Name[fr]=Propriétés Économiseur d'écran
+ Name[ko]=È­¸é º¸È£±â
+ Name[pt]=Propriedades da protecção de ecrã
++Name[pt_BR]=Propriedades da proteção de tela
+ Name[ru]=èÒÁÎÉÔÅÌØ ÜËÒÁÎÁ
+ Name[no]=Skjermsparer
+ Comment=Configure the settings of the screensaver.
+@@ -15,6 +16,7 @@
+ Comment[fr]=Configurer l'économiseur d'écran
+ Comment[ko]=È­¸é º¸È£±â ¼³Á¤
+ Comment[pt]=Configura as opções da protecção de ecrã.
++Comment[pt_BR]=Configura as opções da proteção de tela
+ Comment[no]=Endre innstillingene for skjermspareren
+ Comment[ru]=îÁÓÔÒÏÊËÁ ÈÒÁÎÉÔÅÌÑ ÜËÒÁÎÁ.
+ Exec=screensaver-properties-capplet
+diff -ru control-center-1.0.5.old/control-center/gnomecc.desktop control-center-1.0.5/control-center/gnomecc.desktop
+--- control-center-1.0.5.old/control-center/gnomecc.desktop	Fri Feb  5 15:30:19 1999
++++ control-center-1.0.5/control-center/gnomecc.desktop	Thu Jul  1 14:57:38 1999
+@@ -5,6 +5,7 @@
+ Name[ko]=±×³ğ Á¶Á¾ÆÇ
+ Name[no]=GNOME kontrollsenter
+ Name[pt]=Centro de Controlo GNOME
++Name[pt_BR]=Centro de Controle GNOME
+ Name[ru]=ãÅÎÔÒ õĞÒÁ×ÌÅÎÉÑ GNOME
+ Comment=The GNOME configuration tool.
+ Comment[es]=Herramienta de configuración del entorno GNOME
+@@ -12,6 +13,7 @@
+ Comment[ko]=±×³ğ ¼³Á¤ ÇÁ·Î±×·¥
+ Comment[no]=Konfigurasjonsverktøy for GNOME
+ Comment[pt]=A ferramenta de configuração GNOME.
++Comment[pt_BR]=A ferramenta de configuração GNOME
+ Comment[ru]=óÒÅÄÓÔ×Ï ËÏÎÆÉÇÕÒÁÃÉÉ GNOME
+ Icon=control-center.png
+ Exec=gnomecc
