@@ -1,0 +1,4 @@
+xchomp name "xchomp"
+xchomp description "Eat the dots"
+xchomp group Games/Video
+xchomp exec "xchomp &"

@@ -1,0 +1,40 @@
+--- xchomp/Makefile.makepatch	Sun Jun 27 03:43:05 1993
++++ xchomp/Makefile	Thu Nov  6 23:21:15 1997
+@@ -111,12 +111,12 @@
+      INSTDATFLAGS = -m 0444
+     INSTKMEMFLAGS = -s -m 4755
+ 
+-      PROJECTROOT = 	/usr/X386
++      PROJECTROOT = 	/usr/X11R6
+ 
+      TOP_INCLUDES = -I$(INCROOT)
+ 
+-      CDEBUGFLAGS = -O2
+-        CCOPTIONS = -m486 -DNO_ASM -fwritable-strings
++      CDEBUGFLAGS = 
++        CCOPTIONS = $(RPM_OPT_FLAGS) -DNO_ASM -fwritable-strings
+     ANSICCOPTIONS =
+ 
+       ALLINCLUDES = $(INCLUDES) $(EXTRA_INCLUDES) $(TOP_INCLUDES) $(STD_INCLUDES)
+@@ -152,9 +152,9 @@
+ # X Window System make variables; this need to be coordinated with rules
+ 
+           PATHSEP = /
+-        USRLIBDIR = 	/usr/X386/lib
+-           BINDIR = 	/usr/X386/bin
+-          INCROOT = 	/usr/X386/include
++        USRLIBDIR = 	/usr/X11R6/lib
++           BINDIR = 	/usr/X11R6/bin
++          INCROOT = 	/usr/X11R6/include
+      BUILDINCROOT = $(TOP)
+       BUILDINCDIR = $(BUILDINCROOT)/X11
+       BUILDINCTOP = ..
+@@ -168,7 +168,7 @@
+          XINITDIR = $(LIBDIR)/xinit
+            XDMDIR = $(LIBDIR)/xdm
+            TWMDIR = $(LIBDIR)/twm
+-          MANPATH = 	/usr/X386/man
++          MANPATH = 	/usr/X11R6/man
+     MANSOURCEPATH = $(MANPATH)/man
+         MANSUFFIX = 1x
+      LIBMANSUFFIX = 3x

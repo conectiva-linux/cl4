@@ -1,0 +1,12 @@
+diff -ur xchomp.orig/Imakefile xchomp/Imakefile
+--- xchomp.orig/Imakefile	Mon Feb 10 07:33:48 1992
++++ xchomp/Imakefile	Tue Jun 13 17:26:54 1995
+@@ -4,6 +4,8 @@
+ SRCS= contact.c demo.c drivers.c main.c maze.c props.c resources.c status.c
+ OBJS= contact.o demo.o drivers.o main.o maze.o props.o resources.o status.o
+ 
++CFLAGS = -fwritable-strings -DFRAME_DELAY=2000
++
+ INSTALLFLAGS = $(INSTKMEMFLAGS)
+ 
+ all: xchomp
