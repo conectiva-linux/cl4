@@ -1,0 +1,48 @@
+#!/bin/sh
+# quakeworld
+# qui mai  7 16:15:54 EST 1998
+#
+# chkconfig: 345 97 11
+# description: quakeworld server
+# description(pt_BR): Ativa/Desativa servidor quakeworld
+# processname: qwsv
+#
+# ter nov 10 15:12:18 EDT 1998 - <aurelio@conectiva.com.br>
+# incrementado com reload, restart, inicializar, parar
+# arrumado bug com o nome do processo
+
+# Biblioteca de funções
+. /etc/rc.d/init.d/functions
+
+DIR_HOME=/usr/lib/quake
+PROC_NAME=qwsv
+ARQ_PID=/var/run/$PROC_NAME.pid
+
+case "$1" in
+  start)
+        gprintf "Starting %s server: " "quakeworld"
+        cd $DIR_HOME
+        # deixe as '' pois é executado um eval para expandir a variável
+        daemon_cnc '/usr/sbin/$PROC_NAME > /dev/null &'
+	;;
+  stop)
+        gprintf "Stopping %s server: " "quakeworld"
+        killproc $PROC_NAME
+        rm -f /var/lock/subsys/$PROC_NAME
+        gprintf "done\n"
+        ;;
+  status)
+        gprintf "Status %s server: " "quakeworld"
+        status $PROC_NAME
+        ;;
+  restart|reload)
+        $0 stop
+        $0 start
+        ;;
+  *)
+        gprintf "Usage: %s {start|stop|status|restart|reload}\n" "quakeworld-server"
+        exit 1
+	;;
+esac
+
+exit 0
