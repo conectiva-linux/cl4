@@ -1,0 +1,83 @@
+diff -Nur bsd-games-2.1.a/battlestar/com1.c bsd-games-2.1/battlestar/com1.c
+--- bsd-games-2.1.a/battlestar/com1.c	Thu Jun 10 16:26:21 1999
++++ bsd-games-2.1/battlestar/com1.c	Thu Jun 10 16:27:36 1999
+@@ -32,7 +32,7 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
+-
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ #if 0
+diff -Nur bsd-games-2.1.a/battlestar/cypher.c bsd-games-2.1/battlestar/cypher.c
+--- bsd-games-2.1.a/battlestar/cypher.c	Thu Jun 10 16:26:21 1999
++++ bsd-games-2.1/battlestar/cypher.c	Thu Jun 10 16:28:53 1999
+@@ -33,6 +33,7 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ #if 0
+diff -Nur bsd-games-2.1.orig/battlestar/fly.c bsd-games-2.1/battlestar/fly.c
+--- bsd-games-2.1.orig/battlestar/fly.c	Thu Jun 10 16:30:46 1999
++++ bsd-games-2.1/battlestar/fly.c	Thu Jun 10 16:31:50 1999
+@@ -32,7 +32,7 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
+-
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ #if 0
+diff -Nur bsd-games-2.1.orig/battlestar/getcom.c bsd-games-2.1/battlestar/getcom.c
+--- bsd-games-2.1.orig/battlestar/getcom.c	Thu Jun 10 16:30:46 1999
++++ bsd-games-2.1/battlestar/getcom.c	Thu Jun 10 16:31:37 1999
+@@ -33,6 +33,7 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ #if 0
+diff -Nur bsd-games-2.1.orig/dm/dm.c bsd-games-2.1/dm/dm.c
+--- bsd-games-2.1.orig/dm/dm.c	Thu Jun 10 16:34:06 1999
++++ bsd-games-2.1/dm/dm.c	Thu Jun 10 16:34:31 1999
+@@ -33,6 +33,7 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ __COPYRIGHT("@(#) Copyright (c) 1987, 1993\n\
+diff -Nur bsd-games-2.1.orig/snake/snake/snake.c bsd-games-2.1/snake/snake/snake.c
+--- bsd-games-2.1.orig/snake/snake/snake.c	Thu Jun 10 16:38:00 1999
++++ bsd-games-2.1/snake/snake/snake.c	Thu Jun 10 16:38:21 1999
+@@ -33,6 +33,7 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include <stdio.h>
+ #include <sys/cdefs.h>
+ #ifndef lint
+ __COPYRIGHT("@(#) Copyright (c) 1980, 1993\n\
+diff -Nur bsd-games-2.1.orig/tetris/scores.c bsd-games-2.1/tetris/scores.c
+--- bsd-games-2.1.orig/tetris/scores.c	Thu Jun 10 16:43:43 1999
++++ bsd-games-2.1/tetris/scores.c	Thu Jun 10 16:44:13 1999
+@@ -45,10 +45,10 @@
+  *
+  * Major whacks since then.
+  */
++#include <stdio.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <pwd.h>
+-#include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/file.h>
