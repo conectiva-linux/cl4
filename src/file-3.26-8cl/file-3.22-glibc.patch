@@ -1,0 +1,22 @@
+--- file-3.22/fsmagic.c.glibc	Wed Jan 15 14:28:40 1997
++++ file-3.22/fsmagic.c	Tue Mar 25 15:27:37 1997
+@@ -36,6 +36,7 @@
+ #  include <sys/mkdev.h>
+ # endif
+ #endif
++#if 0
+ #ifndef	major			/* if `major' not defined in types.h, */
+ #include <sys/sysmacros.h>	/* try this one. */
+ #endif
+@@ -46,6 +47,11 @@
+ 		Please grep /usr/include/sys and edit the above #include 
+ 		to point at the file that defines the "major" macro.
+ #endif	/*major*/
++#endif
++
++#include <linux/kdev_t.h>
++#define major MAJOR
++#define minor MINOR
+ 
+ #include "file.h"
+ 

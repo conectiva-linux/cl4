@@ -1,0 +1,10 @@
+--- file-3.26/Magdir/audio.realmedia	Mon Jul  6 04:41:43 1998
++++ file-3.26/Magdir/audio	Mon Mar 22 16:31:27 1999
+@@ -68,6 +68,7 @@
+ 
+ # Real Audio (Magic .ra\0375)
+ 0	belong		0x2e7261fd	realaudio sound file
++0	string		.RMF\0\0\0	realmedia file        
+ 
+ # MTM/669/FAR/S3M/ULT/XM format checking [Aaron Eppert, aeppert@dialin.ind.net]
+ # Oct 31, 1995
