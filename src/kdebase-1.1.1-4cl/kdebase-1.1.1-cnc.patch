@@ -1,0 +1,21 @@
+diff -uNr kdebase-1.1/kdm/config/kdmrc.in kdebase-1.1.cnc/kdm/config/kdmrc.in
+--- kdebase-1.1/kdm/config/kdmrc.in	Sat Dec 19 16:05:02 1998
++++ kdebase-1.1.cnc/kdm/config/kdmrc.in	Mon Dec 21 23:07:03 1998
+@@ -8,14 +8,14 @@
+ [KDM]
+ SortUsers=true
+ #Users=root;johndoe
+-NoUsers=bin;daemon;games;halt;mail;man;news;nobody;reboot;shutdown;sync;uucp;xten;
++NoUsers=bin;daemon;adm;lp;sync;shutdown;halt;mail;news;uucp;games;gopher;ftp;nobody;
+ GreetString=K Desktop Environment [HOSTNAME]
+ UserView=true
+ #ShutdownButton=RootOnly
+ ShutdownButton=ConsoleOnly
+ FailFont=helvetica,12,5,iso-8859-1,75,0
++#LogoPixmap=/usr/share/apps/kdm/pics/cnc-logo.xpm
+ GreetFont=charter,24,5,iso-8859-1,50,0
+ StdFont=Helvetica,12,5,iso-8859-1,50,0
+-SessionTypes=kde;fvwm;failsafe;
++SessionTypes=kde;WindowMaker;AfterStep;Fvwm95;MWM;icewm;Terminal;
+ #GUIStyle=Windows
+-

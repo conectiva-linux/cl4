@@ -1,0 +1,77 @@
+diff -uNr kdebase-1.1.1/kappfinder/kappfinder.in kdebase-1.1.1-redhat/kappfinder/kappfinder.in
+--- kdebase-1.1.1/kappfinder/kappfinder.in	Mon Apr 12 05:33:53 1999
++++ kdebase-1.1.1-redhat/kappfinder/kappfinder.in	Tue Apr 27 02:14:42 1999
+@@ -30,9 +30,9 @@
+   fi
+ else
+   INSTPATH=$1 # ignored the more or the less
+-  kde_icondir=`echo '@kde_icondir@' | sed -e 's#\$(prefix)#@prefix@#'`
+-  kde_appsdir=`echo '@kde_appsdir@' | sed -e 's#\$(prefix)#@prefix@#'`
+-  kde_minidir=`echo '@kde_minidir@' | sed -e 's#\$(prefix)#@prefix@#'`
++  kde_icondir=$KDEDIR/share/icons
++  kde_appsdir=$KDEDIR/share/apps
++  kde_minidir=$KDEDIR/share/icons/mini
+ fi
+ 
+ 
+@@ -49,7 +49,7 @@
+ 
+ 
+ OLDDIR=`pwd`
+-cd `echo '@kde_datadir@' | sed -e 's#\$(prefix)#@prefix@#'`/kappfinder
++cd  $KDEDIR/share/apps/kappfinder
+ 
+ echo "Installing to $INSTPATH"
+ 
+diff -uNr kdebase-1.1.1/kdm/resource.c kdebase-1.1.1-redhat/kdm/resource.c
+--- kdebase-1.1.1/kdm/resource.c	Thu Jan 28 09:10:02 1999
++++ kdebase-1.1.1-redhat/kdm/resource.c	Tue Apr 27 02:14:42 1999
+@@ -95,7 +95,7 @@
+ #  ifdef __FreeBSD__
+ #    define DEF_USER_PATH "/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin"
+ #  elif __linux__
+-#    define DEF_USER_PATH "/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin"
++#    define DEF_USER_PATH "/usr/local/bin:/bin:/usr/bin:" 
+ #  else
+ #    define DEF_USER_PATH "/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin:/usr/ucb"
+ #  endif
+@@ -104,7 +104,7 @@
+ #  ifdef __FreeBSD__
+ #    define DEF_SYSTEM_PATH "/sbin:/usr/sbin:/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin"
+ #  elif __linux__
+-#    define DEF_SYSTEM_PATH "/sbin:/usr/sbin:/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin"
++#    define DEF_SYSTEM_PATH "/sbin:/usr/sbin:/bin:/usr/bin:" 
+ #  else
+ #    define DEF_SYSTEM_PATH "/sbin:/usr/sbin:/bin:/usr/bin:" QUOTE(XBINDIR) ":/usr/local/bin:/etc:/usr/ucb"
+ #  endif
+diff -uNr kdebase-1.1.1/kfm/kfmsu2.in kdebase-1.1.1-redhat/kfm/kfmsu2.in
+--- kdebase-1.1.1/kfm/kfmsu2.in	Wed Feb 17 03:39:57 1999
++++ kdebase-1.1.1-redhat/kfm/kfmsu2.in	Tue Apr 27 02:14:42 1999
+@@ -7,12 +7,7 @@
+ echo ""
+ echo "Logging in as super user"
+ 
+-# Test KDEDIR first, otherwise use hardcoded path (allows to move the KDE dir)
+-if test -f $KDEDIR/bin/kfm ; then
+- kfm=$KDEDIR/bin/kfm
+-else
+- kfm=@kde_bindir@/kfm
+-fi
++#hardcoded alternative path to kfm removed for RPM distribution
++kfm=$KDEDIR/bin/kfm
+ su - root -c "DISPLAY=$DISPLAY; export DISPLAY; $kfm -sw >/dev/null"
+ xhost -local:
+-
+diff -uNr kdebase-1.1.1/kvt/utmp.c kdebase-1.1.1-redhat/kvt/utmp.c
+--- kdebase-1.1.1/kvt/utmp.c	Wed Feb 17 13:54:08 1999
++++ kdebase-1.1.1-redhat/kvt/utmp.c	Tue Apr 27 02:14:42 1999
+@@ -94,6 +94,9 @@
+ #define TTYTAB "/etc/ttys"
+ #endif
+ 
++#define UTMP_SUPPORT 1
++#define UTMP "/var/run/utmp"
++
+ void cleanutent(void);
+ void makeutent(char *);
+ 
