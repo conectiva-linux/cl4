@@ -1,0 +1,11 @@
+--- X11R6-contrib-3.1.2/contrib/programs/xman/vendor.h.marc	Mon Feb 26 23:38:47 1996
++++ X11R6-contrib-3.1.2/contrib/programs/xman/vendor.h	Mon Feb 26 23:39:00 1996
+@@ -160,7 +160,7 @@
+ #      define linux_GROFF             /* undef this to use nroff instead */
+ #    endif /* linux */
+ #    ifdef linux_GROFF
+-#      define FORMAT "| geqn | gtbl | groff -Tascii -man"
++#      define FORMAT "| geqn | gtbl | groff -Tascii -mandoc"
+ #    else
+ #      define FORMAT "| neqn | nroff -man"      /* The format command. */
+ #    endif /* linux_GROFF */

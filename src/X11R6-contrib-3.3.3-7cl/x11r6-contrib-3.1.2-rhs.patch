@@ -1,0 +1,31 @@
+--- XFree86-3.1.2/contrib/programs/xbiff/xbiff.man.marc	Wed Aug  9 11:52:26 1995
++++ XFree86-3.1.2/contrib/programs/xbiff/xbiff.man	Wed Aug  9 11:52:44 1995
+@@ -55,7 +55,7 @@
+ .TP 8
+ .B \-file \fIfilename\fP
+ This option specifies the name of the file which should be monitored.  By
+-default, it watches /usr/spool/mail/\fIusername\fP, where \fIusername\fP
++default, it watches /var/spool/mail/\fIusername\fP, where \fIusername\fP
+ is your login name.
+ .TP 8
+ .B \-volume \fIpercentage\fP
+@@ -114,7 +114,7 @@
+ .TP 8
+ .B file (\fPclass\fB File)
+ Specifies the name of the file to monitor.  The default is to watch
+-/usr/spool/mail/\fIusername\fP, where \fIusername\fP is your login name.
++/var/spool/mail/\fIusername\fP, where \fIusername\fP is your login name.
+ .TP 8
+ .B onceOnly (\fPclass\fB Boolean)
+ Specifies that the bell is only rung the first time new mail is found
+--- XFree86-3.1.2/contrib/programs/xbiff/MailboxP.h.marc	Wed Aug 30 14:13:58 1995
++++ XFree86-3.1.2/contrib/programs/xbiff/MailboxP.h	Wed Aug 30 14:14:09 1995
+@@ -50,7 +50,7 @@
+ #endif
+ 
+ #ifndef MAILBOX_DIRECTORY
+-#define MAILBOX_DIRECTORY "/usr/spool/mail"
++#define MAILBOX_DIRECTORY "/var/spool/mail"
+ #endif
+ 
+ typedef struct {			/* new fields for mailbox widget */

@@ -1,0 +1,12 @@
+--- X11R6-contrib-3.3.1/contrib/programs/ico/Imakefile.marc	Thu Oct 23 16:42:27 1997
++++ X11R6-contrib-3.3.1/contrib/programs/ico/Imakefile	Thu Oct 23 16:42:36 1997
+@@ -1,7 +1,7 @@
+ XCOMM $XConsortium: Imakefile,v 1.14 94/03/30 12:10:30 gildea Exp $
+ 
+-#define LocalThreadsDefines -DMULTITHREAD
+-#include <Threads.tmpl>
++XCOMM #define LocalThreadsDefines -DMULTITHREAD
++XCOMM #include <Threads.tmpl>
+ 
+         DEFINES = ExtensionDefines
+         DEPLIBS = $(DEPXLIB)
