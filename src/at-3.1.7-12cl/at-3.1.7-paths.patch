@@ -1,0 +1,22 @@
+--- at-3.1.7/atrun.8.in.paths	Mon May 26 04:31:48 1997
++++ at-3.1.7/atrun.8.in	Wed Oct 22 19:32:00 1997
+@@ -12,7 +12,7 @@
+ runs jobs queued by
+ .BR at(1) .
+ It is a shell script containing invoking
+-.B @sbindir@/atd
++.B /usr/sbin/atd
+ with the
+ .I -s
+ option, and is provided for backward compatibility with older
+--- at-3.1.7/at.1.in.paths	Wed Oct 22 19:32:17 1997
++++ at-3.1.7/at.1.in	Wed Oct 22 19:32:55 1997
+@@ -117,7 +117,7 @@
+ .B at 1am tomorrow.
+ .PP
+ The exact definition of the time specification can be found in
+-.IR @prefix@/doc/at/timespec .
++.IR /usr/doc/at-3.1.7/timespec .
+ .PP
+ For both
+ .BR at " and " batch ,
