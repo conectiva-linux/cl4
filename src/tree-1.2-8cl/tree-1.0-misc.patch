@@ -1,0 +1,16 @@
+--- tree-1.0/Makefile.orig	Tue Jul  9 23:52:50 1996
++++ tree-1.0/Makefile	Fri Aug  9 18:20:18 1996
+@@ -7,11 +7,11 @@
+ # of merchant-ability and fitness for a particular purpose.
+ 
+ CC=gcc
+-CFLAGS=-O2 -fomit-frame-pointer -m486
++CFLAGS=-fomit-frame-pointer $(RPM_OPT_FLAGS)
+ LDFLAGS=-s
+ 
+ TREE_DEST=tree
+-BINDIR=/usr/local/bin
++BINDIR=/usr/bin
+ MAN=tree.1
+ MANDIR=/usr/man/man1
+ 
