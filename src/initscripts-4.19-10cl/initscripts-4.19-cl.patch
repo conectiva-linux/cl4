@@ -1,0 +1,1428 @@
+diff -Nur initscripts-4.19/ChangeLog initscripts-4.19.cnc/ChangeLog
+--- initscripts-4.19/ChangeLog	Tue May 25 18:05:36 1999
++++ initscripts-4.19.cnc/ChangeLog	Thu Jul  1 15:29:55 1999
+@@ -1,3 +1,7 @@
++1999-05-29  Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>
++	* redone i18n patch,
++	  which uses xgettext_sh, available in gettext-extras, by acme
++
+ 1999-05-25  Bill Nottingham  <notting@redhat.com>
+ 
+ 	* rc.d/rc.sysinit: don't make relative links to display manager
+diff -Nur initscripts-4.19/inittab initscripts-4.19.cnc/inittab
+--- initscripts-4.19/inittab	Tue Apr 13 20:12:56 1999
++++ initscripts-4.19.cnc/inittab	Thu Jul  1 15:29:55 1999
+@@ -4,6 +4,7 @@
+ #
+ # Author:       Miquel van Smoorenburg, <miquels@drinkel.nl.mugnet.org>
+ #               Modified for RHS Linux by Marc Ewing and Donnie Barnes
++#               Modified for Conectiva Linux by Arnaldo Carvalho de Melo
+ #
+ 
+ # Default runlevel. The runlevels used by RHS are:
+@@ -51,7 +52,13 @@
+ 4:2345:respawn:/sbin/mingetty tty4
+ 5:2345:respawn:/sbin/mingetty tty5
+ 6:2345:respawn:/sbin/mingetty tty6
++#7:2345:respawn:/sbin/mingetty tty7
++#8:2345:respawn:/sbin/mingetty tty8
++#9:2345:respawn:/sbin/mingetty tty9
++#10:2345:respawn:/sbin/mingetty tty10
++#11:2345:respawn:/sbin/mingetty tty11
++#12:2345:respawn:/sbin/mingetty tty12
+ 
+-# Run xdm in runlevel 5
+-# xdm is now a separate service
++
++# Run prefdm (which can points to xdm, kdm, gdm) in runlevel 5
+ x:5:respawn:/etc/X11/prefdm -nodaemon
+diff -Nur initscripts-4.19/lang.sh initscripts-4.19.cnc/lang.sh
+--- initscripts-4.19/lang.sh	Mon Apr 19 16:37:16 1999
++++ initscripts-4.19.cnc/lang.sh	Thu Jul  1 15:29:55 1999
+@@ -13,10 +13,6 @@
+     [ -n "$LANGUAGE" ] && export LANGUAGE || unset LANGUAGE
+     [ -n "$LINGUAS" ] && export LINGUAS || unset LINGUAS
+ 
+-    # deprecated
+-    if [ -n "$SYSTERM" ]; then
+-	export TERM=$SYSTERM
+-    fi
+ 
+     if [ -n "$SYSFONTACM" ]; then
+         case $SYSFONTACM in
+@@ -44,6 +40,24 @@
+     fi
+     
+     [ -n "$_XKB_CHARSET" ] && export _XKB_CHARSET || unset _XKB_CHARSET
++
++    # ispell default DICTIONARY
++    case "$LANG" in
++        pt_BR) DICTIONARY=brazilian ;;
++        pt)    DICTIONARY=portuguese ;;
++        es)    DICTIONARY=spanish ;;
++        it)    DICTIONARY=italian ;;
++        fr)    DICTIONARY=french ;;
++        de)    DICTIONARY=german ;;
++        en_US) DICTIONARY=american ;;
++        en_UK) DICTIONARY=british ;;
++    esac
++
++    if [ -n "$DICTIONARY" -a -f /usr/lib/ispell/$DICTIONARY.hash ] ; then
++        export DICTIONARY
++    else
++        unset DICTIONARY
++    fi
+ 
+     unset SYSFONTACM
+ fi
+diff -Nur initscripts-4.19/rc.d/init.d/functions initscripts-4.19.cnc/rc.d/init.d/functions
+--- initscripts-4.19/rc.d/init.d/functions	Wed Apr  7 19:45:12 1999
++++ initscripts-4.19.cnc/rc.d/init.d/functions	Thu Jul  1 15:33:09 1999
+@@ -8,11 +8,47 @@
+ #
+ # Author:	Miquel van Smoorenburg, <miquels@drinkel.nl.mugnet.org>
+ # Hacked by:    Greg Galloway and Marc Ewing
+-#
++# i18n by:      Arnaldo Carvalho de Melo <acme@conectiva.com.br>
++#		Modified by Wanderlei Antonio Cavassin
+ 
+ # First set up a default search path.
+ export PATH="/sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin"
+ 
++. /etc/profile.d/lang.sh
++
++gprintf() {
++       local TEXT=`gettext -e --domain=initscripts "$1"`
++       [ "${1#*\\n}" ] || TEXT="$TEXT\n"
++       shift
++       printf "$TEXT" "$@"
++}
++
++# Frontend to gprintf (support up to 4 %s in format string)
++# returns the message transleted in GPRINTF_MSG and
++# the resting parms in GPRINTF_REST
++# This simplifies a lot the call of functions like action,
++# now with i18n support
++gprintf_msg_rest() {
++case "$1" in
++	*%s*%s*%s*%s*)
++		GPRINTF_MSG=$(gprintf "$1" "$2" "$3" "$4" "$5")
++		shift 5;;
++	*%s*%s*%s*)
++		GPRINTF_MSG=$(gprintf "$1" "$2" "$3" "$4")
++		shift 4;;
++	*%s*%s*)
++		GPRINTF_MSG=$(gprintf "$1" "$2" "$3")
++		shift 3;;
++	*%s*)
++		GPRINTF_MSG=$(gprintf "$1" "$2")
++		shift 2;;
++	*)
++		GPRINTF_MSG=$(gprintf "$1")
++		shift;;
++esac
++GPRINTF_REST="$@"
++}
++
+ # Get a sane screen width
+ [ -z "$COLUMNS" ] && COLUMNS=80
+ 
+@@ -45,7 +81,7 @@
+ 	# Test syntax.
+ 	gotbase=
+ 	case $1 in
+-	    '')    echo '$0: Usage: daemon [+/-nicelevel] {program}'
++	    '')    gprintf "%s: Usage: daemon [+/-nicelevel] {program}\n" $0
+ 	           return 1;;
+ 	    --check)
+ 	           shift
+@@ -82,7 +118,7 @@
+ killproc() {
+ 	# Test syntax.
+ 	if [ $# = 0 ]; then
+-		echo "Usage: killproc {program} [signal]"
++		gprintf "Usage: killproc {program} [signal]\n"
+ 		return 1
+ 	fi
+ 
+@@ -140,7 +176,7 @@
+ pidofproc() {
+ 	# Test syntax.
+ 	if [ $# = 0 ] ; then
+-		echo "Usage: pidofproc {program}"
++		gprintf "Usage: pidofproc {program}\n"
+ 		return 1
+ 	fi
+ 
+@@ -170,14 +206,14 @@
+ status() {
+ 	# Test syntax.
+ 	if [ $# = 0 ] ; then
+-		echo "Usage: status {program}"
++		gprintf "Usage: status {program}\n"
+ 		return 1
+ 	fi
+ 
+ 	# First try "pidof"
+ 	pid=`pidof $1`
+ 	if [ "$pid" != "" ] ; then
+-	        echo "$1 (pid $pid) is running..."
++		gprintf "%s (pid %s) is running...\n" "$1" "$pid"
+ 	        return 0
+         else
+                 pid=`ps ax | awk 'BEGIN { prog=ARGV[1]; ARGC=1 } 
+@@ -185,7 +221,7 @@
+ 			     (("[" prog "]") == $5) ||
+ 			   ((prog ":") == $5)) { print $1 ; exit 0 } }' $1`
+                 if [ "$pid" != "" ] ; then
+-                        echo "$1 (pid $pid) is running..."
++			gprintf "%s (pid %s) is running...\n" "$1" "$pid"
+                         return 0
+                 fi
+ 	fi
+@@ -194,24 +230,44 @@
+ 	if [ -f /var/run/$1.pid ] ; then
+ 	        pid=`head -1 /var/run/$1.pid`
+ 	        if [ "$pid" != "" ] ; then
+-	                echo "$1 dead but pid file exists"
++			gprintf "%s dead but pid file exists\n" $1
+ 	                return 1
+ 	        fi
+ 	fi
+ 	# See if /var/lock/subsys/$1 exists
+ 	if [ -f /var/lock/subsys/$1 ]; then
+-		echo "$1 dead but subsys locked"
++		gprintf "%s dead but subsys locked\n" $1
+ 		return 2
+ 	fi
+-	echo "$1 is stopped"
++	gprintf "%s is stopped\n" $1
+ 	return 3
+ }
+ 
++daemon_cnc() {
++	# if it's a background call use 'command &'
++
++	# show status if already running
++	if [ -f $ARQ_PID ]
++		then status $PROC_NAME; exit
++	fi
++
++	# don't generate core files
++	ulimit -c 0
++
++	gprintf "Starting %s: " $TXT_PROC_NAME
++	eval $*
++
++	# creating PID and lock files
++	pidof $PROC_NAME > $ARQ_PID
++	touch /var/lock/subsys/$PROC_NAME
++	echo "$PROC_NAME"
++}
++
+ echo_success() {
+   [ "$BOOTUP" = "color" ] && $MOVE_TO_COL
+   echo -n "[  "
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_SUCCESS
+-  echo -n "OK"
++  gprintf "OK"
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_NORMAL
+   echo -n "  ]"
+   return 0
+@@ -221,7 +277,7 @@
+   [ "$BOOTUP" = "color" ] && $MOVE_TO_COL
+   echo -n "["
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_FAILURE
+-  echo -n "FAILED"
++  gprintf "FAILED"
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_NORMAL
+   echo -n "]"
+   return 1
+@@ -231,7 +287,7 @@
+   [ "$BOOTUP" = "color" ] && $MOVE_TO_COL
+   echo -n "["
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_WARNING
+-  echo -n "PASSED"
++  gprintf "PASSED"
+   [ "$BOOTUP" = "color" ] && $SETCOLOR_NORMAL
+   echo -n "]"
+   return 1
+@@ -239,10 +295,11 @@
+ 
+ # Log that something succeeded
+ success() {
++  gprintf_msg_rest "$@"
+   if [ -z "$IN_INITLOG" ]; then
+-     initlog -n $0 -s "$1" -e 1
++     initlog $INITLOG_ARGS -n $0 -s "$GPRINTF_MSG" -e 1
+   else
+-     echo "-n $0 -s \"$1\" -e 1" >&21
++     echo "-n $0 -s \"$GPRINTF_MSG\" -e 1" >&21
+   fi
+   [ "$BOOTUP" != "verbose" ] && echo_success
+   return 0
+@@ -251,10 +308,11 @@
+ # Log that something failed
+ failure() {
+   rc=$?
++  gprintf_msg_rest "$@"
+   if [ -z "$IN_INITLOG" ]; then
+-     initlog -n $0 -s "$1" -e 2
++     initlog $INITLOG_ARGS -n $0 -s "$GPRINTF_MSG" -e 2
+   else
+-     echo "-n $0 -s \"$1\" -e 2" >&21
++     echo "-n $0 -s \"$GPRINTF_MSG\" -e 2" >&21
+   fi
+   [ "$BOOTUP" != "verbose" ] && echo_failure
+   return $rc
+@@ -263,10 +321,11 @@
+ # Log that something passed, but may have had errors. Useful for fsck
+ passed() {
+   rc=$?
++  gprintf_msg_rest "$@"
+   if [ -z "$IN_INITLOG" ]; then
+-     initlog -n $0 -s "$1" -e 1
++     initlog $INITLOG_ARGS -n $0 -s "$GPRINTF_MSG" -e 1
+   else
+-     echo "-n $0 -s \"$1\" -e 1" >&21
++     echo "-n $0 -s \"$GPRINTF_MSG\" -e 1" >&21
+   fi
+   [ "$BOOTUP" != "verbose" ] && echo_passed
+   return $rc
+@@ -274,10 +333,9 @@
+ 
+ # Run some action. Log its output.
+ action() {
+-  STRING=$1
+-  echo -n "$STRING "
+-  shift
+-  initlog $INITLOG_ARGS -c "$*" && success "$STRING" || failure "$STRING"
++  gprintf_msg_rest "$@"
++  echo -n "$GPRINTF_MSG "
++  initlog $INITLOG_ARGS -c "$GPRINTF_REST" && success "$GPRINTF_MSG" || failure "$GPRINTF_MSG"
+   rc=$?
+   echo
+   return $rc
+@@ -285,16 +343,19 @@
+ 
+ # Confirm whether we really want to run this service
+ confirm() {
+-  echo -n "Start service $1 (Y)es/(N)o/(C)ontinue? [Y] "
++  gprintf "Start service %s (Y)es/(N)o/(C)ontinue? [Y] " $1
++  local YES=`gprintf "y|Y"`
++  local NOT=`gprintf "n|N"`
++  local CNT=`gprintf "c|C"`
+   read answer
+   case $answer in
+-    y|Y|"")
++    $YES|"")
+       return 0
+     ;;
+-    c|C)
++    $CNT)
+       return 2
+     ;;
+-    n|N)
++    $NOT)
+       return 1
+     ;;
+     *)
+diff -Nur initscripts-4.19/rc.d/init.d/halt initscripts-4.19.cnc/rc.d/init.d/halt
+--- initscripts-4.19/rc.d/init.d/halt	Sat Feb 13 21:23:44 1999
++++ initscripts-4.19.cnc/rc.d/init.d/halt	Thu Jul  1 15:43:29 1999
+@@ -6,6 +6,7 @@
+ #
+ # Author:       Miquel van Smoorenburg, <miquels@drinkel.nl.mugnet.org>
+ #               Modified for RHS Linux by Damien Neil
++#               Modified for Conectiva Linux by Arnaldo Carvalho de Melo
+ #
+ 
+ # Set the path.
+@@ -14,12 +15,13 @@
+ . /etc/rc.d/init.d/functions
+ 
+ runcmd() {
+-   echo -n "$1 "
++   gprintf_msg_rest "$@"
++   echo -n "$GPRINTF_MSG "
+    shift
+    if [ "$BOOTUP" = "color" ]; then
+-      $* && echo_success || echo_failure
++      $GPRINTF_REST && echo_success || echo_failure
+    else
+-      $*
++      $GPRINTF_REST
+    fi
+    echo
+ }
+@@ -27,15 +29,15 @@
+ # See how we were called.
+ case "$0" in
+   *halt)
+-	message="The system is halted"
++	message=`gprintf "The system is halted"`
+ 	command="halt"
+ 	;;
+   *reboot)
+-	message="Please stand by while rebooting the system..."
++	message=`gprintf "Please stand by while rebooting the system..."`
+ 	command="reboot"
+ 	;;
+   *)
+-	echo "$0: call me as \"rc.halt\" or \"rc.reboot\" please!"
++	gprintf "%s: call me as rc.halt or rc.reboot please!\n" $0
+ 	exit 1
+ 	;;
+ esac
+@@ -43,17 +45,17 @@
+ # Kill all processes.
+ [ "${BASH+bash}" = bash ] && enable kill
+ 
+-runcmd "Sending all processes the TERM signal..." kill -15 -1
++runcmd "Sending all processes the %s signal..." "TERM" kill -15 -1
+ sleep 5
+-runcmd "Sending all processes the KILL signal.."  kill -9 -1
++runcmd "Sending all processes the %s signal..." "KILL" kill -9 -1
+ 
+ # Write to wtmp file before unmounting /var
+ halt -w
+ 
+ # Turn off swap, then unmount file systems.
+ runcmd "Turning off swap and accounting" swapoff -a
+-[ -x /sbin/accton ] && /sbin/accton
+-runcmd "Unmounting file systems"  umount -a -f 
++[ -x /sbin/accton ] && /sbin/accton 2> /dev/null
++runcmd "Unmounting file systems" umount -a -f -r
+ mount -n -o remount,ro /
+ 
+ # turn off raid
+@@ -64,7 +66,7 @@
+     if [ -f /proc/mdstat ] ; then
+ 	mddevs=$(grep ^md /proc/mdstat | awk '{ print $1 }')
+ 	for mddev in $mddevs ; do
+-	    runcmd "Turning off RAID for $mddev" raidstop /dev/$mddev
++	    runcmd "Turning off RAID for %s" $mddev raidstop /dev/$mddev
+ 	done
+         unset mddev mddevs
+     fi
+@@ -80,8 +82,8 @@
+ # Now halt or reboot.
+ echo "$message"
+ if [ -f /fastboot ]; then
+- echo "On the next boot fsck will be skipped."
++ gprintf "On the next boot fsck will be skipped.\n"
+ elif [ -f /forcefsck ]; then
+- echo "On the next boot fsck will be forced."
++ gprintf "On the next boot fsck will be forced.\n"
+ fi
+ eval $command -i -d -p
+diff -Nur initscripts-4.19/rc.d/init.d/netfs initscripts-4.19.cnc/rc.d/init.d/netfs
+--- initscripts-4.19/rc.d/init.d/netfs	Fri Mar 26 19:56:03 1999
++++ initscripts-4.19.cnc/rc.d/init.d/netfs	Thu Jul  1 15:29:55 1999
+@@ -4,10 +4,13 @@
+ #
+ # Authors:	Bill Nottingham <notting@redhat.com>
+ # 		Miquel van Smoorenburg, <miquels@drinkel.nl.mugnet.org>
++#               Modified for Conectiva Linux by Wanderlei Antonio Cavassin
+ #
+ # chkconfig: 345 15 85
+ # description: Mounts and unmounts all Network File System (NFS), \
+-#	       SMB (Lan Manager/Windows), and NCP (NetWare) mount points.
++#	       SMB (Lan Manager/Windows) and NCP (NetWare) mount points.
++# description(pt_BR): Monta e desmonta todos os pontos de montagem NFS, \
++#	       SMB (Lan Manager/Windows) e NCP (NetWare).
+ 
+ # Source networking configuration.
+ if [ ! -f /etc/sysconfig/network ]; then
+@@ -32,46 +35,46 @@
+ # See how we were called.
+ case "$1" in
+   start)
+-        [ -n "$NFSFSTAB" ] && action "Mounting NFS filesystems" mount -a -t nfs
+-        [ -n "$SMBFSTAB" ] && action "Mounting SMB filesystems" mount -a -t smbfs
+-        [ -n "$NCPFSTAB" ] && action "Mounting NCP filesystems" mount -a -t ncpfs
++        [ -n "$NFSFSTAB" ] && action "Mounting %s filesystems" NFS mount -a -t nfs
++        [ -n "$SMBFSTAB" ] && action "Mounting %s filesystems" SMB mount -a -t smbfs
++        [ -n "$NCPFSTAB" ] && action "Mounting %s filesystems" NCP mount -a -t ncpfs
+ 	touch /var/lock/subsys/netfs
+ 	action "Mounting other filesystems" mount -a
+ 	;;
+   stop)
+-	[ -n "$NFSMTAB" ] && action "Unmounting NFS filesystems" umount -a -t nfs
+-	[ -n "$SMBMTAB" ] && action "Unmounting SMB filesystems" umount -a -t smbfs
+-	[ -n "$NCPMTAB" ] && action "Unmounting NCP filesystems" umount -a -t ncpfs
++	[ -n "$NFSMTAB" ] && action "Unmounting %s filesystems" NFS umount -a -t nfs
++	[ -n "$SMBMTAB" ] && action "Unmounting %s filesystems" SMB umount -a -t smbfs
++	[ -n "$NCPMTAB" ] && action "Unmounting %s filesystems" NCP umount -a -t ncpfs
+ 	rm -f /var/lock/subsys/netfs
+ 	;;
+   status)
+ 	if [ -f /proc/mounts ] ; then
+ 	        [ -n "$NFSFSTAB" ] && {
+-		     echo "Configured NFS mountpoints:"
++		     gprintf "Configured %s mountpoints:\n" NFS
+ 		     for fs in $NFSFSTAB; do echo $fs ; done
+ 		}
+ 	        [ -n "$SMBFSTAB" ] && {
+-		     echo "Configured SMB mountpoints:"
++		     gprintf "Configured %s mountpoints:\n" SMB
+ 		     for fs in $SMBFSTAB; do echo $fs ; done
+ 		}
+ 	        [ -n "$NCPFSTAB" ] && {
+-		     echo "Configured NCP mountpoints:"
++		     gprintf "Configured %s mountpoints:\n" NCP
+ 		     for fs in $NCPFSTAB; do echo $fs ; done
+ 		}
+ 		[ -n "$NFSMTAB" ] && {
+-                      echo "Active NFS mountpoints:"
++                      gprintf "Active %s mountpoints:\n" NFS
+ 		      for fs in $NFSMTAB; do echo $fs ; done
+ 		}
+ 		[ -n "$SMBMTAB" ] && {
+-                      echo "Active SMB mountpoints:"
++                      gprintf "Active %s mountpoints:\n" SMB
+ 		      for fs in $SMBMTAB; do echo $fs ; done
+ 		}
+ 		[ -n "$NCPMTAB" ] && {
+-                      echo "Active NCP mountpoints:"
++                      gprintf "Active %s mountpoints:\n" NCP
+ 		      for fs in $NCPMTAB; do echo $fs ; done
+ 		}
+ 	else
+-		echo "/proc filesystem unavailable"
++		gprintf "/proc filesystem unavailable\n"
+ 	fi
+ 	;;
+   restart)
+@@ -82,7 +85,7 @@
+         $0 start
+ 	;;
+   *)
+-	echo "Usage: netfs {start|stop|restart|reload|status}"
++	gprintf "Usage: %s {start|stop|restart|reload|status}\n" netfs
+ 	exit 1
+ esac
+ 
+diff -Nur initscripts-4.19/rc.d/init.d/network initscripts-4.19.cnc/rc.d/init.d/network
+--- initscripts-4.19/rc.d/init.d/network	Tue May 25 18:04:11 1999
++++ initscripts-4.19.cnc/rc.d/init.d/network	Thu Jul  1 15:29:55 1999
+@@ -5,6 +5,8 @@
+ # chkconfig: 2345 10 90
+ # description: Activates/Deactivates all network interfaces configured to \
+ #              start at boot time.
++# description(pt_BR): Gerencia todas as interfaces de rede configuradas \
++#                     para serem habilitadas durante a inicialização.
+ # probe: true
+ 
+ # Source function library.
+@@ -52,15 +54,15 @@
+ 	    # people could have left this out of their kernel, which isn't
+ 	    # exactly an error
+ 	    if [ ! -f /proc/sys/net/ipv4/ip_forward ] ; then
+-		echo "/proc/sys/net/ipv4/ip_forward is missing --" \
+-			"cannot control IP forwarding" >&2
++		gprintf "/proc/sys/net/ipv4/ip_forward is missing -- cannot control IP forwarding\n" >&2
++
+ 	    else
+ 		if [ "$FORWARD_IPV4" = "no" -o "$FORWARD_IPV4" = "false" ]; then
+ 		    value=0
+-		    message="Disabling IPv4 packet forwarding"
++		    message=`gprintf "Disabling IPv4 packet forwarding."`
+ 		else
+ 		    value=1
+-		    message="Enabling IPv4 packet forwarding"
++		    message=`gprintf "Enabling IPv4 packet forwarding."`
+ 		fi
+ 
+ 		if [ $value != `cat /proc/sys/net/ipv4/ip_forward` ]; then
+@@ -77,27 +79,27 @@
+   start)
+ 	ipv4_forward_set
+ 
+-	action "Bringing up interface lo" ./ifup ifcfg-lo
++	action "Bringing up interface %s" lo ./ifup ifcfg-lo
+ 
+ 	case "$IPX" in
+ 	  yes|true)
+ 	    /sbin/ipx_configure --auto_primary=$IPXAUTOPRIMARY \
+ 				   --auto_interface=$IPXAUTOFRAME
+-	    if [ "$IPXINTERNALNETNUM" != "0" -o "$IPXINTERNALNODENUM" != "0" ]; then
++	    if [ "$IPXINTERNALNETNUM" != "0" ]; then
+ 	       /sbin/ipx_internal_net add $IPXINTERNALNETNUM $IPXINTERNALNODENUM
+ 	    fi
+ 	    ;;
+ 	esac
+ 
+ 	for i in $interfaces_boot; do
+-		action "Bringing up interface $i" ./ifup $i boot
++		action "Bringing up interface %s" $i ./ifup $i boot
+ 	done
+ 
+         touch /var/lock/subsys/network
+         ;;
+   stop)
+ 	for i in $interfaces_boot; do
+-		action "Shutting down interface $i" ./ifdown $i boot
++		action "Shutting down interface %s" $i ./ifdown $i boot
+ 	done
+ 	case "$IPX" in
+ 	  yes|true)
+@@ -110,18 +112,18 @@
+         rm -f /var/lock/subsys/network
+         ;;
+   status)
+-	echo "Configured devices:"
++	gprintf "Configured devices:\n"
+ 	echo lo $interfaces
+ 
+ 	if [ -x /bin/linuxconf ] ; then
+ 		eval `/bin/linuxconf --hint netdev`
+-		echo "Devices that are down:"
++		gprintf "Devices that are down:\n"
+ 		echo $DEV_UP
+-		echo "Devices with modified configuration:"
++		gprintf "Devices with modified configuration:\n"
+ 		echo $DEV_RECONF
+ 	else
+-		echo "Currently active devices:"
+-		echo `/sbin/ifconfig | grep ^[a-z] | awk '{print $1}'`
++		gprintf "Currently active devices:\n"
++		echo `LC_ALL= LANG= /sbin/ifconfig | grep ^[a-z] | awk '{print $1}'`
+ 	fi
+ 	;;
+   restart)
+@@ -136,30 +138,30 @@
+ 			ipv4_forward_set
+ 		fi
+ 		for device in $DEV_UP ; do
+-			action "Bringing up device $device" ./ifup $device
++			action "Bringing up device %s" $device ./ifup $device
+ 		done
+ 		for device in $DEV_DOWN ; do
+-			action "Shutting down device $device" ./ifdown $device
++			action "Shutting down device %s" $device ./ifdown $device
+ 		done
+ 		for device in $DEV_RECONF ; do
+-			action "Shutting down device $device" ./ifdown $device
+-			action "Bringing up device $device" ./ifup $device
++			action "Shutting down device %s" $device ./ifdown $device
++			action "Bringing up device %s" $device ./ifup $device
+ 		done
+ 		for device in $DEV_RECONF_ALIASES ; do
+-			action "Briging up alias $device" /etc/sysconfig/network-scripts/ifup-aliases $device
++			action "Bringing up alias %s" $device /etc/sysconfig/network-scripts/ifup-aliases $device
+ 		done
+ 		for device in $DEV_RECONF_ROUTES ; do
+-			action "Bringing up route $device" /etc/sysconfig/network-scripts/ifup-routes $device
++			action "Bringing up route %s" $device /etc/sysconfig/network-scripts/ifup-routes $device
+ 		done
+ 		case $IPX in yes|true)
+ 		  case $IPXINTERNALNET in
+ 		    reconf)
+ 			action "Deleting internal IPX network" /sbin/ipx_internal_net del
+-			action "Adding internal IPX network $IPXINTERNALNETNUM $IPXINTERNALNODENUM" /sbin/ipx_internal_net add $IPXINTERNALNETNUM \
++			action "Adding internal IPX network %s %s" $IPXINTERNALNETNUM $IPXINTERNALNODENUM /sbin/ipx_internal_net add $IPXINTERNALNETNUM \
+ 						      $IPXINTERNALNODENUM
+ 			;;
+ 		    add)
+-			action "Adding internal IPX network $IPXINTERNALNETNUM $IPXINTERNALNODENUM"/sbin/ipx_internal_net add $IPXINTERNALNETNUM \
++			action "Adding internal IPX network %s %s" IPXINTERNALNETNUM $IPXINTERNALNODENUM /sbin/ipx_internal_net add $IPXINTERNALNETNUM \
+ 						      $IPXINTERNALNODENUM
+ 			;;
+ 		    del)
+@@ -190,7 +192,7 @@
+ 	fi
+ 	;;
+   *)
+-        echo "Usage: network {start|stop|restart|reload|status|probe}"
++	gprintf "Usage: %s {start|stop|restart|reload|status|probe}\n" "network"
+         exit 1
+ esac
+ 
+diff -Nur initscripts-4.19/rc.d/init.d/random initscripts-4.19.cnc/rc.d/init.d/random
+--- initscripts-4.19/rc.d/init.d/random	Thu Feb  4 17:11:12 1999
++++ initscripts-4.19.cnc/rc.d/init.d/random	Thu Jul  1 15:29:55 1999
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ #
+ # random	Script to snapshot random state and reload it at boot time.
+ #
+@@ -6,6 +7,9 @@
+ # chkconfig: 2345 20 80
+ # description: Saves and restores system entropy pool for higher quality \
+ #              random number generation.
++# description(pt_BR): Salva e restaura o pool de entropia do sistema para \
++#              geração de números aleatórios de alta qualidade.
++
+ 
+ # Source function library.
+ . /etc/rc.d/init.d/functions
+@@ -40,9 +44,9 @@
+   status)
+ 	# this is way overkill, but at least we have some status output...
+ 	if [ -c /dev/random ] ; then
+-		echo "The random data source exists"
++		gprintf "The random data source exists\n"
+ 	else
+-		echo "The random data source is missing"
++		gprintf "The random data source is missing\n"
+ 	fi
+ 	;;
+   restart|reload)
+@@ -52,7 +56,7 @@
+   *)
+ 	# do not advertise unreasonable commands that there is no reason
+ 	# to use with this device
+-	echo "Usage: random {start|stop|status|restart|reload}"
++	gprintf "Usage: %s {start|stop|status|restart|reload}\n" "random"
+ 	exit 1
+ esac
+ 
+diff -Nur initscripts-4.19/rc.d/init.d/single initscripts-4.19.cnc/rc.d/init.d/single
+--- initscripts-4.19/rc.d/init.d/single	Thu Apr 15 10:53:34 1999
++++ initscripts-4.19.cnc/rc.d/init.d/single	Thu Jul  1 15:29:55 1999
+@@ -18,10 +18,10 @@
+ # Kill all processes.
+ [ "${BASH+bash}" = bash ] && enable kill
+ 
+-echo "Sending all processes the TERM signal..."
++gprintf "Sending all processes the %s signal...\n" "TERM"
+ kill -15 -1
+ sleep 5
+-echo "Sending all processes the KILL signal.."
++gprintf "Sending all processes the %s signal...\n" "KILL"
+ kill -9 -1
+ 
+ rm -f /var/lock/subsys/*
+@@ -48,5 +48,5 @@
+ done						
+ 
+ # Now go to the single user level.
+-echo "Telling INIT to go to single user mode."
++gprintf "Telling INIT to go to single user mode.\n"
+ exec init -t1 S
+diff -Nur initscripts-4.19/rc.d/rc initscripts-4.19.cnc/rc.d/rc
+--- initscripts-4.19/rc.d/rc	Thu Apr 15 10:53:34 1999
++++ initscripts-4.19.cnc/rc.d/rc	Thu Jul  1 15:29:55 1999
+@@ -55,7 +55,7 @@
+ 		if egrep -q "(killproc |action )" $i ; then
+ 			$i stop
+ 		else
+-			action "Stopping $subsys" $i stop
++			action "Stopping %s" $subsys $i stop
+ 		fi
+ 	done
+ 
+@@ -98,7 +98,7 @@
+ 			if [ "$subsys" = "halt" -o "$subsys" = "reboot" -o "$subsys" = "single" ]; then
+ 			    $i start
+ 			else
+-			    action "Starting $subsys" $i start
++			    action "Starting %s" $subsys $i start
+ 			fi
+ 		fi
+ 	done
+diff -Nur initscripts-4.19/rc.d/rc.local initscripts-4.19.cnc/rc.d/rc.local
+--- initscripts-4.19/rc.d/rc.local	Tue May  4 16:43:20 1999
++++ initscripts-4.19.cnc/rc.d/rc.local	Thu Jul  1 15:29:55 1999
+@@ -4,32 +4,24 @@
+ # You can put your own initialization stuff in here if you don't
+ # want to do the full Sys V style init stuff.
+ 
+-if [ -f /etc/redhat-release ]; then
+-    R=$(cat /etc/redhat-release)
++. /etc/profile.d/lang.sh
+ 
+-    arch=$(uname -m)
+-    a="a"
+-    case "_$arch" in
+-	    _a*) a="an";;
+-	    _i*) a="an";;
+-    esac
+-    
+-    NUMPROC=$[`cat /proc/cpuinfo | grep ^processor | wc -l`]
+-    if [ $NUMPROC -gt 1 ]; then
+-        SMP="$NUMPROC-processor "
+-        if [ "$NUMPROC" = "8" -o "$NUMPROC" = "11" ]; then
+-            a="an"
+-	else
+-	    a="a"
+-        fi
+-    fi
++if [ -f /etc/versão-conectiva ] ; then
++    R=$(cat /etc/versão-conectiva)
+ 
+     # This will overwrite /etc/issue at every boot.  So, make any changes you
+     # want to make to /etc/issue here or you will lose them when you reboot.
+-    echo "" > /etc/issue
+-    echo "$R" >> /etc/issue
+-    echo "Kernel $(uname -r) on $a $SMP$(uname -m)" >> /etc/issue
+ 
+-    cp -f /etc/issue /etc/issue.net
+-    echo >> /etc/issue
++    echo "$R" > /etc/issue.net
++    echo "Kernel $(uname -r)" >> /etc/issue.net
++    echo >> /etc/issue.net
++
++    if [ -x /usr/bin/linux_logo ] ; then
++	clear > /etc/issue
++	linux_logo -classic >> /etc/issue
++	echo "$R" >> /etc/issue
++	echo >> /etc/issue
++    else
++	cat /etc/issue.net > /etc/issue
++    fi
+ fi
+diff -Nur initscripts-4.19/rc.d/rc.sysinit initscripts-4.19.cnc/rc.d/rc.sysinit
+--- initscripts-4.19/rc.d/rc.sysinit	Tue May 25 18:04:58 1999
++++ initscripts-4.19.cnc/rc.d/rc.sysinit	Thu Jul  1 15:29:55 1999
+@@ -7,7 +7,7 @@
+ 
+ # Rerun ourselves through initlog
+ if [ -z "$IN_INITLOG" ]; then
+- [ -f /sbin/initlog ] && exec /sbin/initlog -r /etc/rc.d/rc.sysinit
++ [ -f /sbin/initlog ] && exec /sbin/initlog $INITLOG_ARGS -r /etc/rc.d/rc.sysinit
+ fi
+ 
+ # Set the path
+@@ -28,6 +28,48 @@
+ # Fix console loglevel
+ /sbin/loglevel $LOGLEVEL
+ 
++# Set the system clock.
++ARC=0
++UTC=0
++if [ -f /etc/sysconfig/clock ]; then
++    . /etc/sysconfig/clock
++
++    # convert old style clock config to new values
++    if [ "${CLOCKMODE}" = "GMT" ]; then
++	    UTC=true
++    elif [ "${CLOCKMODE}" = "ARC" ]; then
++	    ARC=true
++    fi
++fi
++
++CLOCKDEF=""
++if [ -x /sbin/hwclock ]; then
++    CLOCKFLAGS="--hctosys"
++    CLOCK=/sbin/hwclock
++else
++    CLOCKFLAGS="-a"
++    CLOCK=/sbin/clock
++fi
++
++case "$UTC" in
++  yes|true)
++    CLOCKFLAGS="$CLOCKFLAGS -u";
++    CLOCKDEF="$CLOCKDEF (utc)";
++  ;;
++esac
++
++if [ "$CLOCK" = "/sbin/clock" ]; then
++ case "$ARC" in
++   yes|true)
++     CLOCKFLAGS="$CLOCKFLAGS -A";
++     CLOCKDEF="$CLOCKDEF (arc)";
++   ;;
++ esac
++fi
++
++$CLOCK $CLOCKFLAGS
++action "Setting clock %s: %s" "$CLOCKDEF" "`date`" date
++
+ # Load keymap
+ KEYMAP=
+ if [ -f /etc/sysconfig/console/default.kmap ]; then
+@@ -40,10 +82,9 @@
+ fi
+ if [ -n "$KEYMAP" ]; then 
+   # Since this takes in/output from stdin/out, we can't use initlog
+-  echo -n "Loading default keymap"
+-  loadkeys $KEYMAP < /dev/tty0 > /dev/tty0 2>/dev/null && \
+-     success "Loading default keymap" || failure "Loading default keymap"
+-  echo
++  # Do this quietly (the font may not be on /root partition)
++  # but if it is really needed, the keymap can be loaded from /etc/sysconfig
++  loadkeys $KEYMAP < /dev/tty0 > /dev/tty0 2>/dev/null
+ fi   
+ 
+ # Load system font
+@@ -55,11 +96,11 @@
+ action "Activating swap partitions" swapon -a
+ 
+ # Set the hostname.
+-action "Setting hostname ${HOSTNAME}" hostname ${HOSTNAME}
++action "Setting hostname %s" "${HOSTNAME}" hostname ${HOSTNAME}
+ 
+ # Set the NIS domain name
+ if [ -n "$NISDOMAIN" ]; then
+-    action "Setting NIS domain name $NISDOMAIN" domainname $NISDOMAIN
++    action "Setting NIS domain name %s" "$NISDOMAIN" domainname $NISDOMAIN
+ else
+     domainname ""
+ fi
+@@ -94,17 +135,17 @@
+ 		failure "$STRING"
+ 		echo
+ 		echo
+-		echo "*** An error occurred during the file system check."
+-		echo "*** Dropping you to a shell; the system will reboot"
+-		echo "*** when you leave the shell."
++		gprintf "*** An error occurred during the file system check.\n"
++		gprintf "*** Dropping you to a shell; the system will reboot\n"
++		gprintf "*** when you leave the shell.\n"
+ 
+-		PS1="(Repair filesystem) \#"; export PS1
++		PS1=`gprintf "(Repair filesystem) #"`; export PS1
+ 		sulogin
+ 
+-		echo "Unmounting file systems"
++		gprintf "Unmounting file systems\n"
+ 		umount -a
+ 		mount -n -o remount,ro /
+-		echo "Automatic reboot in progress."
++		gprintf "Automatic reboot in progress.\n"
+ 		reboot
+ 	elif [ "$rc" = "1" ]; then
+ 		_RUN_QUOTACHECK=1
+@@ -142,6 +183,7 @@
+ #    action "Turning on user and group quotas for root filesystem"  /sbin/quotaon /
+ #fi
+ 
++# The root filesystem is now read-write, so we can now log via syslog() directly..
+ if [ -n "$IN_INITLOG" ]; then
+     IN_INITLOG=
+ fi
+@@ -164,15 +206,12 @@
+ fi
+ 
+ # Our modutils don't support it anymore, so we might as well remove
+-# the link.
++# the preferred link.
+ rm -f /lib/modules/preferred
+ rm -f /lib/modules/default
+ if [ -x /sbin/depmod -a -n "$USEMODULES" ]; then
+-    # Get ready for kmod if module support in the kernel
+-    if [ -n `uname -r | grep "-"` ]; then
+-       # we're using a new kernel, no preferred needed
+-       mver=`uname -r`
+-    else
++    # If they aren't using a recent sane kernel, make a link for them
++    if [ ! -n `uname -r | grep "-"` ]; then
+        ktag="`cat /proc/version`"
+        mtag=`grep -l "$ktag" /lib/modules/*/.rhkmvtag 2> /dev/null`
+        if [ -n "$mtag" ]; then
+@@ -182,8 +221,6 @@
+          ln -sf /lib/modules/$mver /lib/modules/default
+        fi
+     fi
+-    [ -n "$mver" -a -f "/boot/module-info-$mver" ] && ln -sf /boot/module-info-$mver /boot/module-info
+-    [ -n "$mver" -a -f "/boot/System.map-$mver" ] && ln -sf /boot/System.map-$mver /boot/System.map
+     if [ -L /lib/modules/default ]; then
+     	action "Finding module dependencies" depmod -a default
+     else
+@@ -193,10 +230,10 @@
+ 
+ # load sound modules
+ if [ -n "$USEMODULES" ]; then
+-   if grep -s -q "^alias sound" /etc/conf.modules ; then
++   if grep -s -q "^alias sound " /etc/conf.modules ; then
+       action "Loading sound module" modprobe sound
+    fi
+-   if grep -s -q "^alias midi" /etc/conf.modules ; then
++   if grep -s -q "^alias midi " /etc/conf.modules ; then
+       action "Loading midi module" modprobe midi
+    fi
+ fi
+@@ -214,27 +251,32 @@
+ 	/etc/rc.d/rc.modules
+ fi
+ 
+-# Add raid devices
+-if [ -f /proc/mdstat -a -f /etc/raidtab -a -x /sbin/raidstart ]; then
+-	action "Starting up RAID devices" raidstart -a
++# Add raid devices, old style...
++if [ -f /proc/mdstat -a -f /etc/raidtab -a -x /sbin/raidadd ]; then
++       action "Starting up RAID devices" raidadd -a
+ 
+ 	rc=$?
+ 
++	if [ $rc = 0 ]; then
++		raidrun -a
++		rc=$?
++	fi
++
+ 	# A non-zero return means there were problems.
+ 	if [ $rc -gt 0 ]; then
+ 		echo
+ 		echo
+-		echo "*** An error occurred during the RAID startup"
+-		echo "*** Dropping you to a shell; the system will reboot"
+-		echo "*** when you leave the shell."
++		gprintf "*** An error occurred during the RAID startup\n"
++		gprintf "*** Dropping you to a shell; the system will reboot\n"
++		gprintf "*** when you leave the shell.\n"
+ 
+-		PS1="(RAID Repair) \#"; export PS1
++		PS1=`gprintf "(RAID Repair) #"`; export PS1
+ 		sulogin
+ 
+-		echo "Unmounting file systems"
++		gprintf "Unmounting file systems\n"
+ 		umount -a
+ 		mount -n -o remount,ro /
+-		echo "Automatic reboot in progress."
++		gprintf "Automatic reboot in progress.\n"
+ 		reboot
+ 	fi
+ fi
+@@ -242,7 +284,7 @@
+ # Check filesystems
+ if [ ! -f /fastboot ]; then
+         STRING="Checking filesystems"
+-	echo $STRING
++	gprintf "$STRING\n"
+ 	initlog -c "fsck  -T -R -A -a $fsckoptions"
+ 	rc=$?
+         if [ "$rc" = "0" ]; then
+@@ -258,17 +300,17 @@
+ 	        failure "$STRING"
+ 		echo
+ 		echo
+-		echo "*** An error occurred during the file system check."
+-		echo "*** Dropping you to a shell; the system will reboot"
+-		echo "*** when you leave the shell."
++		gprintf "*** An error occurred during the file system check.\n"
++		gprintf "*** Dropping you to a shell; the system will reboot\n"
++		gprintf "*** when you leave the shell.\n"
+ 
+-		PS1="(Repair filesystem) \#"; export PS1
++		PS1=`gprintf "(Repair filesystem) #"`; export PS1
+ 		sulogin
+ 
+-		echo "Unmounting file systems"
++		gprintf "Unmounting file systems\n"
+ 		umount -a
+ 		mount -n -o remount,ro /
+-		echo "Automatic reboot in progress."
++		gprintf "Automatic reboot in progress.\n"
+ 		reboot
+ 	elif [ "$rc" = "1" -a -x /sbin/quotacheck ]; then
+ 		action "Checking filesystem quotas" /sbin/quotacheck -v -R -a
+@@ -286,10 +328,10 @@
+ 
+ # Clean out /etc.
+ rm -f /etc/mtab~ /fastboot /fsckoptions /forcefsck
+->/var/run/utmp
+-touch /var/log/wtmp
+-chgrp utmp /var/run/utmp /var/log/wtmp
+-chmod 0664 /var/run/utmp /var/log/wtmp
++
++# Do we need (w|u)tmpx files? We don't set them up, but the sysadmin might...
++_NEED_XFILES=
++[ -f /var/run/utmpx -o -f /var/log/wtmpx ] && _NEED_XFILES=1
+ 
+ # Clean up /var
+ # I'd use find, but /usr may not be mounted.
+@@ -301,55 +343,24 @@
+    fi
+ done
+ 
++# Clean up utmp/wtmp
++>/var/run/utmp
++touch /var/log/wtmp
++chgrp utmp /var/run/utmp /var/log/wtmp
++chmod 0664 /var/run/utmp /var/log/wtmp
++if [ -n "$NEED_XFILES" ]; then
++  >/var/run/utmpx
++  touch /var/log/wtmpx
++  chgrp utmp /var/run/utmpx /var/log/wtmpx
++  chmod 0664 /var/run/utmpx /var/log/wtmpx
++fi
++
+ # Delete X locks
+ rm -f /tmp/.X*-lock
+ 
+ # Delete Postgres sockets
+ rm -f /tmp/.s.PGSQL.*
+ 
+-# Set the system clock.
+-ARC=0
+-UTC=0
+-if [ -f /etc/sysconfig/clock ]; then
+-    . /etc/sysconfig/clock
+-
+-    # convert old style clock config to new values
+-    if [ "${CLOCKMODE}" = "GMT" ]; then
+-	    UTC=true
+-    elif [ "${CLOCKMODE}" = "ARC" ]; then
+-	    ARC=true
+-    fi
+-fi
+-
+-CLOCKDEF=""
+-if [ -x /sbin/hwclock ]; then
+-    CLOCKFLAGS="--hctosys"
+-    CLOCK=/sbin/hwclock
+-    $CLOCK --adjust
+-else
+-    CLOCKFLAGS="-a"
+-    CLOCK=/sbin/clock
+-fi
+-
+-case "$UTC" in
+-  yes|true)
+-    CLOCKFLAGS="$CLOCKFLAGS -u";
+-    CLOCKDEF="$CLOCKDEF (utc)";
+-  ;;
+-esac
+-
+-if [ "$CLOCK" = "/sbin/clock" ]; then
+- case "$ARC" in
+-   yes|true)
+-     CLOCKFLAGS="$CLOCKFLAGS -A";
+-     CLOCKDEF="$CLOCKDEF (arc)";
+-   ;;
+- esac
+-fi
+-
+-$CLOCK $CLOCKFLAGS
+-action "Setting clock $CLOCKDEF: `date`" date
+-
+ # Right, now turn on swap in case we swap to files.
+ swapon -a >/dev/null 2>&1
+ action "Enabling swap space" /bin/true
+@@ -385,10 +396,10 @@
+ 	ln -snf `which $preferred` /etc/X11/prefdm 
+ else
+         if [ ! -L /etc/X11/prefdm ]; then
+-		if which gdm >/dev/null 2>&1; then
+-			ln -snf `which gdm` /etc/X11/prefdm
+-		elif which kdm >/dev/null 2>&1; then
++		if which kdm >/dev/null 2>&1; then
+ 			ln -snf `which kdm` /etc/X11/prefdm
++		elif which gdm >/dev/null 2>&1; then
++			ln -snf `which gdm` /etc/X11/prefdm
+ 		elif which xdm >/dev/null 2>&1; then
+ 			ln -snf `which xdm` /etc/X11/prefdm
+ 		fi
+diff -Nur initscripts-4.19/src/doexec.c initscripts-4.19.cnc/src/doexec.c
+--- initscripts-4.19/src/doexec.c	Tue Sep 16 11:12:06 1997
++++ initscripts-4.19.cnc/src/doexec.c	Thu Jul  1 15:29:55 1999
+@@ -1,6 +1,7 @@
+ #include <unistd.h>
+ 
+ int main(int argc, char ** argv) {
++    if (argc<2) return 1;
+     execvp(argv[1], argv + 2);
+     return 1;
+ }
+diff -Nur initscripts-4.19/src/process.c initscripts-4.19.cnc/src/process.c
+--- initscripts-4.19/src/process.c	Thu Apr  8 23:29:10 1999
++++ initscripts-4.19.cnc/src/process.c	Thu Jul  1 15:29:55 1999
+@@ -105,6 +105,10 @@
+     int x,y,rc=-1;
+     int done=0;
+     int output=0;
++    char **cmdargs=NULL;
++    char **tmpargs=NULL;
++    int cmdargc;
++
+     
+     pipe(outpipe);
+    
+@@ -153,16 +157,21 @@
+ 			     logString(cmdname,tmpstr);
+ 			 }
+ 		     } else {
+-			char **cmdargs=NULL;
+-			char **tmpargs=NULL;
+-			int cmdargc,x;
+ 			
++			int z; 
++               
++			cmdargs=NULL;
++			tmpargs=NULL;
++			cmdargc=0;
++
+ 			poptParseArgvString(tmpstr,&cmdargc,&tmpargs);
+-			cmdargs=malloc( (cmdargc++) * sizeof(char *) );
++			cmdargs=malloc( (cmdargc+1) * sizeof(char *) );
++
+ 			cmdargs[0]=strdup("initlog");
+-			for (x=0;x<(cmdargc-1);x++) {
+-			   cmdargs[x+1]=tmpargs[x];
++			for (z=0;z<(cmdargc);z++) {
++				cmdargs[z+1]=tmpargs[z];
+ 			}
++
+ 			processArgs(cmdargc,cmdargs,1);
+ 		     }
+ 		  }
+@@ -175,7 +184,6 @@
+     }
+     if ((!WIFEXITED(rc)) || (rc=WEXITSTATUS(rc))) {
+       /* If there was an error and we're quiet, be loud */
+-      int x;
+       
+       if (quiet && output) {
+ 	 buf=calloc(2048,sizeof(char));
+diff -Nur initscripts-4.19/sysconfig/init initscripts-4.19.cnc/sysconfig/init
+--- initscripts-4.19/sysconfig/init	Thu Feb 25 14:13:36 1999
++++ initscripts-4.19.cnc/sysconfig/init	Thu Jul  1 15:29:55 1999
+@@ -1,4 +1,4 @@
+-# color => new RH6.0 bootup
++# color => new Conectiva Linux bootup
+ # verbose => old-style bootup
+ # anything else => new style bootup without ANSI colors or positioning
+ BOOTUP=color
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifdown initscripts-4.19.cnc/sysconfig/network-scripts/ifdown
+--- initscripts-4.19/sysconfig/network-scripts/ifdown	Wed Mar 10 13:57:50 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifdown	Thu Jul  1 15:29:55 1999
+@@ -3,17 +3,18 @@
+ 
+ cd /etc/sysconfig/network-scripts
+ . network-functions
++. /etc/rc.d/init.d/functions
+ 
+ CONFIG=$1
+ 
+ [ -z "$CONFIG" ] && {
+-    echo "usage: ifdown <device name>" >&2
++    gprintf "usage: %s <device name>\n" ifdown >&2
+     exit 1
+ }
+ 
+ [ -f "$CONFIG" ] || CONFIG=ifcfg-$CONFIG
+ [ -f "$CONFIG" ] || {
+-    echo "usage: ifdown <device name>" >&2
++    gprintf "usage: %s <device name>\n" ifdown >&2
+     exit 1
+ }
+ 
+@@ -21,7 +22,7 @@
+     if [ -x /usr/sbin/usernetctl ]; then
+         exec /usr/sbin/usernetctl $CONFIG down
+     fi
+-    echo "Users cannot control this device." >&2
++    gprintf "Users cannot control this device.\n" >&2
+     exit 1
+ fi
+ 
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup initscripts-4.19.cnc/sysconfig/network-scripts/ifup
+--- initscripts-4.19/sysconfig/network-scripts/ifup	Sun Apr 18 20:36:47 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup	Thu Jul  1 15:29:55 1999
+@@ -3,19 +3,20 @@
+ 
+ cd /etc/sysconfig/network-scripts
+ . network-functions
++. /etc/rc.d/init.d/functions
+ 
+ need_hostname
+ 
+ CONFIG=$1
+ 
+ [ -z "$CONFIG" ] && {
+-    echo "usage: ifup <device name>" >&2
++    gprintf "usage: %s <device name>\n" "ifup" >&2
+     exit 1
+ }
+ 
+ [ -f "$CONFIG" ] || CONFIG=ifcfg-$CONFIG
+ [ -f "$CONFIG" ] || {
+-    echo "usage: ifup <device name>" >&2
++    gprintf "usage: %s <device name>\n" "ifup" >&2
+     exit 1
+ }
+ 
+@@ -23,7 +24,7 @@
+     if [ -x /usr/sbin/usernetctl ]; then
+ 	exec /usr/sbin/usernetctl $CONFIG up
+     fi
+-    echo "Users cannot control this device." >&2
++    gprintf "Users cannot control this device.\n" >&2
+     exit 1
+ fi
+ 
+@@ -62,7 +63,7 @@
+ # is this device available? (this catches PCMCIA devices for us)
+ /sbin/ifconfig ${REALDEVICE} 2>&1 | grep -s "not found" > /dev/null
+ if [ "$?" = "0" ]; then
+-    echo "Delaying ${DEVICE} initialization."
++    gprintf "Delaying %s initialization.\n" "${DEVICE}"
+     exit 1
+ fi
+ 
+@@ -71,7 +72,7 @@
+     RFLAG="" ; [ "$RECIEVE-ONLY" = yes ] && RFLAG="-r"
+ 
+     ifconfig ${DEVICE} down
+-    echo "Enslaving $DEVICE to $MASTER"
++    gprintf "Enslaving %s to %s\n" "$DEVICE" "$MASTER"
+     ifenslave $RFLAG "$MASTER" "$DEVICE"
+ 
+     exit 0
+@@ -82,11 +83,11 @@
+ fi
+ 
+ if [ -n "$PUMP" ]; then
+-    echo -n "Determining IP information for $DEVICE..."
++    gprintf "Determining IP information for %s...\n" $DEVICE
+     if /sbin/pump -i $DEVICE ; then
+-	echo " done."
++	gprintf " done.\n"
+     else
+-	echo " failed."
++	gprintf " failed.\n"
+ 	exit 1
+     fi
+ else 
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-aliases initscripts-4.19.cnc/sysconfig/network-scripts/ifup-aliases
+--- initscripts-4.19/sysconfig/network-scripts/ifup-aliases	Mon Apr 12 13:59:18 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-aliases	Thu Jul  1 15:29:55 1999
+@@ -1,16 +1,17 @@
+ #!/bin/sh
+-
+ # adds aliases of device $1
+ 
++. /etc/rc.d/init.d/functions
++
+ if [ "$1" = "" ]; then
+-	echo "usage: $0 <net-device>"
++	gprintf "usage: %s <net-device>\n" "$0"
+ 	exit 1
+ fi
+ 
+ # don't run linuxconf if /usr isn't there... 
+ if [ -x /bin/linuxconf -a -f /usr/lib/libncurses.so.4.2 ] ; then
+     # ask linuxconf for lines like:
+-    # add	<device>	<ip>
++    # add	<device>	<ip>  [ <netmask>  <broadcast> ]
+     # del	<device>
+     # reload	<number_of_aliases>
+     linuxconf --hint ipalias $1 | while read verb arg1 arg2 arg3 arg4; do
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-ipx initscripts-4.19.cnc/sysconfig/network-scripts/ifup-ipx
+--- initscripts-4.19/sysconfig/network-scripts/ifup-ipx	Tue Apr  6 18:32:22 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-ipx	Thu Jul  1 15:29:55 1999
+@@ -2,9 +2,10 @@
+ # configures IPX on $1 if appropriate
+ 
+ PATH=/sbin:/usr/sbin:/bin:/usr/bin
++. /etc/rc.d/init.d/functions
+ 
+ if [ "$1" = "" ]; then
+-	echo "usage: $0 <net-device>"
++	gprintf "usage: %s <net-device>\n" "$0"
+ 	exit 1
+ fi
+ 
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-post initscripts-4.19.cnc/sysconfig/network-scripts/ifup-post
+--- initscripts-4.19/sysconfig/network-scripts/ifup-post	Tue Apr  6 15:18:35 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-post	Thu Jul  1 15:29:55 1999
+@@ -15,12 +15,11 @@
+     ISALIAS=no
+ fi
+ 
+-/etc/sysconfig/network-scripts/ifup-routes ${DEVICE}
+-
+ if [ "$ISALIAS" = no ] ; then
+     /etc/sysconfig/network-scripts/ifup-aliases ${DEVICE}
+ fi
+ 
++/etc/sysconfig/network-scripts/ifup-routes ${DEVICE}
+ 
+ # don't set hostname on ppp/slip connections
+ if [ -n "$NEEDHOSTNAME" -a "${DEVICE}" != lo -a "${DEVICETYPE}" != "ppp" -a "${DEVICETYPE}" != "slip" ]; then
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-ppp initscripts-4.19.cnc/sysconfig/network-scripts/ifup-ppp
+--- initscripts-4.19/sysconfig/network-scripts/ifup-ppp	Wed Feb  3 15:38:16 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-ppp	Thu Jul  1 15:29:55 1999
+@@ -1,8 +1,8 @@
+ #!/bin/sh
+-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+-
+ # ifup-post for PPP is handled through /etc/ppp/ip-up
+ 
++PATH=/sbin:/usr/sbin:/bin:/usr/bin
++
+ if [ "$1" != daemon ] ; then
+   # disconnect stdin, out, err to disassociate from controlling tty
+   # so that no HUPs will get through.
+@@ -13,6 +13,7 @@
+ 
+ cd /etc/sysconfig/network-scripts
+ . network-functions
++. /etc/rc.d/init.d/functions
+ 
+ CONFIG=$1
+ source_config
+@@ -30,16 +31,16 @@
+ fi
+ 
+ [ -x /usr/sbin/pppd ] || {
+-  echo "/usr/sbin/pppd does not exist or is not executable"
+-  echo "ifup-ppp for $DEVICE exiting"
++  gprintf "%s does not exist or is not executable\n" "/usr/sbin/pppd"
++  gprintf "ifup-ppp for %s exiting\n" "$DEVICE"
+   logger -p daemon.info -t ifup-ppp \
+     "/usr/sbin/pppd does not exist or is not executable for $DEVICE"
+   exit 1
+ }
+ 
+ [ -f /etc/sysconfig/network-scripts/chat-$DEVICE ] || {
+-  echo "/etc/sysconfig/network-scripts/chat-$DEVICE does not exist"
+-  echo "ifup-ppp for $DEVICE exiting"
++  gprintf "%s does not exist\n" "/etc/sysconfig/network-scripts/chat-$DEVICE"
++  gprintf "ifup-ppp for %s exiting\n" "$DEVICE"
+   logger -p daemon.info -t ifup-ppp \
+     "/etc/sysconfig/network-scripts/chat-$DEVICE does not exist for $DEVICE"
+   exit 1
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-routes initscripts-4.19.cnc/sysconfig/network-scripts/ifup-routes
+--- initscripts-4.19/sysconfig/network-scripts/ifup-routes	Fri Mar 19 20:03:05 1999
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-routes	Thu Jul  1 15:29:55 1999
+@@ -1,9 +1,10 @@
+ #!/bin/sh
+-
+ # adds static routes which go through device $1
+ 
++. /etc/rc.d/init.d/functions
++
+ if [ "$1" = "" ]; then
+-	echo "usage: $0 <net-device>"
++	gprintf "usage: %s <net-device>\n" "$0"
+ 	exit 1
+ fi
+ 
+diff -Nur initscripts-4.19/sysconfig/network-scripts/ifup-sl initscripts-4.19.cnc/sysconfig/network-scripts/ifup-sl
+--- initscripts-4.19/sysconfig/network-scripts/ifup-sl	Tue Jul  7 09:44:22 1998
++++ initscripts-4.19.cnc/sysconfig/network-scripts/ifup-sl	Thu Jul  1 15:29:55 1999
+@@ -1,5 +1,7 @@
+ #!/bin/sh
++
+ PATH=/sbin:/usr/sbin:/bin:/usr/bin
++. /etc/rc.d/init.d/functions
+ 
+ # ifup-post can't be done for slip :-( Solution: use PPP
+ 
+@@ -28,8 +30,8 @@
+ fi
+ 
+ [ -x /usr/sbin/dip ] || {
+-  echo "/usr/sbin/dip does not exist or is not executable"
+-  echo "ifup-sl for $DEVICE exiting"
++  gprintf "%s does not exist or is not executable\n" "/usr/sbin/dip"
++  gprintf "%s for %s exiting\n" "ifup-sl" "$DEVICE"
+   logger -p daemon.info -t ifup-sl \
+     "/usr/sbin/dip does not exist or is not executable for $DEVICE"
+   exit 1
+@@ -40,8 +42,8 @@
+   DIPSCRIPT=/etc/sysconfig/network-scripts/dip-$PARENTDEVNAME
+ }
+ [ -f $DIPSCRIPT ] || {
+-  echo "/etc/sysconfig/network-scripts/dip-$DEVICE does not exist"
+-  echo "ifup-sl for $DEVICE exiting"
++  gprintf "%s does not exist\n" "/etc/sysconfig/network-scripts/dip-$DEVICE"
++  gprintf "%s for %s exiting\n" "ifup-sl" "$DEVICE"
+   logger -p daemon.info -t ifup-sl \
+     "/etc/sysconfig/network-scripts/dip-$DEVICE does not exist for $DEVICE"
+   exit 1
