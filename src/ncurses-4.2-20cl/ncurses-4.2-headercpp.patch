@@ -1,0 +1,21 @@
+--- ncurses-4.2/include/curses.h.in.gafton	Fri Mar 12 01:15:21 1999
++++ ncurses-4.2/include/curses.h.in	Fri Mar 12 01:24:38 1999
+@@ -85,14 +85,12 @@
+ 
+ #undef TRUE
+ #undef FALSE
+-#define CXX_BUILTIN_BOOL @cf_cv_builtin_bool@
+-#define CXX_TYPE_OF_BOOL @cf_cv_type_of_bool@
+ 
+-#if defined(__cplusplus) && CXX_BUILTIN_BOOL
+-#define TRUE    ((CXX_TYPE_OF_BOOL)true)
+-#define FALSE   ((CXX_TYPE_OF_BOOL)false)
++#if defined(__cplusplus)
++#define TRUE    ((bool)true)
++#define FALSE   ((bool)false)
+ #else
+-typedef CXX_TYPE_OF_BOOL bool;
++typedef int bool;
+ #define TRUE    ((bool)1)
+ #define FALSE   ((bool)0)
+ #endif

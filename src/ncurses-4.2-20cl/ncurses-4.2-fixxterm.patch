@@ -1,0 +1,23 @@
+--- ncurses-4.2/misc/terminfo.src.fixxterm	Thu Mar 25 12:02:33 1999
++++ ncurses-4.2/misc/terminfo.src	Thu Mar 25 12:19:49 1999
+@@ -2206,8 +2206,8 @@
+ xterm-xf86-v333|xterm terminal emulator (XFree86 3.3.3 Window System), 
+ 	mc5i, 
+ 	blink=\E[5m, ich1@, invis=\E[8m, 
+-	is2=\E[!p\E[?3;4l\E[4l\E>, kdch1=\E[3~, kend=\E[4~, 
+-	khome=\E[1~, kll=\E[4~, mc0=\E[i, mc4=\E[4i, mc5=\E[5i, 
++	is2=\E[!p\E[?3;4l\E[4l\E>, kdch1=\E[3~, kend=\E[8~, 
++	khome=\E[7~, kll=\E[F, mc0=\E[i, mc4=\E[4i, mc5=\E[5i, 
+ 	rmcup=\E[?1047l\E[?1048l, rs1=\Ec, 
+ 	rs2=\E[!p\E[?3;4l\E[4l\E>, 
+ 	sgr=\E[0%?%p1%p6%|%t;1%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m%?%p9%t\016%e\017%;, 
+@@ -2292,7 +2292,8 @@
+ xterm|xterm terminal emulator (X Window System), 
+ 	acsc=``aaffggiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~, 
+ 	kmous=\E[M, u6=\E[%i%d;%dR, u7=\E[6n, u8=\E[?1;2c, u9=\E[c, 
+-	use=xterm-r6, 
++#	use=xterm-r6, 
++	use=xterm-xf86-v333,
+ 
+ # These entries allow access to the X titlebar and icon name as a status line. 
+ # Note that twm (and possibly window managers descended from it such as tvtwm, 
