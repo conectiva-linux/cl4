@@ -1,0 +1,14 @@
+diff -ur gftp-1.13.old/sample.gftp/gftprc gftp-1.13/sample.gftp/gftprc
+--- gftp-1.13.old/sample.gftp/gftprc	Wed Mar 31 02:43:08 1999
++++ gftp-1.13/sample.gftp/gftprc	Mon May  3 14:25:01 1999
+@@ -104,10 +104,6 @@
+ ext=.deb:deb.xpm:B:
+ ext=.diff:diff.xpm::
+ ext=.gz:tar.xpm:B:
+-ext=.htm:html.xpm::
+-ext=.html:html.xpm::
+ ext=.man:man.xpm::
+-ext=.pdf:pdf.xpm:B:
+-ext=.rpm:rpm.xpm:B:
+ ext=.tar:tar.xpm:B:
+ ext=.tgz:tar.xpm:B:
