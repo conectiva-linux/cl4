@@ -1,0 +1,11 @@
+--- svgalib-1.2.13/utils/Makefile.buildroot	Fri Oct  3 14:44:02 1997
++++ svgalib-1.2.13/utils/Makefile	Tue Apr  7 12:09:13 1998
+@@ -26,6 +26,8 @@
+ 	fix132x43 setmclk
+ OBJECTS = restorefont.o convfont.o restoretextmode.o restorepalette.o \
+ 	dumpreg.o fix132x43.o setmclk.o
++CFLAGS += -I$(includedir)
++LIBS := -L$(libdir) $(LIBS)
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) -c -o $*.o $<

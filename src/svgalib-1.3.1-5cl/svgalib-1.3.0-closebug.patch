@@ -1,0 +1,94 @@
+--- svgalib-1.3.0/src/mouse/ms.c.closebug	Thu Jun 11 10:25:02 1998
++++ svgalib-1.3.0/src/mouse/ms.c	Thu Oct 22 17:45:30 1998
+@@ -444,6 +444,22 @@
+     printf("m_accel_maxdelta: %ld\n",	(long)m_accel_maxdelta);
+ #endif
+ 
++    /*  Ensure that the open will get a file descriptor greater
++     *  than 2, else problems can occur with stdio functions
++     *  under certain strange conditions:  */
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
++
+     /* Added O_NDELAY here. */
+     if ((__svgalib_mouse_fd = open(m_dev, O_RDWR | O_NDELAY )) < 0)
+ 	return -1;
+--- svgalib-1.3.0/src/gvga6400.c.closebug	Sat Apr 11 14:35:04 1998
++++ svgalib-1.3.0/src/gvga6400.c	Thu Oct 22 17:45:30 1998
+@@ -178,7 +178,31 @@
+     int result = 0;
+     int address;
+ 
++    /*  Ensure that this open gets a file descriptor greater
++     *  than 2, else problems can occur with stdio functions
++     *  under certain strange conditions:  */
++    if((fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1)) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if((fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1)) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if((fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1)) {
++	perror("/dev/null");
++	exit(1);
++    }
+     mem_fd = open("/dev/mem", O_RDONLY);
++    if (mem_fd == -1) {
++        perror("/dev/mem");
++        exit(-1);
++    }
++    /*  Ensure this file is closed if we were ever to exec something else...  */
++    if (fcntl(mem_fd, F_SETFD, 1) == -1) {
++        perror("fcntl");
++        exit(-1);
++    }
+ 
+     /* Changed to use valloc(). */
+     if ((vga_bios = valloc(4096)) == NULL) {
+--- svgalib-1.3.0/src/mach32.c.closebug	Sat Apr 11 15:37:57 1998
++++ svgalib-1.3.0/src/mach32.c	Thu Oct 22 17:54:40 1998
+@@ -153,6 +153,8 @@
+ #include <sys/io.h>
+ #endif
+ 
++#include <fcntl.h>
++
+ #include "mach32.h"
+ #include "8514a.h"
+ #include "vga.h"
+--- svgalib-1.3.0/src/vga.c.closebug	Thu Oct 22 17:45:30 1998
++++ svgalib-1.3.0/src/vga.c	Thu Oct 22 17:45:31 1998
+@@ -617,6 +645,21 @@
+ 
+     if (__svgalib_tty_fd >= 0)
+         return;
++
++    /*  The code below assumes file descriptors 0, 1, and 2
++     *  are already open; make sure that's true.  */
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++	perror("/dev/null");
++	exit(1);
++    }
+ 
+     /*
+      * Now, it would be great if we could use /dev/tty and see what it is connected to.

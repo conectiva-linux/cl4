@@ -1,0 +1,255 @@
+diff -uNr svgalib-1.3.1/src/gvga6400.c svgalib-1.3.1.fd/src/gvga6400.c
+--- svgalib-1.3.1/src/gvga6400.c	Sat Apr 11 15:35:04 1998
++++ svgalib-1.3.1.fd/src/gvga6400.c	Wed Mar 31 19:56:15 1999
+@@ -178,7 +178,33 @@
+     int result = 0;
+     int address;
+ 
++    /*  Ensure that this open gets a file descriptor greater
++     *  than 2, else problems can occur with stdio functions
++     *  under certain strange conditions:  */
++    if((fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1)) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if((fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1)) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if((fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1)) {
++       perror("/dev/null");
++       exit(1);
++    }
++
+     mem_fd = open("/dev/mem", O_RDONLY);
++
++    if (mem_fd == -1) {
++        perror("/dev/mem");
++        exit(-1);
++    }
++    /*  Ensure this file is closed if we were ever to exec something else...  */
++    if (fcntl(mem_fd, F_SETFD, 1) == -1) {
++        perror("fcntl");
++        exit(-1);
++    }
+ 
+     /* Changed to use valloc(). */
+     if ((vga_bios = valloc(4096)) == NULL) {
+diff -uNr svgalib-1.3.1/src/mach32.c svgalib-1.3.1.fd/src/mach32.c
+--- svgalib-1.3.1/src/mach32.c	Tue Nov 17 14:16:03 1998
++++ svgalib-1.3.1.fd/src/mach32.c	Wed Mar 31 20:07:50 1999
+@@ -153,6 +153,7 @@
+ #ifdef USEGLIBC
+ #include <sys/io.h>
+ #endif
++#include <fcntl.h>
+ 
+ #include "mach32.h"
+ #include "8514a.h"
+@@ -1520,12 +1521,22 @@
+ 	    for (i = 0, sum = 0, ptr = mach32_eeprom; i < 128; i++)
+ 		sum += *ptr++;
+ 
+-	    /*  Ensure that this fopen gets a file descriptor greater
+-	     *  than 2, else problems can occur with stdio functions
+-	     *  under certain strange conditions:  */
+-	    if (fcntl(0,F_GETFD) < 0) open("/dev/null", O_RDONLY);
+-	    if (fcntl(1,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-	    if (fcntl(2,F_GETFD) < 0) open("/dev/null", O_WRONLY);
++             /*  Ensure that this fopen gets a file descriptor greater
++             *  than 2, else problems can occur with stdio functions
++             *  under certain strange conditions:  */
++            if ((fcntl(0,F_GETFD) < 0) && (open("/dev/null", O_RDONLY) < 0)) {
++                perror("/dev/null");
++                exit(1);
++            };
++            if ((fcntl(1,F_GETFD) < 0) && (open("/dev/null", O_WRONLY) < 0)) {
++                perror("/dev/null");
++                exit(1);
++            };
++            if ((fcntl(2,F_GETFD) < 0) && (open("/dev/null", O_WRONLY) < 0)) {
++                perror("/dev/null");
++                exit(1);
++            };
++
+ 	    fd = fopen(eeprom_fname, "wb");
+ 	    if (fd == NULL) {
+ 	      writerr:
+@@ -3087,7 +3098,7 @@
+ 		else
+ 		    *push(1) = CMD_CPY + i;	/* Nope, copy instead of move.. */
+ 		*push(1) = j;	/* The destination mode. */
+-#ifdef 1
++#if 1
+ 		printf("Redefining mode %d to %d:%dx%dx%d\n", i, j,
+ 		       infotable[i].xdim, infotable[i].ydim, infotable[i].colors);
+ #endif
+diff -uNr svgalib-1.3.1/src/mouse/ms.c svgalib-1.3.1.fd/src/mouse/ms.c
+--- svgalib-1.3.1/src/mouse/ms.c	Sat Dec  5 08:00:01 1998
++++ svgalib-1.3.1.fd/src/mouse/ms.c	Wed Mar 31 20:11:55 1999
+@@ -418,10 +418,18 @@
+     /*  Ensure that the open will get a file descriptor greater
+      *  than 2, else problems can occur with stdio functions
+      *  under certain strange conditions:  */
+-    if (fcntl(0,F_GETFD) < 0) open("/dev/null", O_RDONLY);
+-    if (fcntl(1,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-    if (fcntl(2,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
+     /* Set the proper wheel delta */
+     if(m_wheel_steps)
+         m_wheel_delta = (360 / m_wheel_steps);
+diff -uNr svgalib-1.3.1/src/vga.c svgalib-1.3.1.fd/src/vga.c
+--- svgalib-1.3.1/src/vga.c	Sat Dec 12 06:54:27 1998
++++ svgalib-1.3.1.fd/src/vga.c	Wed Mar 31 20:15:18 1999
+@@ -617,15 +617,31 @@
+     /*  Ensure that the open will get a file descriptor greater
+      *  than 2, else problems can occur with stdio functions
+      *  under certain strange conditions:  */
+-    if (fcntl(0,F_GETFD) < 0) open("/dev/null", O_RDONLY);
+-    if (fcntl(1,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-    if (fcntl(2,F_GETFD) < 0) open("/dev/null", O_WRONLY);
++    if ((fcntl(0,F_GETFD) < 0) && (open("/dev/null", O_RDONLY) < 0)) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ((fcntl(1,F_GETFD) < 0) && (open("/dev/null", O_WRONLY) < 0)) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ((fcntl(2,F_GETFD) < 0) && (open("/dev/null", O_WRONLY) , 0)) {
++       perror("/dev/null");
++       exit(1);
++    }
+ 
+     if (__svgalib_mem_fd < 0)
+ 	if ((__svgalib_mem_fd = open("/dev/mem", O_RDWR)) < 0) {
+ 	    printf("svgalib: Cannot open /dev/mem.\n");
+ 	    exit(1);
+ 	}
++
++    /*  Ensure this file is closed if we ever exec something else...  */
++    if (fcntl(__svgalib_mem_fd, F_SETFD, 1) == -1) {
++       perror("fcntl");
++       exit(-1);
++    }
++
+ #ifdef BACKGROUND
+ #if BACKGROUND == 1
+ 
+@@ -642,6 +658,12 @@
+ 	          __svgalib_processnumber);
+ 	      exit(-1);
+ 	     }
++       /*  Ensure this file is closed if we ever exec something else...  */
++         if (fcntl(__svgalib_mem_fd, F_SETFD, 1) == -1)
++          {
++           perror("fcntl");
++           exit(-1);
++          }
+ 	}
+ #endif
+ #endif
+@@ -676,10 +698,18 @@
+ 
+     /*  The code below assumes file descriptors 0, 1, and 2
+      *  are already open; make sure that's true.  */
+-    if (fcntl(0,F_GETFD) < 0) open("/dev/null", O_RDONLY);
+-    if (fcntl(1,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-    if (fcntl(2,F_GETFD) < 0) open("/dev/null", O_WRONLY);
+-
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
+     /*
+      * Now, it would be great if we could use /dev/tty and see what it is connected to.
+      * Alas, we cannot find out reliably what VC /dev/tty is bound to. Thus we parse
+diff -uNr svgalib-1.3.1/src/vgamisc.c svgalib-1.3.1.fd/src/vgamisc.c
+--- svgalib-1.3.1/src/vgamisc.c	Sat Dec  5 17:06:06 1998
++++ svgalib-1.3.1.fd/src/vgamisc.c	Wed Mar 31 20:19:34 1999
+@@ -100,12 +100,33 @@
+ 
+ #ifndef BACKGROUND
+     /*unsigned char *fb;*/
++    /*  Ensure that the open will get a file descriptor greater
++     *  than 2, else problems can occur with stdio functions
++     *  under certain strange conditions:  */
++
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
+ 
+     mem_fd = __svgalib_mem_fd;
+     if (mem_fd == -1) {
+ 	printf("svgalib: memory handle not initialized!\n");
+ 	exit(-1);
+     }
++    /*  Ensure this file is closed if we ever exec something else...  */
++    if (fcntl(mem_fd, F_SETFD, 1) == -1) {
++       perror("fcntl");
++       exit(-1);
++    }
+ #if 0
+     fb = valloc(size);
+     return mmap(
+@@ -135,11 +156,31 @@
+ #if BACKGROUND == 1
+  /* Probably won't go right at first try. */
+     int old_modeinf;
++    /*  Ensure that the open will get a file descriptor greater
++     *  than 2, else problems can occur with stdio functions
++     *  under certain strange conditions:  */
++    if ( (fcntl(0,F_GETFD) == -1) && (open("/dev/null", O_RDONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(1,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
++    if ( (fcntl(2,F_GETFD) == -1) && (open("/dev/null", O_WRONLY) == -1) ) {
++       perror("/dev/null");
++       exit(1);
++    }
+ 
+     mem_fd = __svgalib_mem_fd;
+     if (mem_fd == -1) {  /* sanity check */
+ 	printf("svgalib: memory handle not initialized!\n");
+ 	exit(-1);
++    }
++    /*  Ensure this file is closed if we ever exec something else...  */
++    if (fcntl(mem_fd, F_SETFD, 1) == -1) {
++       perror("fcntl");
++       exit(-1);
+     }
+     if ((__svgalib_linearframebuffer = valloc(size)) == NULL) {
+ 	printf("svgalib: allocation error \n");
