@@ -1,0 +1,22 @@
+--- xlockmore-4.14/xlock/iostuff.h.fortune	Sat Jun 26 17:25:21 1999
++++ xlockmore-4.14/xlock/iostuff.h	Sat Jun 26 17:25:31 1999
+@@ -26,7 +26,7 @@
+ #define DEF_MESSAGEFONT "-*-times-*-*-*-*-18-*-*-*-*-*-*-*"
+ #endif
+ #ifndef DEF_PROGRAM		/* Try the -o option ;) */
+-#define DEF_PROGRAM "fortune -s"
++#define DEF_PROGRAM "/usr/games/fortune -s"
+ #endif
+ 
+ #define IS_NONE 0
+--- xlockmore-4.14/xlock/XLock.ad.fortune  Sat Jun 26 17:08:44 1999
++++ xlockmore-4.14/xlock/XLock.ad       Sat Jun 26 17:09:00 1999
+@@ -54,7 +54,7 @@
+
+ ! For marquee & nose modes
+ !XLock.program: fortune -o
+-XLock.program: fortune -s
++XLock.program: /usr/games/fortune -s
+ !XLock.program: fortune
+ !XLock.program: finger
+ !XLock.messagesfile: fortune.dat

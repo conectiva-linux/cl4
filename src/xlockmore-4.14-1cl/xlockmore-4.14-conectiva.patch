@@ -1,0 +1,13 @@
+--- xlockmore-4.14/Imakefile.conectiva	Mon Feb 10 18:20:53 1997
++++ xlockmore-4.14/Imakefile	Mon Feb 10 18:21:13 1997
+@@ -260,8 +260,8 @@
+ #else
+ #ifdef LinuxArchitecture
+        SLEEPDEF = -DHAS_USLEEP
+-     BITMAPTYPE = linux
+-     PIXMAPTYPE = linux
++     BITMAPTYPE = conectiva
++     PIXMAPTYPE = conectiva
+        FLAGTYPE = linux
+ #if HasShadowPasswd && !UseElfFormat
+ EXTRA_LIBRARIES = -lgdbm

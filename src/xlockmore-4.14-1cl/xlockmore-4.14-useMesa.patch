@@ -1,0 +1,34 @@
+--- xlockmore-4.14/iconfig.h.orig	Sat Jun 26 17:15:59 1999
++++ xlockmore-4.14/iconfig.h	Sat Jun 26 17:18:27 1999
+@@ -124,19 +124,19 @@
+ XCOMM escher, gears, morph3d, pipes, superquadrics, sproingies modes use this.
+ XCOMM If your system has libMesaGL & widgets,
+ XCOMM remove the 'XCOMM  ' from the next line.
+-XCOMM  #define GLLibrary
++#define GLLibrary
+ 
+ #ifdef GLLibrary
+ GLDEF = -DUSE_GL
+ 
+ XCOMM If you get an error "Cannot find GL/gl.h" while compiling, set
+ XCOMM GLINC to the directory GL/gl.h is in.
+-GLINC = -I/usr/local/include
++GLINC = -I/usr/include
+ 
+ XCOMM If you get an error "Cannot find libMesaGL" while linking, set GLLIBPATH
+ XCOMM to the directory libMesaGL.* is in.  Below is a guess.
+ XCOMM !!!WARNING!!! Known security hole with MesaGL < 3.0 if setuid root
+-GLLIB = -L/usr/local/lib -lMesaGL -lMesaGLU
++GLLIB = -L/usr/lib -lMesaGL -lMesaGLU
+ 
+ XCOMM On SGI
+ XCOMM  GLLIB = -lGL -lGLU -lgl
+@@ -147,7 +147,7 @@
+ XCOMM 3Dfx card
+ XCOMM  GLDEF += -DFX
+ XCOMM Threads
+-XCOMM  GLLIB += -lpthread
++GLLIB += -lpthread
+ #endif
+ 
+ XCOMM   *** END MESAGL AND OPENGL CONFIG SECTION ***

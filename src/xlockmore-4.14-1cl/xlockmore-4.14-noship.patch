@@ -1,0 +1,189 @@
+--- xlockmore-4.14/xlock/mode.h.noship	Tue Feb 16 22:22:09 1999
++++ xlockmore-4.14/xlock/mode.h	Wed Mar 10 12:37:54 1999
+@@ -508,9 +508,6 @@
+ #define MODE_lament
+ #endif
+ #endif
+-#if defined( USE_XPM ) || defined( USE_XPMINC )
+-#define MODE_cartoon
+-#endif
+ #ifdef USE_UNSTABLE
+ #define MODE_decay
+ #define MODE_lyapunov
+@@ -565,8 +562,6 @@
+ #define MODE_maze
+ #define MODE_mountain
+ #define MODE_munch
+-#define MODE_nose
+-#define MODE_pacman
+ #define MODE_penrose
+ #define MODE_petal
+ #define MODE_puzzle
+@@ -585,7 +580,6 @@
+ #define MODE_strange
+ #define MODE_swarm
+ #define MODE_swirl
+-#define MODE_tetris
+ #define MODE_thornbird
+ #define MODE_triangle
+ #define MODE_tube
+--- xlockmore-4.14/xlock/xlock.man.noship	Mon Mar  8 12:11:22 1999
++++ xlockmore-4.14/xlock/xlock.man	Wed Mar 10 12:37:36 1999
+@@ -376,10 +376,6 @@
+ .B bug
+ Shows Palmiter's bug evolution and a garden of Eden.
+ .TP 8
+-.B cartoon
+-Shows bouncing cartoons.  May not be available depending on how it was
+-configured.
+-.TP 8
+ .B clock
+ Shows Packard's oclock.
+ .TP 8
+@@ -518,12 +514,6 @@
+ .B munch
+ Shows munching squares. 
+ .TP 8
+-.B nose
+-Shows a man with a big nose runs around spewing out text.
+-.TP 8
+-.B pacman
+-Shows Pacman(tm).
+-.TP 8
+ .B pipes
+ Shows a self-building pipe system.  May not be available depending on how it
+ was configured.
+@@ -598,9 +588,6 @@
+ .B swirl
+ Shows animated swirling patterns.
+ .TP 8
+-.B tetris
+-Shows tetris.
+-.TP 8
+ .B thornbird
+ Shows an animated Bird in a Thorn Bush fractal map.
+ .TP 8
+@@ -688,8 +675,6 @@
+ 
+ In cage mode it is means nothing.
+ 
+-In cartoon mode it means nothing.
+-
+ In clock mode it is the percentage of the screen, but less than 100%.
+ 
+ In coral mode it is the number of seeds.
+@@ -776,12 +761,8 @@
+ 
+ In munch mode it means nothing. 
+ 
+-In nose mode it means nothing.
+-
+ In qix mode it is the number of points.
+ 
+-In pacman mode it means the number of ghosts.
+-
+ In penrose mode it means nothing.
+ 
+ In petal mode it the greatest random number of petals.
+@@ -904,7 +885,7 @@
+ width of maze hallway, size of side of penrose tile, radius of loop in lisa,
+ radius of ball in roll, number of corners in sierpinski,
+ size of tube in tube, width of worm in worm, line width in rotor,
+-size of cells in ant, bug, dilemma, life, life1d, pacman, tetris, voters,
++size of cells in ant, bug, dilemma, life, life1d, voters,
+ wator, and wire.  In pipes it is the maximum length of a system.
+ In atlantis it is the shark size.
+ In sproingies it is the size of the screen.  A negative number
+@@ -1259,7 +1240,7 @@
+ The
+ .I program
+ option sets the program to be used as the fortune generator.  Currently
+-used only for marquee and nose modes.
++used only for marquee mode.
+ .TP 5
+ .BI \-messagesfile \ formatted-filename
+ The
+@@ -1267,34 +1248,34 @@
+ option sets the file to be used as the fortune generator.  The first
+ entry is the number of fortunes, the next line contains the first fortune.
+ Fortunes begin with a "%%" on a line by itself.  Currently used only for
+-marquee and nose modes.  If one exists, it takes precedence over the
++marquee mode.  If one exists, it takes precedence over the
+ fortune program.
+ .TP 5
+ .BI \-messagefile \ filename
+ The
+ .I messagefile
+ option sets the file whose contents are displayed.  Currently
+-used only for marquee and nose modes.  If one exists, it takes
++used only for marquee mode.  If one exists, it takes
+ precedence over the fortune program and messagesfile.
+ .TP 5
+ .BI \-message \ textstring
+ The
+ .I message
+ option sets the text to be displayed in a mode.  Currently used only for
+-flag, marquee and nose modes.  If one exists, it takes precedence over the
++flag, marquee mode.  If one exists, it takes precedence over the
+ fortune program, messagesfile and message.
+ .TP 5
+ .BI \-messagefont \ fontname
+ The
+ .I messagefont
+ option sets the font to be used in the mode.  Currently used only for
+-flag, marquee, and nose modes.
++flag and marquee modes.
+ .TP 5
+ .BI \-bitmap \ filename
+ The
+ .I bitmap
+ option sets the xbm, xpm, or ras file to be displayed with flag, image, life,
+-life1d, maze, or puzzle mode.  For eyes and pacman only a xbm file is
++life1d, maze, or puzzle mode.  For eyes only a xbm file is
+ accepted.  Certain modes reject the bitmap if too big.
+ .TP 5
+ .BI \-neighbors \ num
+--- xlockmore-4.14/xlock/XLock.ad.noship	Sat Jun 26 17:30:36 1999
++++ xlockmore-4.14/xlock/XLock.ad	Sat Jun 26 17:31:48 1999
+@@ -151,11 +151,6 @@
+ !XLock.cage.cycles: 1
+ !XLock.cage.size: 1
+ XLock.cage.saturation: 1.0
+-XLock.cartoon.delay: 10000
+-!XLock.cartoon.count: 1
+-!XLock.cartoon.cycles: 1
+-!XLock.cartoon.size: 1
+-XLock.cartoon.saturation: 1.0
+ XLock.clock.delay: 100000
+ XLock.clock.count: -16
+ XLock.clock.cycles: 200
+@@ -467,16 +462,6 @@
+ XLock.munch.cycles: 7
+ !XLock.munch.size: 1
+ XLock.munch.saturation: 1.0
+-XLock.nose.delay: 100000
+-!XLock.nose.count: 1
+-!XLock.nose.cycles: 1
+-!XLock.nose.size: 1
+-XLock.nose.saturation: 1.0
+-XLock.pacman.delay: 100000
+-XLock.pacman.count: 10
+-!XLock.pacman.cycles: 1
+-XLock.pacman.size: 0
+-XLock.pacman.saturation: 1.0
+ XLock.penrose.delay: 10000
+ !XLock.penrose.count: 1
+ !XLock.penrose.cycles: 1
+@@ -613,12 +598,6 @@
+ !XLock.swirl.cycles: 1
+ !XLock.swirl.size: 1
+ XLock.swirl.saturation: 1.0
+-XLock.tetris.delay: 50000
+-!XLock.tetris.count: 1
+-!XLock.tetris.cycles: 1
+-XLock.tetris.size: 0
+-XLock.tetris.saturation: 1.0
+-XLock.tetris.cycle: on
+ XLock.thornbird.delay: 1000
+ XLock.thornbird.count: 800
+ XLock.thornbird.cycles: 16
