@@ -1,0 +1,110 @@
+Jakub Jelinek
+(jj@ultra.linux.cz)
+Prague, CZ
+========================================================================
+--- setconsole-1.0/setconsole.jj	Mon Mar 10 15:03:11 1997
++++ setconsole-1.0/setconsole	Wed Nov  4 07:38:57 1998
+@@ -3,14 +3,10 @@
+ # setconsole
+ #
+ # Written by Erik Troan <ewt@redhat.com>
++#            Jakub Jelinek <jj@ultra.linux.cz>
+ 
++speed=""
+ console=""
+-condev=""
+-
+-usage () {
+-    echo "usage: $0 [--speed foo] <video|serial|ttya|ttyb|cua0|cua1|ttyS0|ttyS1>" >&2
+-    exit 1
+-}
+ 
+ checkprom () {
+     [ $console != video ] && [ ! -d /proc/openprom/options ] && {
+@@ -19,13 +15,11 @@
+     }
+ }
+ 
+-
+ setconsole () {
+     if [ -n "${console}" ]; then
+ 	usage
+     fi
+     console=$1
+-    condev=$2
+ }
+ 
+ while [ $# -gt 0 ]; do
+@@ -36,15 +30,15 @@
+ 	    ;;
+ 
+ 	video|serial)
+-	    setconsole $1 $1
++	    setconsole $1
+ 	    ;;
+ 
+ 	ttya|cua0|ttyS0)
+-	    setconsole ttya cua0
++	    setconsole ttya
+ 	    ;;
+ 
+ 	ttyb|cua1|ttyS1)
+-	    setconsole ttyb cua1
++	    setconsole ttyb
+ 	    ;;
+ 
+ 	*)
+@@ -70,10 +64,8 @@
+ 
+     if [ $input = ttya ]; then
+ 	console=ttya
+-	condev=cua0
+     else
+ 	console=ttyb
+-	condev=cua1
+     fi
+ }
+ 
+@@ -82,36 +74,9 @@
+     speed=$(cat /proc/openprom/options/${console}-mode | cut -d, -f1 | cut -d\' -f2)
+ }
+ 
+-[ $console != video ] && {
+-    if ! grep -s "^[0-9].*getty.*${condev} > /dev/null" < /etc/inittab ; then
+-	# need to add a getty entry for this device
+-	line=`grep -n '^[0-9]' /etc/inittab | tail -1 | cut -d: -f1`
+-	sed "${line}s|.*|&"'\
+-'"1:12345:respawn:/sbin/getty $condev $speed vt100|" < /etc/inittab > /root/.inittab.$$
+-	mv /root/.inittab.$$ /etc/inittab
+-    fi
+-
+-    # remove other ttys from inittab
+-    sed "s/^[0-9].*tty[0-9]/#&/" < /etc/inittab > /root/.inittab.$$
+-    mv /root/.inittab.$$ /etc/inittab
+-
+-    # make sure this is in /etc/securetty: FIXME: should this get undone??
+-    if ! grep -s $condev /etc/securetty > /dev/null; then
+-	echo $condev >> /etc/securetty
+-    fi
+-
+-    ttydev=$condev
+-}
+-
+-[ $console = video ] && {
+-    # restore normal ttys and remove serial ttys
+-    sed "/^#[0-9].*tty[0-9]/s/^#//" < /etc/inittab |
+-	sed "/^[0-9].*getty.*cua.*/d" > /root/.inittab.$$
+-    mv /root/.inittab.$$ /etc/inittab
+-
+-    ttydev=tty0
+-}
+-
+-rm -f /dev/systty /dev/console
+-ln -s $ttydev /dev/systty
+-ln -s $ttydev /dev/console
++if grep -s "^1:.*getty.*console.*vt100$" > /dev/null < /etc/inittab.serial ; then
++	if ! grep -s "^1:.*getty.*console[ 	]*${speed}[ 	]*vt100\$" > /dev/null < /etc/inittab.serial; then
++		sed "s|^\(1:.*getty.*console\)[ 	]*[0-9]*[ 	]*\(vt100\)\$|\1 ${speed} \2|" < /etc/inittab.serial > /root/.inittab.$$
++	mv -f /root/.inittab.$$ /etc/inittab.serial
++	fi
++fi
