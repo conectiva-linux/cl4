@@ -1,0 +1,41 @@
+--- fbset-2.0-pre/Makefile.jj	Wed Oct 28 21:28:01 1998
++++ fbset-2.0-pre/Makefile	Thu Oct 29 16:23:29 1998
+@@ -7,6 +7,7 @@
+ FLEX =		flex
+ INSTALL =	install
+ RM =		rm -f
++PREFIX =
+ 
+ All:		fbset
+ 
+@@ -24,18 +25,18 @@
+ 		$(BISON) modes.y
+ 
+ install:	fbset
+-		if [ -f /sbin/fbset ]; then rm /sbin/fbset; fi
+-		$(INSTALL) fbset /usr/sbin
+-		$(INSTALL) fbset.8 /usr/man/man8
+-		$(INSTALL) fb.modes.5 /usr/man/man5
+-		if [ ! -c /dev/fb0 ]; then mknod /dev/fb0 c 29 0; fi
+-		if [ ! -c /dev/fb1 ]; then mknod /dev/fb1 c 29 32; fi
+-		if [ ! -c /dev/fb2 ]; then mknod /dev/fb2 c 29 64; fi
+-		if [ ! -c /dev/fb3 ]; then mknod /dev/fb3 c 29 96; fi
+-		if [ ! -c /dev/fb4 ]; then mknod /dev/fb4 c 29 128; fi
+-		if [ ! -c /dev/fb5 ]; then mknod /dev/fb5 c 29 160; fi
+-		if [ ! -c /dev/fb6 ]; then mknod /dev/fb6 c 29 192; fi
+-		if [ ! -c /dev/fb7 ]; then mknod /dev/fb7 c 29 224; fi
++		if [ -f $(PREFIX)/sbin/fbset ]; then rm $(PREFIX)/sbin/fbset; fi
++		$(INSTALL) fbset $(PREFIX)/usr/sbin
++		$(INSTALL) fbset.8 $(PREFIX)/usr/man/man8
++		$(INSTALL) fb.modes.5 $(PREFIX)/usr/man/man5
++		if [ ! -c $(PREFIX)/dev/fb0 ]; then mknod $(PREFIX)/dev/fb0 c 29 0; fi
++		if [ ! -c $(PREFIX)/dev/fb1 ]; then mknod $(PREFIX)/dev/fb1 c 29 32; fi
++		if [ ! -c $(PREFIX)/dev/fb2 ]; then mknod $(PREFIX)/dev/fb2 c 29 64; fi
++		if [ ! -c $(PREFIX)/dev/fb3 ]; then mknod $(PREFIX)/dev/fb3 c 29 96; fi
++		if [ ! -c $(PREFIX)/dev/fb4 ]; then mknod $(PREFIX)/dev/fb4 c 29 128; fi
++		if [ ! -c $(PREFIX)/dev/fb5 ]; then mknod $(PREFIX)/dev/fb5 c 29 160; fi
++		if [ ! -c $(PREFIX)/dev/fb6 ]; then mknod $(PREFIX)/dev/fb6 c 29 192; fi
++		if [ ! -c $(PREFIX)/dev/fb7 ]; then mknod $(PREFIX)/dev/fb7 c 29 224; fi
+ 
+ clean:
+ 		$(RM) *.o fbset lex.yy.c modes.tab.c modes.tab.h
