@@ -1,0 +1,2908 @@
+<!DOCTYPE BOOK PUBLIC "-//Davenport//DTD DocBook V3.0//EN">
+<!ENTITY GNOME-APPS SYSTEM "users-guide.sgml">
+<!ENTITY GPL SYSTEM "gpl.sgml">
+<Book id="index"> 
+ <title>Guia do Usuário do GNOME</title>
+ <bookinfo>
+  <releaseinfo>
+  Esta é a versão oficial do Guia do Usuário do GNOME.
+  </releaseinfo>
+  <revhistory>
+   <revision>
+    <revnumber>
+     1.0 - 
+    </revnumber>
+    <date>
+     - 25.2.1999
+    </date>
+   </revision>
+  </revhistory>
+   <authorgroup>
+   <author>
+    <firstname>David C.</firstname>
+    <surname>Mason</surname>
+    <authorblurb>
+     <simpara><email>dcm@redhat.com</email></simpara>
+    </authorblurb>
+   </author>
+   <author>
+    <firstname>David A.</firstname>
+    <surname>Wheeler</surname>
+    <authorblurb>
+     <simpara><email>dwheeler@ida.org</email></simpara>
+    </authorblurb>
+   </author>
+  </authorgroup>
+  <copyright>
+   <year>1999</year>
+   <holder>Red Hat Software e David A. Wheeler</holder>
+  </copyright>
+  <legalnotice>
+   <para>
+   Este documento pode ser livremente distribuído de acordo com os termos da Licença Pública Geral GNU.
+   </para>
+  </legalnotice>
+ </bookinfo>
+
+
+<!-- ############################## WHEELER"S INTRO ################################### -->
+
+<chapter id="intro">
+  <title>Uma introdução ao GNOME</title>
+  <sect1 id="What-is-GNOME">
+   <title>O Que É GNOME?</title>
+   <para>
+   O GNOME é um ambiente de trabalho amigável que habilita o usuário a facilmente configurar e utilizar o seu computador. O GNOME inclui um painel (para iniciar aplicações e mostrar o estado do sistema), uma área de trabalho (onde os dados e aplicações podem ser colocados), um conjunto de aplicações e ferramentas padrão e um conjunto de regras que fazem com que as aplicações possam se comunicar e cooperarem de forma consistente umas com as outras. Usuários de outros sistemas operacionais irão se sentir à vontade usando as ferramentas gráficas que o GNOME provê.
+   </para>
+   <para> 
+  O GNOME é completamente de livre distribuição (free software), disponibilizado com os fontes, livremente disponíveis, onde centenas de programadores ao redor do mundo auxiliam no seu desenvolvimento. Caso você queira aprender mais sobre o projeto GNOME, por favor visite o sítio <ULINK URL="http://www.gnome.org" type="http">http://www.gnome.org</ulink>.
+   </para>
+   <para>
+  O GNOME traz uma série de vantagens para os usuários, tornando simples e intuitiva a configuração de aplicações sem o uso de interfaces texto.
+   </para>
+   <para>
+   O GNOME é altamente configurável, habilitando a configuração do ambiente de trabalho da forma que o usuário deseja. O Gerente de Sessões GNOME lembra-se de configurações anteriores, fazendo com que uma vez que o ambiente esteja configurado ele se manterá desta forma. O GNOME suporta muitos idiomas, e podem ser adicionados novos sem a necessidade de mudança do software. O GNOME ainda suporta protocolos arrastar e soltar para máxima interoperabilidade com aplicações que não sejam totalmente conformes com o padrão GNOME.
+   </para>
+   <para>
+   O GNOME tem ainda um grande número de vantagens para desenvolvedores que indiretamente podem auxiliar os usuários. Desenvolvedores não necessitam adquirir licenças de softwares de alto custo para tornar as suas aplicações comerciais compatíveis com o GNOME. Na verdade, o GNOME é neutro em relação a isto, ou seja, nenhum componente da interface é controlada somente por uma companhia ou tem restrições de modificação ou distribuição.
+   Aplicações GNOME podem ser desenvolvidas em uma variedade de linguagens, fazendo com que o programador não fique restrito a somente uma, sem outras alternativas. O GNOME usa a arquitetura CORBA - Arquitetura Distribuída de Requisição de Objetos Comuns, a fim de permitir que componentes de software interajam de forma transparente, independentes da linguagem nas quais eles foram implementadas ou mesmo em que máquina elas são executadas. Finalmente, o GNOME pode ser executado em diversos sistemas Unix e similares, incluindo-se Linux.
+   </para>
+   <para>
+   GNOME é um acrônimo para Ambiente GNU de Modelo de Objetos em Rede, sendo parte de um projeto GNU ainda maior. O Projeto GNU foi iniciado em 1984 para o desenvolvimento de um sistema operacional similar ao Unix, mas totalmente livre. Caso se queira aprender mais sobre este projeto, por favor acesse o endereço <ULINK URL="http://www.gnu.org" type="http">http://www.gnu.org</ulink>.
+   </para>
+  </sect1>
+  <sect1 id="aboutug">
+   <title>Sobre Este Guia</title>
+   <para>
+   Este é um Guia de Usuário desenhado especialmente para que o usuário possa encontrar a sua forma de trabalho com o GNOME. Tanto usuários iniciantes quanto os mais experientes encontrarão diversas informações de grande utilidade neste Guia. Caso o leitor seja um usuário iniciante no GNOME, ou mesmo em computadores, você obterá uma idéia bem definida de como usar a sua área de trabalho. Caso o leitor seja um usuário avançado, é possível lidar com sugestões também avançadas que auxiliarão no processo de familiarização com o GNOME.
+   </para>
+   <para>
+   Apesar de estar originalmente em Inglês, há muitas traduções disponíveis deste Guia e muitas outras em desenvolvimento. Caso você deseje uma versão em outro idioma deste Guia, deve-se checar a distribuição do seu sistema operacional ou visitar o sítio WEB do Gnome em <ULINK URL="http://www.gnome.org" type="http">www.gnome.org</ulink> para encontrar maiores informações sobre o tema.
+   </para>
+  </sect1>
+ </chapter>
+ 
+<!-- ############################## WHEELER'S QUICK START GUIDE ############################### -->
+
+ <chapter id="quickstart">
+  <title>Início Rápido no GNOME</title>
+  <sect1 id="quick">
+   <title>Início Rápido no GNOME</title>
+   <para>
+   A Figura 2-1 mostra um exemplo do GNOME sendo executado. Ele é extremamente configurável, fazendo com que a sua aparência possa parecer muito diferente do aqui apresentado.
+   </para>
+    <figure>
+     <title>Exemplo de Tela do GNOME.</title>
+     <screenshot>
+      <screeninfo>Exemplo de Tela GNOME</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/full" srccredit="dcm">
+      </graphic>
+    </screenshot>
+   </figure>
+  <para>
+   <indexterm id="idx-quick">
+    <primary>Início Rápido</primary>
+   </indexterm>
+   A barra longa na base da <emphasis>Figura 2-1</emphasis> é denominado Painel GNOME o qual contém uma coleção de Capplets e menus úteis. Uma applet de painel é um pequeno programa que pode ser colocado nesta barra, como por exemplo o relógio situado na sua extrema direita. A seta nas extremidades da barra pode esconder ou mostrar o painel.
+  </para>
+  <para>
+  O botão no painel que contém um pé estilizado é o Botão do Menu Principal. Um clique sobre este botão faz com que apareça um menu pré-configurado de aplicativos e ações, incluindo-se o botão de saída do sistema.
+  </para>
+  <para>
+  O restante da tela é chamada de Área de Trabalho. Basta colocar nesta área os itens mais utilizados, os quais serão acionados pelo duplo clique do botão esquerdo do mouse:
+   </para>
+   <ITEMIZEDLIST mark="bullet">
+    <listitem>
+     <para>   
+     Caso o item seja um programa, ele será inicializado.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+     Caso seja uma referência a dados, o programa adequado será inicializado e os dados indicados serão carregados.
+     </para>
+    </listitem>
+    <listitem>  
+     <para>
+     Caso seja um diretório, a aplicação gerenciador de arquivos será iniciada e mostrará o conteúdo do diretório. Normalmente toda área de trabalho contém um ícone em formato de pasta denominado "diretório pessoal". Ao se clicar duplamente sobre ele, será iniciado o gerenciador de arquivos apontado para aquele diretório.
+     </para>
+   </listitem>
+  </itemizedlist>
+    <para>
+    A aplicação de gerenciamento de arquivos permite a manipulação de arquivos. O lado esquerdo da janela mostra os diretórios e o direito lista o conteúdo do diretório selecionado:
+  </para>
+  <ITEMIZEDLIST mark="bullet">
+   <listitem>
+    <para>
+    Para mover o arquivo ou diretório, basta arrastá-lo e soltá-lo na sua destinação.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     Para copiar um arquivo, pressione a tecla <keycap>CTRL</keycap> enquanto o arquivo estiver sendo arrastado.  
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+    Para executar um programa ou editar um arquivo de dados basta clicar duplamente sobre ele.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+    Para executar outras operações em um arquivo (tais como renomear ou apagar), selecione o menu de opções com o botão direito do mouse.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+    Para selecionar mais de um item concomitantemente, clique nos itens após a seleção do primeiro mantendo pressionada a tecla SHIFT.
+    </para>
+   </listitem>
+  </itemizedlist>
+  <para>
+  Pode-se mover ou copiar arquivos entre diretórios através da execução de dois gerenciadores de aplicações, cada um mostrando um diretório diferente. Caso se queira colocar um arquivo na área de trabalho, simplesmente arraste o arquivo a partir do gerenciador até o local desejado. Normalmente arrastar e copiar itens a partir do gerenciador de arquivos até a área de trabalho faz a "coisa certa" no GNOME, tornando esta tarefa muito simples de ser executada.
+  </para>
+  <para>
+  O GNOME é extremamente configurável: por exemplo, podem-se ter múltiplos painéis (horizontais ou verticais), escolher entre eles e escondê-los automaticamente. Há muitas Capplets de painel que podem ser incluídas. Pode-se ainda alternar entre as várias aparências conforme descrito em tópicos posteriores deste documento.
+  </para>
+  <para>
+  O GNOME segue diversas convenções UNIX que devem ser conhecidas. O botão esquerdo do mouse é usado para seleção e arrasto dos itens. O botão direito apresenta um menu de opções de ações que podem ser executadas com os objetos selecionados (caso o menu se aplique ao tipo de objeto selecionado). Muitos mouses UNIX têm 3 botões, sendo que o botão do meio é usado para colar textos (caso se esteja em uma área onde isto seja permitido) ou para movimentar objetos. Caso se tenha um mouse com dois botões, deve-se pressionar os botões direito e esquerdo simultaneamente para simular o botão do meio. Para se copiar textos, deve-se usar o botão esquerdo do mouse para selecionar a porção de texto que se deseja copiar, mover o indicador de mouse para a localização de destino e pressionar-se o botão do meio.
+  </para>
+  <para> 
+  Quando uma janela de aplicação é apresentada, haverá ainda alguns botões nas suas bordas para controlar o comportamento da janela. Estes botões incluem: minimizar, maximizar e fechar a janela. Sua aparência pode ser configurada e é controla por um componente do sistema denominado  "Gerenciador de Janelas". 
+  </para>
+  <para>
+  Dois exemplo de estilos de bordas são os Estilos Simples (<emphasis>Figura
+   2-2</emphasis>) e o estilo ICE (<emphasis>Figura
+   2-3</emphasis>): 
+  </para>
+  <ITEMIZEDLIST mark="bullet">
+   <listitem>
+    <para>
+    No Estilo Simples, o caracter de sublinhado significa minimizar, o quadrado significa maximizar (usando toda a tela) e o botão X provoca o fechamento da janela.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+    No estilo ICE, o botão X provoca o fechamento da janela. Ao se clicar a seta com o botão esquerdo do mouse, a janela será minimizada, ao passo que ao se clicar com o botão direito, surgirá um menu com outras opções.
+    </para>
+   </listitem> 
+  </itemizedlist>
+  <figure>
+   <title>Borda de Estilo Simples</title>
+    <screenshot>
+      <screeninfo>Borda de Estilo Simples</screeninfo>
+       <Graphic Format="gif" Fileref="./figs/border1" srccredit="dcm">
+       </graphic>
+     </screenshot>
+    </figure>
+    <figure>
+      <title>Borda de Estilo ICE</title>
+     <screenshot>
+      <screeninfo>Borda de Estilo ICE</screeninfo>
+       <Graphic Format="gif" Fileref="./figs/border2" srccredit="dcm">
+       </graphic>
+     </screenshot>
+    </figure>
+   <para>
+   Caso se esteja utilizando a instalação padrão do GNOME é possível perceber que a miniaturização de uma janela provoca o seu desaparecimento da área de trabalho. Para se retornar para a janela, pode-se usar o Pager GNOME que está localizado no Painel. O Pager indica quais tarefas estão sendo executadas e onde elas se encontram na área de trabalho. Pode-se encontrar uma aplicação minimizada na lista de tarefas no lado direito do Pager GNOME. Para ativar a janela da aplicação, basta pressionar o botão que contém o seu nome.
+   </para>
+   <figure>
+      <title>O Pager GNOME</title>
+     <screenshot>
+      <screeninfo>O Pager GNOME</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/gnome-pager" srccredit="dcm">
+      </graphic>
+     </screenshot>
+    </figure>
+    <para>
+    Pode-se obter maiores informações sobre o Pager GNOME em <xref Linkend="appletspager">.
+    </para>
+    <para>
+    As seções a seguir apresentam maiores detalhes através da descrição de cada componente do sistema.
+    </para>
+  </sect1>
+ </chapter>
+<!-- ################################ ABOUT WINDOW MANAGERS ########################## -->
+
+ <chapter>
+  <title>Gerenciadores de Janelas e GNOME</title>
+   <sect1 id="wmabout">
+    <title>Sobre Gerenciadores de Janelas</title>
+    <para>
+    O gerenciador de janelas lê uma peça e software que controla o comportamento e o aspecto das janelas no ambiente X Window. A sua localização, bordas e decorações são administradas pelo Gerenciador. Este conceito é muito distinto da forma como outros sistemas operacionais abordam o assunto e a forma como o GNOME lida com os Gerenciadores de Janelas é também distinta de outros ambientes de áreas de trabalho.
+    </para>
+    <para>
+    Conforme descrito anteriormente, o GNOME não depende de nenhum outro gerenciador de janelas, o que significa que a maior parte da área de trabalho não será alterada ao se decidir que se deve mudar de gerenciador. O GNOME trabalha com o gerenciador de janelas para fornecer o ambiente de trabalho mais simples que se possa ter. O GNOME não se preocupa com a localização das janelas, pois obtém estas informações a partir do gerenciador de janelas. O GNOME Pager irá funcionar somente com um Gerenciador de Janelas compatível com o GNOME, assim como as ações de arrastar e soltar objetos na área de trabalho.
+    </para>
+    <para>
+    Quando este Guia do Usuário do GNOME foi escrito o único Gerenciador de Janelas totalmente compatível com ele era o Enlightenment. Há muitos outros gerenciadores de janelas que são parcialmente compatíveis e que estão desenvolvendo o processo de compatibilidade.
+    </para>
+    <para>
+    Alguns dos gerenciadores de janelas que têm compatibilidade parcial ou total são:
+    </para>
+    <ITEMIZEDLIST mark="bullet">
+     <listitem>
+      <para> 
+       Enlightenment - <ULINK URL="http://www.enlightenment.org"
+       type="http">http://www.enlightenment.org</ulink>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       Icewm -  <ULINK
+       URL="http://www.kiss.uni-lj.si/~k4fr0235/icewm/" type="http">http://www.kiss.uni-lj.si/~k4fr0235/icewm/</ulink>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       Window Maker - <ULINK URL="http://www.windowmaker.org" type="http">http://www.windowmaker.org</ulink>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       FVWM -  <ULINK URL="http://www.fvwm.org/" type="http">http://www.fvwm.org/</ulink>
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect1>
+   <sect1 id="wmchange">
+    <title>Alterando o Gerenciador de Janelas</title>
+     <para>
+     A qualquer momento o Gerenciador de Janelas pode ser substituído através do Capplet Gerenciador de Janelas no Centro de Controle GNOME, Pode-se saber mais sobra esta funcionalidade em  <xref Linkend="gccwm">
+     </para>
+     <IMPORTANT>
+      <title>IMPORTANTE</title>
+      <para>
+      Tenha em mente que o Gerenciador de Janelas que foi escolhido pode não ser totalmente compatível com o GNOME e o leitor poderá não usufruir de todos os benefícios de algumas funcionalidades do GNOME.
+      </para>
+     </important>
+   </sect1>
+ </chapter>
+
+<!-- ################################# GNOME PANEL - CHAPTER ################################### -->
+
+ <chapter id="paneluse">
+ <title>Usando o Painel GNOME</title>
+  <sect1>
+   <title>Introdução</title>
+   <para>
+    <indexterm id="idx-panel1">
+     <primary>Painel</primary>
+    </indexterm>
+    O Painel é o coração da interface GNOME e age como um repositório de todas as aplicações do sistema. O Painel é desenhado ainda para ser altamente configurável, fornecendo um local que conterá os menus e as aplicações de acordo com a vontade do usuário.
+   </para>
+  </sect1>
+  <sect1 id="panelbasic"> 
+  <title>Conceitos Básicos</title>
+   <para>
+   Utilizar o Painel GNOME é muito simples e assim o será para qualquer usuário que tenha usado uma interface gráfica de qualquer sistema operacional. Pode-se adicionar novos painéis, adicionar aplicações ao painel e utilizar diversos Capplets. Todas estas funções e outras mais serão descritas nas seções adiantes.
+   </para>
+   <sect2 id="panelmenu">
+    <title>Usando o Menu Principal</title>
+    <para>
+     <indexterm id="mmenu1">
+      <primary>Menu Principal</primary>
+     </indexterm>
+     Para iniciar qualquer aplicação pré definida, pressione o <guibutton>botão de Menu Principal</guibutton>. Ele tem um pé estilizado e ao se instalar o sistema, estará na extremidade esquerda inferior da tela. Após pressionar o botão  é possível então utilizar as outras funcionalidades do Menu Principal como clicar com o botão direito do mouse e arrastar e soltar a partir do menu.
+     <figure>
+      <title>O Botão de Menu Principal</title>
+     <screenshot>
+      <screeninfo>O Botão de Menu Principal.</screeninfo>
+       <Graphic Format="gif" Fileref="./figs/mm-button" srccredit="dcm">
+       </graphic>
+     </screenshot>
+    </figure>
+    </para>
+    <para>
+    O Menu Principal é o ponto de início de todas as aplicações do sistema. Posteriormente neste manual será demonstrado como personalizá-lo, porém, por enquanto pode-se usar o menu configurado através da instalação. O Menu Principal funciona exatamente como qualquer outro menu de outros ambientes gráficos. Simplesmente pressione o botão de <guibutton>Menu Principal</guibutton> e selecione o item desejado do menu que for apresentado.
+    </para>
+   </sect2>
+   <sect2 id="panelhide">
+    <title>Escondendo o Painel</title>
+    <para>
+     <indexterm id="panel2">
+      <primary>Painel</primary>
+      <secondary>Botões de Esconder</secondary>
+     </indexterm>
+     <indexterm id="panel3">
+      <primary>Painel</primary>
+      <secondary>Esconder</secondary>
+     </indexterm>
+     A qualquer tempo pode-se esconder o Painel GNOME ao se pressionar o <guibutton>Botão Esconder</guibutton>
+     <figure>
+      <title>O Botão de Esconder</title>
+     <screenshot>
+      <screeninfo>O Botão Esconder</screeninfo>
+       <graphic Format="gif" Fileref="./figs/hide-button" srccredit="dcm">
+       </graphic>
+     </screenshot> 
+     </figure>
+     </para>
+     <para>
+     Este botão irá esconder o Painel GNOME na direção da seta do <guibutton>Botão Esconder</guibutton>. Há botões de esconder em ambos os lados do Painel, podendo a ação ser executada em ambos os lados da tela.
+    </para>
+    <para>
+     <indexterm id="panel4">
+      <primary>Painel</primary> 
+      <secondary>Auto Esconder</secondary>
+     </indexterm>
+     Pode-se definir que o Painel pode ser escondido quando não esteja sendo usado. Esta pode ser uma função útil caso não seja possível executar o sistema em alta resolução. A descrição de como habilitar esta funcionalidade está descrita em  <xref Linkend="confpanel">.
+    </para>
+   </sect2>
+  </sect1>
+  <sect1 id="panelmove">
+   <title>Movendo e Adicionando Painéis</title>
+   <para>
+    <indexterm id="panel5">
+     <primary>Panel</primary>
+     <secondary>moving</secondary>
+    </indexterm>
+    <indexterm id="panel6">
+     <primary>Painel</primary>
+     <secondary>adicionando</secondary>
+    </indexterm>
+    <indexterm>
+     <primary>Painel</primary>
+     <secondary>Bordas</secondary>
+    </indexterm>
+    <indexterm>
+     <primary>Painel</primary>
+     <secondary>Cantos</secondary>
+    </indexterm>
+    Qualquer Painel que esteja na área de trabalho pode ser movido usando-se o botão do meio do mouse ou pressionando-se simultaneamente os botões esquerdo e direito do mouse para se arrastar o painel até a margem da tela aonde se queira colocá-lo. Caso o mouse não tenha o botão do meio e a sua emulação através da utilização dos outros botões não esteja habilitada, pode-se mudar a localização no diálogo de Configuração do Painel. Esta funcionalidade será detalhada na seção <xref Linkend="confpanel"> desta documentação.
+   </para>
+   <para>
+   Pode-se ainda adicionar um novo Painel à Área de Trabalho através da seleção do item  <guimenuitem>Adicionar Novo Painel</guimenuitem> a partir do <guimenu>Menu Principal</guimenu>  |  <guimenuitem>Painel</guimenuitem>. Serão disponibilizadas as opções da Margem ou Canto de localização do painel conforme descrito a seguir.
+   </para>
+   <ITEMIZEDLIST MARK="bullet">
+    <listitem>
+     <para>
+     Painel de Margens - é exatamente como o Painel principal que é iniciado com o GNOME. Ao se selecionar este tipo de painel pode-se adicionar um novo Painel a outra margem da tela fornecendo ainda mais funcionalidades.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+     Painel de Canto - é um pequeno Painel que não aumenta de tamanho até a outra extremidade da tela. O Painel de Canto tem o tamanho dos ícones que ele contenha, sendo que o botão de Esconder funciona de uma forma um pouco diferente, sendo que aquele que estiver mais próximo da borda funcionará da forma usual, porém o outro botão enviará o Painel para o outro lado da tela e num segundo clique terá um comportamento comum de esconder o Painel. 
+     </para>
+    </listitem>
+   </itemizedlist>
+   <para>
+    <indexterm>
+     <primary>Painel</primary>
+     <secondary>converter para a Margem</secondary>
+    </indexterm>
+    <indexterm>
+     <primary>Painel</primary>
+      <secondary>converter para o Canto</secondary>
+    </indexterm>
+    A qualquer tempo pode-se mudar o painel atual para o tipo oposto através da seleção ou da opção   <guimenuitem>Converter para Painel de Margem</guimenuitem>   ou <guimenuitem>Converter para Painel de Canto</guimenuitem> a partir do menu de Painel. A seleção disponível será sempre o inverso da situação atual do painel.
+   </para>
+  </sect1>
+  <sect1 id="paneladd" >
+   <title>Adicionando Aplicações e Capplets ao Painel</title>
+   <sect2 id="panelapplaunch">
+    <title>Adicionando Lançadores de Aplicações</title>
+    <para>
+     <indexterm>
+      <primary>Painel</primary>
+      <secondary>adicionando aplicações ao</secondary>
+     </indexterm>
+     <indexterm>
+      <primary>Painel</primary>
+      <secondary>lançadores</secondary>
+     </indexterm>
+     <indexterm>
+      <primary>Painel</primary>
+      <secondary>adicionando Capplets ao</secondary><see>"Capplets"</see>
+     </indexterm>
+     Caso se queira adicionar Lançadores de Aplicações (um ícone que inicia uma aplicação em particular) ao Painel, clique sobre o botão direito do mouse no Painel e selecione <guimenuitem>Adicionar Novo Lançador</guimenuitem> a partir do menu apresentado.
+    </para>
+    <para>
+    Após selecionar a opção <guimenuitem>Adicionar Novo Lançador</guimenuitem> do menu, será apresentado o diálogo que irá permitir a configuração do lançador de aplicações que se queira adicionar.
+     <figure>
+      <title>O Diálogo de Criação de Um Lançador de Aplicações</title>
+     <screenshot>
+      <screeninfo>Diálogo de Criação do Lançador</screeninfo>
+       <Graphic format="gif" Fileref="./figs/launcher-props" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    </para>
+    <para>
+     <indexterm>
+      <primary>Painel</primary>
+      <secondary>criação de novo lançador</secondary>
+     </indexterm>
+     No diálogo de criação de lançador pode-se definir o nome do lançador, comentários, a linha de comando para o lançamento da aplicação e definir o tipo de aplicação. Pode-se ainda pressionar o botão de ícone e escolher um ícone para representar a aplicação. Caso nenhum ícone seja escolhido será usado o ícone padrão.
+    </para>
+    <para>
+    Por outro lado, um método mais rápido de adicionar um lançador de aplicações ao Painel está em se abrir o Menu Principal e clicar com o botão direito do mouse em um item de aplicação do menu. Será apresentado um outro item de menu denominado <guimenuitem>Adicionar este Lançador ao Painel</guimenuitem>.  Caso se selecione este item, o lançador da aplicação será automaticamente adicionado ao Painel. Pode-se ainda clicar sobre o botão direito do mouse e selecionar o menu de <guimenuitem>Propriedades</guimenuitem> para alterar qualquer propriedade desejada.
+    </para>
+   </sect2>
+   <sect2 id="drawers">
+    <title>Adicionando Item em Gavetas</title>
+    <para>
+     <indexterm>
+      <primary>Painel</primary>
+      <secondary>Gavetas</secondary><see>Gavetas</see>
+     </indexterm>
+     <indexterm>
+      <primary>Gavetas</primary>
+      <secondary>adicionando novas</secondary>
+     </indexterm>
+     Caso se queira agrupar conjuntos de aplicações pode ser usado o conceito de Gavetas, que é na verdade um botão similar a um menu que reside no Painel e que pode agrupar diversos lançadores de aplicações em um único local. Uma vez que se tenha criado uma gaveta no Painel, pode-se clicar sobre ela para verificar o seu conteúdo e clicar novamente para que a gaveta se feche e o menu de conteúdo seja escondido.
+     <figure>
+      <title>Uma Gaveta Embutida no Painel</title>
+     <screenshot>
+      <screeninfo>Uma Gaveta Embutida no Painel</screeninfo>
+       <Graphic format="gif" Fileref="./figs/drawer" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    </para>
+    <para>
+    Há maneiras distintas de se colocar uma Gaveta no Painel. Inicialmente pode-se clicar sobre o botão direito do mouse e selecionar <guimenuitem>Adicionar Gaveta</guimenuitem> a partir do menu apresentado. A segunda forma, caso se queira colocar um subconjunto completo a partir do menu principal, em uma Gaveta no Painel, é clicar com o botão direito do mouse sobre o nome do subconjunto no Menu Principal e selecionar <guimenuitem>Adicionar como Uma Gaveta ao Painel</guimenuitem> a partir do menu apresentado.
+    </para>
+    <para>
+    Pode-se adicionar menual ao painel da mesma forma que se adicionam Gavetas. Menus são similares às Gavetas, exceto pelo fato de não usarem ícones para representar os lançadores de aplicações, usando em seu lugar um estilo de menu similar ao Menu Principal, ou seja, pequenos ícones seguidos pelo nome da aplicação. Pode-se adicionar um menu clicando com o botão direito do mouse na barra de título do conjunto das aplicações do Menu Principal, e selecionando a opção <guimenuitem>Adicionar ao Painel como Menu</guimenuitem> a partir do menu apresentado. Pode-se ainda adicionar um diretório do sistema ao Painel como menu, arrastando o diretório a partir do Gerenciador de Arquivos GNOME e largando-o sobre o Painel.
+    </para>
+   </sect2>
+   <sect2 id="panelapplets">
+    <title>Adicionando Capplets</title>
+    <para>
+     <indexterm>
+      <primary>Capplets</primary>
+      <secondary>adicionando ao Painel</secondary>
+     </indexterm>
+     Capplets são pequenos programas que podem executar tarefas no próprio Painel. Há muitos desses programas que podem ser adicionados ao Painel e são detalhados na seção <xrefLinkend="panelapps"> deste manual. Vejamos a seguir um exemplo de como adicionar um Capplet ao Painel:
+    </para>
+    <ITEMIZEDLIST  MARK="bullet"> 
+     <listitem>
+      <para>
+      Clique com o botão direito do mouse no Painel
+      </para>
+     </listitem>     
+     <listitem>
+      <para>
+      A partir do menu apresentado escolha <guimenuitem>Adicionar Novo Capplet</guimenuitem>.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+      Serão apresentados novos níveis de menus.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+      Escolha o item  <guimenuitem>Utilitários</guimenuitem> | <guimenuitem>Relógio
+       </guimenuitem>.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+      O Relógio será adicionado ao Painel.
+      </para>
+     </listitem>
+    </itemizedlist>
+    <figure>
+      <title>O Capplet Relógio</title>
+     <screenshot>
+      <screeninfo>Capplet Relógio</screeninfo>
+       <Graphic format="gif" Fileref="./figs/clock" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    <para>
+    Para remover o programa de relógio basta clicar o botão direito do mouse sobre o relógio e selecionar a opção <guimenuitem>Remover do Painel</guimenuitem> a partir do menu apresentado.
+    </para>
+   </sect2>
+  </sect1>
+  <sect1 id="runapps">
+   <title>Executando Aplicações</title>
+   <para>
+   <indexterm>
+    <primary>Aplicações</primary>
+    <secondary>Lançamento</secondary>
+   </indexterm>
+   <indexterm>
+    <primary>Aplicações</primary>
+    <secondary>Executando</secondary>
+   </indexterm>
+   Há muitas formas de se acionar uma aplicação com o GNOME. Lembre-se que um dos pontos fortes do GNOME é permitir o lançamento e o controle de aplicações usando-se uma interface gráfica simples de usar. Há muitas formas de se iniciar as aplicações que se deseja usar:
+   </para>
+   <para>
+   Conforme visto anteriormente pode-se usar o Menu Principal para encontrar as aplicações que tenham sido pré carregadas ou adicionadas pelo Editor de Menus em <xref Linkend="mainmenu">.
+   </para>
+   <para>
+   Pode-se ainda adicionar lançadores de aplicações a partir do Painel conforme descrito em  <xref Linkend="panelapplaunch">.
+   </para>
+   <para>
+   Caso se esteja utilizando o Gerenciador de Arquivos do GNOME pode-se clicar duplamente em qualquer arquivo executável e ele será imediatamente ativado.
+   </para>
+   <para>
+   <indexterm>
+    <primary>
+     Aplicações
+    </primary>
+    <secondary>
+     Executar programa
+    </secondary>
+   </indexterm>
+   Pode-se usar o programa GNOME Executar para se ativar aplicações. Para tanto deve-se selecionar o item de menu denominado <guimenuitem>Executar ...</guimenuitem> no <guimenu>Menu Principal</guimenu>. Será apresentada uma janela simples que permite a digitação do nome da aplicação a ser executada. Por exemplo, desejando iniciar o editor <application>Emacs</application> e ele não esteja presente no Painel ou no Menu Principal, basta digitar <command>emacs</command> na caixa de diálogo do utilitário GNOME Executar.
+   </para>
+  </sect1>
+  <sect1 id="logout">
+   <title>Saindo do GNOME</title>
+   <para>
+    <indexterm>
+     <primary>
+      Saindo
+     </primary><see>"Saindo"</see>
+    </indexterm>
+    <indexterm>
+     <primary>
+      Saindo
+     </primary>
+    </indexterm>
+    O GNOME tem alguns métodos úteis de saída. Pode-se usar a opção <guimenuitem>Terminar Sessão</guimenuitem> no Menu Principal ou o botão <guibutton>Saída</guibutton>.
+   </para>
+   <para>
+    <indexterm>
+     <primary>
+      Saindo
+     </primary>
+     <secondary>
+      a partir do menu
+     </secondary>
+    </indexterm>
+    O item de menu <guimenuitem>Terminar Sessão</guimenuitem> é o último item do <guimenu>Menu Principal</guimenu>. Simplesmente selecione este item e será apresentada uma janela de diálogo solicitando a confirmação da ação. Selecione <guibutton>Sim</guibutton> e a sessão GNOME será finalizada.
+   </para>
+   <para>
+    <indexterm>
+     <primary>
+      Saindo
+     </primary>
+     <secondary>
+      através do botão de Saída
+     </secondary>
+    </indexterm>
+    Pode-se adicionar o botão de <guibutton>Finalizar sessão</guibutton> ao Painel. Este é apenas um outro método e não provê nenhuma funcionalidade adicional além de um belo botão residente no Painel. Para adicionar o botão <guimenuitem>Finalizar Sessão</guimenuitem>  ao Painel, clique com o botão direito do mouse sobre o Painel e selecione o item <guimenuitem>Adicionar Botão para Terminar a Sessão</guimenuitem> a partir do menu apresentado. Uma vez que o botão esteja presente basta pressioná-lo para finalizar a sessão.
+   </para>
+   <note>
+    <title>NOTA</title>
+    <para>
+    Caso se esteja executando um Gerenciador de Janelas que seja compatível com o GNOME a funcionalidade de saída irá finalizar tanto o GNOME quanto o Gerenciador, caso contrário o Gerenciador de Janelas deverá ser finalizado pelo usuário.
+    </para>
+   </note>
+   <para> 
+   O diálogo de saída solicita a confirmação de finalização do GNOME. Este diálogo provê diferentes métodos de saída do GNOME.
+   </para>
+   <para>
+   Existem três opções de finalizar o GNOME. Pode-se simplesmente escolher <guilabel>Finalizar </guilabel> a qual simplesmente leva o usuário a um terminal, <guilabel>Desligar</guilabel> que provocará a finalização do sistema como um todo ou <guilabel>Reinicializar</guilabel> o qual provocará o desligamento seguido de inicialização de todo o sistema.
+   </para>
+   <para>
+   Para sair do GNOME basta selecionar <guibutton>Não</guibutton> e o usuário retornará à sessão GNOME.
+   </para>
+   <figure>
+    <title>O Diálogo de Saída</title>
+    <screenshot>
+     <screeninfo>Logout</screeninfo>
+     <Graphic Format="gif" Fileref="./figs/logout-screen" srccredit="dcm">
+     </graphic>
+    </screenshot>
+   </figure>
+   <para>
+   No diálogo de finalização há uma opção que pode ser selecionada antes de se deixar o GNOME.
+   </para>
+   <para>
+   Para se salvar a configuração atual pode-se selecionar a caixa de verificação denominada <guilabel>Salvar configuração atual</guilabel>. Isto irá salvar os programas abertos e a configuração do Painel.
+   </para>
+  </sect1>
+ </chapter>
+
+<!-- ########################## THE GNOME DESKTOP - CHAPTER ########################## -->
+
+ <chapter id="desk">
+  <title>A Área de Trabalho GNOME</title>
+  <sect1>
+   <title>Introdução</title> 
+   <para>  
+   <indexterm>
+    <primary>
+Área de Trabalho GNOME 
+    </primary>
+   </indexterm>
+A Área de Trabalho do GNOME provê todas as funcionalidades como as de qualquer outro sistema operacional. É possível arrastar arquivos, programas e pastas de diretórios para a Área de Trabalho, sendo possível ainda arrastar estes itens para aplicativos compatíveis com o GNOME. 
+   </para>
+   <important>
+    <title>IMPORTANTE</title>
+    <para>
+A Área de Trabalho GNOME é na verdade disponibilizada por um processo em segundo plano no Gerenciador de Arquivos GNOME. Se por qualquer razão o processo for interrompido, deve-se reinicializar o Gerenciador e a Área de Trabalho será restaurada. Caso se tenha que executar esta tarefa, cabe salientar que não é necessário manter a janela do Gerenciador de Arquivos GNOME aberta para habilitar a Área de Trabalho. 
+    </para>
+   </important>
+  </sect1>
+  <sect1 id="deskuse">
+   <title>Usando a Área de Trabalho</title>
+   <para>
+Usar a Área de Trabalho é tão simples como arrastar itens que se queira utilizar rotineiramente. A Área padrão inclui uma pasta do diretório pessoal (/home/[nome do usuário]). Por padrão o Gerenciador de Arquivos GNOME também será ativado para permitir o acesso a outras área do sistema. 
+   </para>
+   <para>
+Para utilizar o processo de arrastar e soltar é necessário utilizar uma aplicação compatível com o GNOME ou uma aplicação MOTIF. O GNOME é compatível com o processo de arrastar e soltar MOTIF, fazendo com que ele funcione perfeitamente com uma série de aplicações previamente instaladas. 
+   </para>
+   <para>
+Todos os itens armazenados na Área de Trabalho estão localizados no diretório: 
+    <programlisting>
+     <prompt>$</prompt>/home/[nome do usuário]/.gnome-desktop/  
+    </programlisting>
+Isto pode ser útil para relembrar quando se desejar que um item que apareça na Área de Trabalho, porém com as quais não se pode utilizar as funções de arrastar e soltar. 
+   </para>
+   <para>
+    <indexterm>
+     <primary>
+      Área de Trabalho GNOME
+     </primary>
+     <secondary>
+Dispositivos de Hardware
+     </secondary>
+    </indexterm>
+Uma vez que se tenha iniciado o GNOME é possível perceber que os dispositivos conectados ao sistema serão apresentados na Área de Trabalho com os seus respectivos ícones, sendo possível montá-los e acessá-los a partir destes ícones. 
+   </para>
+   <important>
+    <title>IMPORTANTE</title>
+    <para>
+Deve-se ter permissão para montar os dispositivos mostrados na Área de Trabalho para poder utilizar os ícones. Deve-se ter a senha do superusuário para executar esta tarefa. Caso não se tenha a senha do superusuário deve-se consultar o administrador do sistema. 
+    </para>
+    <para>
+     <indexterm>
+      <primary>
+Montando Dispositivos 
+      </primary>
+     </indexterm>
+Obter acesso à montagem de dispositivos pode ser realizado de forma simples caso se tenha instalado o <application><emphasis>linuxconf</emphasis></application>
+Instalado na máquina. Basta selecionar o dispositivo que se queira acessar na seção <guilabel>Acesso a dispositivos locais</guilabel>. Em <guilabel>Opções</guilabel> selecione a opção <guilabel>Montável pelo Usuário</guilabel>. O dispositivo agora poderá ser montado por usuários. 
+     </para>
+     <para>
+Caso não se tenha o <application><emphasis>linuxconf</emphasis></application> instalado pode-se editar o arquivo <emphasis>/etc/fstab</emphasis> para incluir o acesso a usuários. Isto é feito da seguinte forma, por exemplo: 
+     </para>
+     <para>
+Caso o arquivo fstab tenha o seguinte aspecto: 
+      <programlisting>
+       /dev/cdrom /mnt/cdrom iso9660 exec,dev,ro,noauto 0 0
+      </programlisting>
+Deve-se adicionar "user" à quarta coluna: 
+     <programlisting>
+      /dev/cdrom /mnt/cdrom iso9660 user,exec,dev,ro,noauto 0 0
+     </programlisting>
+     </para>
+     <para>
+Pode haver alguns riscos de segurança envolvidos com esta funcionalidade, dependendo do sistema local e do ambiente de trabalho. Por favor consulte o administrador do sistema antes de permitir que um dispositivo seja montado por usuários. 
+     </para>
+    </important>
+    <para>
+Uma vez que se tenha permissão de montar um dispositivo, pode-se clicar o botão direito do mouse no ícone do dispositivo na Área de Trabalho, o que provocará o aparecimento de um menu de opções. 
+    </para>
+    <para>
+Pode-se selecionar então <guimenuitem>Montar dispositivo</guimenuitem> para montá-lo e <guimenuitem>Ejetar dispositivo</guimenuitem> para abri-lo. Uma vez que ele esteja montado pode-se clicar duplamente sobre ele o escolher a opção <guimenuitem>Abrir</guimenuitem> a partir do menu apresentado para abrir o dispositivo e apresentar o seu conteúdo no Gerenciador de Arquivos GNOME. 
+    </para>
+    <para>
+Caso algum dispositivo não esteja presente na Área de Trabalho e se queira adicioná-lo, basta clicar com o botão direito do mouse sobre algum espaço vazio da Área de Trabalho e escolher o item <guimenuitem>Procurar Dispositivos</guimenuitem> do menu apresentado. 
+    </para>
+  </sect1>
+  <sect1 id="deskareas">
+   <title>Janelas de Áreas de Trabalho</title>
+   <para>
+   <indexterm>
+    <primary> 
+Janelas de Áreas de Trabalho
+    </primary>
+   </indexterm>
+   <indexterm>
+    <primary>
+Múltiplas Áreas de Trabalho 
+    </primary>
+   </indexterm>
+Janelas de Áreas de Trabalho permitem a manutenção de um sistema muito bem organizado quando se tenha muitas tarefas a serem executadas de uma única vez. Assim como adicionar uma nova mesa quando se tenha muitos itens para que caibam em uma única, janelas de Áreas de Trabalho permitem que se mova de uma área para outra, a fim de que se possa lançar mais programas simultaneamente. 
+   </para>
+   <para>
+O GNOME percebe a existência de outras Áreas de Trabalho, mesmo que elas estejam sendo controladas por outros programas chamados 'gerenciadores de janelas'. Pode-se configurar o número de Áreas de Trabalho através dos utilitários de configuração dos gerenciadores de janelas que se esteja utilizando. Caso se esteja usando um gerenciador de janelas padrão ou ele tenha uma ferramenta gráfica de configuração será possível acionar este procedimento a partir do Capplet Gerenciador de Janelas. Maiores informações sobre este Capplet estão disponíveis na seção <xref Linkend="gccwm">
+   </para>
+   <important>
+    <title>IMPORTANTE</title>
+    <para>
+Muitos gerenciadores de janelas fornecerão a opção de ter-se múltiplas Áreas de Trabalho o que é diferente de se ter diversas Janelas de Áreas de Trabalho. Os últimos são extensões virtuais de uma Área de Trabalho, enquanto que o primeiro se refere a Áreas na verdade separadas. 
+    </para>
+    <para>
+A configuração padrão do GNOME é de usar as Áreas de Trabalho estendidas a partir de uma principal. Isso se deve à busca de compatibilidade com aplicações antigas, como às usadas no Motif, onde ao contrário disso seriam experimentados problemas com algumas funcionalidades de arrastar e soltar entre Áreas de Trabalho diferentes. 
+    </para>
+   </important>
+  </sect1>
+  <sect1 id="deskmenus">
+   <title>Outros Menus da Área de Trabalho </title>
+   <para>
+    <indexterm>
+     <primary>
+Área de Trabalho GNOME 
+     </primary>
+     <secondary>
+Menus de Área de Trabalho 
+     </secondary>
+    </indexterm>
+Há poucos menus da Área de Trabalho que possam seu usados a partir do GNOME. Estes menus podem ser acessados através do clique do botão direito do mouse em qualquer espaço sem uso da Área de Trabalho. Isso fará com que seja apresentado um menu que contém alguns itens: 
+   </para>
+   <ITEMIZEDLIST mark="bullet">
+    <listitem>
+     <para>
+      <guimenuitem>Novo | Terminal</guimenuitem> - lançará um novo terminal GNOME em uma janela, o qual automaticamente estará localizado no diretório ~/.gnome-desktop, onde ~ é um atalho para /home/nome_do_usuário. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Novo | Diretório</guimenuitem> - permite a criação de um novo diretório na Área de Trabalho. Pode ser uma ferramenta conveniente para se usar quando se queira limpar a Área de Trabalho através da localização do arquivos em um novo diretório. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Novo | Lançador</guimenuitem> - permite que o lançador de uma aplicação seja adicionado à Área de Trabalho. Ao se selecionar este item do menu, ele iniciará o diálogo <guimenuitem>Lançador de Aplicação</guimenuitem>, o qual permite que a aplicação e suas propriedades sejam especificadas. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Novo | [aplicação]</guimenuitem> - algumas aplicações podem colocar os item para o usuário no menu <guimenu>Novo</guimenu>. Por exemplo, a planilha eletrônica Gnumeric irá criar um item <guimenuitem>Nova Planilha Gnumeric </guimenuitem> no menu <guimenu>Novo</guimenu> a fim de que se possa iniciar uma nova planilha com facilidade. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Arrumar Ícones</guimenuitem> - automaticamente arruma os ícones na Área de Trabalho. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Criar Nova Janela</guimenuitem> - aciona uma nova janela com o Gerenciador de Arquivos GNOME apontando para o diretório pessoal do usuário. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Pesquisar Dispositivos Montáveis </guimenuitem> - esta opção provocará a pesquisa de dispositivos que podem ser montados na máquina corrente e irá apresentar um ícone para qualquer novo dispositivo encontrado. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Pesquisar Área de Trabalho - provocará a atualização da Área de Trabalho com base no conteúdo do diretório ~/.gnome-desktop .
+    </para>
+   </listitem>
+  </itemizedlist>
+ </sect1>
+</chapter>
+
+<!--  ########################## THE GNOME FILE MANAGER - CHAPTER ############################ -->
+
+ <chapter id="gmc">
+  <title>O Gerenciador de Arquivos GNOME</title>
+  <sect1>
+   <title>Introdução</title>
+   <para>
+    <indexterm>
+     <primary>
+Gerenciador de Arquivos GNOME 
+     </primary>
+    </indexterm>
+    <indexterm>
+     <primary> 
+      GMC
+     </primary><see>"Gerenciador de Arquivos GNOME"</see>
+    </indexterm>
+    <indexterm>
+     <primary>
+GNU Midnight Commander
+     </primary><see>"Gerenciador de Arquivos GNOME"</see>
+    </indexterm>
+O GNOME inclui um gerenciador de arquivos que permite a manipulação de arquivos no sistema em um ambiente confortável, poderoso e gráfico. Este Gerenciador é conhecido como GMC ou GNU Midnight Commander.  GMC é baseado no Gerenciador de Arquivos Midnight Commander o qual pode ser executado em um terminal. 
+   </para>
+   <para>
+Midnight Commander é muito conhecido por seu poder e facilidade de uso. GMC baseou-se nestas características associadas à interface gráfica do GNOME. 
+   </para>
+   <para> 
+Conforme mencionado em capítulo prévio, o Gerenciador de Arquivos GNOME provê as funcionalidades de Área de Trabalho para o GNOME. O Gerenciador provê ainda um local para manipulação de arquivos no sistema local através do uso de suas janelas. 
+    <figure>
+     <title>GNU Midnight Commander - O Gerenciador de Arquivos</title>
+    <screenshot>
+     <screeninfo>GMC</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/gmc1" srccredit="dcm">
+      </graphic>
+    </screenshot>
+    </figure>
+   </para>
+   <para>
+Há duas janelas principais no Gerenciador de Arquivos GNOME. À esquerda existe uma árvore que representa toda a hierarquia de diretórios do sistema e à direita é a janela de diretórios que apresentará o conteúdo do diretório selecionado na janela esquerda.
+   </para>
+   <para>
+   Para selecionar um diretório em uma visão de árvore basta clicar uma vez sobre o diretório desejado. Esta ação provocará a mudança de visão do diretório principal para o diretório escolhido, mostrando o conteúdo deste último. Caso hajam subdiretórios contidos no diretório escolhido, pode-se clicar sobre o sinal de adição na árvore de diretórios para que o seu conteúdo seja também apresentado.
+   </para>
+   <para>
+    <indexterm>
+     <primary>
+     Gerenciador de Arquivos GNOME
+      <primary>
+     <secondary>
+      Visualizando Arquivos
+     </secondary>
+    </indexterm>     
+    A janela principal dos arquivos tem algumas opções que podem ser desejáveis para o usuário: visão de ícones e visão detalhada.
+   </para>
+   <para>
+   A visão de ícones é a padrão, a qual apresenta ícones grandes para cada arquivo. A visão curta mostra os arquivos e diretórios em uma lista, porém sem qualquer informações extras. A visão detalhada apresenta uma lista dos arquivos do diretório selecionado e uma série de informações adicionais sobre estes arquivos, tais como tamanho e data do último acesso. A visão personalizadazada permite que o usuário selecione as informações que devem ser apresentadas.
+   </para>
+   <para>
+   Nas visões curta, detalhada e personalizada, caso se clique sobre um dos títulos das colunas de informações adicionais, ordenam os arquivos de acordo com aquelas informações. Por exemplo, querendo-se encontrar os maiores arquivos em um diretório, pode-se clicar sobre o nome da coluna de tamanho e os arquivos serão ordenados em ordem decrescente de tamanho. Um clique adicional sobre o nome da coluna irá mudar a ordem, passando agora a ser crescente.
+   </para>
+  </sect1>
+  <sect1 id="gmcnav" >
+   <title>Navegando com o Gerenciador de Arquivos GNOME</title>
+   <para>
+    <indexterm>
+     <primary>
+Gerenciador de Arquivos GNOME
+     </primary>
+     <secondary>
+navegando
+     </secondary>
+    </indexterm>
+    Sobre a árvore e a janela de visão principal do Gerenciador de Arquivos GNOME há uma caixa de texto chamada Localização.
+   </para>
+   <para>
+   Nesta caixa de texto pode-se informar o caminho do arquivo que se deseja visualizar na janela de visão principal.
+   </para>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+     FTP
+    </secondary>
+   </indexterm>      
+   O Gerenciador de Arquivos GNOME é também equipado com uma visão de sítios FTP. Para visualizar um sítio FTP é necessário estar conectado a Internet através de uma linha discada, dedicada ou através da rede ao qual a estação esteja conectada. Digite o endereço FTP na caixa de texto de localização e o Gerenciador de Arquivos GNOME tentará conectar-se ao sítio indicado.
+   </para>
+   <para>
+   Esteja certo de que o endereço FTP segue o padrão:
+    <programlisting>ftp://[sítio-FTP]</lista>
+   </para>
+   <para>
+   Próximo à janela de Localização há botões de navegação que podem ser úteis no processo de navegação. Estes botões com setas como ícones permitem a movimentação nos diretórios adjacentes ao qual se esteja localizado. O botão da esquerda levará o usuário ao diretório anterior aonde ele tivesse estado, o botão do meio subirá um nível na hierarquia de diretórios e o botão da direita levará o usuário até o próximo diretório, caso o usuário tenha se movido para trás.
+   </para>
+   <tip>
+    <title>TIP</title>
+    <para>
+    Pode-se abrir uma janela secundária usando-se o botão do meio do mouse em qualquer diretório. Pressione o botão do meio (ou ambos os botões do mouse no caso da emulação estar habilitada) em um diretório na janela principal e uma nova janela será aberta apresentando o conteúdo do diretório selecionado.
+    </para>
+   </tip>
+  </sect1>
+  <sect1 id="gmcselect" >
+   <title>Selecionando Arquivos</title>
+    <para>
+    <indexterm>
+     <primary>
+     Gerenciador de Arquivos GNOME
+     </primary>
+     <secondary>
+Selecionando Arquivos
+     </secondary>
+    </indexterm>
+    A seleção de arquivos é realizada através do mouse ao se clicar sobre um ou mais arquivos no Gerenciador de Arquivos GNOME. O arquivo que for selecionado será destacado dos demais através da mudança de cor da linha em que esteja localizado.
+    </para> 
+    <para>
+    <indexterm>
+     <primary>
+Gerenciador de Arquivos GNOME
+     </primary>
+     <secondary>
+Selecionando múltiplos arquivos 
+     </secondary>
+    </indexterm>
+    Há algumas formas de selecionar mais de um arquivo. Uma delas é utilizar a seleção "elástica" através do clique e arrasto do cursor do mouse por diversos arquivos. Esta ação produz uma linha pontilhada, o "elástico", que mostra quais arquivos foram selecionados. Esta funcionalidade está disponível para a visão de ícones.
+    </para>
+     <figure>
+      <title>"Seleção Elástica"</title>
+     <screenshot>
+      <screeninfo>Seleção Fita Adesiva</screeninfo>
+       <Graphic format="gif" Fileref="./figs/rubberband" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    <para>
+    Querendo ser mais seletivo sobre os arquivos que se esteja escolhendo ou os arquivos necessários não estejam um ao lado do outro, pode-se usar a tecla <keycap>CTRL</keycap> para manter a seleção prévia dos arquivos, enquanto outros são escolhidos. Isto funciona quando se mantém pressionada a tecla <keycap>CTRL</keycap> e se selecionam arquivos adicionais, quando é possível adicionar novos arquivos à lista dos já indicados. Uma vez que se tenha selecionado múltiplos arquivos por qualquer método aqui descrito, pode-se executar diversas operações simultâneas, como por exemplo movê-los ou copiá-los.
+    </para>
+    <para>
+    Pode-se ainda selecionar todos os arquivos de um diretório ao se optar pelo item  <guimenuitem>Selecionar Todos</guimenuitem> do menu <guimenu>Editar</guimenu> na primeira linha da janela.
+   </para>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+     filtragem
+    </secondary>
+   </indexterm>
+   Pode-se ainda filtrar a seleção através do uso da opção <guimenuitem>Selecionar Arquivos</guimenuitem> do menu <guimenu>Editar</guimenu>. O uso desta opção irá apresentar um diálogo simples que permite que sejam informados os critérios da seleção. Neste campo, o símbolo <keycap>*</keycap> é interpretado como caracter de generalização, ou seja, ele coincide com qualquer conjunto de caracteres. Por exemplo, querendo-se visualizar todos os arquivos do diretório que comecem com a letra <keycap>D</keycap>, basta digitar <keycap>D*</keycap> (deve-se estar atento que o Linux faz distinção entre letras maiúsculas e minúsculas).
+   </para>
+  </sect1>
+  <sect1 id="gmccopy" >
+   <title>Copiando e Movendo Arquivos</title>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary> 
+    Copiando arquivos
+    </secondary>
+   </indexterm>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Movendo arquivos
+    </secondary>
+   </indexterm>
+   A ação padrão para arrastar e soltar um arquivo no Gerenciador de Arquivos GNOME é denominada mover arquivo. Porém pode-se também copiar arquivos através das ações de arrastar e soltar desde que seja mantida pressionada a tecla  <keycap>SHIFT</keycap> durante o processo. Este processo deve funcionar com um ou mais arquivos.
+   </para>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Ligando arquivos
+    </secondary>
+   </indexterm>
+   Pode-se ainda acionar um menu que permite que se decida qual ação deve ser tomada com um arrasto. Para tanto basta pressionar o botão do meio do mouse ou pressionar a tecla <keycap>ALT</keycap> enquanto o arquivo é arrastado. Uma vez que o arquivo seja solto, será apresentado um menu com as opções de copiar, mover e cancelar a ação.
+   </para>
+   <para>
+   Outra forma de copiar ou mover arquivos é tirar vantagem do menu que é apresentado ao se clicar o botão direito do mouse. São permitidas diversas ações como copiar, mover e assim por diante. A opção <guimenuitem>Mover...</guimenuitem> apresentará o seguinte diálogo:
+   </para>
+   <para>
+    <figure>
+     <title>Diálogo de Movimentação de Arquivos</title>
+    <screenshot>
+     <screeninfo>Diálogo de Movimentação de Arquivos</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/gmc_move" srccredit="dcm">
+      </graphic>
+    </screenshot>
+    </figure>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Movendo arquivos
+    </secondary>
+   </indexterm>
+   Para usar o diálogo de movimentação, basta digitar o caminho de destino do arquivo. Caso se queira também renomear o arquivo, indique o novo nome em conjunto com o caminho. O diálogo de cópia tem a mesma aparência e comportamento, exceto pelo fato de que o arquivo permanecerá intacto na sua origem.
+   </para>
+   <para>
+   Caso o arquivo que se esteja movendo tenha uma ligação simbólica associada a ele -- ou seja, haja uma ligação simbólica para o local onde o arquivo realmente reside -- pode-se selecionar  <guilabel>Opções Avançadas</guilabel> e ativar a seleção <guilabel>Preservar Ligações Simbólicas</guilabel>. Ao selecionar esta opção, as ligações serão preservadas apesar da movimentação.
+   </para>
+   <para>
+   É recomendado que esta opção seja ativada caso o arquivo em uso tenha ligações simbólicas associadas a ele.
+   </para>
+  </sect1>
+  <sect1 id="gmcrename" >
+   <title>Renomeando Arquivos</title>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Renomeando Arquivos
+    </secondary>
+   </indexterm>
+   A alteração do nome de um arquivo no Gerenciador de Arquivos GNOME ou na Área de Trabalho pode ser realizada de duas formas.
+   </para>
+   <para>
+   Um deles consiste em clicar sobre o arquivo com o botão direito do mouse e escolher a opção  <guimenuitem>Propriedades</guimenuitem> do menu apresentado. Na janela de texto Nome do Arquivo pode-se digitar o novo nome a ser dado ao arquivo.
+   </para>
+    <figure>
+     <title>Propriedades do Arquivo</title>
+     <screenshot>
+      <screeninfo>Propriedades do Arquivo</screeninfo>
+       <Graphic format="gif" Fileref="./figs/fileprops" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+   <para>
+   Um método mais rápido de renomear um arquivo é clicar duplamente e devagar sobre o arquivo. Esteja seguro de fazê-lo lentamente, caso contrário o arquivo será lançado à execução ou a algum utilitário de apresentação. Neste ponto o nome do arquivo passará a estar em modo de edição, o cursor do mouse será alterado e será possível digitar o novo nome.
+   </para>
+   </sect1>
+  <sect1 id="gmclaunch" >
+   <title>Lançando Aplicações a Partir do Gerenciador de Arquivos GNOME</title>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Lançando aplicações a Partir
+    </secondary>
+   </indexterm>
+   O Gerenciador de Arquivos GNOME permite que sejam lançadas aplicações a partir da janela principal, simplesmente clicando-se duplamente sobre o arquivo que tenha uma aplicação associada a ele. Pode-se mudar a forma como os arquivos são tratados através do <xref Linkend="gccmime">
+   </para>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Abrir com
+    </secondary>
+   </indexterm>
+   Se o arquivo não tem uma aplicação associada pode-se clicar com o botão direito do mouse e selecionar a opção <guimenuitem>Abrir com</guimenuitem> a partir do menu apresentado. Isto fará com que seja apresentada uma janela de diálogo que permite definir a aplicação que lançará o arquivo. Por exemplo, querendo-se editar o arquivo de nome teste.txt com o utilitário <application>Gedit</application>, basta clicar sobre o arquivo teste.txt e escolher <guimenuitem>Abrir com</guimenuitem>. Quando a caixa de diálogo for apresentada, simplesmente digite <application>gedit</application> na caixa de texto e clique sobre <guibutton>OK</guibutton>. O <application>gedit</application> irá então abrir o arquivo.
+   </para>
+   <figure>
+    <title>O Diálogo Abrir Com...</title>
+   <screenshot>
+    <screeninfo>O Diálogo Abrir Com</screeninfo>
+     <graphic Format="gif" Fileref="./figs/open_with" srccredit="dcm">
+     </graphic>
+   </screenshot>
+   </figure>
+  </sect1>
+  <sect1 id="gmcfileprops">
+   <title>Propriedades de Arquivos e Ações</title>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+Propriedades de arquivos
+    </secondary>
+   </indexterm>
+   Para qualquer arquivo na janela principal pode-se clicar o botão direito do mouse e escolher entre uma variedade de arquivos e ações a partir do menu apresentado:
+   </para>
+   <ITEMIZEDLIST mark="bullet">
+    <listitem>
+     <para>
+      <guimenuitem>Abrir</guimenuitem> - abrirá o arquivo com a aplicação associada. Pode-se obter maiores informações sobre o tema em <xref Linkend="gccmime">.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Abrir Com </guimenuitem> - pode-se abrir um arquivo com qualquer aplicação usando este item do menu. Para maiores informações por favor verifique em  <xref Linkend="gmclaunch">.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Visualizar</guimenuitem> - isto irá visualizar o arquivo com uma ferramenta básica de apresentação de arquivos.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Editar</guimenuitem> - lançará um editor para alterar o arquivo. O editor a ser lançado é determinado pelo tipo de arquivo. Pode-se obter maiores informações sobre a edição de associações em <xref Linkend="gccmime">.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Copiar</guimenuitem> - copiará o arquivo para a Área de Transferência, podendo então ser colado em qualquer local.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Remover</guimenuitem> - removerá os arquivos selecionados.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guimenuitem>Mover</guimenuitem> - apresenta a caixa de diálogo <guilabel>Mover</guilabel> a qual permite a movimentação de arquivos. Pode-se obter maiores informações sobre esta funcionalidade em <xref Linkend="gmccopy">.
+     </para>
+    </listitem>
+<!--<listitem>
+     <para>
+      <guimenuitem>Ligação Simbólica</guimenuitem> - 
+     </para>
+    </listitem>-->
+    <listitem>
+     <para>
+      <guimenuitem>Propriedades</guimenuitem> - lança o diálogo de propriedades do arquivo, o qual permite visualizar e editar as características do arquivo selecionado.
+     </para>
+     <para> 
+     Este diálogo é formado por três janelas: estatísticas, opções e permissões.
+     </para>
+     <figure>
+      <title>Propriedades do Arquivo</title>
+      <screenshot>
+       <screeninfo>Propriedades do Arquivo</screeninfo>
+       <Graphic format="gif" Fileref="./figs/fileprops" srccredit="dcm">
+       </graphic>
+      </screenshot>
+     </figure>
+      <ITEMIZEDLIST mark="bullet">
+       <listitem>
+        <para>
+         <guilabel>Estatísticas</guilabel> - mostra as informações do arquivo como nome, tipo, tamanho e histórico. Pode-se alterar o nome do arquivo na caixa de texto denominada <guilabel>Nome do Arquivo</guilabel>.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guilabel>Opções</guilabel> - permite alterar as opções das ações a serem executadas para o arquivo. Pode-se definir como abrir, visualizar e editar o arquivo. Caso se necessite abrir o arquivo em uma janela de terminal, deve-se selecionar a caixa de seleção <guilabel>Necessita de terminal para ser executado</guilabel>.
+        </para>
+        <note>
+         <title>NOTA</title>
+         <para>
+         Caso o diálogo de Propriedades seja aberto a partir de um ícone na Área de Trabalho será possível também alterar a aparência do ícone na janela de <guilabel>Opções</guilabel>.
+         </para>
+	</note>
+       </listitem>
+       <listitem>
+        <para>
+         <guilabel>Permissões</guilabel> - permite a alteração das permissões e do dono do arquivo, caso se tenha autoridade para tanto. Pode-se selecionar as permissões de Leitura, Gravação e Execução para o Usuário, Grupo e Outros. Pode-se ainda configurar a Identificação do Usuário, a Identificação do Grupo e o bit de permissão de execução, assim como definir que será o dono do arquivo.
+        </para>
+       </listitem>
+      </itemizedlist>
+    </listitem>
+   </itemizedlist>
+  </sect1>
+  <sect1 id=gmcprefs>
+   <title>Alterando as Preferências no Gerenciador de Arquivos GNOME </title>
+    <para>
+    <indexterm>
+     <primary>
+Gerenciador de Arquivos GNOME
+     </primary>
+     <secondary>
+Preferências
+     </secondary>
+    </indexterm>
+    Há muitas configurações que podem ser realizadas no Gerenciador de Arquivos GNOME.
+    </para>
+    <para>
+    Estas configurações podem ser acessadas através do diálogo <guilabel>Preferências do GMC</guilabel>. Pode-se iniciar este diálogo através da seleção do item de menu <guimenuitem>Preferências</guimenuitem> a partir do menu <guimenu>Editar</guimenu>.
+    </para>
+    <para>
+     O diálogo <guilabel>Preferências do GMC</guilabel> é dividido em cinco seções:    <guilabel>Apresentação de Arquivos</guilabel>,<guilabel>Confirmação</guilabel>,  <guilabel>Visão Personalizada</guilabel>,  <guilabel>Otimizações de Cache</guilabel> e 
+<guilabel>SAV</guilabel>.
+    </para>
+    <sect2 id="gmcprefs-file">
+     <title>Apresentação de Arquivos</title>
+    <figure>
+     <title>Preferências na Apresentação de Arquivos</title>
+     <screenshot>
+      <screeninfo>Preferências de Apresentação de Arquivos</screeninfo>
+      <graphic Format="gif" Fileref="./figs/gmcprops1" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+        <indexterm>
+         <primary>
+Gerenciador de Arquivos GNOME
+         </primary>
+         <secondary>
+Apresentação
+         </secondary>
+        </indexterm>
+         A janela <guilabel>apresentação de arquivos</guilabel> permite a alteração da forma de apresentação do arquivos no GMC (GNOME Midnight Commander).
+        </para>
+        <ITEMIZEDLIST MARK="bullet">
+         <listitem>
+          <para>
+           <guilabel>Mostrar arquivos de cópias de segurança</guilabel> - mostrará qualquer arquivo de cópia de segurança que tenha sido gerado no sistema.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+          <indexterm>
+           <primary>
+Gerenciador de Arquivos GNOME
+           </primary>
+           <secondary>
+Arquivos ocultos
+           </secondary>
+          </indexterm>
+          <indexterm>
+           <primary>
+Gerenciador de Arquivos GNOME
+           </primary>
+           <secondary>
+Mostrar arquivos ocultos
+           </secondary>
+          </indexterm>
+           <guilabel>Mostrar Arquivos Ocultos</guilabel> - mostra todos os arquivos que cujo nome inicie com um ponto. Estes arquivos contém tipicamente informações de configuração e diretórios.
+          </para>
+          </listitem>
+          <listitem>
+          <para>
+           <guilabel>Misturar arquivos e diretórios</guilabel>  -  permite que os arquivos e diretórios sejam ordenados em ordem alfabética ao invés de se ter os diretórios em primeiro lugar e após os arquivos.
+          </para>
+          </listitem>
+          <listitem>
+          <para>
+           <guilabel>Usar padrões de ambiente de trabalho ao invés de expressões regulares</guilabel> - este opção é indicada somente para usuários avançados. Caso não se esteja familiarizado com Expressões Regulares, esta opção não deve ser usada. Caso contrário esta opção pode ser usada para ordenamentos e filtros de arquivos.
+          </para>
+         </listitem>
+        </itemizedlist>
+       </listitem>
+      </itemizedlist>
+      </sect2>
+      <sect2 id="gmcprefs-confirm">
+       <title>Confirmação</title>
+        <figure>
+         <title>Confirmação das Preferências</title>
+         <screenshot>
+          <screeninfo>Confirmação das Preferências</screeninfo>
+          <graphic Format="gif" Fileref="./figs/gmcprops2" srccredit="dcm">
+          </graphic>
+         </screenshot>
+        </figure>
+       <ITEMIZEDLIST MARK="bullet">
+        <listitem>
+        <para>
+        <indexterm>
+         <primary>
+Gerenciador de Arquivos GNOME
+         </primary>
+         <secondary>
+          Confirmações
+         </secondary>
+        </indexterm>
+        Esta janela permite a alteração das perguntas de confirmação de execução de ações antes do sistema continuar.
+        </para>
+        <ITEMIZEDLIST MARK="bullet">
+         <listitem>
+          <para>
+           <guilabel>Confirmar ao remover arquivo</guilabel> - apresenta o diálogo de confirmação de remoção de um arquivo antes de executar a ação.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Confirmar ao se sobrescrever os arquivos</guilabel> - apresenta o diálogo de confirmação de sobrescrita de um arquivo antes de executar a ação.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Confirmar ao se executar um arquivo</guilabel>  - apresenta o diálogo de confirmação de execução antes de executar a ação.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Mostra indicador de progresso enquanto uma ação é executada</guilabel> -  apresenta uma barra de progresso quando determinadas ações são executadas, tais como cópia, movimentação, remoção, etc...
+          </para>
+         </listitem>
+        </itemizedlist>
+       </listitem>
+      </itemizedlist>
+      </sect2>
+      <sect2 id="gmcprefs-VFS">
+        <title>VFS</title>
+        <figure>
+         <title>Preferências VFS</title>
+         <screenshot>
+          <screeninfo>Preferências VFS</screeninfo>
+          <graphic Format="gif" Fileref="./figs/gmcprops3" srccredit="dcm">
+          </graphic>
+         </screenshot>
+        </figure>
+      <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+        <indexterm>
+         <primary>
+Gerenciador de Arquivos GNOME
+         </primary>
+         <secondary>
+          VFS
+         </secondary>
+        </indexterm>
+        <indexterm>
+         <primary>
+Sistema Virtual de Arquivos
+         </primary><see>"Gerenciador de Arquivos GNOME - VFS"</see>
+        </indexterm>
+        Esta janela permite configurar as opções do Sistema Virtual de Arquivos.
+        </para>
+        <para> 
+        O Sistema Virtual de Arquivos permite a manipulação de arquivos que não estejam localizados no sistema local de arquivos. Há diferentes tipos de VFS, incluindo-se ftpfs e tarfs. O ftpfs permite que se trabalhe com sítios FTP, enquanto que o tarfs permite que se acesse conteúdos de arquivos criados com o utilitário tar.
+          </para>
+        <note>
+         <title>NOTA</title>
+         <para>
+         O arquivo .tar é um formato padrão de armazenamento de arquivos no UNIX.
+         </para>
+        </note>
+        <ITEMIZEDLIST MARK="bullet">
+         <listitem>
+          <para>   
+           <guilabel>Tempo de Espera do VFS</guilabel>  -  permite determinar quanto tempo se estará conectado ao VFS sem que haja qualquer atividade. O tempo de espera é definido em segundos.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Senha de FTP Anônimo</guilabel> -  permite configurar uma senha para acesso a sítios que permitam FTP anônimo. Normalmente é usado o endereço de correio eletrônico do usuário.
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Sempre use o Proxy FTP</guilabel>  - caso seja necessário usar um proxy para conectar-se aos sítios FTP deve-se habilitar esta opção.
+          </para>
+         </listitem>
+        </itemizedlist> 
+       </listitem>
+      </itemizedlist>
+      </sect2>
+      <sect2 id="gmcprefs-cache">
+       <title>Cache</title>
+        <figure>
+         <title>Preferências de Cache</title>
+         <screenshot>
+          <screeninfo>Preferências de Cache</screeninfo>
+          <graphic Format="gif" Fileref="./figs/gmcprops4" srccredit="dcm">
+          </graphic>
+         </screenshot>
+        </figure>
+      <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+        Esta tela permite que se configure os itens cuja velocidade de acesso serão incrementada através do uso do cache do GMC.
+        </para>
+        <ITEMIZEDLIST MARK="bullet">
+         <listitem>
+          <para> 
+           <guilabel>Recarga rápida de diretório</guilabel> -  esta opção irá armazenar informações de diretórios no cache que poderão ser carregadas mais rapidamente posteriormente.
+          </para>
+          <important>
+           <title>IMPORTANTE</title>
+           <para>
+           Caso se habilite a <guilabel>Recarga rápida de diretórios</guilabel>  podem ocorrer alguns problemas na visualização de novos arquivos que tenham sido adicionados ao diretório.
+           </para>
+          </important>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Computa os totais antes de copiar os arquivos</guilabel> - faz com que o GMC determine o número de arquivos antes da cópia, fazendo com que ele forneça informações sobre o processo que está sendo executado. 
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Tempo de espera de cache de diretório FTP</guilabel> -
+Esta opção manterá as informações dos sítios FTP recentemente visitados no cache pelo tempo aqui especificado. O tempo é medido em segundos. 
+          </para>
+         </listitem>
+         <listitem>
+          <para>
+           <guilabel>Permite a personalização de ícones na visão de ícone </guilabel> -  permite a alteração de ícones na visão de ícones através do clique do botão direito sobre ele através do item <guimenuitem>Propriedades</guimenuitem> do menu. Sempre é possível alterar os ícones de itens que estejam na Área de Trabalho, porém os ícones na visão de ícones somente podem ser alterados caso esta opção seja ativada. 
+          </para>
+          <important>
+           <title>IMPORTANTE</title>
+           <para>
+Ao se acionar a função <guilabel>Permitir a personalização de ícones na visão de ícones</guilabel> podem resultar em maior lentidão do sistema. 
+           </para>
+          </important>
+         </listitem>
+        </itemizedlist>
+       </listitem>
+      </itemizedlist>
+   </sect2>
+   <sect2>
+    <title>Visão Personalizada</title>
+    <para>
+    <indexterm>
+     <primary>
+Gerenciador de Arquivos GNOME
+     </primary>
+     <secondary>
+Visão personalizada
+     </secondary>
+     </indexterm>
+O diálogo da Visão Personalizada permite que se configure a forma que esta visão terá ao ser visualizada no Gerenciador de Arquivos GNOME. 
+    </para>
+     <figure>
+      <title>O Diálogo de Visão Personalizada </title>
+      <screenshot>
+       <screeninfo>O Diálogo de Visão Customizada</screeninfo>
+       <Graphic Format="gif" Fileref="./figs/custom-view" srccredit="dcm">
+       </graphic>
+      </screenshot>
+     </figure>
+    <para>
+Há duas colunas principais na <guilabel>Visão Customizada</guilabel>, as  <guilabel>Colunas Possíveis</guilabel> e as <guilabel>Colunas Visíveis</guilabel>.
+    </para>
+    <para>
+A lista de <guilabel>Colunas Possíveis</guilabel> inclui todos os tipos de informações que podem ser apresentadas. Caso se deseje incluir algum dado basta pressionar o botão <guibutton>Adicionar</guibutton> e ele será adicionado à lista de <guilabel>Colunas Visíveis</guilabel>.
+    </para>
+    <para>
+A lista de <guilabel>Colunas Visíveis</guilabel> mostra os tipos de informações que serão incluídas na Visão Customizada. Caso se queira remover qualquer informação, basta selecionar o botão <guibutton>Remover</guibutton>.
+    </para>
+    <para>
+Querendo-se rearranjar os itens das <guilabel>Colunas Visíveis</guilabel> basta arrastá-los para a localização desejada como o mouse. 
+    </para>
+   </sect2>
+  </sect1>
+  <sect1 id="gmcmenus" >
+   <title>Guia de Menus do Gerenciador de Arquivos GNOME</title>
+   <para>
+   <indexterm>
+    <primary>
+Gerenciador de Arquivos GNOME
+    </primary>
+    <secondary>
+     menus
+    </secondary>
+    </indexterm>
+Nesta seção cada item de menu do Gerenciador de Arquivos GNOME será descrito. 
+   </para>
+   <tip>
+    <title>Dica</title>
+    <para>
+Todos os menus no Gerenciador de Arquivos GNOME são habilitados com a funcionalidade de "flutuação" através da Área de Trabalho de sua janela. Para tanto simplesmente selecione a linha de execução no topo do menu. 
+    </para>
+   </tip>
+   <ITEMIZEDLIST MARK="bullet">
+    <listitem>
+     <para>
+      <guimenu>Arquivo</guimenu>   -  O menu Arquivo contém itens associados com os arquivos e o mais alto nível de atividade. 
+     </para>
+      <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+         <guimenuitem>Nova Janela</guimenuitem> -  abre uma nova janela do Gerenciador de Arquivos GNOME. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Abrir</guimenuitem> - abrirá o arquivo selecionado pelo cursor do mouse. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Copiar</guimenuitem> -  lançará o diálogo que habilitará a cópia do arquivo selecionado para o destino escolhido. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Mover</guimenuitem>   -  lançará o diálogo mover/renomear os arquivos selecionados para o destino escolhido..
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        <guimenuitem>Remover</guimenuitem> - esta opção remove os arquivos selecionados. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        <guimenuitem>Fechar</guimenuitem> -  finaliza o Gerenciador de Arquivos GNOME. 
+        </para>
+       </listitem>
+     </itemizedlist>
+    </listitem>
+   </itemizedlist>
+   <ITEMIZEDLIST MARK="bullet">
+    <listitem>
+     <para>
+      <guimenu>Editar</guimenu> - o menu de edição contém os itens que estão associados com edição e seleção de arquivos. 
+     </para>
+     <ITEMIZEDLIST MARK="bullet">
+      <listitem>
+       <para>
+        <guimenuitem>Selecionar Tudo</guimenuitem>  - selecionará todos os arquivos no diretório atual do Gerenciador de Arquivos GNOME. 
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+        <guimenuitem>Selecionar Arquivos</guimenuitem>  - lançará uma caixa de diálogo que permite a especificação de uma faixa de seleção de arquivos. Por exemplo, caso se deseje selecionar todos os arquivos começando com a letra D pode-se simplesmente digitar d* e pressionar-se OK. 
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+        <guimenuitem>Inverter Seleção</guimenuitem> - inverte a seleção atual. Por exemplo caso se tenham 7 diretórios selecionados em um diretórios de 10 arquivos, ao se selecionar Inverter Seleção os três arquivos remanescentes e não selecionados passarão a situação de selecionados e os outros sete terão a seleção cancelada. 
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+        <guimenuitem>Atualizar o diretório</guimenuitem> - fará uma verificação do diretório atual a fim de atualizar os arquivos que tenham sido alterados. 
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+        <guimenuitem>Preferências</guimenuitem> -  lançará o diálogo de preferências que podem ser personalizadas através do Gerenciador de Arquivos GNOME. 
+       </para>
+      </listitem>
+     </itemizedlist>
+    </listitem>
+   </itemizedlist>
+   <ITEMIZEDLIST MARK="bullet">
+    <listitem>
+     <para>
+      <guimenu>Layout</guimenu>  - este menu contém itens que estão associados com o layout do Gerenciador de Arquivos GNOME.
+     </para>
+      <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+         <guimenuitem>Ordenar por</guimenuitem>  -  lançará uma caixa de diálogo que permite a seleção de como os arquivos serão ordenados no diretório atual. Os arquivos podem ser ordenados por um dos seguintes itens: 
+        </para>
+         <ITEMIZEDLIST mark="none">
+          <listitem>
+           <para>Nome</para>
+          </listitem>
+          <listitem>       
+           <para>Tipo de Arquivo</para>
+          </listitem>
+          <listitem>
+           <para>Tamanho</para>
+          </listitem>
+          <listitem>   
+           <para>Data do Último Acesso</para>
+          </listitem>
+          <listitem>
+           <para>Data da Última Modificação</para>
+          </listitem>
+          <listitem>
+           <para>Data da Última Alteração</para>
+          </listitem>
+         </itemizedlist>
+        </listitem>
+       <listitem>
+        <para>
+<guimenuitem>Visão de Filtros</guimenuitem> - apresenta um diálogo simples que permite a visualização de arquivos que contenham determinados atributos. Por exemplo, caso se deseje visualizar somente os arquivos que se iniciem com a letra D, pode-se digitar d* na caixa de diálogo e pressionar OK. Se você quiser visualizar todos os arquivos novamente, é necessário abrir o diálogo de Visão de Filtros novamente e limpar as informações apresentadas ou informar um asterisco. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Visão de Ícones </guimenuitem> - todos os arquivos serão apresentados na janela principal como grandes ícones. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Visão Parcial </guimenuitem> - todos os arquivos serão apresentados na janela principal como uma lista contendo somente o nome dos arquivos. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Visão Completa </guimenuitem> -  apresentará os arquivos na janela principal como uma lista com todas as informações dos arquivos. 
+        </para>
+       </listitem>
+      <listitem>
+        <para>
+         <guimenuitem>Visão Customizada</guimenuitem> - altera a forma de visualização para um novo padrão, cujos itens a serem apresentados são definidos pelos usuários. Para personalizar a visão é necessário acionar o <guilabel>Editor de Visão Customizada</guilabel> no menu de <guilabel>Preferências</guilabel>. Pode-se ler mais sobre o diálogo <guilabel>Preferências</guilabel> em <xref Linkend="gmcprefs">.
+        </para>
+       </listitem>
+      </itemizedlist>
+     </listitem>
+    </itemizedlist>
+   <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guimenu>Comandos</guimenu> -  o menu comandos contém itens que são comandos a serem executados nos arquivos selecionados no Gerenciador de Arquivos GNOME. 
+      </para>
+      <ITEMIZEDLIST MARK="bullet">
+       <listitem>
+        <para>
+         <guimenuitem>Encontrar Arquivo</guimenuitem> -  apresenta um diálogo que permite a pesquisa no sistema de arquivos específicos. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Editar Tipos MIME</guimenuitem> - esta opção irá lançar o Capplet Centro de Controle GNOME que permite a edição dos tipos MIME para o GNOME. Tipos MIME determinam, entre outras coisas, qual aplicação irá ser acionada para tratar determinados tipos particulares de arquivo. Pode-se ler mais sobre este tema em <xref Linkend="gccmime">
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Executar comando</guimenuitem>   -  permite a execução de uma comando a partir do GMC. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         <guimenuitem>Executar comando no painel </guimenuitem> -  permite a execução  de comandos pré carregados ou comandos especificados no diretório onde se esteja no momento. Tais comandos podem ser utilizados para encontrar programas SUID ou SGID, etc... 
+        </para>
+       </listitem>
+      <!-- <listitem>
+        <para>
+         <guimenuitem>Lista VFS ativos</guimenuitem> - o Sistema Virtual de Arquivos permite a manipulação de arquivos que não esteja localizados no sistema de arquivos locais. 
+        </para>
+        <para>Há diferentes versões de Sistemas de Arquivos Virtuais incluindo-se ftpfs e tarfs. O ftpfs permite que se utilize o GMC em sítios FTP, enquanto o tarfs fornece acesso ao interior de arquivos .tar . Ambos podem ser muito úteis no ambiente de trabalho e a opção de lista de Sistemas de Arquivos Virtuais ativos, permite a visualização de todos os VFS abertos no momento. Ao selecionar-se o <guimenuitem>Sistema de Arquivos Virtual</guimenuitem> obtém-se uma lista dos VFS abertos. 
+        </para>
+        <para> Existe ainda uma opção para mudar para um VFS diferente através do uso do item <guibutton>Mudar Para</guibutton>.
+        </para>
+       </listitem> -->
+       <listitem>
+        <para>
+         <guimenuitem>Saída</guimenuitem> - permite a saída do Gerenciador de Arquivos GNOME. 
+        </para>
+        <important>
+         <title>IMPORTANTE</title>
+         <para>
+Esta opção irá finalizar todos os processos do Gerenciador de Arquivos GNOME, inclusive a Área de Trabalho GNOME. Caso se finalize o GMC, todas as funcionalidades da Área de Trabalho serão perdidas, não sendo recomendado portanto o seu uso. 
+         </para>
+        </important>
+       </listitem>         
+      </itemizedlist>
+     </listitem>
+    </itemizedlist>
+  </sect1>
+  <sect1 id="dragtour">
+   <title>Um Tour Usando Arrastar e Soltar no GNOME</title>
+    <para>
+    <indexterm>
+     <primary>
+      GNOME
+     </primary>
+     <secondary>
+Arrastar e Soltar
+     </secondary>
+    </indexterm>
+Há muitas funcionalidades e dicas no uso da Área de Trabalho do GNOME. A funcionalidade de arrastar e soltas estende-se a muitas áreas do GNOME, fazendo com que seja simples a interconexão GNOME de diversas formas muito interessantes. A seguir apresentamos uma relação das principais funcionalidades, sendo este um bom tour por interessantes características do GNOME, mostrando como utilizá-lo em sua plenitude. 
+    </para>
+   <ITEMIZEDLIST  MARK="bullet">
+    <listitem>
+     <para>
+Arrastar uma cor para o painel - assim que se tenha selecionado uma cor no seletor apresentado, pode-se arrastar a cor a partir da barra de cores para o Painel e esta passar a ser a sua cor padrão. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Arrastar um arquivos contendo uma imagem para o seletor de fundos - caso se deseje mudar a imagem de fundo, pode-se arrastar o arquivo a partir do Gerenciador de Arquivos GNOME para o Monitor de Imagens na Capplet de Seleção de Fundo do Centro de Controle e a imagem será automaticamente alterada. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Arrastar uma aplicação - muitas aplicações compatíveis com o GNOME irão aceitar as ações de arrastar e soltar. Caso se queira abrir um arquivo no aplicativo Gnumeric, uma aplicação de planilha eletrônica compatível com o GNOME, pode-se simplesmente arrastar um arquivo a partir do Gerenciador de Arquivos GNOME para o Gnumeric e o arquivo será aberto automaticamente. O mesmo é verdade para aplicações construídas para usarem MOTIF. Pode-se arrastar um URL no Netscape 4.x e esta será automaticamente aberta. Isto pode ser bastante útil caso se esteja trabalhando com o Gerenciador de Arquivos GNOME e queira-se abrir um arquivo rapidamente. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Adicionando um lançador de aplicações ao painel - caso se deseje adicionar um lançador de aplicações ao painel pode-se arrastar e largar uma arquivo executável a partir do Gerenciador de Arquivos GNOME ou a partir da Área de Trabalho até o painel. Este procedimento permitirá o lançamento da caixa de diálogo Criação de Lançador a qual permite a definição do nome e de um ícone. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Arrastando arquivos - há muitas formas para se usar as ações de arrastar e soltar arquivos no auxílio ao gerenciamento do sistema. Pode-se abrir dois Gerenciadores de Arquivos GNOME em diferentes diretórios e então arrastar e soltar arquivos entre as duas janelas, para copiar, mover ou criar ligações simbólicas entre arquivos. Pode-se arrastar arquivos a partir do Gerenciador de Arquivos GNOME para a Área de Trabalho para torná-lo mais acessível. Pode-se usar o mouse, através do botão do meio, ou o direito e o esquerdo simultaneamente e arrastar um diretório para a Área de Trabalho. Escolha a opção Estabelecer Ligação... a partir do menu apresentado para criar uma ligação simbólica na Área de Trabalho. Isto fornecerá uma forma rápida de lançar o Gerenciador de Arquivos GNOME para aquele diretório. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Arrastando Diretórios - pode-se arrastar um diretório a partir do Gerenciador de Arquivos GNOME e depositá-lo no Painel. Neste caso, será apresentado um novo menu que permite o acesso fácil ao arquivos residentes naquele diretório. 
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+Pode-se arrastar qualquer submenu a partir do Menu Principal para o Painel e um novo menu de lançamento de aplicativos será automaticamente criado no Painel. Esta funcionalidade permite o acesso simplificado aos itens residentes neste menus.  
+</para>
+    </listitem>
+   </itemizedlist>
+  </sect1>
+ </chapter>
+
+<!-- #################### CONFIGURING THE PANEL - CHAPTER #################### -->
+    
+ <chapter id="confpanel">
+  <title>Configurando o Painel</title> 
+  <sect1>
+  <title>Introdução</title>
+   <para>
+    <indexterm>
+     <primary>
+      Painel
+     </primary>
+     <secondary>
+      Configuração
+     </secondary>
+    </indexterm>
+    <indexterm>
+     <primary>
+      Painel
+     </primary>
+     <secondary>
+      Customização
+     </secondary>
+    </indexterm>
+O Painel GNOME é altamente configurável e vem equipado com muitas ferramentas gráficas que auxiliam a sua configuração. Nesta seção o leitor aprenderá como configurar qualquer Painel GNOME da forma desejada. 
+   </para>
+  </sect1>
+  <sect1 id="confglobal">
+   <title>Propriedades Globais do Painel </title>
+    <para>
+    <indexterm>
+     <primary>
+      Painel
+     </primary>
+     <secondary>
+      Propriedades Globais do Painel 
+     </secondary>
+    </indexterm>
+Para começar a configuração do Painel GNOME, simplesmente clique com o botão direito do mouse sobre o Painel e selecione a opção <guimenuitem>Propriedades Globais</guimenuitem>. Pode-se ainda selecionar o botão de <guibutton>Menu Principal</guibutton> e selecionar os itens <guimenu>Painel</guimenu>    |
+     <guimenuitem>Propriedades Globais</guimenuitem>.
+    </para>
+    <para>
+Esta opção apresentará o diálogo de Configuração Global do Painel, através do qual será possível configurar as propriedades presentes em todos os painéis em uso no momento e outros que venham a ser criados posteriormente. 
+     <figure>
+      <title>O Diálogo de Configuração Global do Painel</title>
+     <screenshot>
+      <screeninfo>O Diálogo de Configuração Global do Painel </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/global-config" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    </para>
+    <para>
+O Diálogo de Configuração Global contém seis janelas que auxiliam na configuração das propriedades globais do Painel GNOME: Animação, Ícone do Lançador, Ícone de Gaveta, Ícone de Menu e Diversos. Cada uma destas janelas são detalhadas a seguir. 
+    </para>
+    <sect2 id="animtab">
+     <title>Janela de Animação</title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Habilitar animações</guilabel>  -  permite que as animações configuráveis nesta janela tornem-se visíveis. As animações devem ser habilitadas para que as outras funcionalidades desta janela possam ser habilitadas. A posição padrão é "ativada". 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Velocidade da Animação de Esconder o Painel </guilabel>  - caso se tenha habilitada a funcionalidade de esconder-se  automaticamente o Painel, esta opção controlará a velocidade desta ação. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Velocidade de Animação de Esconder Explicitamente </guilabel>   - controla a velocidade da ação ao se pressionar o botão de Esconder o Painel.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Velocidade de Animação da Gaveta</guilabel> -  caso se use uma gaveta no Painel, esta opção irá controlar a velocidade com que o menu será apresentado.
+</para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Espera na Miniaturização Automática (ms) - caso se tenha habilitado a miniaturização automática do Painel, esta função permitirá o tempo de espera até que a função seja acionada. A contagem de tempo será iniciada assim que o ponteiro do mouse não esteja mais localizado sobre o Painel. O Painel será automaticamente acionado novamente assim que o ponteiro do mouse esteja novamente localizado sobre a sua área de ocupação. Este tempo é medido em milisegundos. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Tamanho na Miniaturização Automática (pixels) - caso se tenha ativado a função de miniaturização do Painel, esta opção definirá o número de pixels que serão apresentados quando o Painel for minimizado. 
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="launchtab">
+    <title>Janela de Ícone de Lançamento</title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Habilita Padrões </guilabel> -  esta caixa de verificação permite o uso de fundos com padrões para todos os ícones no Painel. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Nome do arquivo de padrões(botão inativo)</guilabel> -  define o nome do arquivo da imagem que se deseja usar como padrão na posição de inatividade do botão (posição para cima). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Nome do arquivo de padrões(botão ativo) </guilabel> -  define o nome do arquivo de imagem que se deseja utilizar como padrão na posição ativa (botão pressionado). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Largura da borda (somente com padrões) </guilabel> - determina a largura da borda ao redor do ícone. Muito útil quando se tem um ícone que pode cobrir o padrão. Pode-se configurar a borda para um tamanho menor e ainda ser possível visualizar o padrão. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Profundidade (deslocamento quando pressionado)</guilabel>  - determina a profundidade que um ícone apresentará quando pressionado. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="drawertab">
+    <title>Janela do Ícone de Gaveta </title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Padrões habilitados</guilabel> -  esta caixa de verificação habilitará o padrão de fundo para todas as gavetas do Painel. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Nome do arquivo de padrões(botão inativo)</guilabel> -  define o nome do arquivo da imagem que se deseja usar como padrão na posição de inatividade do botão (posição para cima). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões de gaveta deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Nome do arquivo de padrões(botão ativo) </guilabel> -  define o nome e o caminho do arquivo de imagem que se deseja utilizar como padrão na posição ativa (botão pressionado). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Largura da borda (somente com padrões) </guilabel> - determina a largura da borda ao redor do padrão. Padrões de gavetas devem estar habilitado para o acesso a esta opção. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Profundidade (deslocamento quando pressionado) </guilabel>  - determina a profundidade do padrão quando estiver pressionado. Padrões de gavetas devem estar habilitados para o acesso a esta opção. 
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="menutab">
+    <title>Janela de Ícones de Menu</title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+<guilabel>Habilita Padrões </guilabel> -  esta caixa de verificação permite o uso de fundo padrão para o botão do <guibutton>Menu Principal</guibutton> residente no Painel. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Nome do arquivo de padrões(botão inativo)</guilabel> -  define o nome e o caminho do arquivo da imagem que se deseja usar como padrão na posição de inatividade do botão (posição para cima). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Nome do arquivo de padrões(botão ativo) </guilabel> -  define o nome do arquivo de imagem que se deseja utilizar como padrão na posição ativa (botão pressionado). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Largura da borda (somente com padrões) </guilabel> - determina a largura da borda ao redor do padrão. Padrões de menu devem estar habilitados para o acesso a esta opção. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Profundidade (deslocamento quando pressionado)</guilabel>  - determina a profundidade que um ícone apresentará quando pressionado. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="logouttab">
+    <title>Janela de Ícone da Saída </title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+<guilabel>Habilita Padrões </guilabel> -  esta caixa de verificação permite o uso de fundos com padrões para todos os botões da saída residentes no Painel. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+<guilabel>Nome do arquivo de padrões(botão inativo)</guilabel> -  define o nome do arquivo da imagem que se deseja usar como padrão na posição de inatividade do botão (posição para cima). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+<listitem>
+      <para>
+       <guilabel>Nome do arquivo de padrões(botão ativo) </guilabel> -  define o nome do arquivo de imagem que se deseja utilizar como padrão na posição ativa (botão pressionado). Pode-se pressionar o botão <guibutton>Mostrar</guibutton> para pesquisar um arquivo. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Largura da borda (somente com padrões) </guilabel> - determina a largura da borda ao redor do ícone. Muito útil quando se tem um ícone que pode cobrir o padrão. Pode-se configurar a borda para um tamanho menor e ainda ser possível visualizar o padrão. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Profundidade (deslocamento quando pressionado)</guilabel>  - determina a profundidade que um ícone apresentará quando pressionado. A opção de padrões deve estar habilitada para que esta configuração possa ser utilizada. 
+</para>
+</listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="misctab">
+    <title>Diversos </title>
+     <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Habilita Ferramenta de Dicas</guilabel> - habilita a ferramenta de dicas para os itens do Painel. Esta ferramenta apresenta janela informativas quando o ponteiro do mouse estiver depositado sobre um elemento do Painel. 
+      </para>
+     </listitem>
+      <listitem>
+      <para>
+       <guilabel>Mostrar ícones em tamanho pequeno </guilabel>  - habilita o uso de pequenos ícones no Menu Principal. 
+      </para>
+     </listitem>
+      <listitem>
+      <para>
+       <guilabel>Mostrar...botões </guilabel>  - habilita a apresentação de três pequenos pontos a serem apresentados nos itens de  Menu Principal que lançam os diálogos. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Mostra menus apresentados fora do Painel </guilabel> - permite que os menus apareçam fora do Painel quando ativados. Quando esta opção estiver desativada os menus aparecerão sobre o Painel. Pode ser útil em telas pequenas ou Áreas de Trabalho congestionadas. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Manter menus em memória </guilabel> - esta opção mantém os menus em memória, não havendo nova pesquisa para itens adicionados. Esta opção pode incrementar a velocidade do GNOME mas podem permitir que novos itens não sejam listados no menu para aplicações compatíveis com o GNOME. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Movimentação de troca </guilabel> - permite que botões de lançamento residentes no Painel possam trocar de local com outros ícones quando forem movidos. 
+      </para>
+     </listitem>
+      <listitem>
+      <para>
+       <guilabel>Movimentação livre (não perturba outros Capplets)</guilabel>  - esta funcionalidade congela a ordem dos itens no Painel. É uma função interessante de se utilizar quando se esteja satisfeito com a forma como os ícones estão organizados. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Confirmação de saída </guilabel>  - apresenta um diálogo que solicita a confirmação da saída do GNOME. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Apresentação automática de menus </guilabel> - caso se esteja utilizando um Gerenciador de Janelas que não seja compatível com o GNOME, ele não compreenderá este relacionamento com o Painel, o que pode causar a cobertura do Painel pelos aplicativos. Caso esta opção seja habilitada, o Painel será automaticamente ativado quando o ponteiro do mouse estiver sobre ele. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Manter o Painel sob as janelas </guilabel> - caso se esteja usando um Gerenciador de Janelas compatível com o GNOME, ele entenderá este relacionamento. Esta opção permite que as janelas de aplicativos sejam apresentadas sobre o Painel. Esta funcionalidade pode ser útil em telas muito pequenas. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Fechar a Gaveta quando um aplicativo for ativado</guilabel> - por padrão as gavetas permanecem "abertas" quando um aplicativo é selecionado. Isso pode ser um incômodo, pois ela somente será fechada quando houver um clique do mouse. Caso esta opção seja habilitada o menu acionado pela Gaveta será fechado automaticamente quando um item for selecionado. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Área entre Capplets </guilabel>  - altera o espaço entre os ícones das Capplets residentes no Painel.
+  </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   </sect1>
+   <sect1 id="confthis">
+    <title>Propriedades deste Painel </title>
+    <para>
+     <indexterm>
+      <primary>
+       Painel
+      </primary>
+      <secondary>
+Propriedades deste Painel 
+      </secondary>
+     </indexterm>
+     <indexterm>
+      <primary>
+       Painel
+      </primary>
+      <secondary>
+       properties
+      </secondary>
+     </indexterm>
+As propriedades de cada Painel podem ser configuradas individualmente. Para alterar a configuração do Painel ativo, clique com o botão direito do mouse quando o indicador estiver sobre o Painel e selecione a opção <guimenuitem>Propriedades deste Painel</guimenuitem> a partir do menu apresentado automaticamente. Pode-se ainda pressionar o botão <guibutton>Menu Principal</guibutton> e selecionar-se <guimenu>Painel</guimenu>      |      <guimenuitem>Propriedades deste Painel</guimenuitem>.
+    </para>
+    <para>
+Esta opção ativa a janela de diálogo de propriedades do Painel. Nesta janela podem ser alteradas as janelas do Painel ativo. 
+    </para>
+    <figure>
+     <title>Diálogo de Propriedades de Painel</title>
+    <screenshot>
+     <screeninfo> Diálogo de Propriedades de Painel </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/thispanel" srccredit="dcm">
+      </graphic>
+    </screenshot>
+    </figure>
+    <para>
+O diálogo de propriedades do Painel contém duas janelas que auxiliam na configuração das propriedades do Painel ativo: Painel lateral e Fundo. Ambas as janelas são detalhadas a seguir. 
+    </para>
+   <sect2 id="edgetab">
+    <title>Janela de Painel Lateral</title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Posição</guilabel>  - altera a posição do Painel na tela. Pode-se selecionar Topo, Direita, Esquerda e Base. O Painel irá mudar de posição assim que se pressionar o botão <guibutton>Aplicar</guibutton>.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+      <indexterm>
+       <primary>
+        Painel
+       </primary>
+       <secondary>
+        Esconder automaticamente
+       </secondary>
+      </indexterm>
+       <guilabel>Opções de miniaturização </guilabel>  - estas opções irão habilitar que o Painel seja escondido pelo usuário usando-se os botões adequados ou a Auto Miniaturização quando o mouse não este sobre o Painel. Caso se opte por esta última, deve-se desabilitar o botão de auto miniaturização para tanto. Pode-se também desabilitar o botão que permite que os gráficos de setas no Painel sejam escondidos. 
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="panelbacktab">
+    <title>Janela de Configuração de Fundo</title>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+      <indexterm>
+       <primary>
+        Painel
+       </primary>
+       <secondary>
+Fundo 
+       </secondary>
+      </indexterm>
+       <guilabel>Fundo</guilabel>  - estas opções permite que o fundo do Painel seja alterado. Pode-se escolher entre o padrão, um arquivo de imagem ou uma cor como fundo. O aspecto padrão para o Painel é determinado pelo tema GTK que se esteja usando no momento. A opção de arquivo de imagem, um pixmap, permite que se utilize uma imagem na opção mosaico ou escalável no tamanho do Painel. A opção de cores permite que seja especificada uma determinada cor para compor o fundo da Painel. 
+      </para>
+     </listitem>
+    </itemizedlist>
+    <important>
+     <title>IMPORTANTE</title>
+     <para>
+Uma forma mais simples de alterar o fundo do painel é arrastar e soltar um arquivo de imagem a partir do Gerenciador de Arquivos GNOME até o Painel. Este procedimento fará com que o fundo do Painel seja alterado automaticamente para a imagem. 
+     </para>
+    </important>
+    <ITEMIZEDLIST MARK="bullet">
+     <listitem>
+      <para>
+       <guilabel>Arquivo de Imagem </guilabel>  - caso se escolha um arquivo imagem para compor o fundo do Painel esta opção permitirá que se escolha uma imagem para ser utilizada. Caso se pressione o botão <guibutton>Mostrar</guibutton>, pode-se escolher o arquivo que se deseja utilizar. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Dimensionar a imagem para o tamanho do painel</guilabel> -  permite que a imagem de fundo seja dimensionada para o tamanho do Painel. Caso esta opção não seja selecionada, a imagem será apresentada no padrão mosaico. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+       <guilabel>Cor de Fundo</guilabel>  - caso o Painel tenha somente uma cor, este botão apresentará um diálogo que permite a especificação da cor a ser usada. 
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   </sect1>
+ </chapter>
+
+<!-- ################################# MAIN MENU - CHAPTER ###################################### -->
+    
+ <chapter id="mainmenu">
+  <title>Editando o Menu Principal</title>
+  <sect1>
+   <title>Introdução</title>
+   <para>
+   <indexterm>
+    <primary>
+Menu Principal
+    </primary>
+    <secondary>
+editando
+    </secondary>
+   </indexterm>
+O Menu Principal é um repositório das aplicações e pode ser encontrado no Painel. O Menu Principal é pré carregado com o GNOME, mas pode ser configurado para adequar-se aos hábitos de trabalho do usuário. O Menu Principal é dividido em dois subdiretórios principais: os menus do Sistema e os menus do Usuário. O Editor de Menus está disponível para o usuário adicionar aplicações ao Menu Principal, mas não será possível adicionar aplicações aos menus do sistema, a menos que se tenha privilégios do superusuário. Nesta seção, o leitor aprenderá como configurar o Menu Principal com os aplicativos que deseja utilizar diariamente. 
+   </para>
+   <sect2 id="menuconf"
+    <title>Configurando o Menu Principal </title>
+    <para>
+    <indexterm>
+     <primary>
+Menu Principal
+     </primary>
+     <secondary>
+      configuração
+     </secondary>
+    </indexterm>
+    <indexterm>
+     <primary>
+   Menu Principal
+     </primary>
+     <secondary>
+Propriedades
+     </secondary>
+    </indexterm>
+Querendo-se alterar as propriedades do Menu Principal ou de qualquer outro menu, deve-se selecionar no Painel, através do clique com o botão direito do mouse e selecionar a opção <guimenuitem>Propriedades</guimenuitem>. Será apresentado então o diálogo <guilabel>Propriedades de Menu </guilabel>.    </para>
+    <figure> 
+      <title> Diálogo de Propriedades do Menu</title>
+      <screenshot>
+       <screeninfo> Diálogo de Propriedades do Menu </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/menu-props" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    <para>
+O primeiro item no diálogo <guilabel>Propriedades do Menu </guilabel> é o <guilabel>Tipo de Menu</guilabel>. Permite que se altere o menu de Principal para um Menu Normal. 
+    </para>
+    <para>
+As outras opções no diálogo de <guilabel>Propriedades de Menu </guilabel> são seleções de submenus para o Menu Principal. Permitem que se escolha o conteúdo do Menu Principal, de um submenu ou a exclusão de algum item:
+    </para>
+    <ITEMIZEDLIST mark="bullet">
+     <listitem>
+      <para> 
+Menus do Sistema - contém os itens que contém as aplicações padrões que vêm com o GNOME. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+Menu de Usuário - contém quaisquer itens de menu adicionados através do Editor de Menus com uma conta de usuário. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+Menu Another Level - caso se esteja utilizando o Conectiva Linux ou o Red Hat Linux, este é o conjunto padrão de aplicações criadas pela distribuição. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+Menu KDE - caso se esteja utilizando o Ambiente de Área de Trabalho Kool, pode-se optar pela inclusão das aplicações incluídas nos KDE. 
+       menus.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+Menu Debian - caso se esteja utilizando o Debian Linux, este é o conjunto de aplicativos que são gerados automaticamente na instalação da distribuição. 
+      </para>
+     </listitem>
+    </itemizedlist>
+   </sect2>
+   <sect2 id="menueditor">
+    <title>Usando o Editor de Menus </title>
+    <para>
+O Editor de Menus é uma ferramenta de configuração do Menu Principal. É muito útil na configuração do sistema aos requisitos do usuário. O Editor de Menus é acionado a partir de um clique no Lançador do Menu Principal e selecionando-se a opção <guimenuitem>Configurações</guimenuitem>  | <guimenuitem>Editor de Menus</guimenuitem> no <guimenu> Menu Principal</guimenu>.
+    </para>
+    <para>
+Este procedimento acionará o Editor de Menus.      
+<figure>
+      <title>O Editor de Menus</title>
+     <screenshot>
+      <screeninfo>O Editor de Menus </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/menueditor" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    </para>
+    <para>
+O Editor de Menus é dividido em dois painéis principais. O lado esquerdo contém os padrões e o lado direito contém o diálogo que permite a adição de novas aplicações ao menu. 
+    </para>
+    <para>
+No lado esquerdo na árvore de menus,pode-se observar que há duas listas de menus, uma refere-se ao Menu de Usuário e o segundo o Menu do Sistema. O primeiro é utilizado pelo usuário atual e o segundo se refere a todos os usuários do sistema. As aplicações pré empacotadas estão localizadas nos Menus do Sistema. 
+</para>
+    <para>
+Na lista de menus, no lado esquerdo, podem ser abertas ou fechadas pastas, permitindo a visualização dos menus atuais através de cliques nos pequenos sinais de soma ao lado dos menus. 
+    </para>
+   </sect2>
+   <sect2 id="menuadd">
+    <title>Adicionando Um Novo Item ao Menu</title>
+     <para>
+     <indexterm>
+      <primary>
+Menu Principal
+      </primary>
+      <secondary>
+Adicionando um Novo Item ao Menu 
+      </secondary>
+
+     </indexterm>
+Caso se queira adicionar um novo item ao menu, selecione o botão <guibutton>Novo Item</guibutton> na barra de ferramentas. Um novo item de menu será colocado onde o destaque esteja sendo apresentado. Caso não se tenha um menu destacado, o novo aplicativo será colocado no topo da árvore de menu. Selecione o novo item e informe os seus dados na caixa de diálogo apresentada no lado direito. Uma vez que a informação esteja completa, pressione o botão <guibutton>Salvar</guibutton> e um novo item de menu será inserido onde o cursor esteja localizado no lado direito da árvore de menus. Pode-se então mover o item de menu pressionando-se os botões para cima ou para baixo na barra de ferramentas, ou ainda arrastar o item pressionando-se simultaneamente o botão esquerdo do mouse. 
+     </para>
+      <important>
+       <title>IMPORTANTE</title>
+       <para>
+Tenha em mente que os menus do Sistema não podem ser alterados, a menos que se esteja utilizando a identificação do superusuário. Caso contrário, pode-se adicionar e editar os Menus dos Usuários. 
+       </para>
+      </important>
+   </sect2>
+   <sect2 id="menudrag">
+    <title>Arrastar e Soltar o Menu Principal </title>
+    <para>
+Editor de Menus - suporta as funcionalidades de arrastar e soltar, facilitando o trabalho do usuário. Pode-se arrastar e soltar aplicações nas pastas nas quais se deseja que os aplicativos residam ou simplesmente rearranjar as pastas completamente. 
+    </para>
+    <para>
+No Painel - querendo-se adicionar um item de menu ao Painel, pode-se arrastar e soltar itens a partir do menu no Painel e será criado um lançador com as propriedades adequadas. Caso não se queira utilizar as funções de arrastar e soltar, pode-se ainda utilizar o botão direito do mouse e escolher <guimenuitem>Adicionar este lançador ao Painel</guimenuitem> a partir do menu apresentado. 
+    </para>
+   </sect2>
+  </sect1>
+ </chapter>
+
+<!-- #################################### GNOME CONTROL CENTER - CHAPTER ################################## -->
+
+ <chapter id="gcc">
+  <title>O Centro de Controle GNOME </title>
+  <sect1>
+   <title>Introdução</title>
+   <para>
+   <indexterm>
+    <primary>
+Centro de Controle GNOME 
+    </primary>
+   </indexterm>
+   <indexterm>
+    <primary>
+     Capplets
+    </primary><see> Centro de Controle GNOME </see>
+   </indexterm>
+O Centro de Controle GNOME  permite que sejam configuradas as diversas partes do sistema, através da coleção de ferramentas denominada "Capplets". Este programas podem ser associados com o conjunto de aplicações do GNOME ou a outras aplicações escritas para este ambiente. 
+   </para>
+   <para>
+O Centro de Controle GNOME pode conter mais programas dos que o aqui documentados, dependendo da instalação realizada. 
+   </para>
+   <para>
+O Centro de Controle GNOME é dividido em duas seções principais, o menu de programas configurável e a área de trabalho principal. 
+   </para>
+   <para>
+Trabalhar com o Centro de Controle GNOME requer simplesmente que seja selecionado um Capplet a partir do menu no lado esquerdo e clicar-se duplamente sobre ela. Após este procedimento, o espaço de trabalho é alterado, permitindo a configuração do item. 
+   </para>
+   <para>
+   <figure>
+    <title> O Centro de Controle GNOME </title>
+   <screenshot>
+    <screeninfo> O Centro de Controle GNOME </screeninfo>
+     <Graphic Format="gif" Fileref="./figs/control-center" srccredit="dcm">
+     </graphic>
+   </screenshot>
+   </figure>
+   </para>
+   <para>
+Pode-se iniciar o Centro de Controle GNOME de duas formas. Para lançá-lo sem nenhum Capplet ativo em particular, basta selecionar o item de <guimenuitem>Centro de Controle </guimenuitem> a partir do menu do <guimenu>Sistema</guimenu>. 
+   </para>
+   <para>
+Caso se saiba qual capplet se deseja editar ou executar, pode-se editar ou iniciar a capplet através da seleção do item no menu do <guimenu> Centro de Controle GNOME </guimenu>.
+
+   </para> 
+  </sect1>
+  <sect1 id="gccdesktop">
+   <title>Capplets da Área de Trabalho </title>
+   <sect2 id="gccback">
+     <title>A Capplet de Propriedades de Fundo </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+Área de Trabalho
+      </secondary>
+     </indexterm>
+As propriedades da imagem de fundo podem ser configuradas através da seleção de um arquivo ou de uma cor. Caso se selecione uma cor, pode-se ter cores sólidas ou gradientes. Caso se opte pela última, pode-se escolher entre o Gradiente horizontal ou vertical e escolher a segunda cor de gradiente. 
+     </para>
+     <para>
+Caso se decida utilizar uma imagem como papel de parede, pode-se visualizar a imagem que se deseja utilizar. Uma vez que esta tenha sido encontrada, é necessário decidir a formar como esta será apresentada: mosaico, centralizada, dimensionada mantendo as proporções ou simplesmente dimensionada de acordo com o tamanho da tela. Uma vez que tenham sido alteradas as propriedades do fundo, pode-se pressionar o botão <guibutton>Experimentar</guibutton> no Centro de Controle GNOME para verificar o resultado da mudança realizada. 
+     </para>
+     <para>
+Caso se deseje configurar o fundo através de outros meios, pode-se desabilitar este capplet através da seleção do item <guilabel>desabilitação de fundo</guilabel>.
+     <figure>
+      <title>A Capplet de Propriedades de Fundo</title>
+     <screenshot>
+      <screeninfo>A Capplet de Propriedades de Fundo </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/bg-capplet" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     </para>
+    </sect2>
+    <sect2 id="gccscreen">
+     <title>A Capplet de Salvamento de Tela </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+Salvamento de tela
+      </secondary>
+     </indexterm>
+Nesta capplet pode-se mudar as propriedades de proteção de tela. Esta capplet contém uma lista de protetores de tela  disponíveis que podem ser escolhidos, assim como uma tela de demonstração. Sob estes dois diálogos pode ver um conjunto de ferramentas que permitem a mudança das propriedades globais de proteção de tela. Caso a opção escolhida tenha itens de configuração específicos, pode-se configurá-los através da seleção do botão <guibutton>Parâmetros</guibutton> que aparece na lista de Protetores de Tela. 
+     </para>
+     <para>
+Parâmetros globais de proteção de tela -  esta seção pode-se alterar o tempo, a senha e as propriedades de gerenciamento de energia. Pode-se definir o tempo de espera de acionamento da proteção de tela, em minutos, através da informação na caixa de texto <guilabel>Iniciar Após</guilabel>. Caso se queira que seja informada uma senha para se retornar à Área de Trabalho, deve-se selecionar a opção <guibutton>Requerer Senha</guibutton>. A senha da conta de acesso ao sistema é a senha que será aceita pelo protetor de tela. 
+     </para>
+     <para>
+Tem-se ainda a opção de gerenciamento de energia - caso o monitor tenha suporte. Pode-se configurar o tempo de espera até que o monitor seja desligado, através da informação do número de minutos na janela <guilabel>Desligar monitor</guilabel>.
+     <figure>
+      <title>O Capplet de Propriedades de Proteção de Tela </title>
+     <screenshot>
+      <screeninfo>O Capplet de Propriedades de Proteção de Tela</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/screensave-capplet" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     </para>
+    </sect2>
+    <sect2 id="gcctheme">
+     <title>Seletor de Temas</title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+Seletor de temas
+      </secondary>
+     </indexterm>
+Os capplets de aparência contém o Seletor de Temas que permite a seleção do tema GTK que se queira executar. 
+     </para>
+     <para>
+Os temas GTK são temas que permitem o uso de conjuntos de itens gráficos que permitem alterar a aparência e funcionalidade da Área de Trabalho. Este conjunto é composto por uma série de ferramentas que disponibilizam botões, barras de rolagem, janelas de verificação, etc... para as aplicações. Aplicações compatíveis com o GNOME  que usam o conjunto de ferramentas GTK irão ter a sua aparência alterada quando se mudar o tema GTK. 
+     </para>
+     <para>
+Para se alterar o tema GTK, basta selecionar um tema a partir da lista Temas Disponíveis no lado esquerdo da área de trabalho principal. Caso se tenha selecionado a opção Visualização Prévia, será possível verificar como o tema aparecerá na janela de pré visualização abaixo. Caso o tema seja escolhido, pressione o botão <guibutton>Experimentar</guibutton> na base do Centro de Controle GNOME para instalá-lo. 
+     </para>
+     <para>
+Há poucos temas GTK que vem com o GNOME quando este é instalado. Querendo-se instalar outros temas pode-se verificar por opções disponíveis na Internet, como por exemplo em <ULINK URL=http://gtk.themes.org type="http">http://gtk.themes.org</ulink>.  Uma vez que se tenham transferidos estes temas desejados, basta pressionar o botão <guibutton>Instalar o novo tema </guibutton>. Isto lançará um visualizador de arquivos que permite encontrar o tema que foi recebido. Os arquivos de temas devem estar nos formatos <command>tar.gz</command> ou <command>.tgz</command>  (conhecidos também como "tarball"). Uma vez que se tenha encontrado o arquivo, deve-se pressionar <guibutton>OK</guibutton> e o tema será instalado automaticamente. Agora ao se visualizar a lista de Temas Disponíveis e verificar a disponibilidade do novo tema instalado. 
+     </para>
+     <para>
+Uma vez que o tema tenha sido descompactado no diretório .themes. o tema será listado na janela de temas disponíveis na próxima vez que o Centro de Controle GNOME seja acionado. 
+     <figure>
+      <title>O Capplet Seletor de Temas </title>
+     <screenshot>
+      <screeninfo>O Capplet Seletor de Temas </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/theme-select" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     </para>
+     <para>
+Querendo-se alterar a fonte usada no tema atual, pode-se selecionar a janela de verificação <guilabel>Usar fontes personalizadas</guilabel> e selecionar a fonte a partir do botão de fontes sob aquele. Este procedimento apresentará um diálogo de seleção de fontes que permite a especificação da fonte, seu estilo e tamanho. 
+     </para>
+    </sect2>
+    <sect2 id="gccwm">
+     <title>Capplet do Gerenciador de Janelas </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+Gerenciador de Janelas 
+      </secondary><seealso>"Gerenciador de Janelas"</seealso>
+     </indexterm>
+Uma vez que o GNOME não seja dependente de qualquer gerenciador de janelas, este capplet permite a seleção do gerenciador de janelas que você mais goste. Este capplet não determina qual gerenciador de janelas estão disponíveis, porém permite a definição de quais e onde eles estão. 
+     </para>
+     <figure>
+      <title>Capplet do Gerenciador de Janelas </title>
+      <screenshot>
+       <screeninfo>Capplet do Gerenciador de Janelas </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/wm-main" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+     <para>
+O capplet Gerenciador de Janelas possui uma lista dos gerenciadores de janelas que podem ser selecionados. Aquele que estiver selecionado é representado pela palavra "Atual" na janela de gerenciadores de janelas. 
+     </para>
+     <para>
+Caso se queira adicionar um novo gerenciador de janelas à lista principal, pode-se pressionar o botão <guibutton>Adicionar</guibutton>. Esta ação irá lançar o diálogo <guilabel>Adicionar um novo gerenciador de janelas </guilabel>.
+     </para>
+     <figure>
+      <title>Adicionar um novo gerenciador de janelas</title>
+      <screenshot>
+       <screeninfo>Adicionar um novo gerenciador de janelas </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/wm-add" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+     <para>
+Caso a opção <guilabel>Adicionar um novo gerenciador de arquivos </guilabel> seja selecionada, pode-se especificar o nome desejado no gerenciador de janelas, o comando que o ativará e o comando que inicia a ferramenta de configuração do gerenciador. 
+     </para>
+     <para>
+Caso se saiba que o Gerenciador de Janelas é totalmente compatível com o GNOME e pode haver o gerenciamento de sessões, pode-se selecionar o botão <guilabel>gerenciador de janelas é orientado por sessões </guilabel>. Caso não se tenha certeza da compatibilidade, deve-se verificar a documentação do gerenciador de janelas. 
+     </para>
+     <para>
+Deve-se pressionar o botão <guibutton>OK</guibutton> quando se houver finalizado. 
+     </para>
+     <para>
+Uma vez que se tenha finalizado a adição de um novo gerenciador de janelas, este será adicionado à lista de gerenciadores disponíveis. Querendo alterar quaisquer propriedades, pode-se selecionar o gerenciador de janelas a partir da lista disponível com o mouse e a seguir selecionar a opção <guibutton>Editar</guibutton>. 
+     </para>
+     <para>
+Pode-se ainda remover qualquer gerenciador de janelas na lista principal através da seleção com o uso do mouse e pressionando-se o botão <guibutton>Remover</guibutton>.
+     </para>
+     <para>
+Caso se esteja apto a alterar o gerenciador de janelas atual, pode-se selecionar aquele desejado a partir da lista dos disponíveis e da seleção do botão <guibutton>Experimentar</guibutton>. Caso se queira executar a ferramenta de configuração antes ou após a troca, esteja seguro de que o gerenciador desejado foi selecionado e pressione o botão <guibutton>Executar a ferramenta da configuração para [nome do gerenciador de janelas]</guibutton>.
+     </para>
+   </sect2>
+  </sect1>
+  <sect1 id="gccedit">
+   <title>Editar as Propriedades do GNOME </title>
+   <para>
+   <indexterm>
+    <primary>
+Centro de Controle GNOME 
+    </primary>
+    <secondary>
+Editar as propriedades GNOME 
+    </secondary>
+   </indexterm>
+A Capplet de edição de propriedades do GNOME permite a seleção do editor padrão ao se usar o GNOME. Isso permite que aplicações como o Gerenciador de Arquivos GNOME lancem o editor correto quando se deseja abrir arquivos associados com edição. Todos os editores populares disponíveis são incluídos na lista de seleção. Este capplet é similar ao capplet de seleção de tipo MIME que é usado na associação com certas aplicações. 
+   </para>
+   <figure>
+     <title>O Editor de Propriedades GNOME </title>
+     <screenshot>
+      <screeninfo>O Editor de Propriedades GNOME </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/gccedit" srccredit="dcm">
+      </graphic>
+     </screenshot>
+    </figure>
+  </sect1>
+  <sect1 id="gccmime">
+   <title>Tipos MIME GNOME </title>
+    <para>
+    <indexterm>
+      <primary>
+Centro de Controle GNOME
+ </primary>
+      <secondary>
+Tipos MIME GNOME 
+      </secondary>
+     </indexterm>
+O Capplet de Tipos MIME do GNOME permite que seja determinado como se deseja lidar com certos tipos de arquivos ou tipos MIME, o qual significa Extensões de Correio Internet de Múltiplos Propósitos e foi originalmente desenvolvido para transportar diversas formas de dados. No GNOME pode-se definir certos tipos MIME a serem tratados de acordo com as definições do usuário. Por exemplo, caso se utilizem arquivos de tipo sgml, pode-se configurar o tipo MIME .sgml para ser sempre tratado pelo Emacs. Isso significa que qualquer programa que se utilize para lançar um arquivo deste tipo MIME, acionará o Emacs, incluindo-se neste caso o Gerenciador de Arquivos GNOME. 
+    </para>
+    <figure>
+     <title>Os tipos MIME do GNOME</title>
+     <screenshot>
+      <screeninfo>Os tipos MIME do GNOME </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/gccmime" srccredit="dcm">
+      </graphic>
+     </screenshot>
+    </figure>
+    <para>
+Para adicionar um novo tipo MIME pressione o botão <guibutton>Adicionar</guibutton>. Este apresentará o diálogo <guilabel>Adicionar um novo tipo MIME </guilabel> no qual se pode definir o novo tipo. 
+    </para>
+    <para> 
+Para editar um tipo MIME existente, pode-se selecionar o tipo MIME com o cursor do mouse e pressionar-se o botão Editar. Será apresentado o diálogo <guilabel>Configurar as ações para...</guilabel>. Pode-se definir o ícone usado para o tipo MIME, a ação de <guilabel>Abrir</guilabel>, a ação de <guilabel>Ver</guilabel> e a ação <guilabel>Editar</guilabel>.
+    </para> 
+  </sect1>
+  <sect1 id="gccmm">
+    <title>Capplets Multimídia </title>
+    <sect2 id="gcc-keybell">
+     <title>Som de teclado </title>
+      <para>
+      <indexterm>
+       <primary>
+Centro de Controle GNOME 
+       </primary>
+       <secondary>
+        Multimídia
+       </secondary>
+      </indexterm>
+      <indexterm>
+       <primary>
+Centro de Controle GNOME 
+       </primary>
+       <secondary>
+Som de teclado 
+       </secondary>
+      </indexterm>
+O capplet de som de teclado permite que se altere o som da campainha que é produzido pelo alto falante quando uma mensagem de erro de teclado ou uma mensagem é enviada. 
+      </para>
+      <para>
+O item volume altera o volume real do alto falante. 
+      </para>
+      <para>
+O controle deslizante muda o tom da nota que é tocada. Por padrão está configurada para 440 Hz ou A sobre C médio. 
+      </para>
+      <para>
+Duração muda o tempo do tom que é tocado. 
+      </para>
+      <para>
+O botão de <guibutton>Teste</guibutton> permite que se ouça as configurações atuais do som de teclado. 
+      </para>
+      <figure>
+      <title> Capplet de Som do Teclado</title>
+      <screenshot>
+       <screeninfo>Capplet de Som de Teclado </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/keybell" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+    </sect2>
+    <sect2 id="gccsound">
+     <title>Capplet de Som </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME
+ </primary>
+      <secondary>
+Som
+      </secondary>
+     </indexterm>
+O capplet de som permite que se configurem os sons do sistema para uma sessão GNOME. Há duas janelas para selecionar o capplet de som: Geral e Eventos de Som. 
+     </para>
+     <para>  <guilabel>Janela Geral</guilabel> - neste ponto há duas opções na janela Geral, habilitando som para o GNOME e para os eventos. Caso se selecione <guilabel>Habilitar o som no GNOME</guilabel>, esteja certo de que o sistema de som do GNOME (ESD) seja lançado a cada sessão do GNOME. <guilabel>Habilitar som para eventos</guilabel> irá acionar quaisquer arquivos de som que se tenha configurado na janela de <guilabel>Eventos de som </guilabel> quando eventos ocorram. Com estes itens habilitados pode-se habilitar o gerenciamento de sessões do GNOME que lembrará as configurações de sons sempre que se acesse o sistema. 
+     </para>
+     <para>
+      <guilabel>Janela de Eventos de Som </guilabel> - permite a navegação através dos eventos de som no GNOME e altera as suas configurações. 
+     </para>
+     <para>
+Para alterar um som associado a um evento do GNOME basta selecionar o evento na lista hierárquica à esquerda e pressionar o botão <guibutton>Mostrar</guibutton> para encontrar um arquivo de som no sistema local e  associa-lo àquele evento. Uma vez que o arquivo tenha sido localizado, pode-se pressionar o botão <guibutton>Tocar</guibutton> para se testar o som e verificar se o leitor gosta dele o suficiente para ouvi-lo toda vez que o evento ocorrer. 
+     <figure>
+      <title>Capplet de Propriedades de Som </title>
+      <screenshot>
+       <screeninfo>Capplet de Propriedades de Som </screeninfo>
+       <Graphic Format="gif" Fileref="./figs/sound-capplet" srccredit="dcm">
+       </graphic>
+     </screenshot>
+     </figure>
+     </para>
+    </sect2>    
+   </sect1>
+   <sect1 id="gccperiph">
+   <title>Periféricos</title>
+    <para>
+    <indexterm>
+     <primary>
+Centro de Controle GNOME 
+     </primary>
+     <secondary>
+Periféricos
+     </secondary>
+    </indexterm>
+Os capplets neste seção do Centro de Controle GNOME  auxiliarão na configuração de dispositivos de entrada, incluindo-se propriedades de teclado e mouse. 
+    </para>
+    <sect2 id="gcckey" >
+     <title>Capplet de Propriedades de Teclado </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+Teclado 
+      </secondary>
+     </indexterm>
+Há atualmente duas configurações de teclado neste capplet. Pode-se alterar as propriedades de <guilabel>Auto-repetição</guilabel>  e o <guilabel>Clique do Teclado </guilabel>.
+     </para>
+     <para>
+      <guilabel>Auto-repetição</guilabel> habilita que ao se pressionar uma tecla haja uma repetição do caracter na velocidade configurada nesta capplet. <guilabel>Clique de teclado </guilabel> habilita um pequeno som de clique a ser tocado cada vez que uma tecla seja pressionada. 
+     <figure>
+      <title>Capplet de Propriedades de Teclado </title>
+     <screenshot>
+      <screeninfo>Capplet de Propriedades de Teclado </screeninfo>
+      <Graphic Format="gif" Fileref="./figs/keyboard-capplet" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     </para>
+    </sect2>
+    <sect2 id="gccmouse" >
+     <title>Capplet de Propriedades do Mouse </title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+       Mouse
+      </secondary>
+     </indexterm>
+A capplet de propriedades do mouse permite a mudança de uso para destros e canhotos e definir as propriedades de <guilabel>Aceleração</guilabel> e <guilabel>Inércia</guilabel>.
+     </para>
+     <para>
+     A configuração da <guilabel>Aceleração</guilabel> permite a mudança da velocidade do movimento do mouse na tela em relação ao movimento do mouse através de seu suporte. A  configuração da <guilabel>Inércia</guilabel> permite que se configure a velocidade que se deve mover o mouse antes que este inicie a velocidade de aceleração definida no item anterior.
+     <figure>
+      <title>Capplet de Propriedades do Mouse</title>
+     <screenshot>
+      <screeninfo>Capplet de Propriedades do Mouse</screeninfo>
+      <Graphic Format="gif" Fileref="./figs/mouse-capplet" srccredit="dcm">
+      </graphic>
+     </screenshot>
+     </figure>
+     </para>
+   </sect2>
+  </sect1>
+<!--  <sect1 id="gccURL"
+   <title>Gerenciadores de URL</title>
+    <para>
+Em Desenvolvimento...
+    </para>
+  </sect1> -->
+  <sect1 id="gccsession">
+   <title>Gerenciadores de Sessões</title>
+    <para>
+    <indexterm>
+     <primary>
+     Centro de Controle GNOME
+     </primary>
+     <secondary>
+     Gerenciador de Sessões
+     </secondary>
+    </indexterm> 
+    O Capplet de Gerenciamento de Sessões permite controlar as sessões GNOME, incluindo itens como os programas que são automaticamente inicializados, a forma de salvamento de uma sessão GNOME e como sair do sistema. Pode-se obter maiores informações sobre o Gerenciamento de Sessões em  <xref Linkend="session">. 
+    </para>
+    <ITEMIZEDLIST mark="bullet">
+    <listitem>
+     <para>    
+      <guilabel>Confirmação de saída</guilabel> -  esta opção permite desabilitar a solicitação de confirmação de saída do sistema.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guilabel>Salvamento automático das mudanças de sessão</guilabel> - permite que o Gerenciador de Sessões sempre salve as mudanças feitas durante a duração da sessão ao se sair do sistema.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guilabel>Programas inicializados automaticamente que não sejam gerenciados pela sessão</guilabel> - permite a inicialização automática de programas não gerenciáveis pela sessão ao se iniciar uma sessão GNOME.
+     </para>
+     <note>
+      <title>NOTA</title>
+      <para>
+      Programas que não sejam compatíveis com o GNOME não podem ser gerenciados por uma sessão, logo as aplicações do GNOME não necessitam estar presentes nestas opções, podendo simplesmente serem deixados em execução, sendo salvos quando se finalizar uma sessão do GNOME.
+      </para>
+     </note>
+     <para> 
+     Para adicionar um novo programa a esta sessão, pressione o botão <guibutton>Adicionar</guibutton>. Este procedimento irá lançar uma caixa de diálogo que permite especificar o comando que acionará a aplicação e qual a prioridade que ela receberá.
+     </para>
+     <para>
+     A prioridade para a maioria das aplicações que inicializadas é igual a 50. Caso se tenha alguma aplicação que deve ser iniciada antes de outras, como um gerenciador de janelas, deve-se configurar a prioridade para um número menor.
+     </para>
+     <important>
+      <title>IMPORTANTE</title>
+      <para>
+      Este opção é destinada a usuários avançados. A menos que se tenha familiaridade com as configurações de prioridades deve-se manter as aplicações com os valores originais.
+      </para>
+     </important>
+    </listitem>
+    <listitem>
+     <para>
+      <guilabel>Mostrar os programas em uso</guilabel> - permite a visualização das aplicações que estão em execução no momento. Pode-se encerrar as aplicações caso desejado, sendo que estas serão removidas da sessão do GNOME. As aplicações nesta lista são em sua maioria, de alto nível e não devem ser encerradas. De qualquer forma, caso haja partes do GNOME que não se queira utilizar, como o Painel, este é o local onde se deve encerrá-las por hora e nas próximas sessões do GNOME.
+     </para>
+     <important>
+      <title>IMPORTANTE</title>
+      <para>
+      Esta opção deve ser utilizada por usuários avançados somente. Não se deve finalizar aplicações que se queira usar na próxima sessão do GNOME e se utilize esta ferramenta.
+      </para>
+     </important>
+    </listitem>
+   </itemizedlist>
+     <figure>
+       <title>Capplet de Gerenciamento de Sessão</title>
+       <screenshot>
+        <screeninfo>Capplet de Gerenciamento de Sessão</screeninfo>
+        <Graphic Format="gif" Fileref="./figs/gcc-session" srccredit="dcm">
+        </graphic>
+      </screenshot>
+     </figure>
+   </sect1>
+  <sect1 id="gccui">
+    <title>Opções de Interface de Usuário</title> 
+    <para>
+    <indexterm>
+     <primary>
+     Centro de Controle GNOME
+     </primary>
+     <secondary>
+     Opções de Interface de Usuário
+     </secondary>
+    </indexterm>  
+    As opções de interface de usuário permite a mudança da aparência das aplicações que são compatíveis com o GNOME. Pode-se reconhecer estas aplicações como aquelas que são pré instaladas com o GNOME ou aquelas que dizem ser construídas com o GTK (o conjunto de ferramentas GIMP).
+    </para>
+    <sect2 id="gccappdefaults">
+     <title>Aplicações Padrão</title>
+      <para>
+      <indexterm>
+      <primary>
+      Centro de Controle GNOME
+      </primary>
+      <secondary>
+      Aplicações Padrão
+      </secondary>
+     </indexterm>
+     A capplet de  aplicações padrão permite a alteração de certos aspectos da interface de usuário das aplicações compatíveis com o GNOME.
+      </para>
+      <important>
+       <title>IMPORTANTE</title>
+       <para>
+       Apesar deste capplet permitir um grande controle sobre o aspecto e o comportamento das aplicações, deve ser levado em consideração que estas ferramentas foram desenvolvidas para usuários avançados.
+       </para>
+      </important>
+      <ITEMIZEDLIST mark="bullet">
+       <listitem>
+        <para>
+        Permite destacar e mover as barras de ferramentas - por padrão as barras de ferramentas no GNOME podem ser arrastadas a partir de sua localização original e colocadas em qualquer ponto da aplicação ou da Área de Trabalho. Caso não se deseje usar esta funcionalidade basta desativá-la.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        Permite destacar e mover as barras de menus - por padrão as barras de menus no GNOME podem ser arrastadas a partir de sua localização original e colocadas em qualquer ponto da aplicação ou da Área de Trabalho. Caso não se queira usar esta funcionalidade basta desativá-la.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Barras de menus possuem bordas em relevo - por padrão as barras de menus tem bordas em relevo. Caso não se queira usar este aspecto, pode-se desabilitá-lo nesta opção.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Barras de ferramentas possuem bordas em relevo - por padrão as barras de ferramentas têm bordas em relevo. Caso não se queira usar este aspecto, pode-se desabilitá-lo nesta opção.
+
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Botões da barra de ferramentas têm bordas em relevo - por padrão as barras de ferramentas têm bordas em relevo em seu formato natural.De qualquer forma, mudam seu aspecto quando o mouse é pressionado sobre eles. Não querendo usar este aspecto, pode-se desabilitá-lo nesta opção.
+
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Barras de ferramentas têm linhas separadoras - por padrão os botões da barra de ferramentas tem pequenas linhas que os separam entre si. Caso não se deseje visualizar as linhas, é possível desativá-las nesta opção.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        Barras de ferramentas têm textos identificadores - por padrão os botões das barras de ferramentas têm imagens e textos de identificação. Caso se esteja familiarizado com os botões e não se necessite do texto, estes podem ser desativados através desta função.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        A barra de status é interativa quando possível - algumas aplicações podem ter a barra de status da base de sua janela separada. Caso se deseje ter a barra de status dissociada e residente em outra janela deve-se ativar esta opção.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+        Barra de progresso à direita - algumas aplicações têm medidores de progresso nas suas barras de status. Por padrão, esses medidores estarão à direita da barra de status. Querendo-se eles poderão ficar à esquerda, bastando para tanto que esta opção seja desativada.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Botões de diálogos têm ícones - alguns botões de diálogo (por exemplo OK") podem ter ícones sobre eles. Por padrão, as aplicações que possuem esta funcionalidade tem os ícones ativados. Caso não se deseje visualizar os ícones, deve-se desativar esta funcionalidade. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+Itens de menu têm ícones - alguns itens de menu de aplicações podem ter ícones. Caso não se queira visualizar os ícones nas aplicações, deve-se desativar esta funcionalidade. 
+</para>
+       </listitem>
+      </itemizedlist>
+      <figure>
+       <title>Capplet Padrões de Aplicações </title>
+        <screenshot>
+         <screeninfo>Capplet de Diálogo</screeninfo>
+         <graphic Format="gif" Fileref="./figs/gccappdef" srccredit="dcm">
+         </graphic>
+        </screenshot>
+       </figure>
+    </sect2>
+    <sect2 id="gccdialogs"
+     <title>Diálogos</title>
+     <para>
+     <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+       Diálogos
+      </secondary>
+     </indexterm>
+A Capplet Diálogos permite a alteração de configurações padrão das caixas de diálogo de aplicações compatíveis com o GNOME. Uma caixa de diálogo é uma janela lançada por qualquer aplicação para auxiliar na execução de determinada tarefa necessária para o programa. Um exemplo da caixa de diálogo é a de solicitação de informações sobre Impressão, a qual é apresentada quando se pressiona o botão \cmd{Imprimir}. O diálogo permite configurar as opções de impressão e iniciar o seu processo. A Capplet de Diálogos permitirá a mudança das seguintes opções: 
+      </para>
+      <para>Botões de diálogo - escolha entre os botões padrão, botões maiores, botões nas bordas, nas esquerda justificado ou botões à direita justificados.
+      </para>
+      <para>
+Posição padrão - permite escolher a aparência dos diálogos quando estes forem lançados. É possível permitir que o gerente de janelas decida por você (ou como foi definido na configuração do gerente de janelas), centralizar os diálogos na tela ou fazer com que eles surjam onde o indicador do mouse estiver quando forem ativados. 
+      </para>
+      <para>
+Diálogos de dicas - isso permitirá a mudança do comportamento do diálogo de dicas, o qual faz com que surja a ferramenta de ajuda ao se mover o botão do mouse sobre uma parte do diálogo. Pode-se optar entre ter a ajuda como em outras janelas ou deixar que o gerente de janelas decida como mostrá-la. 
+      </para>
+      <para>
+Pode-se indicar às aplicações para usar a barra de status ao invés de um diálogo, caso a aplicação assim o permita. Esta opção funcionará somente com diálogos que provêm informações que não necessitem de interação por parte do usuário. 
+      </para>
+      <para>
+Pode-se escolher entre colocar um diálogo sobre as aplicações quando possível, opção que manterá as janelas organizadas na tela. Caso se esteja familiarizado com outros sistemas operacionais, pode-se manter esta opção selecionada, uma vez que é assim que os diálogos são gerenciados por outros sistemas operacionais. 
+      </para>
+      <important>
+       <title>IMPORTANTE</title>
+       <para>
+Apesar desta capplet propiciar um grande controle sobre a aparência e o comportamento das aplicações, o uso destas ferramentas é indicado para usuários avançados.
+</para>
+      </important>
+        <figure>
+         <title>Capplet de Diálogo </title>
+         <screenshot>
+          <screeninfo>Capplet de Diálogo </screeninfo>
+          <graphic Format="gif" Fileref="./figs/gccdialog" srccredit="dcm">
+          </graphic>
+         </screenshot>
+        </figure>
+    </sect2>
+    <sect2 id="gccmdi">
+     <title>MDI</title>
+      <para>
+      <indexterm>
+      <primary>
+Centro de Controle GNOME 
+      </primary>
+      <secondary>
+       MDI
+      </secondary>
+     </indexterm>
+A Capplet MDI permite a mudança do modo MDI para aplicações do GNOME. MDI significa Interface de Documentos Múltiplos e se refere a como um ou mais documentos são apresentados pelas aplicações do GNOME. 
+     </para>
+     <important>
+       <title>IMPORTANTE</title>
+       <para>
+Apesar desta Capplet propiciar um grande controle sobre a aparência e o comportamento das aplicações, o uso destas ferramentas é indicado para usuários avançados.
+      </para>
+      </important>
+     <para>
+O estilo padrão de aplicações compatíveis com o GNOME para MDI é normalmente constituído por tabelas no modo Notebook. Caso o leitor não goste desta aparência, ela pode ser alterada aqui. 
+     </para>
+     <para>
+Adicionalmente, podem ser encontrados os modos Alto Nível e Modal. Notebook é a aparência padrão das tabelas, Alto Nível mostra somente o documento ativo na visão de mais alto nível até que seja fechada e Modal tem somente um nível que pode conter quaisquer documentos de uma única vez, ainda que somente um possa ser apresentado a cada vez. Caso alguma vez se tenha usado o <application>Emacs</application>, é muito similar a forma como o editor <application>Emacs</application> gerencia os buffers. 
+     </para>
+     <para>
+Caso se escolha o uso do estilo Notebook pode-se então decidir onde as tabelas aparecerão nas aplicações. Pode-se tê-las no topo, à esquerda, à direita ou na base da aplicação. Deve-se estar ciente de que as aplicações devem ser compatíveis com o GNOME. 
+     </para>
+      <figure>
+         <title>Capplet MDI </title>
+         <screenshot>
+          <screeninfo>Capplet MDI </screeninfo>
+          <graphic Format="gif" Fileref="./figs/gccmdi" srccredit="dcm">
+          </graphic>
+         </screenshot>
+        </figure>
+      </sect2>
+     </sect1> 
+  </chapter>
+ <chapter id="session">
+  <title>Considerações Sobre o Gerenciamento de Sessões</title>
+  <sect1 id="session-intro">
+   <title>Introdução</title>
+  <para>
+O leitor provavelmente já viu algo sobre o gerenciamento de sessões ao ler sobre o GNOME. O gerenciamento de sessões pode ser uma ferramenta muito útil para o usuário no uso do GNOME e de suas aplicações. 
+  </para>
+  <para>
+A idéia principal no gerenciamento de sessões reside no fato de que todas as configurações são salvas ao se sair do sistema, mesmo que não sejam geradas mensagens avisando ao usuário. 
+  </para>
+  <para>
+Provavelmente uma das funcionalidades de maior utilidade no gerenciamento de sessões é a habilidade de iniciar as aplicações que ficaram abertas no ato do último encerramento do GNOME. Isso pode ser facilmente detectado quando o GNOME é finalizado e se retorna ao sistema. Serão apresentadas as aplicações que estavam abertas durante o encerramento da última sessão do GNOME na mesma localização onde estavam anteriormente.
+</para>
+  <para>
+Caso haja alguma aplicação que se queira iniciar sempre que se entre no GNOME, mesmo que elas não estejam abertas na última vez que a sessão for salva, pode-se adicioná-las a Capplet Gerenciamento de Sessão, que foi descrita em <xref Linkeid="gccsession">.
+  </para>
+  <important>
+   <title>IMPORTANTE</title>
+    <para>
+Caso você tenha ouvido algo sobre dados de aplicações sendo gerenciados pelas sessões, este é o futuro do GNOME. Para os dados das aplicações serem salvos corretamente, deve-se usar uma aplicação totalmente compatível com o GNOME. No momento em que esta tradução estava sendo realizada, não havia ainda aplicações que oferecessem gerenciamento de dados por sessão, portanto não se deve basear nesta funcionalidade para o salvamento de dados. 
+    </para>
+   </important>
+  </sect1>
+  <sect1 id="reset-session">
+   <title>Reinicializando a Sessão GNOME </title>
+  <para>
+Uma funcionalidade avançada do Gerenciador de Sessões GNOME é a habilidade de recuperar as características de uma sessão padrão, caso algum problema ocorra. Para tanto deve-se pressionar as teclas <keycap>CTRL</keycap> e <keycap>SHIFT</keycap> simultaneamente ao se ativar o GNOME. 
+  </para>
+  <para>
+Este procedimento acionará uma caixa de diálogo que fornece duas diferentes opções de restauração da sessão GNOME. 
+  </para>
+  <para>
+A primeira opção é <guilabel>Iniciar com os valores padrões</guilabel>. Esta opção somente remove todas as configurações de sessão no que diz respeito a aplicações que estivessem sendo executadas no último encerramento da sessão GNOME. Ele não alterará qualquer informação que tenha sido configurada pela Capplet de Gerenciamento de Sessão no Centro de Controle GNOME. 
+  </para>
+  <para>
+A segunda opção é <guilabel>Reinicializar todas as configurações de usuários</guilabel>. Ela retornará os dados de todas as aplicações GNOME e os dados de configuração do núcleo. Esta opção não removerá os arquivos da Área de Trabalho. 
+  </para>
+  <important>
+   <title>IMPORTANTE</title>
+   <para>
+Estas opções são destinadas a usuários avançados e somente podem ser usadas no caso de haver algum problema com a sessão GNOME. Podem ser perdidos dados de aplicações caso se utilize as funcionalidades providas por estas opções. 
+   </para>
+  </important>
+  <figure>
+   <title>Tela de Acesso Para Reinicialização da Sessão GNOME </title>
+    <screenshot>
+     <screeninfo> Tela de Acesso Para Reinicialização da Sessão GNOME </screeninfo>
+     <graphic Format="gif" Fileref="./figs/login" srccredit="dcm">
+     </graphic>
+    </screenshot>
+   </figure>
+ </sect1>
+</chapter>
+&GNOME-APPS
+</book>
