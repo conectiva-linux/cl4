@@ -1,0 +1,126 @@
+Licença de Uso e Garantia de Produto
+
+Por favor leia este documento cuidadosamente antes de instalar o Conectiva
+Linux, qualquer um de seus pacotes, ou qualquer programa incluído com este
+produto em seu computador. Este documento contém informações importantes
+sobre seus direitos legais. Nós fortemente lhe encorajamos a considerar os
+pontos apresentados aqui, e a entender e aceitar os termos e condições
+pelos quais este programa está licenciado a você. Instalando qualquer
+programa incluído com este produto, você aceita os termos e condições a
+seguir.
+
+
+Geral
+
+O Sistema Operacional Conectiva Linux tem seu direito autoral baseado na
+Licença Pública Geral GNU ("GPL").  Nós acreditamos que a GPL disponibiliza
+os melhores mecanismos para todos os benefícios e liberdades
+disponibilizadas pelos programas de "livre distribuição". Uma cópia da GPL
+pode ser encontrada no manual de instalação do Conectiva Linux, em
+www.conectiva.com.br e em diversos sítios na Internet. O Conectiva Linux é
+um sistema operacional modular feito de centenas de outros programas
+componentes, cada um destes escrito por pessoas diferentes e com seu
+próprio direito autoral. Neste documento eles são referenciados,
+individualmente e coletivamente, como "Programas". Vários Programas têm seu
+direito autoral baseados na GPL e outras licenças que permitem a cópia,
+modificação e redistribuição. Por favor, verifique a documentação online
+que acompanha cada um dos Programas inclusos no Conectiva Linux para
+verificar sua licença específica. Nós sugerimos ler estas licenças
+cuidadosamente para entender seus direitos e utilizar melhor os benefícios
+disponibilizados pelo Conectiva Linux.
+
+Licença Restrita de Produtos
+
+Adicionalmente aos Programas de livre distribuição, a Conectiva pode
+incluir neste produto diversos Programas que não estão sujeitos à GPL ou
+outras licenças que permitem modificação e redistribuição. Isto inclui
+Oracle8 Server, Sybase Adaptative Server, Corel WordPerfect, Interbase,
+StarOffice e diversas aplicações do CD3. Geralmente, cada um destes
+componentes é licenciado a você unicamente em sua forma binária de maneira
+restrita, traduzindo em que você poderá instalar estes componentes em um
+único computador para seu uso individual. A cópia, redistribuição,
+engenharia reversa e/ou modificação destes componentes é proibida. Qualquer
+violação dos termos das licenças, imediatamente cancela sua licença. Para
+saber os termos precisos das licenças destes componentes, por favor,
+verifique a documentação online que acompanha cada um destes componentes.
+Se você não concorda em aceitar os termos da licença destes componentes,
+então não os instale em seu computador. Se você gostaria de instalar estes
+componentes em mais que um computador, por favor, contate a Conectiva
+Informática Ltda para adquirir licenças adicionais.
+
+Antes da Instalação
+
+LEIA ATENTAMENTE OS TERMOS E CONDIÇÕES A SEGUIR ANTES DE INSTALAR O
+CONECTIVA LINUX OU QUALQUER UM DOS PROGRAMAS INCLUÍDOS COM ELE. INSTALAR
+QUALQUER UM DESTES PROGRAMAS INDICA SUA ACEITAÇÃO AOS TERMOS E CONDIÇÕES A
+SEGUIR. SE VOCÊ NÃO CONCORDA COM ESTES TERMOS E CONDIÇÕES NÃO INSTALE ESTES
+PROGRAMAS.
+
+OS PROGRAMAS, INCLUINDO OS CÓDIGOS FONTE, DOCUMENTAÇÃO, APARÊNCIA,
+ESTRUTURA E ORGANIZAÇÃO, SÃO PRODUTOS PROPRIETÁRIOS DA CONECTIVA
+INFORMÁTICA LTDA; RED HAT LINUX, INC; ORACLE, STAR DIVISION E OUTROS E SÃO
+PROTEGIDOS PELO DIREITO AUTORAL E OUTRAS LEIS. ESTES PROGRAMAS E QUALQUER
+CÓPIA, MODIFICAÇÃO OU PARTE ORIGINADA DESTES PROGRAMAS, DEVE A QUALQUER
+TEMPO PERMANECER COM OS ACIMA MENCIONADOS, SUBMETIDOS AOS TERMOS E
+CONDIÇÕES DA GPL OU OUTRA LICENÇA RELACIONADA COM OS PROGRAMAS EM
+CONSIDERAÇÃO.
+
+Garantia Limitada
+
+EXCETO SE ESPECIFICAMENTE DITO NESTE ACORDO, OS PROGRAMAS SÃO
+DISPONIBILIZADOS E LICENCIADOS "COMO ESTÃO" SEM GARANTIA DE QUALQUER TIPO,
+SEJA ELA EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO LIMITADA, PARA AS
+GARANTIAS DE COMERCIALIZAÇÃO E CONVENIÊNCIA PARA UM PROPÓSITO PARTICULAR.
+A Conectiva Informática Ltda, garante que a mídia na qual os Programas
+estão gravados é livre de defeitos de fabricação e manufatura sob uso
+normal durante um período de 30 dias da data da compra. A Conectiva
+Informática Ltda não garante que as funções contidas nos Programas serão
+compatíveis com os requisitos que você espera delas ou que a operação dos
+Programas será inteiramente livre de erros ou aparecerão precisamente como
+descritos na documentação que acompanha o produto.
+
+Limitação de Reparação e Responsabilidade
+
+Pelo máximo permitido pelas leis aplicáveis, as reparações descritas a
+seguir são aceitas por você como únicas, e devem ser disponíveis somente se
+você registrou este produto com a Conectiva Informática Ltda, de acordo com
+as instruções disponibilizadas com este produto, até dez dias depois de ter
+recebido o mesmo. A inteira responsabilidade da Conectiva Informática Ltda,
+e sua reparação exclusiva, devem ser: se a mídia que disponibiliza os
+Programas estiver com defeito, você pode retorná-la dentro de 30 dias da
+data da compra, juntamente com uma cópia da nota fiscal e a Conectiva
+Informática Ltda, na sua opção, irá trocá-la ou proceder na devolução do
+dinheiro para você.  PELO MÁXIMO PERMITIDO PELAS LEIS APLICÁVEIS, EM NENHUM
+EVENTO A CONECTIVA SERÁ RESPONSÁVEL A VOCÊ POR QUALQUER DANO, INCLUINDO
+LUCROS CESSANTES, PERDAS ECONÔMICAS, OU OUTROS DANOS ACIDENTAIS OU DANOS
+CONSEQÜÊNTES, PELO USO OU INAPTIDÃO PARA O USO DOS PROGRAMAS, MESMO QUE A
+CONECTIVA INFORMÁTICA LTDA OU QUALQUER DISTRIBUIDOR AUTORIZADO TENHA
+ADVERTIDO ESTES TIPOS DE PROBLEMAS.
+
+Bug do Ano 2000
+
+O Conectiva Linux tem sido testado desde seu início para trabalhar sem
+problemas no Ano 2000 bem como depois dele. A certificação para o bug do
+Ano 2000 refere-se mais sobre testes, boas práticas e a educação do
+usuário do que a garantia do produto. Nós continuaremos a disponibilizar
+informações detalhadas aos clientes sobre a compatibilidade com o Ano 2000,
+mas garantias contratuais específicas para o problema do Ano 2000 não são
+apropriadas dada a natureza do bug do Ano 2000 e pelo simples fato que uma
+única tecnologia, mesmo uma bem preparada para o Ano 2000 como o Conectiva
+Linux, não pode resolver todos os itens relacionados à transição para o Ano
+2000. A informação que disponibilizamos sobre a compatibilidade com o Ano
+2000 não constitui uma extensão a qualquer garantia para os produtos da
+Conectiva. A Conectiva Informática Ltda disponibiliza esta informação para
+assistir você na avaliação e correção de potenciais conseqüências do uso de
+datas para o próximo século.
+
+Geral
+
+Se qualquer cláusula deste Acordo for considerada inválida, as outras
+cláusulas não deverão ser afetadas pela mesma. Este Acordo deve ser
+legislado pelas leis Brasileiras.
+
+Direitos autorais 1999 Conectiva Informática Ltda. Todos os direitos
+reservados. Conectiva e Conectiva Linux são uma marca registrada da
+Conectiva Informática. Linux é uma marca registrada de Linus Torvalds em
+diversos países.

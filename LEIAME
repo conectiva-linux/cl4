@@ -1,0 +1,70 @@
+Conectiva Linux/Intel 4.0 (Ipanema)
+===================================
+
+O conteúdo deste CD-ROM é protegido por direitos autorais (c) 1998, 1999
+Conectiva Desenvolvimento de Sistemas e outros.
+Por favor verifique os anúncios de direitos autorais em cada código fonte
+dos pacotes para a sua distribuição e uso. Os termos de distribuição das
+ferramentas com direitos autorais para a Conectiva Desenvolvimento de
+Sistemas estão descritas no arquivo COPIA.
+
+Conectiva Informática é uma marca da Conectiva Consultoria e
+Desenvolvimento de Sistemas.
+============================================================================
+ORGANIZAÇÃO DOS DIRETÓRIOS
+
+Os diretórios estão organizados da seguinte forma:
+
+/mnt/cdrom
+  |----> conectiva
+           |----> RPMS      -- binários executáveis  
+           |----> base      -- arquivos de config. do sistema de arquivos
+           |----> instimage -- imagem utilizada para instal. em modo gráfico
+  |----> imagens            -- imagem do ramdisk e início do sistema (boot)
+  |----> dosutils           -- utilitários de instalação sob DOS
+  |----> doc                -- documentação do Conectiva Linux
+  |----> misc               -- arquivos fontes, árvore de instalação
+  |----> COPIA	            -- informações sobre direitos autorais
+  |----> LEIAME		    -- este arquivo
+  |----> LICENÇA-DE-USO     -- Licença de uso do Conectiva Linux
+  |----> RPM-PGP-KEY	    -- assinatura PGP da Conectiva para verificação
+
+Caso você esteja copiando este CD para uma partição ou volume NFS, será
+necessário copiar todo o conteúdo sob o diretório conectiva, assim como as
+imagens dos discos contidas no diretório imagens.
+
+============================================================================
+INSTALAÇÃO
+
+As imagens dos discos de instalação encontram-se no diretório imagens.
+Tanto o programa rawrite no diretório dosutils como o utilitário dd sob
+sistemas Unix compatíveis podem ser utilizados para transferir a imagem
+para geração de disquetes.
+Após a geração do disquete, basta inseri-lo na unidade e reinicializar a
+máquina.
+
+============================================================================
+SUPORTE
+
+Caso tenha adquirido a versão oficial do Conectiva Linux, você tem direito
+ao suporte gratuito, conforme descrito no manual do usuário e em
+http://www.conectiva.com.
+
+Outra fonte de suporte gratuito pode ser obtida através das listas de
+discussão relacionadas em  http://www.conectiva.com.
+
+============================================================================
+MANUAL CONECTIVA LINUX
+
+Caso você não tenha recebido os manuais, e desde que você tenha adquirido o
+Conectiva Linux Oficial, eles podem ser solicitados ou adquiridos junto
+à Conectiva, nos seguintes endereços:
+
+Fone/Fax: +55 (041) 332-2074
+FTP:      ftp://ftp.conectiva.com
+WWW:      http://www.conectiva.com
+
+Conectiva Consultoria e Desenvolvimento de Sistemas
+R.Prof.Rubens Elke Braga, 558 - Parolin
+80220-320 - Curitiba(PR)
+Brasil
