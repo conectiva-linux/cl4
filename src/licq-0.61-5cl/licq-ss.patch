@@ -1,0 +1,11 @@
+--- acconfig.h.orig	Sun Mar  7 23:46:37 1999
++++ acconfig.h	Fri Mar 12 14:15:04 1999
+@@ -38,7 +38,7 @@
+ #undef HAVE_SYS_ERRLIST
+ 
+ /* This gets defined if the system has the MIT X11 screensaver extensions */
+-#undef USE_SCRNSAVER
++#define USE_SCRNSAVER
+ 
+ @TOP@
+ @BOTTOM@

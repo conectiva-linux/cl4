@@ -1,0 +1,5 @@
+licq name "Licq"
+licq description "Unix/Qt ICQ clone"
+licq group Networking
+licq exec "/usr/bin/licq"
+licq mini-icon "licq-mini.xpm"
