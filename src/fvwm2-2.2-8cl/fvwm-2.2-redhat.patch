@@ -1,0 +1,79 @@
+--- fvwm-2.2/extras/FvwmConsole/FvwmConsoleC.pl.redhat	Fri Nov 13 14:36:14 1998
++++ fvwm-2.2/extras/FvwmConsole/FvwmConsoleC.pl	Mon Mar 22 17:32:38 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #    $0 - Front end of FvwmConsole
+ #    FvwmConsole server must be running
+ 
+--- fvwm-2.2/sample.fvwmrc/system.fvwm2rc.redhat	Mon Mar 22 17:40:30 1999
++++ fvwm-2.2/sample.fvwmrc/system.fvwm2rc	Mon Mar 22 17:47:13 1999
+@@ -46,8 +46,6 @@
+ Style "xmh"	    RandomPlacement, NoButton 2
+ Style "xman"	    Icon xman.xpm, RandomPlacement, ClickToFocus
+ Style "xmag"	    Icon mag_glass.xpm, RandomPlacement, ClickToFocus
+-Style "xgraph"      Icon graphs.xpm, RandomPlacement, ClickToFocus
+-Style "xmosaic"     Color Green/Yellow, ClickToFocus
+ 
+ 
+ # some simple default key bindings:
+@@ -86,8 +84,6 @@
+ +			"XTerm"		Exec exec xterm
+ +			"Rxvt"		Exec exec rxvt
+ +			""		Nop
+-+			"Remote Logins"	Popup Remote-Logins
+-+			""		Nop
+ +                       "Utilities"     Popup Utilities
+ +			""		Nop
+ +			"Fvwm Modules"	          Popup Module-Popup
+@@ -106,7 +102,7 @@
+ +			"Xmag"		Exec exec xmag
+ +                       "Editres"       Exec exec editres
+ +			""		Nop
+-+			"XEmacs"	Exec exec xemacs
+++			"Emacs"	        Exec exec emacs
+ +                       "Mail"          MailFunction xmh "-font fixed"
+ +			""		Nop
+ +                       "XLock"         Exec exec xlock -mode random
+@@ -159,16 +155,6 @@
+ +			"Print"         PrintFunction
+ +                       "Print Reverse" PrintReverseFunction
+ 
+-# be sure to fill these in with your correct machine names:
+-AddToMenu Remote-Logins	"dopey"	 Exec rsh dopey rxvt -display $HOSTDISPLAY &
+-+			"snoopy" Exec rsh snoopy rxvt -display $HOSTDISPLAY &
+-+			"grumpy" Exec rsh grumpy rxvt -display $HOSTDISPLAY &
+-+			"happy"	 Exec rsh happy rxvt -display $HOSTDISPLAY &
+-+			"bailey" Exec rsh bailey rxvt -display $HOSTDISPLAY &
+-+			"barnum" Exec rsh barnum rxvt -display $HOSTDISPLAY &
+-+			"joker"	 Exec rsh joker rxvt -display $HOSTDISPLAY &
+-+			"signal" Exec rxterm signal
+-
+ AddToMenu Module-Popup	"FvwmModules"	Title
+ +			"Identify"	Module	FvwmIdent
+ +			"Talk"  	Module	FvwmTalk
+@@ -198,13 +184,7 @@
+ +		      	"Restart Fvwm"	    Restart fvwm
+ +		      	""		    Nop	
+ +		      	"Start twm"         Restart twm
+-+		      	"Start ctwm"        Restart ctwm
+-+		        "Start tvtwm"       Restart tvtwm
+-+		        "Start vtwm"        Restart vtwm
+ +		      	"Start mwm"    	    Restart mwm
+-+	      	      	"Start olwm"        Restart /usr/openwin/bin/olwm
+-+		      	""		    Nop	
+-+		      	"Start dummy"       Restart xterm
+ +		      	""		    Nop	
+ +		      	"No, Don't Quit"    Nop	
+ 
+--- fvwm-2.2/configure.in.redhat	Mon Feb 22 11:25:48 1999
++++ fvwm-2.2/configure.in	Mon Mar 22 17:32:38 1999
+@@ -5,7 +5,7 @@
+ AM_INIT_AUTOMAKE(fvwm, 2.2)
+ AM_CONFIG_HEADER(config.h)
+ 
+-FVWM_MODULEDIR='${libexecdir}/${PACKAGE}/${VERSION}'
++FVWM_MODULEDIR='${libexecdir}'
+ FVWM_CONFIGDIR='${sysconfdir}'
+ 
+ AC_SUBST(FVWM_MODULEDIR)
