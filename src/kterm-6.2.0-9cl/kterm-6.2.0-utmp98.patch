@@ -1,0 +1,164 @@
+--- kterm-6.2.0/main.c.utempter	Fri Mar 26 12:11:35 1999
++++ kterm-6.2.0/main.c	Fri Mar 26 12:14:50 1999
+@@ -1679,11 +1679,12 @@
+  * has problems, we can re-enter this function and get another one.
+  */
+ 
++int tty;
++
+ get_pty (pty)
+     int *pty;
+ {
+-#ifdef __osf__
+-    int tty;
++#if defined(__osf__) || defined(linux)
+     return (openpty(pty, &tty, ttydev, NULL, NULL));
+ #endif
+ #if defined(SYSV) && defined(i386) && !defined(SVR4)
+@@ -2323,6 +2324,8 @@
+ #endif	/* TIOCSWINSZ */
+ #endif	/* sun */
+ 
++	addToUtmp(ttydev, NULL, screen->respond);
++
+ 	if (!am_slave) {
+ #ifdef USE_HANDSHAKE
+ 	    if (pipe(pc_pipe) || pipe(cp_pipe))
+@@ -2927,85 +2930,6 @@
+ #endif
+ #endif
+ 
+-		(void) setutent ();
+-		/* set up entry to search for */
+-		ptyname = ttydev;
+-#ifndef __sgi
+-		if (PTYCHARLEN >= (int)strlen(ptyname))
+-		    ptynameptr = ptyname;
+-		else
+-		    ptynameptr = ptyname + strlen(ptyname) - PTYCHARLEN;
+-		(void) strncpy(utmp.ut_id, ptynameptr, sizeof (utmp.ut_id));
+-#else
+-		(void) strncpy(utmp.ut_id,ptyname + sizeof("/dev/tty")-1,
+-			       sizeof (utmp.ut_id));
+-
+-#endif
+-		utmp.ut_type = DEAD_PROCESS;
+-
+-		/* position to entry in utmp file */
+-		(void) getutid(&utmp);
+-
+-		/* set up the new entry */
+-		utmp.ut_type = USER_PROCESS;
+-#ifndef linux
+-		utmp.ut_exit.e_exit = 2;
+-#endif
+-		(void) strncpy(utmp.ut_user,
+-			       (pw && pw->pw_name) ? pw->pw_name : "????",
+-			       sizeof(utmp.ut_user));
+-		    
+-#ifndef __sgi
+-		(void)strncpy(utmp.ut_id, ptynameptr, sizeof(utmp.ut_id));
+-#else
+-		(void) strncpy(utmp.ut_id,ptyname + sizeof("/dev/tty")-1,
+-			       sizeof (utmp.ut_id));
+-#endif
+-		(void) strncpy (utmp.ut_line,
+-			ptyname + strlen("/dev/"), sizeof (utmp.ut_line));
+-
+-#ifdef HAS_UTMP_UT_HOST
+-		(void) strncpy(buf, DisplayString(screen->display),
+-			       sizeof(buf));
+-#ifndef linux
+-	        {
+-		    char *disfin = strrchr(buf, ':');
+-		    if (disfin)
+-			*disfin = '\0';
+-		}
+-#endif
+-		(void) strncpy(utmp.ut_host, buf, sizeof(utmp.ut_host));
+-#endif
+-		(void) strncpy(utmp.ut_name, pw->pw_name, 
+-			       sizeof(utmp.ut_name));
+-
+-		utmp.ut_pid = getpid();
+-#ifdef SVR4
+-		utmp.ut_session = getsid(0);
+-		utmp.ut_xtime = time ((Time_t *) 0);
+-		utmp.ut_tv.tv_usec = 0;
+-#else
+-		utmp.ut_time = time ((Time_t *) 0);
+-#endif
+-
+-		/* write out the entry */
+-		if (!resource.utmpInhibit)
+-		    (void) pututline(&utmp);
+-#ifdef WTMP
+-#ifdef SVR4
+-		if (term->misc.login_shell)
+-		    updwtmpx(WTMPX_FILE, &utmp);
+-#else
+-		if (term->misc.login_shell &&
+-		     (i = open(etc_wtmp, O_WRONLY|O_APPEND)) >= 0) {
+-		    write(i, (char *)&utmp, sizeof(struct utmp));
+-		    close(i);
+-		}
+-#endif
+-#endif
+-		/* close the file */
+-		(void) endutent();
+-
+ #else	/* USE_SYSV_UTMP */
+ 		/* We can now get our ttyslot!  We can also set the initial
+ 		 * UTMP entry.
+@@ -3420,39 +3344,7 @@
+ #endif /* USE_HANDSHAKE */
+ 	    ) {
+ 	    ptyname = ttydev;
+-	    utmp.ut_type = USER_PROCESS;
+-	    if (PTYCHARLEN >= (int)strlen(ptyname))
+-		ptynameptr = ptyname;
+-	    else
+-		ptynameptr = ptyname + strlen(ptyname) - PTYCHARLEN;
+-	    (void) strncpy(utmp.ut_id, ptynameptr, sizeof(utmp.ut_id));
+-	    (void) setutent();
+-	    utptr = getutid(&utmp);
+-	    /* write it out only if it exists, and the pid's match */
+-	    if (utptr && (utptr->ut_pid == screen->pid)) {
+-		    utptr->ut_type = DEAD_PROCESS;
+-#ifdef SVR4
+-		    utmp.ut_session = getsid(0);
+-		    utmp.ut_xtime = time ((Time_t *) 0);
+-		    utmp.ut_tv.tv_usec = 0;
+-#else
+-		    utptr->ut_time = time((Time_t *) 0);
+-#endif
+-		    (void) pututline(utptr);
+-#ifdef WTMP
+-#ifdef SVR4
+-		    updwtmpx(WTMPX_FILE, &utmp);
+-#else
+-		    /* set wtmp entry if wtmp file exists */
+-		    if ((fd = open(etc_wtmp, O_WRONLY | O_APPEND)) >= 0) {
+-		      i = write(fd, utptr, sizeof(utmp));
+-		      i = close(fd);
+-		    }
+-#endif
+-#endif
+-
+-	    }
+-	    (void) endutent();
++	    removeFromUtmp();
+ 	}
+ #else	/* not USE_SYSV_UTMP */
+ 	register int wfd;
+--- kterm-6.2.0/Imakefile.utempter	Fri Jul 12 01:01:04 1996
++++ kterm-6.2.0/Imakefile	Fri Mar 26 12:11:35 1999
+@@ -24,6 +24,8 @@
+          PTYLIB = -lpucc
+ #endif
+ 
++ PTYLIB = -lutempter -lutil
++
+  OSMAJORVERSION = OSMajorVersion
+  OSMINORVERSION = OSMinorVersion
+ 

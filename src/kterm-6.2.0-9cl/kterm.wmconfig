@@ -1,0 +1,6 @@
+kterm name "KTerm"
+kterm description "Kanji Terminal Emulator"
+kterm icon xterm.xpm
+kterm mini-icon mini-sh1.xpm
+kterm exec "kterm"
+kterm group Utilities/Shells

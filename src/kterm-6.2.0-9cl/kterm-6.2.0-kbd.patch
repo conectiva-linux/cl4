@@ -1,0 +1,13 @@
+--- kterm-6.2.0/KTerm.ad.kbd	Sun Jun 23 04:00:22 1996
++++ kterm-6.2.0/KTerm.ad	Thu Apr 30 21:49:28 1998
+@@ -1,5 +1,10 @@
+ ! $XConsortium: XTerm.ad,v 1.32 94/02/09 18:19:21 converse Exp $
+ ! $Id: KTerm.ad,v 6.2 1996/06/23 08:00:09 kagotani Rel $
++*translations:  #override \
++	Shift<Key>space:     begin-conversion(_JAPANESE_CONVERSION)
++*background:black
++*foreground:white
++*KanjiMode: euc
+ KTerm.JoinSession:False
+ *SimpleMenu*BackingStore: NotUseful
+ *SimpleMenu*menuLabel.font: -adobe-helvetica-bold-r-normal--*-120-*-*-*-*-iso8859-*
