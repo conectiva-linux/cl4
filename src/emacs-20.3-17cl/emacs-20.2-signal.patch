@@ -1,0 +1,18 @@
+--- emacs-20.2/src/s/gnu-linux.h.davem	Mon Jun 23 01:52:51 1997
++++ emacs-20.2/src/s/gnu-linux.h	Wed Apr  8 06:56:54 1998
+@@ -196,6 +196,15 @@ Boston, MA 02111-1307, USA.  */
+ #define POSIX                 /* affects getpagesize.h and systty.h */
+ #define POSIX_SIGNALS
+ 
++/* When _USE_BSD is defined, which it will be on glibc based
++ * systems, sigmask/sigpause will be defined in the system signal.h
++ * header file, we want the one in emacs's syssignal.h or else things
++ * blow up.  Note this worked on Intel by luck because of how arguments
++ * are passed on the stack ;-(
++ */
++#undef sigmask
++#undef sigpause
++
+ /* Best not to include -lg, unless it is last on the command line */
+ #define LIBS_DEBUG
+ #ifndef __ELF__

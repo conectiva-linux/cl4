@@ -1,0 +1,25 @@
+--- emacs-20.3/lisp/mail/mh-utils.el.nmhlocation	Wed Mar 31 15:43:46 1999
++++ emacs-20.3/lisp/mail/mh-utils.el	Wed Mar 31 15:48:43 1999
+@@ -593,6 +593,7 @@
+ 	    (or (mh-path-search exec-path "inc")
+ 		(mh-path-search '("/usr/local/bin/mh/"
+ 				  "/usr/local/mh/"
++				  "/usr/bin/" ;Red Hat Linux
+ 				  "/usr/bin/mh/" ;Ultrix 4.2
+ 				  "/usr/new/mh/" ;Ultrix <4.2
+ 				  "/usr/contrib/mh/bin/" ;BSDI
+@@ -609,12 +610,12 @@
+ 	    (or (let ((mh-base mh-progs))
+ 		  (while (let ((dir-name (file-name-nondirectory
+ 					  (directory-file-name mh-base))))
+-			   (or (string= "mh" dir-name)
++			   (or (string= "nmh" dir-name)
+ 			       (string= "bin" dir-name)))
+ 		    (setq mh-base
+ 			  (file-name-directory (directory-file-name mh-base))))
+ 		  (mh-path-search
+-		   (list (expand-file-name "lib/mh/" mh-base)
++		   (list (expand-file-name "lib/nmh/" mh-base)
+ 			 (expand-file-name "mh/lib/" mh-base))
+ 		   "mhl"))
+ 		(mh-path-search '("/usr/local/bin/mh/") "mhl")

@@ -1,0 +1,254 @@
+--- emacs-20.3/etc/MACHINES.gnu	Thu Jul  9 22:30:24 1998
++++ emacs-20.3/etc/MACHINES	Wed Sep  9 19:55:59 1998
+@@ -68,7 +68,7 @@
+ 
+   Known to work with 19.26 and OS version 2.2, compiler version 1.3.
+ 
+-Alpha (DEC) running OSF/1 (alpha-dec-osf1, alpha-dec-linux-gnu)
++Alpha (DEC) running OSF/1 (alpha-dec-osf1, alpha-dec-linux)
+ 
+   For OSF/1 (aka Digital Unix) version 4.0, update 386,
+   it is reported that you need to run configure this way:
+@@ -586,7 +586,7 @@
+   indicates the Umax operating system).
+ 
+ Intel 386 (i386-*-isc, 		i386-*-esix,	 i386-*-bsdi2,
+-	   i386-*-xenix,	i386-*-freebsd,  i386-*-linux-gnu,
++	   i386-*-xenix,	i386-*-freebsd,  i386-*-linux,
+ 	   i386-*-sol2.4,	i386-*-sysv3,    i386-intsys-sysv,
+ 	   i386-*-sysv4,	i386-*-sysv4.2,
+ 	   i386-*-sysv5.3,	i386-*-bsd4.2,
+@@ -602,7 +602,7 @@
+ 	version number - for example, if you're running ISC 3.0, use
+ 	i386-unknown-isc3.0 as your configuration name.
+   Use i386-*-esix for Esix; Emacs runs as of version 19.6.
+-  Use i386-*-linux-gnu for GNU/Linux systems; Emacs runs as of version 19.26.
++  Use i386-*-linux for GNU/Linux systems; Emacs runs as of version 19.26.
+   Use i386-intsys-sysv for Integrated Solutions 386 machines.
+   It may also be correct for Microport systems.
+   Use i386-*-sco3.2v4 for SCO 3.2v4; Emacs runs as of version 19.26.
+--- emacs-20.3/config.guess.gnu	Wed Aug 19 06:24:27 1998
++++ emacs-20.3/config.guess	Wed Sep  9 20:00:38 1998
+@@ -550,12 +550,12 @@
+ 				    s/ .*//
+ 				    p'`
+         case "$ld_supported_emulations" in
+-	  i?86linux)  echo "${UNAME_MACHINE}-pc-linux-gnuaout"      ; exit 0 ;;
+-	  i?86coff)   echo "${UNAME_MACHINE}-pc-linux-gnucoff"      ; exit 0 ;;
+-	  sparclinux) echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+-	  armlinux)   echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+-	  m68klinux)  echo "${UNAME_MACHINE}-unknown-linux-gnuaout" ; exit 0 ;;
+-	  elf32ppc)   echo "powerpc-unknown-linux-gnu"              ; exit 0 ;;
++	  i?86linux)  echo "${UNAME_MACHINE}-pc-linux-aout"      ; exit 0 ;;
++	  i?86coff)   echo "${UNAME_MACHINE}-pc-linux-coff"      ; exit 0 ;;
++	  sparclinux) echo "${UNAME_MACHINE}-linux-aout" ; exit 0 ;;
++	  armlinux)   echo "${UNAME_MACHINE}-linux-aout" ; exit 0 ;;
++	  m68klinux)  echo "${UNAME_MACHINE}-linux-aout" ; exit 0 ;;
++	  elf32ppc)   echo "powerpc-linux-gnu"              ; exit 0 ;;
+ 	esac
+ 
+ 	if test "${UNAME_MACHINE}" = "alpha" ; then
+@@ -605,7 +605,7 @@
+ 			fi
+ 		fi	
+ 		rm -f dummy.s dummy
+-		echo ${UNAME_MACHINE}-unknown-linux-gnu${LIBC} ; exit 0
++		echo ${UNAME_MACHINE}-gnu-linux-${LIBC} ; exit 0
+ 	elif test "${UNAME_MACHINE}" = "mips" ; then
+ 	  cat >dummy.c <<EOF
+ main(argc, argv)
+@@ -613,10 +613,10 @@
+      char *argv[];
+ {
+ #ifdef __MIPSEB__
+-  printf ("%s-unknown-linux-gnu\n", argv[1]);
++  printf ("%s-gnu-linux\n", argv[1]);
+ #endif
+ #ifdef __MIPSEL__
+-  printf ("%sel-unknown-linux-gnu\n", argv[1]);
++  printf ("%sel-gnu-linux\n", argv[1]);
+ #endif
+   return 0;
+ }
+@@ -624,13 +624,13 @@
+ 	  ${CC-cc} dummy.c -o dummy 2>/dev/null && ./dummy "${UNAME_MACHINE}" && rm dummy.c dummy && exit 0
+ 	  rm -f dummy.c dummy
+ 	else
+-	  # Either a pre-BFD a.out linker (linux-gnuoldld)
++	  # Either a pre-BFD a.out linker (linux-oldld)
+ 	  # or one that does not give us useful --help.
+-	  # GCC wants to distinguish between linux-gnuoldld and linux-gnuaout.
++	  # GCC wants to distinguish between linux-oldld and linux-aout.
+ 	  # If ld does not provide *any* "supported emulations:"
+ 	  # that means it is gnuoldld.
+ 	  echo "$ld_help_string" | grep >/dev/null 2>&1 "supported emulations:"
+-	  test $? != 0 && echo "${UNAME_MACHINE}-pc-linux-gnuoldld" && exit 0
++	  test $? != 0 && echo "${UNAME_MACHINE}-pc-linux-oldld" && exit 0
+ 
+ 	  case "${UNAME_MACHINE}" in
+ 	  i?86)
+@@ -650,15 +650,15 @@
+ #ifdef __ELF__
+ # ifdef __GLIBC__
+ #  if __GLIBC__ >= 2
+-    printf ("%s-${VENDOR}-linux-gnu\n", argv[1]);
++    printf ("%s-${VENDOR}-linux\n", argv[1]);
+ #  else
+-    printf ("%s-${VENDOR}-linux-gnulibc1\n", argv[1]);
++    printf ("%s-${VENDOR}-linux-libc1\n", argv[1]);
+ #  endif
+ # else
+-   printf ("%s-${VENDOR}-linux-gnulibc1\n", argv[1]);
++   printf ("%s-${VENDOR}-linux-libc1\n", argv[1]);
+ # endif
+ #else
+-  printf ("%s-${VENDOR}-linux-gnuaout\n", argv[1]);
++  printf ("%s-${VENDOR}-linux-aout\n", argv[1]);
+ #endif
+   return 0;
+ }
+--- emacs-20.3/config.sub.gnu	Wed Aug 19 06:24:26 1998
++++ emacs-20.3/config.sub	Wed Sep  9 20:02:07 1998
+@@ -68,7 +68,7 @@
+ # Here we must recognize all the valid KERNEL-OS combinations.
+ maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
+ case $maybe_os in
+-  linux-gnu*)
++  linux*)
+     os=-$maybe_os
+     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
+     ;;
+@@ -397,11 +397,11 @@
+ 		;;
+ 	mipsel*-linux*)
+ 		basic_machine=mipsel-unknown
+-		os=-linux-gnu
++		os=-linux
+ 		;;
+ 	mips*-linux*)
+ 		basic_machine=mips-unknown
+-		os=-linux-gnu
++		os=-linux
+ 		;;
+ 	mips3*-*)
+ 		basic_machine=`echo $basic_machine | sed -e 's/mips3/mips64/'`
+@@ -625,7 +625,7 @@
+ # Here we handle the default manufacturer of certain CPU types.  It is in
+ # some cases the only manufacturer, in others, it is the most popular.
+ 	mips)
+-		if [ x$os = x-linux-gnu ]; then
++		if [ x$os = x-linux ]; then
+ 			basic_machine=mips-unknown
+ 		else
+ 			basic_machine=mips-mips
+@@ -697,7 +697,7 @@
+ 		os=-sysv4.2uw
+ 		;;
+ 	-gnu/linux*)
+-		os=`echo $os | sed -e 's|gnu/linux|linux-gnu|'`
++		os=`echo $os | sed -e 's|gnu/linux|linux|'`
+ 		;;
+ 	# First accept the basic system types.
+ 	# The portable systems comes first.
+@@ -715,11 +715,11 @@
+ 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
+ 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
+ 	      | -cygwin32* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
+-	      | -mingw32* | -linux-gnu* | -uxpv* | -beos*)
++	      | -mingw32* | -linux* | -uxpv* | -beos*)
+ 	# Remember, each alternative MUST END IN *, to match a version number.
+ 		;;
+ 	-linux*)
+-		os=`echo $os | sed -e 's|linux|linux-gnu|'`
++		os=`echo $os | sed -e 's|linux|linux|'`
+ 		;;
+ 	-sunos5*)
+ 		os=`echo $os | sed -e 's|sunos5|solaris2|'`
+--- emacs-20.3/configure.in.gnu	Tue Jun 30 18:15:05 1998
++++ emacs-20.3/configure.in	Wed Sep  9 19:55:59 1998
+@@ -239,7 +239,7 @@
+     GCC_LINK_TEST_OPTIONS=-Wl,-rpath,/usr/X11R6/lib
+   ;;
+ 
+-  alpha*-*-linux-gnu* )
++  alpha*-*-linux* )
+     machine=alpha opsys=gnu-linux
+   ;;
+ 
+@@ -769,7 +769,7 @@
+   ;;
+ 
+   ## Suns
+-  sparc-*-linux-gnu* )
++  sparc-*-linux* )
+     machine=sparc opsys=gnu-linux
+   ;;
+ 
+@@ -929,7 +929,7 @@
+       *-esix5* )		opsys=esix5r4; NON_GNU_CPP=/usr/lib/cpp ;;
+       *-esix* )			opsys=esix ;;
+       *-xenix* )		opsys=xenix ;;
+-      *-linux-gnu* )		opsys=gnu-linux ;;
++      *-linux* )		opsys=gnu-linux ;;
+       *-sco3.2v4* )		opsys=sco4 ; NON_GNU_CPP=/lib/cpp  ;;
+       *-sco3.2v5* )		opsys=sco5 
+ 				NON_GNU_CPP=/lib/cpp
+@@ -946,12 +946,12 @@
+   ;;
+ 
+   ## m68k Linux-based GNU system
+-  m68k-*-linux-gnu* )
++  m68k-*-linux* )
+     machine=m68k opsys=gnu-linux
+   ;;
+ 
+   ## Mips Linux-based GNU system
+-  mips-*-linux-gnu* )
++  mips-*-linux* )
+     machine=mips opsys=gnu-linux
+   ;;
+ 
+--- emacs-20.3/configure.gnu	Mon Jul 27 04:17:07 1998
++++ emacs-20.3/configure	Wed Sep  9 19:56:00 1998
+@@ -823,7 +823,7 @@
+     GCC_LINK_TEST_OPTIONS=-Wl,-rpath,/usr/X11R6/lib
+   ;;
+ 
+-  alpha*-*-linux-gnu* )
++  alpha*-*-linux* )
+     machine=alpha opsys=gnu-linux
+   ;;
+ 
+@@ -1353,7 +1353,7 @@
+   ;;
+ 
+   ## Suns
+-  sparc-*-linux-gnu* )
++  sparc-*-linux* )
+     machine=sparc opsys=gnu-linux
+   ;;
+ 
+@@ -1513,7 +1513,7 @@
+       *-esix5* )		opsys=esix5r4; NON_GNU_CPP=/usr/lib/cpp ;;
+       *-esix* )			opsys=esix ;;
+       *-xenix* )		opsys=xenix ;;
+-      *-linux-gnu* )		opsys=gnu-linux ;;
++      *-linux* )		opsys=gnu-linux ;;
+       *-sco3.2v4* )		opsys=sco4 ; NON_GNU_CPP=/lib/cpp  ;;
+       *-sco3.2v5* )		opsys=sco5 
+ 				NON_GNU_CPP=/lib/cpp
+@@ -1530,12 +1530,12 @@
+   ;;
+ 
+   ## m68k Linux-based GNU system
+-  m68k-*-linux-gnu* )
++  m68k-*-linux* )
+     machine=m68k opsys=gnu-linux
+   ;;
+ 
+   ## Mips Linux-based GNU system
+-  mips-*-linux-gnu* )
++  mips-*-linux* )
+     machine=mips opsys=gnu-linux
+   ;;
+ 

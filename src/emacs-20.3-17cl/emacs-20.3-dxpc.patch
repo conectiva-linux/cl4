@@ -1,0 +1,45 @@
+1998-08-25  Kenichi Handa  <handa@etl.go.jp>
+
+	* xterm.c (x_list_fonts): Work-around for the case XGetAtomName
+	returns a null string.  This happens when dxpc 3.7 is being used.
+
+--- patch for xterm.c ---
+diff -acrN --exclude=ChangeLog --exclude=*.elc --exclude=*~ --exclude=TAGS --exclude=loaddefs.el ../emacs-20.3.fsf/src/xterm.c ../emacs-20.3/src/xterm.c
+*** ../emacs-20.3.fsf/src/xterm.c	Sun Aug 16 07:08:33 1998
+--- ../emacs-20.3/src/xterm.c	Tue Aug 25 09:51:33 1998
+***************
+*** 6496,6507 ****
+  	      int len = strlen (name);
+  	      char *tmp;
+  
+! 	      num_fonts = 1;
+! 	      names = (char **) alloca (sizeof (char *));
+! 	      /* Some systems only allow alloca assigned to a simple var.  */
+! 	      tmp = (char *) alloca (len + 1);  names[0] = tmp;
+! 	      bcopy (name, names[0], len + 1);
+! 	      XFree (name);
+  	    }
+  	  else
+  	    try_XLoadQueryFont = 0;
+--- 6496,6516 ----
+  	      int len = strlen (name);
+  	      char *tmp;
+  
+! 	      /* If DXPC (a Differential X Protocol Compressor)
+!                  Ver.3.7 is running, XGetAtomName will return null
+!                  string.  We must avoid such a name.  */
+! 	      if (len == 0)
+! 		try_XLoadQueryFont = 0;
+! 	      else
+! 		{
+! 		  num_fonts = 1;
+! 		  names = (char **) alloca (sizeof (char *));
+! 		  /* Some systems only allow alloca assigned to a
+!                      simple var.  */
+! 		  tmp = (char *) alloca (len + 1);  names[0] = tmp;
+! 		  bcopy (name, names[0], len + 1);
+! 		  XFree (name);
+! 		}
+  	    }
+  	  else
+  	    try_XLoadQueryFont = 0;

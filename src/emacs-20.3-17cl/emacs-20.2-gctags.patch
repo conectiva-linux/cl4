@@ -1,0 +1,118 @@
+--- emacs-20.2/etc/etags.1.gctags	Thu Oct 23 15:21:24 1997
++++ emacs-20.2/etc/etags.1	Thu Oct 23 15:36:24 1997
+@@ -8,7 +8,7 @@
+ ..
+ 
+ .SH NAME
+-etags, ctags \- generate tag file for Emacs, vi
++etags, gctags \- generate tag file for Emacs, vi
+ .SH SYNOPSIS
+ .hy 0
+ .na
+@@ -20,7 +20,7 @@
+ [\|\-\-include=\fIfile\fP\|] [\|\-\-output=\fItagfile\fP\|]
+ [\|\-\-append\|] \fIfile\fP .\|.\|.
+ 
+-.B ctags [\|\-aCdRSVh\|] [\|\-BtTuvwx\|] [\|\-l \fIlanguage\fP\|]
++.B gctags [\|\-aCdRSVh\|] [\|\-BtTuvwx\|] [\|\-l \fIlanguage\fP\|]
+ .br
+ [\|\-i \fIregexp\fP\|] [\|\-o \fItagfile\fP\|]
+ [\|\-\-c++\|] [\|\-\-defines\|] [\|\-\-ignore\-indentation\|]
+@@ -36,7 +36,7 @@
+ The `\|\fBetags\fP\|' program is used to create a tag table file, in a format
+ understood by
+ .BR emacs ( 1 )\c
+-\&; the `\|\fBctags\fP\|' program is used to create a similar table in a
++\&; the `\|\fBgctags\fP\|' program is used to create a similar table in a
+ format understood by
+ .BR vi ( 1 )\c
+ \&.  Both forms of the program understand
+@@ -44,7 +44,7 @@
+ Emacs Lisp/Common Lisp, Erlang, Prolog and most assembler\-like syntaxes.
+ Both forms read the files specified on the command line, and write a tag
+ table (defaults: `\|TAGS\|' for \fBetags\fP, `\|tags\|' for
+-\fBctags\fP) in the current working directory.
++\fBgctags\fP) in the current working directory.
+ Files specified with relative file names will be recorded in the tag
+ table with file names relative to the directory where the tag table
+ resides.  Files specified with absolute file names will be recorded
+@@ -55,7 +55,7 @@
+ language, overriding guesses based on filename extensions.
+ .SH OPTIONS
+ Some options make sense only for the \fBvi\fP style tag files produced
+-by ctags;
++by gctags;
+ \fBetags\fP does not recognize them.
+ The programs accept unambiguous abbreviations for long option names.
+ .TP
+@@ -69,7 +69,7 @@
+ the delimiter `\|\fB?\fP\|', to search \fIbackwards\fP through files.
+ The default is to use the delimiter `\|\fB/\fP\|', to search \fIforwards\fP
+ through files.
+-Only \fBctags\fP accepts this option.
++Only \fBgctags\fP accepts this option.
+ .TP
+ .B \-C, \-\-c++
+ Treat files with `\|.c\|' and `\|.h\|' extensions as C++ code, not C
+@@ -79,12 +79,12 @@
+ .B \-d, \-\-defines
+ Create tag entries for C preprocessor definitions, too.  This is the
+ default behavior for \fBetags\fP, so this option is only accepted
+-by \fBctags\fP.
++by \fBgctags\fP.
+ .TP
+ .B \-D, \-\-no\-defines
+ Do not create tag entries for C preprocessor definitions.
+ This may make the tags file much smaller if many header files are tagged.
+-This is the default behavior for \fBctags\fP, so this option is only
++This is the default behavior for \fBgctags\fP, so this option is only
+ accepted by \fBetags\fP.
+ .TP
+ \fB\-l\fP \fIlanguage\fP, \fB\-\-language=\fIlanguage\fP
+@@ -115,7 +115,7 @@
+ It should not match useless characters.  If the match is
+ such that more characters than needed are unavoidably matched by
+ \fItagregexp\fP, it may be useful to add a \fInameregexp\fP, to
+-narrow down the tag scope.  \fBctags\fP ignores regexps without a
++narrow down the tag scope.  \fBgctags\fP ignores regexps without a
+ \fInameregexp\fP. 
+ .br
+ Here are some examples.  All the regexps are quoted to protect them
+@@ -162,12 +162,12 @@
+ .TP
+ .B \-t, \-\-typedefs
+ Record typedefs in C code as tags.  Since this is the default behaviour
+-of \fBetags\fP, only \fBctags\fP accepts this option.
++of \fBetags\fP, only \fBgctags\fP accepts this option.
+ .TP
+ .B \-T, \-\-typedefs\-and\-c++
+ Generate tag entries for typedefs, struct, enum, and union tags, and
+ C++ member functions.  Since this is the default behaviour
+-of \fBetags\fP, only \fBctags\fP accepts this option.
++of \fBetags\fP, only \fBgctags\fP accepts this option.
+ .TP
+ .B \-u, \-\-update
+ Update tag entries for \fIfiles\fP specified on command line, leaving
+@@ -175,11 +175,11 @@
+ by deleting the existing entries for the given files and then
+ rewriting the new entries at the end of the tags file.  It is often
+ faster to simply rebuild the entire tag file than to use this.
+-Only \fBctags\fP accepts this option.
++Only \fBgctags\fP accepts this option.
+ .TP
+ .B \-v, \-\-vgrind
+ Instead of generating a tag file, write index (in \fBvgrind\fP format)
+-to standard output.  Only \fBctags\fP accepts this option.
++to standard output.  Only \fBgctags\fP accepts this option.
+ .TP
+ .B \-w, \-\-no\-warn
+ Suppress warning messages about duplicate entries.  The \fBetags\fP
+@@ -188,7 +188,7 @@
+ .TP
+ .B \-x, \-\-cxref
+ Instead of generating a tag file, write a cross reference (in
+-\fBcxref\fP format) to standard output.  Only \fBctags\fP accepts this option.
++\fBcxref\fP format) to standard output.  Only \fBgctags\fP accepts this option.
+ .TP
+ .B \-H, \-\-help
+ Print usage information.

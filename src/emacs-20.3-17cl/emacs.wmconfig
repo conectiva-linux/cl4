@@ -1,0 +1,4 @@
+emacs name "emacs"
+emacs description "emacs Editor"
+emacs exec "emacs &"
+emacs group Utilities

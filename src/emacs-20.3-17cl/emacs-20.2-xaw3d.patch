@@ -1,0 +1,33 @@
+--- emacs-20.2/src/Makefile.in.xaw3d	Thu Oct 23 15:51:12 1997
++++ emacs-20.2/src/Makefile.in	Thu Oct 23 15:51:42 1997
+@@ -328,7 +328,7 @@
+ #ifdef USE_X_TOOLKIT
+ #define @X_TOOLKIT_TYPE@
+ #if defined (LUCID) || defined (ATHENA)
+-LIBW= -lXaw
++LIBW= -lXaw3d
+ #endif
+ #ifdef MOTIF
+ #ifdef HAVE_MOTIF_2_1
+--- emacs-20.2/configure.xaw3d	Thu Oct 23 15:51:52 1997
++++ emacs-20.2/configure	Thu Oct 23 15:52:23 1997
+@@ -3558,7 +3558,7 @@
+ #include "confdefs.h"
+ 
+ #include <X11/Intrinsic.h>
+-#include <X11/Xaw/Simple.h>
++#include <X11/Xaw3d/Simple.h>
+ int main() {
+ 
+ ; return 0; }
+--- emacs-20.2/configure.in.xaw3d	Thu Oct 23 15:52:34 1997
++++ emacs-20.2/configure.in	Thu Oct 23 15:52:46 1997
+@@ -1501,7 +1501,7 @@
+     AC_MSG_CHECKING(X11 version 5 with Xaw)
+     AC_TRY_LINK([
+ #include <X11/Intrinsic.h>
+-#include <X11/Xaw/Simple.h>],
++#include <X11/Xaw3d/Simple.h>],
+       [],
+       [AC_MSG_RESULT(5 or newer, with Xaw; use toolkit by default)
+        USE_X_TOOLKIT=LUCID],
