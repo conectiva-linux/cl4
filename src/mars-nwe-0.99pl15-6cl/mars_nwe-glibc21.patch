@@ -1,0 +1,55 @@
+--- mars_nwe/emutli.h.glibc	Sat Jul 11 18:48:59 1998
++++ mars_nwe/emutli.h	Thu Dec 10 16:11:12 1998
+@@ -33,7 +33,7 @@
+ # define IPX_RT_BLUEBOOK	ETHERTYPE_IPX
+  int  ipx_iffind(char *ifname,struct ipx_addr *addr);
+ #else
+-# include <linux/ipx.h>
++# include <netipx/ipx.h>
+ #endif
+ 
+ typedef unsigned char       uint8;
+--- mars_nwe/net.h.glibc	Sat Jul 11 19:44:48 1998
++++ mars_nwe/net.h	Thu Dec 10 16:11:12 1998
+@@ -24,10 +24,7 @@
+ #include <stdlib.h>
+ #include <sys/types.h>  /* moved 12-May-98 0.99.pl9 */
+ 
+-/* we want sysv signal handling, used for glibc */
+-#define _XOPEN_SOURCE 
+-/* perhaps this define is better */
+-#define __USE_XOPEN
++#include <features.h>
+ 
+ #include <signal.h>
+ #include <string.h>
+--- mars_nwe/tools.c.glibc	Wed Oct 21 12:06:45 1998
++++ mars_nwe/tools.c	Thu Dec 10 16:11:12 1998
+@@ -39,7 +39,7 @@
+ int    act_connection=0;  /* which connection (nwconn, nwbind) */
+ time_t act_time=0L;       /* actual time */
+ 
+-static FILE *logfile=stderr;
++static FILE *logfile;
+ static int   use_syslog=0; /* 1 = use syslog for all loggings
+                             * 2 = only for errors
+                             */
+@@ -465,6 +465,8 @@
+   int   withlog=0;
+   int   dodaemon=0;
+   int   new_log=0;
++  
++  logfile = stderr;
+   in_module  = module;
+   my_pid     = getpid();
+   if (NWSERV == module || NWROUTED == module) {
+--- mars_nwe/emutli1.c.glibc	Thu Dec 10 16:24:34 1998
++++ mars_nwe/emutli1.c	Thu Dec 10 16:24:44 1998
+@@ -33,7 +33,6 @@
+ #include <sys/time.h>
+ #include <sys/socket.h>
+ #include <sys/ioctl.h>
+-#include <linux/config.h>
+ #if 0
+ # include <linux/sockios.h>
+ #endif

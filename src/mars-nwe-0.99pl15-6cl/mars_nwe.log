@@ -1,0 +1,7 @@
+/var/log/mars_nwe.log {
+    notifempty
+    missingok
+    postrotate
+	/usr/sbin/killall -HUP nwserv
+    endrotate
+}

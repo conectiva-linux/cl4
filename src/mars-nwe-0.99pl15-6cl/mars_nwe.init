@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# chkconfig: - 60 60
+# description: MARS is a NetWare compatible file and printer server. It \
+#              lets you use a Linux machine as a file and print server for \
+#              NetWare based clients using NetWare's native IPX protocol suite.
+# processname: nwserv
+# processname: nwbind
+# processname: ncpserv
+# config: /etc/nwserv.stations
+# config: /etc/nwserv.conf
+# pidfile: /var/run/nwserv.pid 
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+[ -x /usr/sbin/nwserv ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting %s server: " "Netware/Linux"
+	touch /var/lock/subsys/mars_nwe
+	daemon nwserv
+	echo
+	;;
+  stop)
+	gprintf "Stopping %s server: " "Netware/Linux"
+	killproc nwserv -QUIT
+	rm -f /var/lock/subsys/mars_nwe
+	echo
+	;;
+  status)
+	status nwserv
+	status nwbind
+	status ncpserv
+	;;
+  reload)
+	killall -HUP nwserv
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

@@ -1,0 +1,106 @@
+#!/bin/sh
+# mk.li 10-Jul-97
+# please edit this file !
+
+mk()
+{
+    MYBASE=`pwd`;
+    ERRFILE=$TMP/`basename $MYBASE`.err;
+    rm -f $ERRFILE;
+    if [ $V_VPATH = '..' ] ; then
+      if [ ! -d $OBJDIR ] ; then mkdir $OBJDIR; fi
+      cd    $OBJDIR;
+    fi
+    if $MAKE -f $V_VPATH/makefile.unx $@ 2>&1;then true;else kill -HUP $MK_PPID;fi | tee $ERRFILE
+    if [ $V_VPATH = '..' ] ; then
+      cd ..;
+    fi
+    if [ -f $ERRFILE ] ; then
+      chmod 666 $ERRFILE
+    fi
+}
+
+print_error()
+{
+  echo ""
+  echo "The errors are also reported in '$ERRFILE'"
+  echo "============================================================="
+}
+
+TOLOWER='tr "[A-Z]" "[a-z]"'
+UNX=`uname -s | $TOLOWER`
+MASCHINE=`uname -m`
+MK_PPID=$$
+export MK_PPID
+
+trap 'print_error; exit 1' 1
+
+case $UNX in
+   linux)
+     V_VPATH=".."
+     OBJDIR="obj"
+     CC=cc
+     CPP="cc -E"
+     CFLAGS="$RPM_OPT_FLAGS -pipe -Wall -D_GNU_SOURCE -Dsignal=__sysv_signal"
+
+  case $MASCHINE in
+    sparc)
+       HOSTCFLAGS="-DLINUX -DSPARC"
+       ;;
+      *)
+       HOSTCFLAGS="-DLINUX"
+      ;;
+  esac
+
+if   [ -f /usr/lib/libgdbm.a ] || [ -f /usr/lib/libgdbm.so ] ; then
+     NDBMLIB="-lgdbm"
+else
+     NDBMLIB="-ldbm"
+fi
+     CRYPTLIB="-lcrypt"
+     NSLLIB=""
+     MAKE=make
+     TMP=/tmp
+     INSTALL=install
+     ;;
+########### SYSV (UnixWare) ##############
+   unix_sv)
+     V_VPATH="."
+     OBJDIR="."
+     CC=cc
+     CPP="cc -E"
+     CFLAGS=
+     HOSTCFLAGS=""
+     NDBMLIB="/usr/ucblib/libucb.a"
+     CRYPTLIB="-lgen"
+     NSLLIB="-lnsl"
+     MAKE=make
+     TMP=/tmp
+     INSTALL=/usr/ucb/install
+   ;;
+   *) echo "mk.li: Unknown or not supported OS, probably you must set \$UNX"
+   ;;
+esac
+
+## BEGIN try to pass around what the dbm is to the compiler (acli 19970709)
+case "$NDBMLIB" in
+*gdbm*)
+  HOSTCFLAGS="$HOSTCFLAGS -DUSE_GDBM"
+  ;;
+esac
+## END
+
+
+export CC
+export CPP
+export CFLAGS
+export HOSTCFLAGS
+export NDBMLIB
+export CRYPTLIB
+export NSLLIB
+export TMP
+export INSTALL
+export V_VPATH
+export OBJDIR
+
+mk $@
