@@ -1,0 +1,55 @@
+diff -rubB bootp-2.4.3-old/bootpd.c bootp-2.4.3/bootpd.c
+--- bootp-2.4.3-old/bootpd.c	Sat Jan  9 17:35:56 1999
++++ bootp-2.4.3/bootpd.c	Sat Jan  9 17:47:23 1999
+@@ -685,6 +685,15 @@
+ 		strcpy(bp->bp_sname, hostname);
+ 	}
+ 
++	/* cevans - security as reported on Bugtraq! */
++	if (bp->bp_htype >= hwinfocnt) {
++		if (debug)
++			report(LOG_INFO,
++			       "Request with unknown network type %u",
++			       bp->bp_htype);
++		return;
++	}
++
+ 	/* Convert the request into a reply. */
+ 	bp->bp_op = BOOTREPLY;
+ 	if (bp->bp_ciaddr.s_addr == 0) {
+@@ -790,11 +799,9 @@
+ 	/* Run a program, passing the client name as a parameter. */
+ 	if (hp->flags.exec_file) {
+ 		char tst[100];
+-		/* XXX - Check string lengths? -gwr */
+-		strcpy (tst, hp->exec_file->string);
+-		strcat (tst, " ");
+-		strcat (tst, hp->hostname->string);
+-		strcat (tst, " &");
++		snprintf(tst, sizeof(tst), "%s %s &",
++			 hp->exec_file->string,
++			 hp->hostname->string);
+ 		if (debug)
+ 			report(LOG_INFO, "executing %s", tst);
+ 		system(tst);	/* Hope this finishes soon... */
+diff -rubB bootp-2.4.3-old/report.c bootp-2.4.3/report.c
+--- bootp-2.4.3-old/report.c	Sat Jan  9 17:35:56 1999
++++ bootp-2.4.3/report.c	Sat Jan  9 17:36:17 1999
+@@ -101,7 +101,7 @@
+ #endif
+ {
+ 	va_list ap;
+-	static char buf[128];
++	static char buf[256];
+ 
+ 	if ((priority < 0) || (priority >= numlevels)) {
+ 		priority = numlevels - 1;
+@@ -111,7 +111,7 @@
+ #else
+ 	va_start(ap);
+ #endif
+-	vsprintf(buf, fmt, ap);
++	vsnprintf(buf, sizeof(buf), fmt, ap);
+ 	va_end(ap);
+ 
+ 	/*
