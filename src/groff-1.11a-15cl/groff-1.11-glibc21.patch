@@ -1,0 +1,22 @@
+--- groff-1.11/xditview/device.c~	Mon Sep 11 05:40:23 1995
++++ groff-1.11/xditview/device.c	Tue Feb 16 11:30:33 1999
+@@ -2,6 +2,8 @@
+ 
+ #include <stdio.h>
+ #include <ctype.h>
++#include <string.h>
++#include <unistd.h>
+ 
+ #include <X11/Xos.h>
+ #include <X11/Intrinsic.h>
+@@ -15,10 +17,6 @@
+ #ifndef isascii
+ #define isascii(c) (1)
+ #endif
+-
+-extern void exit();
+-extern char *strtok(), *strchr();
+-extern char *getenv();
+ 
+ /* Name of environment variable containing path to be used for
+ searching for device and font description files. */

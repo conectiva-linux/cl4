@@ -1,0 +1,35 @@
+--- groff-1.11/tmac/Makefile.sub.bash2	Thu Sep 10 11:26:15 1998
++++ groff-1.11/tmac/Makefile.sub	Thu Sep 10 11:28:02 1998
+@@ -18,8 +18,8 @@
+ 
+ install_data: $(NORMALFILES) $(SPECIALFILES) stamp-wrap stamp-strip man.local
+ 	-test -d $(tmacdir) || mkdir $(tmacdir)
+-	if test -n "$(tmac_wrap)"; then \
+-	  for m in $(tmac_wrap); do \
++	if test -n "$(tmac_wrap)" ; then \
++	  for m in "$(tmac_wrap)" ; do \
+ 	    $(INSTALL_DATA) $$m-wrap $(tmacdir)/tmac.$$m; \
+ 	  done; \
+ 	fi
+@@ -52,8 +52,8 @@
+ 	touch $@
+ 
+ stamp-wrap:
+-	if test -n "$(tmac_wrap)"; then \
+-	  for m in $(tmac_wrap); do \
++	if test -n "$(tmac_wrap)" ; then \
++	  for m in "$(tmac_wrap)" ; do \
+ 	    rm -f $$m-wrap; \
+ 	    echo .cp 1 >$$m-wrap; \
+ 	    echo .so $(sys_tmac_prefix)$$m >>$$m-wrap; \
+@@ -62,8 +62,8 @@
+ 	touch $@
+ 
+ uninstall_sub:
+-	-if test -n "$(tmac_wrap)"; then \
+-	  for m in $(tmac_wrap); do rm -f $(tmacdir)/tmac.$$m; done; \
++	-if test -n "$(tmac_wrap)" ; then \
++	  for m in "$(tmac_wrap)" ; do rm -f $(tmacdir)/tmac.$$m; done; \
+ 	fi
+ 	-for f in $(NORMALFILES) $(STRIPFILES); do rm -f $(tmacdir)/$$f; done
+ 	-rm -f $(tmacdir)/tmac.$(tmac_s_prefix)s

@@ -1,0 +1,13 @@
+diff -Nur groff-1.11.orig/tmac/troffrc groff-1.11/tmac/troffrc
+--- groff-1.11.orig/tmac/troffrc	Wed Jul  6 08:31:16 1994
++++ groff-1.11/tmac/troffrc	Mon Oct 19 16:34:42 1998
+@@ -19,7 +19,7 @@
+ troffrc!X100 troffrc!X100-12 troffrc!lj4
+ .do tr \[char160]
+ .\" Set the hyphenation language to `us'.
+-.do hla us
++.\" .do hla us
+ .\" Load hyphenation patterns from `hyphen.us' (in the tmac directory).
+-.do hpf hyphen.us
++.\" .do hpf hyphen.us
+ .\" Don't let blank lines creep in here.

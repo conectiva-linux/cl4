@@ -1,0 +1,30 @@
+diff -uNr groff-1.10.orig/Makefile.in groff-1.10/Makefile.in
+--- groff-1.10.orig/Makefile.in	Tue Jun 27 07:26:17 1995
++++ groff-1.10/Makefile.in	Mon Feb  5 22:47:26 1996
+@@ -74,7 +74,7 @@
+ bindir=$(exec_prefix)/bin
+ 
+ # datasubdir says where to install data files
+-datadir=$(prefix)/share
++datadir=$(prefix)/lib
+ datasubdir=$(datadir)/groff
+ 
+ # fontdir says where to install dev*/*.
+@@ -187,7 +187,7 @@
+ 
+ CCFLAGS=@CXXFLAGS@
+ CFLAGS=@CFLAGS@
+-LDFLAGS=
++LDFLAGS=@LDFLAGS@
+ YACC=@YACC@
+ YACCFLAGS=-v
+ 
+diff -uNr groff-1.10.orig/xditview/Imakefile groff-1.10/xditview/Imakefile
+--- groff-1.10.orig/xditview/Imakefile	Wed Oct 28 05:19:59 1992
++++ groff-1.10/xditview/Imakefile	Mon Feb  5 22:50:59 1996
+@@ -1,4 +1,4 @@
+-GROFF_LIBDIR = /usr/local/lib/groff
++GROFF_LIBDIR = /usr/lib/groff
+ GROFF_FONTDIR = $(GROFF_LIBDIR)/font
+ GROFF_FONTPATH = .:$(GROFF_FONTDIR):/usr/local/lib/font:/usr/lib/font
+ DPIS = 75 100
