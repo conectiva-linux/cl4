@@ -1,0 +1,6 @@
+rxvt name "Rxvt"
+rxvt description "small, fast X terminal application"
+rxvt icon "rterm.xpm"
+rxvt mini-icon "mini-sh1.xpm"
+rxvt exec "rxvt &"
+rxvt group Utilities/Shells

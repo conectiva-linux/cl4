@@ -1,0 +1,11 @@
+--- rxvt-2.6.PRE2/src/feature.h.old	Tue Mar 23 17:03:25 1999
++++ rxvt-2.6.PRE2/src/feature.h	Tue Mar 23 17:04:14 1999
+@@ -153,7 +153,7 @@
+  * This has been superceded and is only for you older users
+  */
+ /* #define HOTKEY_CTRL */
+-/* #define HOTKEY_META */
++#define HOTKEY_META
+ 
+ /*
+  * To use
