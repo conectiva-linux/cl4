@@ -1,0 +1,12 @@
+diff -uNr libgtop-1.0.1/configure.in libgtop-1.0.1-pt_BR/configure.in
+--- libgtop-1.0.1/configure.in	Mon Mar  1 17:41:26 1999
++++ libgtop-1.0.1-pt_BR/configure.in	Fri Jun 25 16:46:31 1999
+@@ -220,7 +220,7 @@
+ AC_CHECK_FUNCS(getcwd gettimeofday getwd putenv strdup strtoul uname)
+ 
+ dnl ## all 'es_??' are only needed for format numbers different of 'es'
+-ALL_LINGUAS="de es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fr ko no ja"
++ALL_LINGUAS="de es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fr ko no ja pt_BR"
+ AM_GNOME_GETTEXT
+ 
+ AC_PATH_XTRA
