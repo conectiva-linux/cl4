@@ -1,0 +1,153 @@
+--- languages/espa~nol-1.5.orig/LEAME
++++ languages/espa~nol-1.5/LEAME
+@@ -76,7 +76,7 @@
+ 
+ 	Se soportan tres tipos diferentes de formatos:
+ 
+-	Formato por defecto: Las letras acentuadas se codifican como
++	Formato tex: Las letras acentuadas se codifican como
+ 	'<letra>:
+ 		'a	á
+ 		'e	é
+@@ -127,8 +127,8 @@
+ 		\'{N}	Ñ
+ 		\"{U}	Ü
+ 
+-	Formato latin1: Las letras acentuadas se codifican utilizando
+-	el c'odigo iso_8859_1.
++	Formato latin1 (predefinido): Las letras acentuadas se codifican
++	utilizando el c'odigo iso_8859_1.
+ 
+ 	Para ejecutar el ispell con un determinado formato:
+ 
+--- languages/espa~nol-1.5.orig/Makefile
++++ languages/espa~nol-1.5/Makefile
+@@ -74,9 +74,32 @@
+ 
+ all:	$(HASHFILE)
+ 
++latin1:	$(HASHFILE).latin1
++
++$(AFFIXES).latin1: clean.e~nes $(AFFIXES)
++	./latin1.pl <$(AFFIXES) >$(AFFIXES).latin1
++
++$(LANGUAGE).words+.latin1: clean.e~nes $(LANGUAGE).words+
++	./latin1.pl <$(LANGUAGE).words+ >$(LANGUAGE).words+.latin1
++
++$(HASHFILE).latin1: $(AFFIXES).latin1 $(LANGUAGE).words+.latin1
++	$(BUILDHASH) -s $(LANGUAGE).words+.latin1 $(AFFIXES).latin1 \
++	  $(HASHFILE).latin1
++
+ e~ne:
+ 	sh e~nes
+ 
++clean.e~nes:
++	if [ -f espa~nol.aff.e\'ne ]; then \
++	  mv espa~nol.aff.e\'ne espa~nol.aff; \
++	fi
++	if [ -f espa~nol.words.e\'ne ]; then \
++	  mv espa~nol.words.e\'ne espa~nol.words; \
++	fi
++	if [ -f espa~nol.words+.e\'ne ]; then \
++	  mv espa~nol.words+.e\'ne espa~nol.words+; \
++	fi
++
+ $(HASHFILE):	$(AFFIXES) $(DICTIONARY)
+ 	rm -f $(HASHFILE)
+ 	munchlist -v -l $(AFFIXES) $(DICTIONARY) > $(LANGUAGE).words+
+@@ -105,8 +128,8 @@
+ 	    : ; \
+ 	fi
+ 
+-clean:
+-	rm -f core *.hash *.stat *.cnt
++clean: clean.e~nes
++	rm -f core *.hash *.stat *.cnt *.latin1
+ 
+ #
+ #	The following target is used in the English makefile, and is
+--- languages/espa~nol-1.5.orig/README
++++ languages/espa~nol-1.5/README
+@@ -74,7 +74,7 @@
+ 
+ 	Four different formatters are supported:
+ 
+-	Default formatter: The acute characters are coded as follows:
++	tex formatter: The acute characters are coded as follows:
+ 
+ 		'a	á
+ 		'e	é
+@@ -123,8 +123,8 @@
+ 		\'{N}	Ñ
+ 		\"{U}	Ü
+ 
+-	latin1 formatter: The acute characters are coded as specified
+-	in the iso_8859_1 code.
++	latin1 formatter (default): The acute characters are coded as
++	specified in the iso_8859_1 code.
+ 
+ 	If you want to run ispell by using one of the previous formats
+ 	please type:
+--- languages/espa~nol-1.5.orig/latin1.pl
++++ languages/espa~nol-1.5/latin1.pl
+@@ -0,0 +1,60 @@
++#!/usr/bin/perl
++
++%hl2a=(
++  "e1","'a",
++  "c1","'A",
++  "e9","'e",
++  "c9","'E",
++  "ed","'i",
++  "cd","'I",
++  "f1","'n",
++  "d1","'N",
++  "f3","'o",
++  "d3","'O",
++  "fa","'u",
++  "da","'U",
++  "fc","\"u",
++  "dc","\"U"
++);
++
++%a2l=(
++  "'a","á",
++  "'A","Á",
++  "'e","é",
++  "'E","É",
++  "'i","í",
++  "'I","Í",
++  "'n","ñ",
++  "'N","Ñ",
++  "'o","ó",
++  "'O","Ó",
++  "'u","ú",
++  "'U","Ú",
++  "\"u","ü",
++  "\"U","Ü"
++);
++
++$size=keys(%a2l);
++@chars=keys(%a2l);
++
++$\ = "\n";		# automatically add newline on print
++
++while (<>) {
++    chop;
++    if (/^defstringtype "tex" "tex" ".tex"/){
++	printf "defstringtype \"latin1\" \"tex\" \".txt\"\n"
++    } elsif (/^altstringtype "latin1" "tex" ".txt"/){
++	printf "altstringtype \"tex\" \"tex\" \".tex\"\n"
++    } elsif (/^stringchar \\(..)	\\(..)/){
++	printf "stringchar %s	%s\n",$a2l{$1},$a2l{$2}
++    } elsif (/^altstringchar   \\x(..)    \\(..)/){
++	printf "altstringchar   \\%s    %s\n",$hl2a{$1},$a2l{$2}
++    } elsif (/^altstringchar   (.*)	\\(..)/){
++	printf "altstringchar   %s	%s\n",$1,$a2l{$2}
++    } else {
++	for ($i=0; $i<$size ; $i++){
++	  s/$chars[$i]/$a2l{$chars[$i]}/g
++	}
++	print
++    }
++}

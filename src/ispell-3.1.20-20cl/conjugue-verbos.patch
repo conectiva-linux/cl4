@@ -1,0 +1,31 @@
+--- languages/br.ispell-2.3/conjugue.1.orig	Sat Mar  6 17:42:40 1999
++++ languages/br.ispell-2.3/conjugue.1	Sat Mar  6 17:43:09 1999
+@@ -24,7 +24,7 @@
+ 
+ .TP
+ .B BANCO
+-Path completo do banco de verbos (default /usr/local/lib/verbos).
++Path completo do banco de verbos (default /usr/lib/conjugue/verbos).
+ 
+ .TP
+ .B NOVOS
+@@ -180,7 +180,7 @@
+ .SH ARQUIVOS
+ 
+ .br
+-/usr/local/lib/verbos - banco de verbos.
++/usr/lib/conjugue/verbos - banco de verbos.
+ 
+ .br
+ $HOME/.conjugue-novos - arquivo para apendar verbos que não
+--- languages/br.ispell-2.3/conjugue.orig	Sat Mar  6 17:41:12 1999
++++ languages/br.ispell-2.3/conjugue	Sat Mar  6 17:41:47 1999
+@@ -904,7 +904,7 @@
+     if ((FORMATO !~ /^c/) && (CMD == "")) {
+         print "aguarde o término da leitura do banco..."
+     }
+-    carrega_banco((BANCO=="") ? "/usr/local/lib/verbos" : BANCO)
++    carrega_banco((BANCO=="") ? "/usr/lib/conjugue/verbos" : BANCO)
+ 
+     if (FORMATO ~ /^c/)
+         PR = ""
