@@ -1,0 +1,11 @@
+--- netkit-rwall-0.10/MCONFIG.ewt	Tue Jul 15 12:37:18 1997
++++ netkit-rwall-0.10/MCONFIG	Tue Jul 15 12:37:37 1997
+@@ -33,7 +33,7 @@
+ WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS) $(RPM_OPT_FLAGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
