@@ -1,0 +1,72 @@
+--- git-4.3.17/src/Makefile.in.path	Sat Mar 14 16:31:20 1998
++++ git-4.3.17/src/Makefile.in	Wed May  6 00:57:56 1998
+@@ -35,7 +35,7 @@
+ exec_prefix	= @exec_prefix@
+ bindir		= $(exec_prefix)/bin
+ libdir		= $(prefix)/lib/git
+-termdir		= $(prefix)/lib/git/term
++termdir		= $(libdir)
+ 
+ SHELL		= /bin/sh
+ CFLAGS		= @CFLAGS@
+@@ -69,7 +69,7 @@
+ ### configure.in.
+ ###
+ 
+-GIT_PREFIX_DEP	= misc.o
++GIT_PREFIX_DEP	= #misc.o
+ 
+ 
+ ###
+@@ -94,7 +94,7 @@
+ 
+ prefix-change:
+ 	@echo $(prefix) > prefix.new
+-	@$(srcdir)/prefix.sh $(GIT_PREFIX_DEP)
++#	@$(srcdir)/prefix.sh $(GIT_PREFIX_DEP)
+ 
+ install-dirs: prefix-change
+ 	$(srcdir)/../mkinstalldirs $(bindir) $(libdir)
+--- git-4.3.17/src/misc.c.path	Wed May  6 00:59:40 1998
++++ git-4.3.17/src/misc.c	Wed May  6 01:00:21 1998
+@@ -84,7 +84,7 @@
+ compute_directories()
+ {
+     char *prefix_relative_bin_dir = "/bin";
+-    char *prefix_relative_term_dir = "/lib/git/term";
++    char *prefix_relative_term_dir = "/lib/git";
+ 
+     bindir = xmalloc(strlen(PREFIX) + strlen(prefix_relative_bin_dir) + 1);
+     sprintf(bindir, "%s%s", PREFIX, prefix_relative_bin_dir);
+--- git-4.3.17/term/Makefile.in.path	Sat Mar 14 16:31:20 1998
++++ git-4.3.17/term/Makefile.in	Wed May  6 00:57:56 1998
+@@ -34,8 +34,7 @@
+ 
+ prefix		= @prefix@
+ termlib		= $(prefix)/lib
+-termlibgit	= $(prefix)/lib/git
+-termdir		= $(prefix)/lib/git/term
++termdir		= $(prefix)/lib/git
+ 
+ SHELL		= /bin/sh
+ INSTALL		= @INSTALL@
+@@ -69,7 +68,7 @@
+ prefix-change:
+ 
+ install-dirs:
+-	$(srcdir)/../mkinstalldirs $(termlib) $(termlibgit) $(termdir)
++	$(srcdir)/../mkinstalldirs $(termlib) $(termdir)
+ 
+ install-strip: install
+ 
+--- git-4.3.17/Makefile.in.path	Sat Mar 14 16:31:20 1998
++++ git-4.3.17/Makefile.in	Wed May  6 00:57:56 1998
+@@ -38,7 +38,7 @@
+ infodir		= $(prefix)/info
+ htmldir		= $(prefix)/lib/git/html
+ mandir		= $(prefix)/man/man1
+-termdir		= $(prefix)/lib/git/term
++termdir		= $(libdir)
+ 
+ SHELL		= /bin/sh
+ CHMOD		= chmod
