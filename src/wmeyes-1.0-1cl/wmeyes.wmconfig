@@ -1,0 +1,8 @@
+wmeyes name "wmeyes"
+wmeyes exec "wmeyes -w &"
+wmeyes description "WindowMaker eyes"
+wmeyes description(pt_BR) "Olhos do WindowMaker"
+wmeyes description(es) "Ojos del WindowMaker"
+wmeyes group "WindowMaker Dock Applets"
+wmeyes group(pt_BR) "Applets do Dock do WindowMaker"
+wmeyes group(es) "Applets del Dock del WindowMaker"
