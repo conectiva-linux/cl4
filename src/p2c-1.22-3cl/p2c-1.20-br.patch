@@ -1,0 +1,78 @@
+--- p2c-1.20/src/Makefile.br	Tue Aug 18 18:32:52 1998
++++ p2c-1.20/src/Makefile	Tue Aug 18 18:32:52 1998
+@@ -28,11 +28,11 @@
+ #MANFILE = p2c.man.Z       # compressed nroff source (for man.1.Z)
+ 
+ # Directories (public version)
+-HOMEDIR = /usr/lib/p2c
+-INCDIR = /usr/include/p2c
+-BINDIR = /usr/bin
+-LIBDIR = /usr/lib
+-MANDIR = /usr/man/man1
++HOMEDIR = $(PREFIX)/usr/lib/p2c
++INCDIR = $(PREFIX)/usr/include/p2c
++BINDIR = $(PREFIX)/usr/bin
++LIBDIR = $(PREFIX)/usr/lib
++MANDIR = $(PREFIX)/usr/man/man1
+ MANFILE = p2c.man.inst
+ 
+ # Compiler options
+@@ -63,9 +63,9 @@
+ LIBOBJS = p2clib.o loc.p2clib.o
+ OTHERLIBOBJS =
+ 
+-ABSHOMEDIR = `cd $(HOMEDIR); pwd`
+-ABSINCDIR = `cd $(INCDIR); pwd`
+-ABSLIBDIR = `cd $(LIBDIR); pwd`
++ABSHOMEDIR = /usr/lib/p2c
++ABSINCDIR = /usr/include/p2c
++ABSLIBDIR = /usr/lib
+ 
+ SHLIBDIR      = shlib
+ SHLIBCFLAGS   = -fPIC
+@@ -140,6 +140,9 @@
+ 
+ newhome:
+ 	rm -f trans.o     # force trans.c to be recompiled (if HOMEDIR changes)
++
++build:  p2c libp2c.a libp2c.so.1.2.0 p2c.h $(MANFILE) loc.p2crc \
++	system.m2 turbo.imp string.pas
+ 
+ install: proto \
+ 	makedirs \
+--- p2c-1.20/examples/Makefile.br	Tue Aug 18 18:32:52 1998
++++ p2c-1.20/examples/Makefile	Tue Aug 18 18:42:00 1998
+@@ -4,9 +4,12 @@
+ 
+ # The following definitions assume p2c has been compiled into the "home"
+ # directory as shown in src/Makefile.
+-P2C = p2c
+-INC = /usr/include/p2c
+-LIB = /usr/lib/libp2c.a
++P2C_HOME=../src
++export P2C_HOME
++
++P2C = ../src/p2c
++INC = ../src -I../include
++LIB = ../src/libp2c.a
+ 
+ 
+ default: comp
+--- p2c-1.20/Makefile.br	Wed Apr 24 16:31:00 1991
++++ p2c-1.20/Makefile	Tue Aug 18 18:32:52 1998
+@@ -22,6 +22,10 @@
+ # subdirectory.  To install a permanent, public copy of p2c, see "README"
+ # and src/Makefile.
+ 
++all:
++	cd src ; make build
++	cd examples ; make comp
++
+ test:
+ 	@echo "Compiling p2c, installing in `pwd`/home..."
+ 	cd src; make install
+@@ -45,4 +49,3 @@
+ 
+ install:
+ 	cd src; make install
+-

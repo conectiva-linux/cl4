@@ -1,0 +1,167 @@
+--- p2c-1.22/src/Makefile.new	Tue Mar 16 10:28:18 1999
++++ p2c-1.22/src/Makefile	Mon Mar 22 01:54:02 1999
+@@ -19,29 +19,23 @@
+ SHELL = /bin/sh
+ 
+ # Directories (private version)
+-HOMEDIR = ../home
+-INCDIR = ../home/p2c
+-BINDIR = ..
+-LIBDIR = ../home
+-MANDIR = ../home
+-MANFILE = p2c.cat          # human-readable manual (for cat.1)
+ #MANFILE = p2c.man.inst    # uncompressed nroff source (for man.1)
+ #MANFILE = p2c.man.Z       # compressed nroff source (for man.1.Z)
+ 
+ # Directories (public version)
+-#HOMEDIR = /usr/lib/p2c
+-#INCDIR = /usr/include/p2c
+-#BINDIR = /usr/bin
+-#LIBDIR = /usr/lib
+-#MANDIR = /usr/man/man1
+-#MANFILE = p2c.man.inst
++HOMEDIR = $(RPM_INSTALL)/usr/lib/p2c
++INCDIR = $(RPM_INSTALL)/usr/include/p2c
++BINDIR = $(RPM_INSTALL)/usr/bin
++LIBDIR = $(RPM_INSTALL)/usr/lib
++MANDIR = $(RPM_INSTALL)/usr/man/man1
++MANFILE = p2c.man.inst
+ 
+ # Compiler options
+ ##CC     = /nfs/cruella/usr/local/insure/bin.linux/insight
+ CC     = gcc
+-OPT    = # -O		   # uncomment this for optimization
++OPT    = $(RPM_OPTS)		   # uncomment this for optimization
+ #WARN   = -W -Wno-unused
+-DEB    =  -g $(WARN) 	   # uncomment this for debugging
++#DEB    =  -g $(WARN) 	   # uncomment this for debugging
+ DEFS   =		   # place other -D types of things here
+ CFLAGS = $(OPT) $(DEB) $(DEFS)
+ LFLAGS =
+@@ -66,9 +60,13 @@
+ LIBOBJS = p2clib.o loc.p2clib.o
+ OTHERLIBOBJS =
+ 
+-ABSHOMEDIR = `cd $(HOMEDIR); pwd`
+-ABSINCDIR = `cd $(INCDIR); pwd`
+-ABSLIBDIR = `cd $(LIBDIR); pwd`
++ABSHOMEDIR = /usr/lib/p2c
++ABSINCDIR = /usr/include/p2c
++ABSLIBDIR = /usr/lib
++
++SHLIBDIR      = ./
++SHLIBCFLAGS   = -fPIC
++SHLIBOBJS     = $(LIBOBJS:%.o=$(SHLIBDIR)/%.o)
+ 
+ MISCSRCS = makeproto.c
+ PROTOS = p2c.proto p2c.hdrs
+@@ -78,6 +76,7 @@
+ # Top-level targets
+ all: proto p2c libp2c.a p2c.cat
+ proto: $(PROTOS)
++shlib: libp2c.so.1.2.0
+ 
+ 
+ # Making p2c
+@@ -109,6 +108,11 @@
+ p2clib.o: p2clib.c
+ 	$(CC) -c $(CFLAGS) p2clib.c
+ 
++libp2c.so.1.2.0: $(SHLIBOBJS)  
++	gcc -shared -Wl,-soname,libp2c.so.1 -o libp2c.so.1.2.0 $(SHLIBOBJS) -lc
++
++
++
+ 
+ # Making the p2c man page
+ p2c.man.inst: p2c.man
+@@ -147,19 +151,23 @@
+ newhome:
+ 	rm -f trans.o     # force trans.c to be recompiled (if HOMEDIR changes)
+ 
++build:  p2c libp2c.a libp2c.so.1.2.0 p2c.h $(MANFILE) loc.p2crc \
++       system.m2 turbo.imp string.pas
++
+ install: proto \
+ 	makedirs \
+-	$(BINDIR)/p2c         \
+-	$(BINDIR)/p2cc        \
+-	$(LIBDIR)/libp2c.a    \
+-	$(MANDIR)/p2c.1	      \
+-	$(INCDIR)/p2c.h	      \
+-	$(HOMEDIR)/p2crc      \
+-	$(HOMEDIR)/loc.p2crc  \
+-	$(HOMEDIR)/system.imp \
+-	$(HOMEDIR)/system.m2  \
+-	$(HOMEDIR)/turbo.imp  \
+-	$(HOMEDIR)/string.pas
++        $(BINDIR)/p2c         \
++        $(BINDIR)/p2cc        \
++        $(LIBDIR)/libp2c.a    \
++        $(LIBDIR)/libp2c.so.1.2.0    \
++        $(MANDIR)/p2c.1       \
++        $(INCDIR)/p2c.h       \
++        $(HOMEDIR)/p2crc      \
++        $(HOMEDIR)/loc.p2crc  \
++        $(HOMEDIR)/system.imp \
++        $(HOMEDIR)/system.m2  \
++        $(HOMEDIR)/turbo.imp  \
++        $(HOMEDIR)/string.pas
+ 
+ SHELL=/bin/sh
+ makedirs:
+@@ -178,6 +186,9 @@
+ $(LIBDIR)/libp2c.a: libp2c.a
+ 	$(COPY)  libp2c.a     $(LIBDIR)/libp2c.a
+ 	if [ -f /usr/bin/ranlib -o -f /bin/ranlib ]; then ranlib $(LIBDIR)/libp2c.a; fi
++
++$(LIBDIR)/libp2c.so.1.2.0: libp2c.so.1.2.0
++	 $(COPY) libp2c.so.1.2.0 $(LIBDIR)/libp2c.so.1.2.0
+ 
+ $(MANDIR)/p2c.1: $(MANFILE)
+ 	$(COPY)  $(MANFILE)   $(MANDIR)/p2c.1
+--- p2c-1.22/src/trans.h.new	Mon Mar 22 00:59:04 1999
++++ p2c-1.22/src/trans.h	Mon Mar 22 00:59:20 1999
+@@ -84,14 +84,6 @@
+ #include <ctype.h>
+ 
+ 
+-#ifdef __GNUC__      /* Fast, in-line version of strcmp */
+-# define strcmp(a,b) ({ char *_aa = (a), *_bb = (b); int _diff;  \
+-			for (;;) {    \
+-			    if (!*_aa && !*_bb) { _diff = 0; break; }   \
+-                            if (*_aa++ != *_bb++)    \
+-				{ _diff = _aa[-1] - _bb[-1]; break; }   \
+-			} _diff; })
+-#endif
+ 
+ 
+ #if defined(HASDUMPS) && defined(define_globals)
+--- p2c-1.22/examples/Makefile.new	Mon Mar 22 01:31:31 1999
++++ p2c-1.22/examples/Makefile	Mon Mar 22 01:31:50 1999
+@@ -4,9 +4,9 @@
+ 
+ # The following definitions assume p2c has been compiled into the "home"
+ # directory as shown in src/Makefile.
+-P2C = ../p2c
+-INC = ../home
+-LIB = ../home/libp2c.a
++P2C = ../src/p2c
++INC = ../src/
++LIB = ../src/libp2c.a
+ 
+ 
+ default: comp
+--- p2c-1.22/Makefile.new	Tue Mar 16 10:28:15 1999
++++ p2c-1.22/Makefile	Mon Mar 22 01:36:52 1999
+@@ -23,6 +23,10 @@
+ # subdirectory.  To install a permanent, public copy of p2c, see "README"
+ # and src/Makefile.
+ 
++all:
++	cd src ; make build ;  
++
++
+ test:
+ 	@echo "Compiling p2c, installing in `pwd`/home..."
+ 	cd src; make install

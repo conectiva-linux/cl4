@@ -1,0 +1,101 @@
+--- p2c-1.20/src/Makefile.orig	Wed Apr 24 16:30:37 1991
++++ p2c-1.20/src/Makefile	Thu Jul 10 11:52:07 1997
+@@ -28,20 +28,20 @@
+ #MANFILE = p2c.man.Z       # compressed nroff source (for man.1.Z)
+ 
+ # Directories (public version)
+-#HOMEDIR = /usr/lib/p2c
+-#INCDIR = /usr/include/p2c
+-#BINDIR = /usr/bin
+-#LIBDIR = /usr/lib
+-#MANDIR = /usr/man/man1
+-#MANFILE = p2c.man.inst
++HOMEDIR = /usr/lib/p2c
++INCDIR = /usr/include/p2c
++BINDIR = /usr/bin
++LIBDIR = /usr/lib
++MANDIR = /usr/man/man1
++MANFILE = p2c.man.inst
+ 
+ # Compiler options
+ CC = cc                    # you may wish to use gcc here instead
+-OPT = # -O		   # uncomment this for optimization
++OPT = $(RPM_OPT_FLAGS)            # uncomment this for optimization
+ DEB = # -g		   # uncomment this for debugging
+ DEFS =			   # place other -D types of things here
+ CFLAGS = $(OPT) $(DEB) $(DEFS)
+-LFLAGS =
++LFLAGS = -s
+ 
+ 
+ # Custom translator modules
+@@ -67,6 +67,10 @@
+ ABSINCDIR = `cd $(INCDIR); pwd`
+ ABSLIBDIR = `cd $(LIBDIR); pwd`
+ 
++SHLIBDIR      = shlib
++SHLIBCFLAGS   = -fPIC
++SHLIBOBJS     = $(LIBOBJS:%.o=$(SHLIBDIR)/%.o)
++
+ MISCSRCS = makeproto.c
+ PROTOS = p2c.proto p2c.hdrs
+ HDRS = trans.h p2c.h
+@@ -75,7 +79,7 @@
+ # Top-level targets
+ all: proto p2c libp2c.a p2c.cat
+ proto: $(PROTOS)
+-
++shlib: libp2c.so.1.2.0 
+ 
+ # Making p2c
+ p2c: $(OBJS)
+@@ -103,6 +107,9 @@
+ libp2c.a: $(LIBOBJS)
+ 	ar r libp2c.a $(LIBOBJS) $(OTHERLIBOBJS)
+ 
++libp2c.so.1.2.0: $(SHLIBOBJS)
++	gcc -shared -Wl,-soname,libp2c.so.1 -o libp2c.so.1.2.0 $(SHLIBOBJS) -lc
++
+ p2clib.o: p2clib.c
+ 	$(CC) -c $(CFLAGS) p2clib.c
+ 
+@@ -138,6 +145,7 @@
+ 	makedirs \
+ 	$(BINDIR)/p2c         \
+ 	$(LIBDIR)/libp2c.a    \
++	$(LIBDIR)/libp2c.so.1.2.0    \
+ 	$(MANDIR)/p2c.1	      \
+ 	$(INCDIR)/p2c.h	      \
+ 	$(HOMEDIR)/p2crc      \
+@@ -158,6 +166,10 @@
+ $(BINDIR)/p2c: p2c
+ 	$(COPY)  p2c          $(BINDIR)/p2c
+ 
++$(LIBDIR)/libp2c.so.1.2.0: libp2c.so.1.2.0
++	$(COPY)  libp2c.so.1.2.0     $(LIBDIR)/libp2c.so.1.2.0
++	ln -sf libp2c.so.1.2.0 $(LIBDIR)/libp2c.so
++
+ $(LIBDIR)/libp2c.a: libp2c.a
+ 	$(COPY)  libp2c.a     $(LIBDIR)/libp2c.a
+ 	if [ -f /usr/bin/ranlib -o -f /bin/ranlib ]; then ranlib $(LIBDIR)/libp2c.a; fi
+@@ -205,3 +217,5 @@
+ 	echo '"make test" should be used in the outer-level p2c directory.'
+ 	echo 'Type "cd .." and "make test" again.'
+ 
++$(SHLIBDIR)/%.o: %.c
++	$(CC) -c $(SHLIBCFLAGS) $(CPPFLAGS) $(CFLAGS) -o $@ ./$<
+--- p2c-1.20/examples/Makefile.orig	Wed Apr 24 16:31:00 1991
++++ p2c-1.20/examples/Makefile	Thu Jul 10 11:51:48 1997
+@@ -4,9 +4,9 @@
+ 
+ # The following definitions assume p2c has been compiled into the "home"
+ # directory as shown in src/Makefile.
+-P2C = ../p2c
+-INC = ../home
+-LIB = ../home/libp2c.a
++P2C = p2c
++INC = /usr/include/p2c
++LIB = /usr/lib/libp2c.a
+ 
+ 
+ default: comp
