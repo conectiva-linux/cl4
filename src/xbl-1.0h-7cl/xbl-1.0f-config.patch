@@ -1,0 +1,48 @@
+--- xbl-1.0f/Makefile.in.orig	Mon Mar  6 04:54:42 1995
++++ xbl-1.0f/Makefile.in	Tue Dec 19 17:34:24 1995
+@@ -14,7 +14,7 @@
+ USE_SETGID=-DUSE_SETGID
+ 
+ # group owner of games file
+-GROUP_GID=2
++GROUP_GID=20
+ 
+ ###########################################################################
+ # You don't need to read below if you have xmkmf or imake
+@@ -93,7 +93,7 @@
+ 	 -DRESOURCEDIR=\"$(RESOURCEDIR)\" \
+ 	 -DXBLVERSION=\"$(XBLVERSION)\" \
+ 	 -DGROUP_GID=$(GROUP_GID) \
+-	  $(USE_SETGID) @DEFS@ -g
++	  $(USE_SETGID) @DEFS@ $(RPM_OPT_FLAGS)
+ # For link edit options
+ LDOPTIONS=$(CFLAGS)
+ LDOPTIONS=@LDOPTIONS@
+@@ -128,19 +128,6 @@
+ 		fi
+ 	@echo "Type <Return> to continue installation"
+ 	@echo "Type NO       to stop installation"
+-	@read LINE && test "" = "$$LINE"
+-	#
+-	# Remove old score file
+-	#
+-	@-if [ -d "$(SCOREDIR)" ] ; \
+-		then \
+-		echo "The scoring method and speeds of Xbl had change" ; \
+-		echo "If your version is older than 0.2e, destroy score." ; \
+-		echo "Type <Return> to destroy old score files" ; \
+-		echo "Type NO       to hold old score files" ; \
+-		read LINE && test "" = "$$LINE" && rm $(SCOREDIR)/[1-9]* ; \
+-		exit 0 ; \
+-		fi
+ 	#
+ 	# Install executable
+ 	#
+--- xbl-1.0f/Xbl.ad.orig	Tue Dec 14 23:14:40 1993
++++ xbl-1.0f/Xbl.ad	Tue Dec 19 17:31:33 1995
+@@ -11,4 +11,4 @@
+ ! You can have the option list typing : "bl -h"
+ 
+ xbl*args: -x 5 -y 5 -z 10 -level 0 -bloctype 2 -land 0 -draw 0 -clearline 0 \
+-	-buttonheight -1 -buffer 2 -keyboard 4 -keytable "14789632azqswx p"
++	-buttonheight -1 -buffer 1 -keyboard 4 -keytable "14789632azqswx p"
