@@ -1,0 +1,4 @@
+ircii name "ircii"
+ircii description "Cliente Internet Relay Chat - IRC"
+ircii group Utilitários/Diversos
+ircii exec "xterm -e irc &"
