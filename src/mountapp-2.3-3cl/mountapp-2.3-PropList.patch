@@ -1,0 +1,12 @@
+diff -Nur mountapp-2.3.orig/configure mountapp-2.3/configure
+--- mountapp-2.3.orig/configure	Wed Jan 13 02:17:36 1999
++++ mountapp-2.3/configure	Mon Mar 22 10:56:29 1999
+@@ -3052,7 +3052,7 @@
+     echo "You need to build it before building mount.app (if you already"
+     echo "did that, remove config.cache and rerun configure)."
+     echo "Please read the INSTALL file for detailed instructions."
+-    read foo
++#    read foo
+ fi
+ 
+ 
