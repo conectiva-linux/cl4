@@ -1,0 +1,4 @@
+carrom name "Carrom"
+carrom description "Carrom"
+carrom exec "flying -carrom &"
+carrom group Jogos/Vídeo

@@ -1,0 +1,4 @@
+curling name "Curling"
+curling description "Curling"
+curling exec "flying -curling &"
+curling group Jogos/Vídeo

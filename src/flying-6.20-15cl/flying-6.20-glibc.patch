@@ -1,0 +1,11 @@
+--- flying-6.20/xpball.C.ewt	Thu Aug 29 15:27:48 1996
++++ flying-6.20/xpball.C	Thu Aug 29 15:27:49 1996
+@@ -139,7 +139,7 @@
+ #	undef	 FDS_TYPE
+ #	define FDS_TYPE	(int*)
+ #else
+-	struct fd_set	readfds;
++	fd_set	readfds;
+ #endif
+ 
+ 	FD_ZERO( &readfds );

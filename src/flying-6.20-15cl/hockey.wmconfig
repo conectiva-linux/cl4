@@ -1,0 +1,4 @@
+hockey name "Air-Hockey"
+hockey description "Air-Hockey"
+hockey exec "flying -hockey &"
+hockey group Jogos/Vídeo

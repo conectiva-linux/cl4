@@ -1,0 +1,4 @@
+pool9 name "Nine Ball"
+pool9 description "Nine Ball"
+pool9 exec "flying -pool9 &"
+pool9 group Jogos/Vídeo

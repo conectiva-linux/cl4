@@ -1,0 +1,4 @@
+pool name "Pool"
+pool description "Pool"
+pool exec "flying -pool &"
+pool group Jogos/Vídeo

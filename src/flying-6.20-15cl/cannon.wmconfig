@@ -1,0 +1,4 @@
+cannon name "Karambolage"
+cannon description "Karambolage"
+cannon exec "flying -cannon &"
+cannon group Jogos/Vídeo

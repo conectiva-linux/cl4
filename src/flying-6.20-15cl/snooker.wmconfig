@@ -1,0 +1,4 @@
+snooker name "Snooker"
+snooker description "Snooker"
+snooker exec "flying -snooker &"
+snooker group Jogos/Vídeo
