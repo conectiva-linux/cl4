@@ -1,0 +1,75 @@
+Binary files wmcdplay.orig/.wmcdplay.cc.swp and wmcdplay/.wmcdplay.cc.swp differ
+diff -Nur wmcdplay.orig/wmcdplay.cc wmcdplay/wmcdplay.cc
+--- wmcdplay.orig/wmcdplay.cc	Thu Feb  4 18:36:24 1999
++++ wmcdplay/wmcdplay.cc	Thu Feb  4 18:48:59 1999
+@@ -395,42 +395,42 @@
+          artwrk=true;
+ 	 if(i<argc-1){
+             i++;
+-            sprintf(artwrkf, "%s", argv[i]);
++            snprintf(artwrkf, sizeof(artwrkf), "%s", argv[i]);
+          }
+          continue;
+       }
+       if(strcmp(argv[i], "-d")==0){
+ 	 if(i<argc-1){
+             i++;
+-            sprintf(cddev, "%s", argv[i]);
++            snprintf(cddev, sizeof(cddev), "%s", argv[i]);
+          }
+          continue;
+       }
+       if(strcmp(argv[i], "-l")==0){
+          if(i<argc-1){
+             i++;
+-            sprintf(ledcolor, "%s", argv[i]);
++            snprintf(ledcolor, sizeof(ledcolor),"%s", argv[i]);
+          }
+          continue;
+       }
+       if(strcmp(argv[i], "-b")==0){
+          if(i<argc-1){
+             i++;
+-            sprintf(backcolor, "%s", argv[i]);
++            snprintf(backcolor, sizeof(backcolor),"%s", argv[i]);
+          }
+          continue;
+       }
+       if(strcmp(argv[i], "-position")==0){
+          if(i<argc-1){
+             i++;
+-            sprintf(position, "%s", argv[i]);
++            snprintf(position, sizeof(position),"%s", argv[i]);
+          }
+          continue;
+       }
+       if(strcmp(argv[i], "-display")==0){
+          if(i<argc-1){
+             i++;
+-            sprintf(display, "%s", argv[i]);
++            snprintf(display, sizeof(display),"%s", argv[i]);
+          }
+          continue;
+       }
+@@ -469,7 +469,7 @@
+          update();
+       if(utrack){
+          if(mode==ssNoCD || mode==ssTrayOpen)
+-            sprintf(trackstr, "  ");
++            printf(trackstr, "  ");
+          else
+             sprintf(trackstr, "%2d", cdctl->getStatusTrack());
+          if(art_showled[1])
+@@ -617,10 +617,10 @@
+          fprintf(stderr, "%s : Unable to open artwork file '%s'.\n", NAME, artfilen);
+          return false;
+       }
+-      sprintf(artfilenbuf, "%s/.wmcdplay/%s", getenv("HOME"), artfilen);
++      snprintf(artfilenbuf, sizeof(artfilenbuf),"%s/.wmcdplay/%s", getenv("HOME"), artfilen);
+       artfile=fopen(artfilenbuf, "r");
+       if(artfile==NULL){
+-         sprintf(artfilenbuf, "%s%s", SYSARTDIR, artfilen);
++         snprintf(artfilenbuf, sizeof(artfilenbuf),"%s%s", SYSARTDIR, artfilen);
+          artfile=fopen(artfilenbuf, "r");
+          if(artfile==NULL){
+             fprintf(stderr,"%s : Tried to find artwork file, but failed.\n", NAME, artfilen);

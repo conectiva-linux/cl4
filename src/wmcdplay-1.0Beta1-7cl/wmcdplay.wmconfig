@@ -1,0 +1,4 @@
+wmcdplay name "Wmcdplay"
+wmcdplay description "Applet reprodutor de CDs"
+wmcdplay exec "wmcdplay &"
+wmcdplay group "Applets do Dock do WindowMaker"
