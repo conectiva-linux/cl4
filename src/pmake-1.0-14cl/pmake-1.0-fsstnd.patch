@@ -1,0 +1,38 @@
+diff -ur pmake.orig/Makefile.dist pmake/Makefile.dist
+--- pmake.orig/Makefile.dist	Sun Aug  8 05:15:24 1993
++++ pmake/Makefile.dist	Wed May 24 11:35:52 1995
+@@ -37,14 +37,15 @@
+ all: pmake
+ 
+ install: all
+-	cp pmake /usr/local/bin/pmake
+-	chmod a+x,go-rw /usr/local/bin/pmake
+-	mkdir /usr/share
+-	mkdir /usr/share/mk
+-	chmod a+rx /usr/share
+-	chmod a+rx /usr/share/mk
+-	cp mk/* /usr/share/mk
+-	chmod a+rx /usr/share/mk/*
++	cp pmake /usr/bin/pmake
++	chmod a+x,go-rw /usr/bin/pmake
++	mkdir -p /usr/lib
++	mkdir -p /usr/lib/pmake
++	chmod a+rx /usr/lib
++	chmod a+rx /usr/lib/pmake
++	cp mk/* /usr/lib/pmake
++	chmod a+rx /usr/lib/pmake
++	cp make.1 /usr/man/man1/pmake.1
+ 
+ clean:
+ 	rm -f ${OBJS} core pmake 
+diff -ur pmake.orig/pathnames.h pmake/pathnames.h
+--- pmake.orig/pathnames.h	Sun Aug  8 05:15:38 1993
++++ pmake/pathnames.h	Wed May 24 11:34:43 1995
+@@ -35,5 +35,5 @@
+ 
+ #define	_PATH_OBJDIR		"obj"
+ #define	_PATH_DEFSHELLDIR	"/bin"
+-#define	_PATH_DEFSYSMK		"/usr/share/mk/sys.mk"
+-#define	_PATH_DEFSYSPATH	"/usr/share/mk"
++#define	_PATH_DEFSYSMK		"/usr/lib/pmake/sys.mk"
++#define	_PATH_DEFSYSPATH	"/usr/lib/pmake"

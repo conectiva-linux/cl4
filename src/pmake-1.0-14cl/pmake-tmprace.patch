@@ -1,0 +1,12 @@
+--- pmake.orig/job.c	Mon Nov 30 02:52:47 1998
++++ pmake/job.c	Mon Nov 30 03:01:13 1998
+@@ -2074,7 +2074,8 @@
+ {
+     GNode         *begin;     /* node for commands to do at the very start */
+ 
+-    sprintf (tfile, "/tmp/make%05d", getpid());
++    sprintf (tfile, "%s", "/tmp/make.XXXXXX");
++	mktemp(tfile); 
+ 
+     jobs =  	  Lst_Init (FALSE);
+     stoppedJobs = Lst_Init(FALSE);
