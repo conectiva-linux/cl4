@@ -1,0 +1,12 @@
+diff -Nur kxicq-0.3.1/aclocal.m4 kxicq-0.3.1.cnc/aclocal.m4
+--- kxicq-0.3.1/aclocal.m4	Thu Feb 18 05:35:02 1999
++++ kxicq-0.3.1.cnc/aclocal.m4	Wed Mar 31 20:43:02 1999
+@@ -2079,7 +2079,7 @@
+ dnl AM_INIT_AUTOMAKE(package,version, [no-define])
+ 
+ AC_DEFUN(AM_INIT_AUTOMAKE,
+-[AC_REQUIRE([AM_PROG_INSTALL])
++[AC_REQUIRE([AC_PROG_INSTALL])
+ PACKAGE=[$1]
+ AC_SUBST(PACKAGE)
+ VERSION=[$2]
