@@ -1,0 +1,19 @@
+--- pine4.05/pico/osdep/os-lnx.h.ioctl	Thu Nov 12 16:04:26 1998
++++ pine4.05/pico/osdep/os-lnx.h	Fri Nov 13 17:12:05 1998
+@@ -33,6 +33,7 @@
+ #include <pwd.h>
+ #include <sys/wait.h>
+ #include <sys/stat.h>
++#include <sys/ioctl.h>
+ #include <fcntl.h>
+ #include <netdb.h>
+ 
+@@ -129,6 +130,8 @@
+ /*-------- Is window resizing available? -------------------------------*/
+ #if defined(TIOCGWINSZ) && defined(SIGWINCH)
+ #define RESIZING  /* SIGWINCH and friends */
++#else
++#error WHAT ?! I have to have TIOCGWINSZ defined !!!
+ #endif
+ 
+ 

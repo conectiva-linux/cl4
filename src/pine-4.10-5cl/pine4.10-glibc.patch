@@ -1,0 +1,385 @@
+--- pine4.10/doc/pine.1.glibc	Thu Feb  4 13:42:05 1999
++++ pine4.10/doc/pine.1	Thu Feb 18 12:45:25 1999
+@@ -270,7 +270,7 @@
+ .if n .ta 2.8i
+ .if t .ta 2.1i
+ 
+-/usr/spool/mail/xxxx	Default folder for incoming mail.
++/var/spool/mail/xxxx	Default folder for incoming mail.
+ .br
+ ~/mail	Default directory for mail folders.
+ .br
+@@ -294,13 +294,13 @@
+ .br
+ /etc/mime.types	System-wide file ext. to MIME type mapping
+ .br
+-/usr/local/lib/pine.info	Local pointer to system administrator.
++/usr/lib/pine.info	Local pointer to system administrator.
+ .br
+-/usr/local/lib/pine.conf	System-wide configuration file.
++/usr/lib/pine.conf	System-wide configuration file.
+ .br
+-/usr/local/lib/pine.conf.fixed	 Non-overridable configuration file.
++/usr/lib/pine.conf.fixed	 Non-overridable configuration file.
+ .br
+-/tmp/.\\usr\\spool\\mail\\xxxx	Per-folder mailbox lock files.
++/tmp/.\\var\\spool\\mail\\xxxx	Per-folder mailbox lock files.
+ .br
+ ~/.pine-interrupted-mail	Message which was interrupted.
+ .br
+--- pine4.10/doc/tech-notes.txt.glibc	Thu Feb  4 18:16:28 1999
++++ pine4.10/doc/tech-notes.txt	Thu Feb 18 12:49:50 1999
+@@ -328,13 +328,13 @@
+           sendmail-path, smtp-server, and compile-time options. The first
+           MTA specified in the following list is used:
+           
+-         1. sendmail-path in /usr/local/lib/pine.conf.fixed
++         1. sendmail-path in /usr/lib/pine.conf.fixed
+          2. smtp-server in /usr/local/pine.conf.fixed
+          3. sendmail-path specified on the command line.
+          4. smtp-server specified on the command line.
+          5. sendmail-path in the user's .pinerc file.
+          6. smtp-server in the user's .pinerc file.
+-         7. sendmail-path in /usr/local/lib/pine.conf
++         7. sendmail-path in /usr/lib/pine.conf
+          8. smtp-server in /usr/local/pine.conf
+          9. DF_SENDMAIL_PATH defined at compile time.
+         10. SENDMAIL and SENDMAILFLAGS defined at compile time.
+@@ -661,14 +661,14 @@
+    SYSTEM_PINERC
+    The name of the file which holds Pine configuration information for
+    all users on the system. Default on UNIX systems is
+-   /usr/local/lib/pine.conf.
++   /usr/lib/pine.conf.
+    
+    SYSTEM_PINERC_FIXED
+    The name of the file which holds the same type of information as for
+    SYSTEM_PINERC, but only for variables that the administrator wants to
+    keep fixed. That is, users are not allowed to change variables that
+    are specified in the FIXED file. Default on UNIX systems is
+-   /usr/local/lib/pine.conf.fixed.
++   /usr/lib/pine.conf.fixed.
+    
+    There are a couple of more obscure options which are in the source
+    code because a few people have asked for them or because we changed
+@@ -808,8 +808,8 @@
+    files.
+    
+    There are, however, three optional auxiliary files:
+-   /usr/local/lib/pine.info, /usr/local/lib/pine.conf, and
+-   /usr/local/lib/pine.conf.fixed. The file pine.info contains text on
++   /usr/lib/pine.info, /usr/lib/pine.conf, and
++   /usr/lib/pine.conf.fixed. The file pine.info contains text on
+    how to get further help on the local system. It is part of the help
+    text for the main menu and should probably refer to the local help
+    desk or the system administrator. If this file doesn't exist a generic
+@@ -938,11 +938,11 @@
+    This section lists the various files which Pine uses which are not
+    email folders. All of these are the default names of files, they may
+    vary based on Pine's configuration.
+-   /usr/local/lib/pine.conf
++   /usr/lib/pine.conf
+           Pine's global configuration file.
+-   /usr/local/lib/pine.conf.fixed
++   /usr/lib/pine.conf.fixed
+           Non-overridable global configuration file.
+-   /usr/local/lib/pine.info
++   /usr/lib/pine.info
+           Local pointer to system administrator.
+    ~/.pinerc
+           Personal configuration file for each user.
+@@ -1091,11 +1091,11 @@
+           screen or standard output. To generate an initial system
+           configuration file, execute
+ 
+-                pine -conf > /usr/local/lib/pine.conf
++                pine -conf > /usr/lib/pine.conf
+           To generate a system configuration file using settings from an
+           old system configuration file, execute
+ 
+-                pine -P old-pine.conf -conf > /usr/local/lib/pine.conf
++                pine -P old-pine.conf -conf > /usr/lib/pine.conf
+    -create_lu addrbook sort-order
+           Create auxiliary index (LookUp) file for addrbook and sort
+           addrbook in sort-order, which may be dont-sort, nickname,
+@@ -1163,7 +1163,7 @@
+           uses.
+    -P file
+           Uses the named file as the system wide configuration file
+-          instead of /usr/local/lib/pine.conf. UNIX Pine only.
++          instead of /usr/lib/pine.conf. UNIX Pine only.
+    -pinerc file
+           Output fresh pinerc configuration to file, preserving the
+           settings of variables that the user has made. Use file set to
+@@ -1312,8 +1312,8 @@
+    configuration. In most cases, the compiled-in preferences will suit
+    users and administrators just fine. When running Pine on a UNIX
+    system, the default built-in configuration can be changed by setting
+-   variables in the system configuration files, /usr/local/lib/pine.conf
+-   or /usr/local/lib/pine.conf.fixed. (Actually, these files are whatever
++   variables in the system configuration files, /usr/lib/pine.conf
++   or /usr/lib/pine.conf.fixed. (Actually, these files are whatever
+    the definitions for SYSTEM_PINERC and SYSTEM_PINERC_FIXED in
+    pine/osdep/os-xxx.h are set to.) Both Pine and PC-Pine also use
+    personal (user-based) configuration files. On UNIX machines, the
+@@ -2415,13 +2415,13 @@
+    
+    Now for an example:
+    
+-     url-viewers=_TEST("test -n '${DISPLAY}'")_ /usr/local/bin/netscape,
+-     /usr/local/bin/lynx, C:\BIN\NETSCAPE.BAT
++     url-viewers=_TEST("test -n '${DISPLAY}'")_ /usr/bin/netscape,
++     /usr/bin/lynx, C:\BIN\NETSCAPE.BAT
+      
+    This example shows that for the first browser in the list to be used
+    the environment variable DISPLAY must be defined. If it is, then the
+-   file /usr/local/bin/netscape must exist. If either condition is not
+-   met, then the file /usr/local/bin/lynx must exist. If it doesn't, then
++   file /usr/bin/netscape must exist. If either condition is not
++   met, then the file /usr/bin/lynx must exist. If it doesn't, then
+    the final path and file must exist. Note that the last entry is a
+    DOS/Windows path. This is one way to support Pine running on more than
+    one architecture with the same configuration file.
+@@ -4925,8 +4925,8 @@
+      * A program that implements the SMTP or ESMTP protocol via stdio.
+      * An entry in /etc/services for the alternate service.
+      * An entry in /etc/inetd.conf for the alternate service.
+-     * An entry in /usr/local/lib/pine.conf,
+-       /usr/local/lib/pine.conf.fixed or ~/.pinerc.
++     * An entry in /usr/lib/pine.conf,
++       /usr/lib/pine.conf.fixed or ~/.pinerc.
+        
+      _________________________________________________________________
+                                       
+@@ -4935,7 +4935,7 @@
+    Pine's MIME-TYPE support is based on code contributed by Hans Drexler
+    &LT;drexler@mpi.nl&GT;. Pine assigns MIME Content-Types according to
+    file name extensions found in the system-wide files
+-   /usr/local/lib/mime.types and /etc/mime.types, and a user specific
++   /usr/lib/mime.types and /etc/mime.types, and a user specific
+    ~/.mime.types file.
+    
+    In DOS and OS/2, Pine looks in the same directory as the PINERC file
+@@ -5970,7 +5970,7 @@
+    
+    The second selection is the standard UNIX print command. The default
+    is lpr, but it can be changed on a system basis to anything so desired
+-   in /usr/local/lib/pine.conf.
++   in /usr/lib/pine.conf.
+    
+    The third selection is the user's personal choice for a UNIX print
+    command. The text to be printed is piped into the command. Enscript or
+@@ -6430,9 +6430,9 @@
+           Error messages for incorrect terminal types (try "foo" and
+           "vt52")
+    ___
+-          Reading of /usr/local/lib/pine.conf
++          Reading of /usr/lib/pine.conf
+    ___
+-          Fixing variables and features in /usr/local/lib/pine.conf.fixed
++          Fixing variables and features in /usr/lib/pine.conf.fixed
+    ___
+           Flag command (check message status changed in mail folder)
+    ___
+--- pine4.10/imap/src/osdep/unix/Makefile.glibc	Tue Jan 26 18:19:19 1999
++++ pine4.10/imap/src/osdep/unix/Makefile	Thu Feb 18 12:45:25 1999
+@@ -345,7 +345,8 @@
+ 	 SPOOLDIR=/var/spool \
+ 	 ACTIVEFILE=/var/lib/news/active \
+ 	 RSHPATH=/usr/bin/rsh \
+-	 BASECFLAGS="-g -O -DNFSKLUDGE"
++	 BASECFLAGS="-g -O -DNFSKLUDGE $(RPM_OPT_FLAGS)" \
++	 BASELDFLAGS="-lcrypt"
+ 
+ lnp:	# Linux Pluggable Authentication modules
+ 	$(BUILD) `cat EXTRASPECIALS` OS=lnx SIGTYPE=psx CHECKPW=pam \
+--- pine4.10/pico/osdep/os-lnx.ic.glibc	Fri Feb 21 16:35:02 1997
++++ pine4.10/pico/osdep/os-lnx.ic	Thu Feb 18 12:45:25 1999
+@@ -10,6 +10,6 @@
+ 
+ include(read.sel)
+ 
+-include(raw.io)
++include(raw.ios)
+ 
+-include(term.cap)
++include(term.inf)
+--- pine4.10/pico/osdep/os-lnx.h.glibc	Thu Oct  8 12:03:43 1998
++++ pine4.10/pico/osdep/os-lnx.h	Thu Feb 18 12:47:49 1999
+@@ -99,12 +99,12 @@
+ /* #include <sgtty.h> */   /* BSD-based systems */
+ 
+ /*--------- System V terminal driver -----------------------------------*/
+-#define HAVE_TERMIO     /* this is for pure System V */
+-#include <termio.h>     /* Sys V */
++/* #define HAVE_TERMIO */    /* this is for pure System V */
++/* #include <termio.h> */    /* Sys V */
+ 
+ /*--------- POSIX terminal driver --------------------------------------*/
+-/* #define HAVE_TERMIOS */ /* this is an alternative */
+-/* #include <termios.h> */ /* POSIX */
++#define HAVE_TERMIOS  /* this is an alternative */
++#include <termios.h>  /* POSIX */
+ 
+ 
+ 
+@@ -116,8 +116,8 @@
+ 
+ 
+ /*-------- Use terminfo database instead of termcap --------------------*/
+-/* #define USE_TERMINFO */ /* use terminfo instead of termcap */
+-#define USE_TERMCAP    /* use termcap */
++#define USE_TERMINFO /* use terminfo instead of termcap */
++/* #define USE_TERMCAP */   /* use termcap */ 
+ 
+ 
+ 
+--- pine4.10/pico/makefile.lnx.glibc	Mon Jun 29 19:17:37 1998
++++ pine4.10/pico/makefile.lnx	Thu Feb 18 12:45:25 1999
+@@ -48,7 +48,7 @@
+ LIBARGS=	ru
+ RANLIB=		ranlib
+ 
+-LIBS=		$(EXTRALIBES) -ltermcap
++LIBS=		$(EXTRALIBES) -lncurses
+ 
+ OFILES=		attach.o basic.o bind.o browse.o buffer.o \
+ 		composer.o display.o file.o fileio.o line.o pico_os.o \
+--- pine4.10/pine/osdep/os-lnx.h.glibc	Wed Oct  7 17:51:47 1998
++++ pine4.10/pine/osdep/os-lnx.h	Thu Feb 18 12:45:25 1999
+@@ -74,7 +74,7 @@
+    default-composer-hdrs or customized-hdrs to get at it. Instead of
+    defining NEVER_ALLOW_CHANGING_FROM, an easier way of preventing From
+    changing is to put the feature "no-allow-changing-from" in the
+-   /usr/local/lib/pine.conf.fixed file.
++   /usr/lib/pine.conf.fixed file.
+  ----*/
+ /* #define NEVER_ALLOW_CHANGING_FROM */
+ 
+@@ -160,8 +160,8 @@
+ 
+ 
+ /*----- System-wide config file ----------------------------------------*/
+-#define SYSTEM_PINERC             "/usr/local/lib/pine.conf"
+-#define SYSTEM_PINERC_FIXED       "/usr/local/lib/pine.conf.fixed"
++#define SYSTEM_PINERC             "/usr/lib/pine.conf"
++#define SYSTEM_PINERC_FIXED       "/usr/lib/pine.conf.fixed"
+ 
+ 
+ 
+--- pine4.10/pine/pine.hlp.glibc	Thu Feb  4 18:07:54 1999
++++ pine4.10/pine/pine.hlp	Thu Feb 18 12:51:43 1999
+@@ -455,9 +455,9 @@
+ 
+  executable     &lt;Unix search path&gt;/pine
+  persnl cfg     ~/.pinerc
+- global cfg     /usr/local/lib/pine.conf
+- fixed cfg      /usr/local/lib/pine.conf.fixed
+- local help     /usr/local/lib/pine.info
++ global cfg     /usr/lib/pine.conf
++ fixed cfg      /usr/lib/pine.conf.fixed
++ local help     /usr/lib/pine.info
+ 
+  interrupted    ~/.pine-interrupted-mail
+  debug          ~/.pine-debugN
+@@ -470,12 +470,12 @@
+  sentmail#      ~/mail/sent-mail
+  mailcap#       ~/.mailcap + /etc/mailcap
+                            + /usr/etc/mailcap + /usr/local/etc/mailcap
+- mimetypes#     ~/.mime.types + /etc/mime.types + /usr/local/lib/mime.types
++ mimetypes#     ~/.mime.types + /etc/mime.types + /usr/lib/mime.types
+ 
+- news-spool	varies across Unix flavors, e.g. /usr/spool/news or /var/news
++ news-spool	varies across Unix flavors, e.g. /var/spool/news or /var/news
+  active-news	varies across Unix flavors, e.g. /usr/lib/news/active
+- lock files     /tmp/.&#92;usr&#92;spool&#92;mail&#92;xxxx
+- inbox          /usr/spool/mail/xxxx
++ lock files     /tmp/.&#92;var&#92;spool&#92;mail&#92;xxxx
++ inbox          /var/spool/mail/xxxx
+  password       /etc/passwd
+ 
+ Unix Pine and PC-Pine:
+@@ -856,9 +856,9 @@
+ this link now to send a message to it:<BR>
+ <A HREF="X-Pine-Gripe:_LOCAL_ADDRESS_?local"><!--#echo var="_LOCAL_FULLNAME_"--></A><P>
+ <!--chtml endif-->
+-<!--chtml if [ -r /usr/local/lib/pine.info ]-->
++<!--chtml if [ -r /usr/lib/pine.info ]-->
+ <HR WIDTH="75%">Local Support Contacts:<P>
+-<!--#include file="/usr/local/lib/pine.info"-->
++<!--#include file="/usr/lib/pine.info"-->
+ <HR WIDTH="75%">
+ <!--chtml endif-->
+ <P> 
+@@ -945,7 +945,7 @@
+ <OL>
+   <LI> <A HREF="#intro">Introduction</A>
+   <LI> <A HREF="#pine_help">Pine Help</A>
+-<!--chtml if [ -r /usr/local/lib/pine.info ]-->
++<!--chtml if [ -r /usr/lib/pine.info ]-->
+   <LI> <A HREF="#local_support">Local Support Contacts</A>
+ <!--chtml endif-->
+   <LI> <A HREF="#giving_cmds">Giving Commands in Pine</A>
+@@ -1052,9 +1052,9 @@
+ at your site.)
+ 
+ 
+-<!--chtml if [ -r /usr/local/lib/pine.info ]-->
++<!--chtml if [ -r /usr/lib/pine.info ]-->
+ <H2><A NAME="local_support">Local Support Contacts</A></H2>
+-<!--#include file="/usr/local/lib/pine.info"-->
++<!--#include file="/usr/lib/pine.info"-->
+ <!--chtml endif-->
+ 
+ <H2><A NAME="giving_cmds">Giving Commands in Pine</A></H2>
+@@ -10810,7 +10810,7 @@
+ <h1>OPTION: News-Spool-Directory</h1>
+ This option tells Pine where to look for the "news spool" for newsgroups
+ when accessing news locally, rather than via NNTP.  The default path is
+-usually "/usr/spool/news".<p>
++usually "/var/spool/news".<p>
+ <UL>   
+ <LI><A HREF="h_finding_help">Finding more information and requesting help</A>
+ </UL><P>
+@@ -11064,8 +11064,8 @@
+ <P>
+ So, here are some example entries:
+ <PRE>
+-url-viewers = _TEST(&quot;test -n '$&#123;DISPLAY}'&quot;)_  /usr/local/bin/netscape
+-              &quot;/usr/local/bin/lynx _URL_&quot;
++url-viewers = _TEST(&quot;test -n '$&#123;DISPLAY}'&quot;)_  /usr/bin/netscape
++              &quot;/usr/bin/lynx _URL_&quot;
+               C:&#92;BIN&#92;NETSCAPE.BAT
+ </PRE>
+ <P>
+--- pine4.10/pine/pine-use.c.glibc	Fri Mar 15 02:15:24 1996
++++ pine4.10/pine/pine-use.c	Thu Feb 18 12:45:25 1999
+@@ -45,7 +45,7 @@
+ #include <sys/stat.h>
+ 
+ #ifndef MAILSPOOLPCTS
+-#define MAILSPOOLPCTS "/usr/spool/mail/%s"
++#define MAILSPOOLPCTS "/var/spool/mail/%s"
+ /* #define MAILSPOOLPCTS "/usr/mail/%s" */
+ #endif
+ 
+--- pine4.10/pine/makefile.lnx.glibc	Thu Aug 27 12:50:00 1998
++++ pine4.10/pine/makefile.lnx	Thu Feb 18 12:45:25 1999
+@@ -60,7 +60,7 @@
+ LDAPOFILES=   addrbook.o adrbkcmd.o args.o bldaddr.o init.o \
+ 	      other.o pine.o takeaddr.o
+ 
+-STDLIBS=     -ltermcap
++STDLIBS=     -lncurses
+ LOCLIBS=     $(PICODIR)/libpico.a $(CCLIENTDIR)/c-client.a
+ LIBS=        $(EXTRALIBES) $(LOCLIBS) $(LDAPLIBS) $(STDLIBS) \
+              `cat $(CCLIENTDIR)/LDFLAGS`
+@@ -85,7 +85,7 @@
+ pine:  $(OFILES) $(LOCLIBS)
+ 	echo "char datestamp[]="\"`date`\"";" > date.c
+ 	echo "char hoststamp[]="\"`hostname`\"";" >> date.c
+-	$(CC) $(LDFLAGS) $(CFLAGS) -o pine $(OFILES) date.c $(LIBS)
++	$(CC) $(LDFLAGS) $(CFLAGS) -o pine $(OFILES) date.c $(LIBS) -lcrypt
+ 
+ abookcpy:	abookcpy.o $(LOCLIBES)
+ 	$(CC) $(LDFLAGS) $(CFLAGS) -o abookcpy abookcpy.o $(LIBS)
