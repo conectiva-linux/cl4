@@ -1,0 +1,51 @@
+#! /bin/sh
+#
+# chkconfig: - 60 20
+# description: The rusers protocol allows users on a network to locate \
+#              users on any machine on that network.
+# description(pt_BR): O protocolo rusers permite que usuários em uma rede \
+#		      localizem quaisquer usuários em quaisquer máquinas \
+#		      nesta rede.
+# processname: rpc.rusersd
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get config.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+if [ ${NETWORKING} = "no" ]
+then
+	exit 0
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting %s service: " "rusersd"
+	daemon rpc.rusersd
+
+	echo
+	touch /var/lock/subsys/rusersd
+	;;
+  stop)
+	gprintf "Stopping %s service: " "rusersd"
+	killproc rpc.rusersd
+
+	echo
+	rm -f /var/lock/subsys/rusersd
+	;;
+  status)
+	status rpc.rusersd
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "rusersd"
+	exit 1
+esac
+
+exit 0
