@@ -1,0 +1,12 @@
+--- tin-981114/include/extern.h.egcs	Sat Nov  7 23:19:35 1998
++++ tin-981114/include/extern.h	Tue Dec 22 11:41:29 1998
+@@ -119,9 +119,6 @@
+ #ifdef DECL_MALLOC
+ extern void *malloc (size_t);
+ #endif
+-#ifdef DECL_MEMSET
+-extern void *memset (void *, int, size_t);
+-#endif
+ #ifdef DECL_MKTEMP
+ extern char *mktemp (char *);
+ #endif
