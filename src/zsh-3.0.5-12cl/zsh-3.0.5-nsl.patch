@@ -1,0 +1,11 @@
+--- zsh-3.0.5/configure.in.nsl	Mon Mar 22 10:34:55 1999
++++ zsh-3.0.5/configure.in	Mon Mar 22 10:36:27 1999
+@@ -346,6 +346,8 @@
+   AC_CHECK_LIB(${lib}, tgetent, [LIBS="$LIBS -l$lib"; break])
+ done
+ 
++AC_CHECK_LIB(nsl, yp_all, [LIBS="$LIBS -lnsl"])
++
+ dnl Some systems (Solaris 2.x) require libnsl (Network Services Library)
+ dnl to find getdomainname and yp_all
+ AC_CHECK_FUNCS(getdomainname)

@@ -1,0 +1,13 @@
+#
+# /etc/zprofile and ~/.zprofile are run for login shells
+#
+#
+#
+# below works, but if no zsh files are in /etc/profile.d it complains
+# everytime zsh is run. Commenting out for now.
+#
+# run other components
+#for i in /etc/profile.d/*.zsh
+#do
+#  source $i
+#done
