@@ -1,0 +1,84 @@
+--- smbfs-2.0.1/util/smbmount.c.orig	Wed Nov 27 12:19:12 1996
++++ smbfs-2.0.1/util/smbmount.c	Thu Dec 18 11:14:48 1997
+@@ -5,6 +5,24 @@
+  *
+  */
+ 
++#include <asm/posix_types.h>
++
++#ifdef __FD_SET
++#undef __FD_SET
++#endif
++
++#ifdef __FD_ISSET
++#undef __FD_ISSET
++#endif
++
++#ifdef __FD_CLR
++#undef __FD_CLR
++#endif
++
++#ifdef __FD_ZERO
++#undef __FD_ZERO
++#endif
++
+ #include <stdio.h>
+ #include <string.h>
+ #include <signal.h>
+@@ -27,12 +45,33 @@
+ #include <sys/mount.h>
+ #include <mntent.h>
+ 
+-#include <linux/fs.h>
+-#include <linux/smb.h>
+-#include <linux/smb_mount.h>
+-
+ static char *progname;
+ 
++#define SMB_MOUNT_VERSION 5
++#define SMB_PORT 139
++
++struct smb_mount_data {
++	int version;
++	unsigned int fd;
++        __kernel_uid_t mounted_uid;      /* Who may umount() this filesystem? */
++	struct sockaddr_in addr;
++
++	char server_name[17];
++        char client_name[17];
++	char service[64];
++        char root_path[64];
++
++        char username[64];
++	char password[64];
++	char domain[64];
++
++	unsigned short max_xmit;
++
++        __kernel_uid_t uid;
++        __kernel_gid_t gid;
++        __kernel_mode_t file_mode;
++        __kernel_mode_t dir_mode;
++};
+ 
+ static void
+ str_upper(char *name)
+--- smbfs-2.0.1/util/smbumount.c.orig	Fri Nov  8 05:01:08 1996
++++ smbfs-2.0.1/util/smbumount.c	Thu Dec 18 11:12:49 1997
+@@ -28,10 +28,12 @@
+ #include <mntent.h>
+ 
+ #include <sys/ioctl.h>
+-#include <linux/fs.h>
+-#include <linux/smb.h>
+-#include <linux/smb_mount.h>
+-#include <linux/smb_fs.h>
++
++#ifdef __i386__
++#define _IOR(type,nr,size)     _IOC(_IOC_READ,(type),(nr),sizeof(size))
++#endif
++
++#define     SMB_IOC_GETMOUNTUID             _IOR('u', 1, uid_t)
+ 
+ static char *progname;
+ 
