@@ -1,0 +1,24 @@
+#!/bin/sh
+# quakeworld for Linux!!!
+# packaging by Conectiva Internet Solutions
+# acme@conectiva.com.br
+# Wed Jun 25 20:41:10 EST 1997
+
+if [ -f /etc/sysconfig/quake ]
+  then
+    . /etc/sysconfig/quake
+fi
+
+cd /usr/lib/quake
+
+if [ "$SOUND" = "yes" -a "$CDAUDIO" = "yes" ]
+  then
+    /usr/bin/qwcl
+  else
+    if [ "$SOUND" = "yes" ]
+      then
+        /usr/bin/qwcl -nocdaudio
+      else
+        /usr/bin/qwcl -nocdaudio -nosound
+    fi
+fi
