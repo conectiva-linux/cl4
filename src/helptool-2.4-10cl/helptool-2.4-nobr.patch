@@ -1,0 +1,23 @@
+--- helptool-2.4/Makefile.nobr	Fri Oct 24 12:12:29 1997
++++ helptool-2.4/Makefile	Mon Aug 17 12:41:32 1998
+@@ -16,13 +16,15 @@
+ all: $(PROGS)
+ 
+ install: all
++	mkdir -p $(DESTDIR)$(BINDIR)
+ 	for i in $(PROGS) ; do \
+-		$(INSTALLBIN) $$i $(BINDIR) ; \
++		$(INSTALLBIN) $$i $(DESTDIR)$(BINDIR) ; \
+ 	done
+-	mkdir -p $(PANELDIR)
+-	$(INSTALLDATA) $(PANEL).init $(PANELDIR)
+-	$(INSTALLDATA) $(PANEL).xpm $(PANELDIR)
+-	$(INSTALLDATA) $(PANEL).wmconfig /etc/X11/wmconfig/$(PANEL)
++	mkdir -p $(DESTDIR)$(PANELDIR)
++	$(INSTALLDATA) $(PANEL).init $(DESTDIR)$(PANELDIR)
++	$(INSTALLDATA) $(PANEL).xpm $(DESTDIR)$(PANELDIR)
++	mkdir -p $(DESTDIR)/etc/X11/wmconfig
++	$(INSTALLDATA) $(PANEL).wmconfig $(DESTDIR)/etc/X11/wmconfig/$(PANEL)
+ 
+ clean:
+ 	rm -f *.a *.o core errs *~ \#* TAGS *.E a.out errors
