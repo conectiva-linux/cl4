@@ -1,0 +1,101 @@
+--- mkisofs-1.12b4/write.c.free	Mon Jun  1 22:40:39 1998
++++ mkisofs-1.12b4/write.c	Thu Sep 10 16:41:29 1998
+@@ -286,6 +286,7 @@
+ 	       table_size += dwpnt->size;
+ /*		  fprintf(stderr,"Size %d ", dwpnt->size); */
+ 	       free(dwpnt->table);
++	       dwpnt->table = NULL;
+ 	  } 
+ 	  else 
+ 	  {
+@@ -296,11 +297,13 @@
+ 	       write_one_file(dwpnt->name, dwpnt->size, outfile);
+ #endif
+ 	       free(dwpnt->name);
++	       dwpnt->name = NULL;
+ 	  }
+ 
+ 	  dwnext = dwpnt;
+ 	  dwpnt = dwpnt->next;
+ 	  free(dwnext);
++	  dwnext = NULL;
+      }
+ } /* write_files(... */
+ 
+@@ -442,6 +445,7 @@
+        }
+ 
+      free(sortlist);
++     sortlist = NULL;
+      return sort_goof;
+ }
+ 
+@@ -674,15 +678,24 @@
+ 	 s_entry_d = s_entry;
+ 	 s_entry = s_entry->next;
+ 	 
++	 if (s_entry_d->rr_attributes) {
++	     free(s_entry_d->rr_attributes);
++	     s_entry_d->rr_attributes = NULL;
++	 }
+ 	 if( s_entry_d->name != NULL )
+ 	 {
+ 	     free (s_entry_d->name);
++	     s_entry_d->name = NULL;
+ 	 }
++#if 0
+ 	 if( s_entry_d->whole_name != NULL )
+ 	 {
+ 	     free (s_entry_d->whole_name);
++	     s_entry_d->whole_name = NULL;
+ 	 }
++#endif
+ 	 free (s_entry_d);
++	 s_entry_d = NULL;
+      }
+      dpnt->contents = NULL;
+ } /* free_one_directory(... */
+@@ -718,8 +731,7 @@
+      ce_size = (dpnt->ce_bytes + (SECTOR_SIZE - 1)) &  ~(SECTOR_SIZE - 1);
+      ce_buffer = NULL;
+      
+-     if(ce_size) 
+-     {
++     if(ce_size > 0) {
+ 	  ce_buffer = (char *) e_malloc(ce_size);
+ 	  memset(ce_buffer, 0, ce_size);
+ 	  
+@@ -853,8 +865,10 @@
+ 
+      xfwrite(directory_buffer, 1, total_size, outfile);
+      last_extent_written += total_size >> 11;
+-     free(directory_buffer);
+-
++     if (directory_buffer != NULL) {
++	 free(directory_buffer);
++	 directory_buffer = NULL;
++     }
+      if(ce_size)
+      {
+ 	  if(ce_index != dpnt->ce_bytes)
+@@ -864,7 +878,10 @@
+ 	  }
+ 	  xfwrite(ce_buffer, 1, ce_size, outfile);
+ 	  last_extent_written += ce_size >> 11;
+-	  free(ce_buffer);
++	  if (ce_buffer != NULL) {
++	      free(ce_buffer);
++	      ce_buffer = NULL;
++	  }
+      }
+      
+ } /* generate_one_directory(... */
+@@ -1009,6 +1026,8 @@
+   }
+   
+   free(pathlist);
++  pathlist = NULL;
++  
+   if(path_table_index != path_table_size)
+   {
+        fprintf(stderr,"Path table lengths do not match %d %d\n",
