@@ -1,0 +1,55 @@
+--- transfig.3.2.1/fig2dev/Imakefile.imake	Tue Jul  7 10:15:22 1998
++++ transfig.3.2.1/fig2dev/Imakefile	Tue Jul  7 10:27:47 1998
+@@ -31,7 +31,7 @@
+ XCOMM You should point XFIGLIBDIR to the same directory you did when you compiled
+ XCOMM and installed xfig.  This will be made automatic in the future.
+ 
+-XFIGLIBDIR =	/usr/local/lib/X11/xfig
++XFIGLIBDIR =	/usr/X11R6/lib/X11/xfig
+ 
+ XCOMM If your system has the strerror() function (doesn't have sys_errlist) then
+ XCOMM comment out NEED_STRERROR with an XCOMM comment.
+@@ -57,7 +57,7 @@
+ XCOMM You need version 3.4c of the XPM package.
+ XCOMM
+ 
+-XCOMM #define USEXPM
++#define USEXPM
+ 
+ XCOMM For Linux machines or any machines that have a separate library for
+ XCOMM the database management routines, uncomment the following line.
+@@ -66,6 +66,7 @@
+ XCOMM Slackware Linuxes use -lgdbm.
+ 
+ XCOMM DBMLIB = -lgdbm
++DBMLIB = -ldb
+ 
+ XCOMM If your system doesn't have ndbm ("New" database manager) comment the following
+ USE_NDBM = -DNDBM
+@@ -153,8 +154,8 @@
+ DUSEJPEG = -DUSE_JPEG
+ 
+ #ifdef USEINSTALLEDJPEG
+-JPEGLIBDIR = /usr/local/lib
+-JPEGINCDIR = /usr/include/X11
++JPEGLIBDIR = /usr/lib
++JPEGINCDIR = /usr/include
+ JPEGLIB = -L$(JPEGLIBDIR) -ljpeg
+ #else
+ XCOMM this is relative to this directory (transfig/fig2dev)
+@@ -181,13 +182,13 @@
+ 
+ INCLUDES = -I..
+ 
+-LOCAL_LIBRARIES = $(LIBTRANSFIG) $(JPEGLIB)
++LOCAL_LIBRARIES = $(LIBTRANSFIG) $(JPEGLIB) $(XLIB)
+ #if defined(NetBSDArchitecture)
+ SYS_LIBRARIES = $(XPMLIBS) $(DBMLIB) -lm -lcompat
+ #else
+ SYS_LIBRARIES = $(XPMLIBS) $(DBMLIB) -lm
+ #endif
+-DEPLIBS = $(LIBTRANSFIG)
++DEPLIBS = $(LIBTRANSFIG) $(DEPXLIB)
+ 
+ #if !(defined(SunOSPlatform) && (OSMajorVersion>=5))
+ GETOPTC=   getopt.c
