@@ -1,0 +1,12 @@
+diff -Nur sudo.v1.5.6p2/visudo.c sudo.v1.5.6p2.cnc/visudo.c
+--- sudo.v1.5.6p2/visudo.c	Mon Sep  7 21:42:06 1998
++++ sudo.v1.5.6p2.cnc/visudo.c	Thu Apr  1 20:11:55 1999
+@@ -225,6 +225,8 @@
+ 			   Argv[0], __LINE__);
+ 	    Exit(-1);
+ 	}
++	if (access(Editor, X_OK) != 0)
++		Editor = ALTERNATE_PATH_VI;
+ 	if (parse_error == TRUE)
+ 	    (void) sprintf(buf, "%s +%d %s", Editor, errorlineno, stmp);
+ 	else
