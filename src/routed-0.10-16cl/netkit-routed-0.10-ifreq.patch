@@ -1,0 +1,11 @@
+--- netkit-routed-0.10/routed/startup.c.alpha	Tue Jun 16 22:36:48 1998
++++ netkit-routed-0.10/routed/startup.c	Tue Jun 16 22:33:08 1998
+@@ -112,7 +112,7 @@
+ #define size(p) (sizeof (p))
+ 	cplim = buf + ifc.ifc_len; /*skip over if's with big ifr_addr's */
+ 	for (cp = buf; cp < cplim;
+-			cp += sizeof (ifr->ifr_name) + size(ifr->ifr_addr)) {
++			cp += sizeof (ifr->ifr_name) + size(ifr->ifr_addr) + 8) {
+ 		ifr = (struct ifreq *)cp;
+ 		bzero((char *)&ifs, sizeof(ifs));
+ 		ifs.int_addr = ifr->ifr_addr;

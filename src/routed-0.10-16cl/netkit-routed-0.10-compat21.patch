@@ -1,0 +1,11 @@
+--- netkit-routed-0.10/routed/main.c.compat21	Tue Dec 22 15:00:04 1998
++++ netkit-routed-0.10/routed/main.c	Tue Dec 22 15:06:26 1998
+@@ -253,7 +253,7 @@
+ 		sigemptyset(&sigset);
+ 		sigaddset(&sigset, SIGALRM);
+ 		sigprocmask(SIG_BLOCK, &sigset, &osigset);
+-		if (ibits.fds_bits[s/32] & (1 << s))
++		if (FD_ISSET(s, &ibits))
+ 			process(s);
+ 		/* handle ICMP redirects */
+ 		sigprocmask(SIG_SETMASK, &osigset, NULL);

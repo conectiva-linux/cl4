@@ -1,0 +1,89 @@
+--- netkit-routed-0.10/routed/tables.c.trace	Mon Nov 25 12:28:42 1996
++++ netkit-routed-0.10/routed/tables.c	Tue Dec 22 09:12:38 1998
+@@ -371,7 +371,7 @@
+ 	((struct sockaddr_in *)&rt.rt_genmask)->sin_addr.s_addr = netmask;
+ 	
+ 	if (traceactions) {
+-		fprintf(ftrace, "rtioctl %s %08lx/%08lx\n",
++		fprintf(ftrace, "rtioctl %s %08x/%08x\n",
+ 			action == ADD ? "ADD" : "DEL",
+ 			ntohl(dst),
+ 			ntohl(netmask));
+--- netkit-routed-0.10/routed/trace.c.trace	Mon Nov 25 12:28:43 1996
++++ netkit-routed-0.10/routed/trace.c	Tue Dec 22 09:12:38 1998
+@@ -47,6 +47,8 @@
+ #include <sys/stat.h>
+ #include <signal.h>
+ #include <fcntl.h>
++#include <syslog.h>
++#include <errno.h>
+ #include "pathnames.h"
+ 
+ #define	NRECORDS	50		/* size of circular trace buffer */
+@@ -96,14 +98,35 @@
+ void traceon(char *file)
+ {
+ 	struct stat stbuf;
+-
++	int fd;
++	
+ 	if (ftrace != NULL)
+ 		return;
+-	if (stat(file, &stbuf) >= 0 && !S_ISREG(stbuf.st_mode))
++
++	/*
++	 *	Trace file requests could come from anywhere..
++	 */
++	 
++	if(strncmp(file,"/var/log/routed/",16) || strstr(file,"/../"))
++	{
++		syslog(LOG_ERR, "Cannot syslog to %s: not within /var/log/routed/\n",
++			file);
++		return;
++	}
++		
++	fd=open(file, O_EXCL|O_CREAT|O_WRONLY|O_APPEND|O_NDELAY, 0600);
++	
++	if (fd==-1 || (fstat(fd, &stbuf) >= 0 && !S_ISREG(stbuf.st_mode)))
++	{
++		syslog(LOG_ERR, "Cannot syslog to %s: error %s\n",
++			file, errno);
+ 		return;
++	}
++	
++	fcntl(fd, F_SETFL, 0);	/* Turn NDELAY off */
+ 	savetracename = file;
+ 	(void) gettimeofday(&now, (struct timezone *)NULL);
+-	ftrace = fopen(file, "a");
++	ftrace = fdopen(fd, "a");
+ 	if (ftrace == NULL)
+ 		return;
+ 	dup2(fileno(ftrace), 1);
+@@ -380,14 +403,14 @@
+ 			switch ((int)n->rip_dst.sa_family) {
+ 
+ 			case AF_INET:
+-				fprintf(fd, "\tdst %s metric %ld\n",
++				fprintf(fd, "\tdst %s metric %d\n",
+ #define	satosin(sa)	((struct sockaddr_in *)&sa)
+ 				     inet_ntoa(satosin(n->rip_dst)->sin_addr),
+ 				     ntohl(n->rip_metric));
+ 				break;
+ 
+ 			default:
+-				fprintf(fd, "\taf %d? metric %ld\n",
++				fprintf(fd, "\taf %d? metric %d\n",
+ 				     n->rip_dst.sa_family,
+ 				     ntohl(n->rip_metric));
+ 				break;
+--- netkit-routed-0.10/routed/main.c.trace	Tue Dec 22 09:36:56 1998
++++ netkit-routed-0.10/routed/main.c	Tue Dec 22 09:38:09 1998
+@@ -149,6 +149,8 @@
+ 
+ 	if (argc > 0)
+ 		traceon(*argv);
++	if (tflags && ftrace == NULL)
++		ftrace = stderr;
+ 	while (tflags-- > 0)
+ 		bumploglevel();
+ 

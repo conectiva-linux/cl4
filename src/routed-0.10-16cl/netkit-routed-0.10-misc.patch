@@ -1,0 +1,11 @@
+--- netkit-routed-0.10/MCONFIG.ewt	Tue Jul 15 12:18:48 1997
++++ netkit-routed-0.10/MCONFIG	Tue Jul 15 12:19:02 1997
+@@ -30,7 +30,7 @@
+ WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS) $(RPM_OPT_FLAGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
