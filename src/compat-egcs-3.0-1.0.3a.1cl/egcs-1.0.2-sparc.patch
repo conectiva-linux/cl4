@@ -1,0 +1,11 @@
+--- egcs-1.0.2/gcc/gbl-ctors.h.orig	Tue May  5 01:24:06 1998
++++ egcs-1.0.2/gcc/gbl-ctors.h	Tue May  5 01:24:39 1998
+@@ -40,7 +40,7 @@
+ #if defined (WINNT) || defined (NEED_ATEXIT)
+ extern int atexit (void (*) (void));
+ #else
+-extern void atexit (void (*) (void));
++extern int atexit (void (*) (void));
+ #endif
+ #define ON_EXIT(FUNC,ARG) atexit ((FUNC))
+ #else
