@@ -1,0 +1,18 @@
+--- lha-1.00/Makefile.orig	Tue Aug 29 15:54:35 1995
++++ lha-1.00/Makefile	Tue Aug 29 15:54:49 1995
+@@ -16,11 +16,11 @@
+ 
+ SWITCHES	= -DEUC -DSYSV_SYSTEM_DIR -DSYSTIME_HAS_NO_TM -DMKTIME
+ 
+-OPTIMIZE	= -g -O # -fstrength-reduce -fomit-frame-pointer
++OPTIMIZE	= $(RPM_OPT_FLASG) # -fstrength-reduce -fomit-frame-pointer
+ 
+-BINDIR = /usr/local/bin
+-MANDIR = /usr/local/man
+-MANSECT = n
++BINDIR = /usr/bin
++MANDIR = /usr/man
++MANSECT = 1
+ 
+ INSTALL = install
+ INSTALLBIN = -s -m 755
