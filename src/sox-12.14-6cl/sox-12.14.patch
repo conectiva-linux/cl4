@@ -1,0 +1,22 @@
+--- sox-12.14/play.orig	Tue Jul 14 11:12:25 1998
++++ sox-12.14/play	Tue Jul 14 11:12:36 1998
+@@ -13,7 +13,7 @@
+ 
+ # Make sure play can find its way to sox program incase users path
+ # doesn't already include it.
+-PATH=$PATH:/usr/local/bin
++PATH=$PATH:/usr/bin
+ export PATH
+ 
+ if [ "$1" = "" ] ; then
+--- sox-12.14/rec.orig	Tue Jul 14 11:13:58 1998
++++ sox-12.14/rec	Tue Jul 14 11:14:06 1998
+@@ -7,7 +7,7 @@
+ 
+ # Set up path so that it can find Sox if user's path doesn't already
+ # include it.
+-PATH=$PATH:/usr/local/bin
++PATH=$PATH:/usr/bin
+ export PATH
+ 
+ if [ "$1" = "" ] ; then

@@ -1,0 +1,11 @@
+--- sox-12.14/aiff.c.orig	Wed Jul 15 10:46:54 1998
++++ sox-12.14/aiff.c	Wed Jul 15 10:47:31 1998
+@@ -295,7 +295,7 @@
+ ft_t ft;
+ {
+ 	char buf[5];
+-	unsigned LONG chunksize;
++	ULONG chunksize;
+ 
+ 	if (!ft->seekable)
+ 	    while (! feof(ft->fp)) {

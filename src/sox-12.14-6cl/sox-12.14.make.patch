@@ -1,0 +1,15 @@
+--- sox-12.14/Makefile.unx.orig	Tue Jul 14 14:20:53 1998
++++ sox-12.14/Makefile.unx	Tue Jul 14 14:21:35 1998
+@@ -11,9 +11,9 @@
+ #   and made my home system (Linux) the default. ;-)
+ 
+ # These things are site dependant so you may want to change.
+-BINDIR    = /usr/local/bin
+-LIBDIR	  = /usr/local/lib
+-MANDIR    = /usr/man
++BINDIR    = $(INSTALL_DIR)/usr/bin
++LIBDIR	  = $(INSTALL_DIR)/usr/lib
++MANDIR    = $(INSTALL_DIR)/usr/man
+ 
+ SRCDIR	  = sox-12.14
+ 
