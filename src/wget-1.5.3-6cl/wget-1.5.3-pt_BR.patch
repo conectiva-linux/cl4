@@ -1,0 +1,49 @@
+diff -uNr wget-1.5.3.old/po/pt_BR.po wget-1.5.3/po/pt_BR.po
+--- wget-1.5.3.old/po/pt_BR.po	Mon Sep 21 14:08:20 1998
++++ wget-1.5.3/po/pt_BR.po	Fri May  7 17:30:42 1999
+@@ -167,7 +167,7 @@
+ 
+ #: src/ftp.c:703
+ msgid " (unauthoritative)\n"
+-msgstr " (sem autorização)\n"
++msgstr " (sem autoridade)\n"
+ 
+ # , c-format
+ #: src/ftp.c:721
+@@ -478,11 +478,11 @@
+ 
+ #: src/http.c:587
+ msgid "No data received"
+-msgstr ""
++msgstr "Nenhum dado recebido"
+ 
+ #: src/http.c:589
+ msgid "Malformed status line"
+-msgstr ""
++msgstr "Linha de status inválida"
+ 
+ #: src/http.c:594
+ msgid "(no description)"
+@@ -492,11 +492,11 @@
+ #. retrying it.
+ #: src/http.c:678
+ msgid "Authorization failed.\n"
+-msgstr ""
++msgstr "Autorização falhou.\n"
+ 
+ #: src/http.c:685
+ msgid "Unknown authentication scheme.\n"
+-msgstr ""
++msgstr "Esquema de autenticação desconhecido.\n"
+ 
+ # , c-format
+ #: src/http.c:748
+@@ -1059,7 +1059,7 @@
+ "          [ skipping %dK ]"
+ msgstr ""
+ "\n"
+-"          [ ignorando %dK ]"
++"          [ aproveitando %dK ]"
+ 
+ #: src/retr.c:344
+ msgid "Could not find proxy host.\n"
