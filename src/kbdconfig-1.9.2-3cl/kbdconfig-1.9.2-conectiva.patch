@@ -1,0 +1,23 @@
+diff -uNr kbdconfig-1.9.2/kbdconfig.c kbdconfig-1.9.2-cnc/kbdconfig.c
+--- kbdconfig-1.9.2/kbdconfig.c	Tue Apr  6 02:06:30 1999
++++ kbdconfig-1.9.2-cnc/kbdconfig.c	Mon May 31 17:49:20 1999
+@@ -387,6 +387,19 @@
+ 		       _("The new keymap has been loaded."));
+     }
+ 
++    {
++      char Xmodmap[16];
++
++      snprintf (Xmodmap, sizeof(Xmodmap), "Xmodmap.%s", 
++        strcmp(table,"us-acentos") == 0  ? "us+" :
++        strcmp(table,"br-abnt2") == 0    ? "abnt2"   :
++        strcmp(table,"pt") == 0          ? "pt" : "us+");
++
++      /* silently */
++      unlink("/etc/X11/xinit/.Xmodmap");
++      symlink(Xmodmap, "/etc/X11/xinit/.Xmodmap");
++
++    }
+     newtFinished();
+     /* copy default keyboard map */
+     if (!access("/etc/sysconfig/console/",W_OK)) {

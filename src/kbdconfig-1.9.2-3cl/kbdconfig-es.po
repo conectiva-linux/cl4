@@ -1,0 +1,105 @@
+# Portuguese messages to kbdconfig
+# Copyright (C) 1998 Free Software Foundation, Inc.
+# Wanderlei Antonio Cavassin <cavassin@conectiva.com.br>, 1998.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kbdconfig\n"
+"POT-Creation-Date: 1998-09-27 18:01-0400\n"
+"PO-Revision-Date: 1998-04-22 01:11-03:00\n"
+"Last-Translator: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
+"Language-Team: portuguese <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: ../kbdconfig.c:50
+msgid "cannot scan "
+msgstr "no fue posible buscar "
+
+#: ../kbdconfig.c:57
+msgid "cannot read first "
+msgstr "no fue posible leer el primero"
+
+#: ../kbdconfig.c:84
+msgid "cannot read next "
+msgstr "no fue posible leer el próximo"
+
+#: ../kbdconfig.c:119
+msgid "Configure Keyboard"
+msgstr "Configuración del teclado"
+
+#: ../kbdconfig.c:120
+msgid "What type of keyboard do you have?"
+msgstr "¿Qué tipo de teclado tienes?"
+
+#: ../kbdconfig.c:121 ../kbdconfig.c:302
+msgid "Ok"
+msgstr ""
+
+#: ../kbdconfig.c:122
+msgid "Back"
+msgstr "Anterior"
+
+#: ../kbdconfig.c:122
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../kbdconfig.c:151
+#, c-format
+msgid "%s: cannot open /etc/sysconfig/keyboard: %s\n"
+msgstr "%s: no fue posible abrir /etc/sysconfig/keyboard: %s\n"
+
+#: ../kbdconfig.c:176
+#, c-format
+msgid "%s: mismatched quotes on line %d in /etc/sysconfig/keyboard\n"
+msgstr "%s: las comillas no coinciden en la línea %d en/etc/sysconfig/keyboard\n"
+
+#: ../kbdconfig.c:194
+#, c-format
+msgid "%s: line %d unexpected in /etc/sysconfig/keyboard\n"
+msgstr "%s: línea %d no esperada en /etc/sysconfig/keyboard\n"
+
+#: ../kbdconfig.c:230
+#, c-format
+msgid "%s: bad argument %s: %s\n"
+msgstr "%s: argumento inválido %s: %s\n"
+
+#: ../kbdconfig.c:237
+#, c-format
+msgid "%s: unexpected argument"
+msgstr "%s: argumento no esperado"
+
+#: ../kbdconfig.c:244
+#, c-format
+msgid "%s: can only be run as root\n"
+msgstr "%s: solamente el root puede ejecutar\n"
+
+#: ../kbdconfig.c:249
+#, c-format
+msgid "%s: critical error reading /etc/sysconfig/keyboard"
+msgstr "%s: error crítico en la lectura del archivo /etc/sysconfig/keyboard"
+
+#: ../kbdconfig.c:262
+msgid ""
+" <Tab>/<Alt-Tab> between elements   |  <Space> selects   |  <F12> next screen"
+msgstr ""
+"<Tab>/<Alt-Tab> mueve entre opciones   | <Espacio> selecciona | <F12> próxima pantalla"
+
+#: ../kbdconfig.c:283
+#, c-format
+msgid "%s: failed to make /etc/sysconfig/keyboard: %s"
+msgstr "%s: Hubo fallo en la creación del archivo /etc/sysconfig/keyboard: %s"
+
+#: ../kbdconfig.c:291
+#, c-format
+msgid "%s: failed to write to /etc/sysconfig/keyboard: %s"
+msgstr "%s: Hubo fallo en la grabación del archivo /etc/sysconfig/keyboard: %s"
+
+#: ../kbdconfig.c:302
+msgid "Keymap Loaded"
+msgstr "Mapa de teclado cargado"
+
+#: ../kbdconfig.c:303
+msgid "The new keymap has been loaded."
+msgstr "Fue cargado el nuevo mapa de teclado."
