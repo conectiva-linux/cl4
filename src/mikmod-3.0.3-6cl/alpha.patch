@@ -1,0 +1,14 @@
+--- mikmod-3.0.3/playercode/mdreg.c.orig        Fri Sep  4 14:38:13 1998
++++ mikmod-3.0.3/playercode/mdreg.c     Fri Sep  4 15:16:58 1998
+@@ -27,8 +27,8 @@
+     MikMod_RegisterDriver(drv_sun);
+ #elif defined(SOLARIS)
+     MikMod_RegisterDriver(drv_sun);
+-#elif defined(__alpha)
+-    MikMod_RegisterDriver(drv_AF);
++/* #elif defined(__alpha)
++ *   MikMod_RegisterDriver(drv_AF); */
+ #elif defined(OSS)
+     MikMod_RegisterDriver(drv_oss);
+     MikMod_RegisterDriver(drv_stdout);
+

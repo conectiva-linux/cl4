@@ -1,0 +1,3 @@
+mikmod name "Mikmod"
+mikmod exec "mikmod &"
+mikmod group Utilities/Sound 
