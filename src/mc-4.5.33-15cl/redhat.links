@@ -1,0 +1,29 @@
+[RHgnome]
+title=GNOME Web Site
+type=url
+url=http://www.gnome.org/
+icon=gnome-logo-icon-transparent.png
+
+[RHldp]
+title=Linux Documents
+type=url
+url=http://www.redhat.com/mirrors/LDP
+icon=mc/ldp.xpm
+
+[RHerrata]
+title=Red Hat Errata
+type=url
+url=http://support.redhat.com/errata
+icon=redhat/shadowman-round-48.xpm
+
+[RHsupport]
+title=Red Hat Support
+type=url
+url=http://support.redhat.com/
+icon=redhat/shadowman-round-48.xpm
+
+[RH.com]
+title=www.redhat.com
+type=url
+url=http://www.redhat.com
+icon=redhat/shadowman-round-48.xpm

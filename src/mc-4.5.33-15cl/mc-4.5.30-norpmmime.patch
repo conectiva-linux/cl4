@@ -1,0 +1,11 @@
+--- mc-4.5.30/gnome/mc.keys.in.in.norpm	Mon Apr 19 14:51:31 1999
++++ mc-4.5.30/gnome/mc.keys.in.in	Mon Apr 19 14:54:12 1999
+@@ -103,8 +103,6 @@
+ 
+ application/x-rpm:
+ 	fm-open=%cd %p#rpm
+-	open.install.Install this RPM=rpm -i %f
+-	open.upgrade.Upgrade this RPM=rpm -U %f
+ 	icon-filename=@icondir@/gnome-pack-rpm.png
+ 
+ application/x-deb:

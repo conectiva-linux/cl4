@@ -1,0 +1,10 @@
+--- mc-4.5.27/src/slint.c.xtermcolor	Thu Mar 25 16:12:29 1999
++++ mc-4.5.27/src/slint.c	Thu Mar 25 16:13:08 1999
+@@ -416,6 +416,7 @@
+     "color-xterm",
+     "dtterm",
+     "xtermc",
++    "xterm",
+     "ansi",
+ /* 'qnx*' terminals have non-ANSI-compatible color sequences... */
+     "qansi",

@@ -1,0 +1,15 @@
+--- mc-4.5.30/gnome/gmain.c.fixwarning	Sat Apr 10 22:38:36 1999
++++ mc-4.5.30/gnome/gmain.c	Mon Apr 12 16:48:50 1999
+@@ -630,8 +630,10 @@
+ 
+ 	warning_dlg = gnome_message_box_new (
+ 		_("You are running the GNOME File Manager as root.\n\n"
+-		  "As root, you can damage your system if you are not careful, and the "
+-		  "GNOME File Manager will not stop you from doing it."),
++		  "As root, you can damage your system, and the "
++		  "File Manager will not stop you.\n"
++		  "Your manual explains how to add a non-privileged user "
++		  "account to the system.\n"),
+ 		GNOME_MESSAGE_BOX_WARNING,
+ 		GNOME_STOCK_BUTTON_OK, NULL);
+ 
