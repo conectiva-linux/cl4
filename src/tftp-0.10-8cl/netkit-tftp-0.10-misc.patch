@@ -1,0 +1,11 @@
+--- netkit-tftp-0.10/MCONFIG.ewt	Tue Jul 15 12:15:08 1997
++++ netkit-tftp-0.10/MCONFIG	Tue Jul 15 12:15:19 1997
+@@ -30,7 +30,7 @@
+ CC=gcc
+ 
+ # Compiler warnings
+-WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
++WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align $(RPM_OPT_FLAGS)
+ 
+ # Compiler flags to use
+ CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)

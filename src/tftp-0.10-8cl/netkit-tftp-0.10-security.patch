@@ -1,0 +1,14 @@
+--- netkit-tftp-0.10/tftpd/tftpd.c.ewt	Mon Sep 22 21:26:53 1997
++++ netkit-tftp-0.10/tftpd/tftpd.c	Mon Sep 22 21:27:32 1997
+@@ -171,7 +171,10 @@
+ 	if (!getuid() || !geteuid()) {
+ 		struct passwd *pwd = getpwnam("nobody");
+ 		if (pwd) setuid(pwd->pw_uid);
+-		else setuid(32765); /* hope this doesn't hose anything */
++		else {
++			syslog(LOG_ERR, "getpwna failed to find user nobody: %m\n");
++			exit(1);
++		}
+ 	}
+ 	from.sin_family = AF_INET;
+ 	alarm(0);
