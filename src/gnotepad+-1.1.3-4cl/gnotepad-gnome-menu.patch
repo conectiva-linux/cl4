@@ -1,0 +1,10 @@
+--- ./gnotepad+.desktop~	Sat Mar 20 12:30:15 1999
++++ ./gnotepad+.desktop	Tue Jun 29 23:43:39 1999
+@@ -2,6 +2,7 @@
+ Name=gnotepad+
+ Name[de]=gnotepad+
+ Comment=Text Editor
++Comment[pt_BR]=Editor de Textos
+ Comment[de]=Texteditor
+ Exec=gnp
+ Icon=
