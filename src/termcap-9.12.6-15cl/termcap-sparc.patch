@@ -1,0 +1,11 @@
+--- ./termcap.sparc	Fri Mar 12 15:27:26 1999
++++ ./termcap	Fri Mar 12 15:28:45 1999
+@@ -460,7 +460,7 @@
+ # From: Eric S. Raymond <esr@snark.thyrsus.com> 9 Nov 1995
+ linux|linux console:\
+ 	:am:eo:mi:ms:ut:xn:xo:\
+-	:co#80:it#8:li#25:\
++	:co#128:it#8:li#54:\
+ 	:&7=^Z:@7=\E[4~:AL=\E[%dL:DC=\E[%dP:DL=\E[%dM:\
+ 	:F1=\E[23~:F2=\E[24~:F3=\E[25~:F4=\E[26~:F5=\E[28~:\
+ 	:F6=\E[29~:F7=\E[31~:F8=\E[32~:F9=\E[33~:FA=\E[34~:\
