@@ -1,0 +1,52 @@
+--- awesfx-0.4.3a/include/Imakefile.orig	Tue Mar  9 12:13:05 1999
++++ awesfx-0.4.3a/include/Imakefile	Tue Mar  9 12:13:22 1999
+@@ -1,6 +1,6 @@
+ #include "../awelib/config.h"
+ 
+-INCDIR = /usr/local/include/awe
++INCDIR = $(RPM_BUILD_ROOT)/usr/include/awe
+ 
+ HEADERS = awebank.h aweseq.h awe_parm.h sffile.h itypes.h sfitem.h sflayer.h\
+ 	sfopts.h slist.h util.h
+--- awesfx-0.4.3a/awelib/Imakefile.orig	Tue Mar  9 12:12:46 1999
++++ awesfx-0.4.3a/awelib/Imakefile	Tue Mar  9 12:12:59 1999
+@@ -6,7 +6,7 @@
+ 
+ LIBVER = 0.4.3
+ 
+-LIBDIR = /usr/local/lib
++LIBDIR = $(RPM_BUILD_ROOT)/usr/lib
+ INCLUDES += -I../include
+ 
+ #ifdef FreeBSDArchitecture
+--- awesfx-0.4.3a/awelib/config.h.orig	Tue Mar  9 12:15:11 1999
++++ awesfx-0.4.3a/awelib/config.h	Tue Mar  9 12:15:51 1999
+@@ -3,10 +3,10 @@
+  */
+ 
+ /* make shared library */
+-#define MAKE_SHARED_LIBRARY
++/* #undef MAKE_SHARED_LIBRARY */
+ 
+ /* install AWElib */
+-#define INSTALL_AWELIB
++/* #undef INSTALL_AWELIB  */
+ 
+ /* default SoundFont path */
+ #define DEFAULT_SF_PATH		"/usr/local/lib/sfbank:/dos/sb32/sfbank"
+--- awesfx-0.4.3a/Imakefile.orig	Mon Nov 30 17:47:14 1998
++++ awesfx-0.4.3a/Imakefile	Tue Mar  9 12:11:00 1999
+@@ -10,10 +10,11 @@
+ #define IHaveSubdirs
+ SUBDIRS = awelib include
+ #define PassCDebugFlags 'CDEBUGFLAGS=$(CDEBUGFLAGS)'
++#define PassCFlags 'CFLAGS=$(RPM_OPT_FLAGS)'
+ 
+ /* binary and manual directories */
+-BINDIR = /usr/local/bin
+-MANDIR = /usr/local/man/man1
++BINDIR = $(RPM_BUILD_ROOT)/usr/bin
++MANDIR = $(RPM_BUILD_ROOT)/usr/man/man1
+ MANSUFFIX =  1
+ 
+ /* include directory for awelib */
