@@ -1,0 +1,11 @@
+--- zip-2.1/tailor.h.arm	Fri Jan 15 17:21:44 1999
++++ zip-2.1/tailor.h	Fri Jan 15 17:22:46 1999
+@@ -24,7 +24,7 @@
+ #include "os2/osdep.h"
+ #endif
+ 
+-#ifdef __arm
++#if defined(__arm) && !defined(linux)
+ #include "acorn/osdep.h"
+ #endif
+ 
