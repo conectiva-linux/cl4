@@ -1,0 +1,11 @@
+--- imap-4.4/src/osdep/unix/Makefile.vfs	Thu Dec 17 23:48:35 1998
++++ imap-4.4/src/osdep/unix/Makefile	Thu Dec 17 23:49:30 1998
+@@ -657,7 +657,7 @@
+ 	$(LN) os_$(OS).c osdepbas.c
+ 	$(LN) log_$(LOGINPW).c osdeplog.c
+ 	$(LN) sig_$(SIGTYPE).c siglocal.c
+-	sh -c '(test -f /usr/include/sys/statvfs.h -a $(OS) != sc5 -a $(OS) != sco) && $(LN) flocksun.c flockbsd.c || $(LN) flocksv4.c flockbsd.c'
++	sh -c '(test -f /usr/include/sys/statvfs.h -a $(OS) != sc5 -a $(OS) != sco -a $(OS) != lnx) && $(LN) flocksun.c flockbsd.c || $(LN) flocksv4.c flockbsd.c'
+ 
+ # Password checkers
+ 

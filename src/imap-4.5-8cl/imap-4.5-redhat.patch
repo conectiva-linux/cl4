@@ -1,0 +1,25 @@
+--- imap-4.5/src/osdep/unix/Makefile.redhat	Sat Mar 13 19:10:51 1999
++++ imap-4.5/src/osdep/unix/Makefile	Sat Mar 13 19:10:51 1999
+@@ -353,7 +353,7 @@
+ 	 SPOOLDIR=/var/spool \
+ 	 ACTIVEFILE=/var/lib/news/active \
+ 	 RSHPATH=/usr/bin/rsh \
+-	 BASECFLAGS="-g -fno-omit-frame-pointer -O6 -DNFSKLUDGE" \
++	 BASECFLAGS="-g -fno-omit-frame-pointer $(RPM_OPT_FLAGS)" \
+ 	 BASELDFLAGS="-lpam -ldl"
+ 
+ lyn:	# LynxOS
+--- imap-4.5/Makefile.redhat	Sat Mar 13 19:11:07 1999
++++ imap-4.5/Makefile	Sat Mar 13 19:14:37 1999
+@@ -163,10 +163,9 @@
+ 
+ EXTRASPECIALS=
+ 
+-
+ # Miscellaneous command options passed down to the c-client Makefile
+ 
+-EXTRACFLAGS=
++EXTRACFLAGS=  -DDISABLE_POP_PROXY=1  -DIGNORE_LOCK_EACCES_ERRORS=1
+ EXTRALDFLAGS=
+ 
+ 

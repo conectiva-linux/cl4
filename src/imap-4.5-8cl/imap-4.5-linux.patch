@@ -1,0 +1,27 @@
+--- imap-4.5/src/osdep/unix/Makefile.linux	Tue Jan 26 18:17:39 1999
++++ imap-4.5/src/osdep/unix/Makefile	Sat Mar 13 18:47:54 1999
+@@ -55,11 +55,11 @@
+ CHECKPW=std
+ LOGINPW=std
+ SIGTYPE=bsd
+-ACTIVEFILE=/usr/lib/news/active
+-SPOOLDIR=/usr/spool
++ACTIVEFILE=/var/lib/news/active
++SPOOLDIR=/var/spool
+ MAILSPOOL=$(SPOOLDIR)/mail
+ NEWSSPOOL=$(SPOOLDIR)/news
+-RSHPATH=/usr/ucb/rsh
++RSHPATH=/usr/bin/rsh
+ 
+ 
+ # Default formats for creating new mailboxes and for empty mailboxes in the
+@@ -345,7 +345,8 @@
+ 	 SPOOLDIR=/var/spool \
+ 	 ACTIVEFILE=/var/lib/news/active \
+ 	 RSHPATH=/usr/bin/rsh \
+-	 BASECFLAGS="-g -O -DNFSKLUDGE"
++	 ACTIVEFILE=/var/lib/news/active \
++	 BASECFLAGS="-g -O -DNFSKLUDGE $(RPM_OPT_FLAGS)"
+ 
+ lnp:	# Linux Pluggable Authentication modules
+ 	$(BUILD) `cat EXTRASPECIALS` OS=lnx SIGTYPE=psx CHECKPW=pam \
