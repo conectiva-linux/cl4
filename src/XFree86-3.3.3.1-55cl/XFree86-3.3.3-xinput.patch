@@ -1,0 +1,99 @@
+--- XFree86-3.3.3/xc/lib/Xi/XExtInt.c.xinput	Sat Jan  9 16:54:48 1999
++++ XFree86-3.3.3/xc/lib/Xi/XExtInt.c	Sat Jan  9 17:14:03 1999
+@@ -200,7 +200,7 @@
+ 	    return (-1);
+ 	    }
+ 	((XInputData *) info->data)->vers =
+-	    XGetExtensionVersion (dpy, "XInputExtension");
++	    XInput_get_extension_version (dpy, "XInputExtension");
+ 	}
+ 
+     if (versions[version_index].major_version > Dont_Check)
+--- XFree86-3.3.3/xc/lib/Xi/XGetVers.c.xinput	Sat Jan  9 16:57:08 1999
++++ XFree86-3.3.3/xc/lib/Xi/XGetVers.c	Sat Jan  9 17:11:09 1999
+@@ -61,13 +61,17 @@
+ #include "extutil.h"
+ #include "XIint.h"
+ 
++/* We need the following variant because we can't call 
++ * XGetExtensionVersion from within the display lock, and we 
++ * need to retrieve the version from _XiCheckExtInit
++ */
+ XExtensionVersion
+ #if NeedFunctionPrototypes
+-*XGetExtensionVersion (
++*XInput_get_extension_version (
+     register Display 	*dpy,
+     _Xconst char	*name)
+ #else
+-*XGetExtensionVersion (dpy, name)
++*XInput_get_extension_version (dpy, name)
+     register Display 	*dpy;
+     char		*name;
+ #endif
+@@ -77,10 +81,6 @@
+     XExtensionVersion		*ext;
+     XExtDisplayInfo *info = XInput_find_display (dpy);
+ 
+-    LockDisplay (dpy);
+-    if (_XiCheckExtInit(dpy, Dont_Check) == -1)
+-	return ((XExtensionVersion *) NoSuchExtension);
+-
+     GetReq(GetExtensionVersion,req);		
+     req->reqType = info->codes->major_opcode;
+     req->ReqType = X_GetExtensionVersion;
+@@ -89,11 +89,8 @@
+     _XSend(dpy, name, (long)req->nbytes);
+ 
+     if (! _XReply (dpy, (xReply *) &rep, 0, xTrue)) 
+-	{
+-	UnlockDisplay(dpy);
+-	SyncHandle();
+ 	return (XExtensionVersion *) NULL;
+-	}
++
+     ext = (XExtensionVersion *) Xmalloc (sizeof (XExtensionVersion));
+     if (ext)
+ 	{
+@@ -104,6 +101,28 @@
+ 	    ext->minor_version = rep.minor_version;
+ 	    }
+ 	}
++    return (ext);
++    }
++
++XExtensionVersion
++#if NeedFunctionPrototypes
++*XGetExtensionVersion (
++    register Display 	*dpy,
++    _Xconst char	*name)
++#else
++*XGetExtensionVersion (dpy, name)
++    register Display 	*dpy;
++    char		*name;
++#endif
++    {       
++    XExtensionVersion		*ext;
++
++    LockDisplay (dpy);
++    if (_XiCheckExtInit(dpy, Dont_Check) == -1)
++	return ((XExtensionVersion *) NoSuchExtension);
++
++    ext = XInput_get_extension_version(dpy, name);
++
+     UnlockDisplay(dpy);
+     SyncHandle();
+     return (ext);
+--- XFree86-3.3.3/xc/lib/Xi/XIint.h.xinput	Sat Jan  9 17:12:43 1999
++++ XFree86-3.3.3/xc/lib/Xi/XIint.h	Sat Jan  9 17:18:45 1999
+@@ -10,3 +10,10 @@
+ 		Display*
+ #endif
+ 		);
++
++XExtensionVersion * XInput_get_extension_version(
++#if NeedFunctionPrototypes
++               Display  *,
++	       _Xconst char *
++#endif
++                );

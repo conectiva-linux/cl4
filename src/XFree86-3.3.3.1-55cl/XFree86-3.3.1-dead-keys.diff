@@ -1,0 +1,324 @@
+diff -ur xc/lib/X11/IMWrap.c /space/R6.3/xc/lib/X11/IMWrap.c
+--- xc/lib/X11/IMWrap.c	Sat Aug 30 12:53:37 1997
++++ /space/R6.3/xc/lib/X11/IMWrap.c	Fri Aug 15 14:24:50 1997
+@@ -127,10 +127,13 @@
+     char	*res_class;
+ {
+     XLCd	lcd = _XOpenLC( (char *)NULL );
++    XIM		im;
+ 
+     if( !lcd )
+ 	return( (XIM)NULL );
+-    return (*lcd->methods->open_im) (lcd, display, rdb, res_name, res_class);
++    if ((im = (*lcd->methods->open_im) (lcd, display, rdb, res_name, res_class)) != NULL)
++      display->dk_info->client_i18n = 1;
++    return im;
+ }
+ 
+ /*
+diff -ur xc/lib/X11/KeyBind.c /space/R6.3/xc/lib/X11/KeyBind.c
+--- xc/lib/X11/KeyBind.c	Fri Feb  2 20:10:19 1996
++++ /space/R6.3/xc/lib/X11/KeyBind.c	Sun May 11 17:27:28 1997
+@@ -41,10 +41,11 @@
+ #define XK_XKB_KEYS
+ #include <X11/keysymdef.h>
+ #include <stdio.h>
+-
+-#ifdef USE_OWN_COMPOSE
+-#include "imComp.h"
+-#endif
++/* Quinot */
++#include "Ximint.h"
++#include "XlcPublic.h"
++#include "Xlcint.h"
++/* /Quinot */
+ 
+ #ifdef XKB
+ #define	XKeycodeToKeysym	_XKeycodeToKeysym
+@@ -519,7 +520,10 @@
+     buffer[0] = c;
+     return 1;
+ }
+-  
++
++#define KEY_CODE_PROCESSED	0x1000
++#define KEY_CODE_COMPOSED	0x2000     
++
+ /*ARGSUSED*/
+ int
+ XLookupString (event, buffer, nbytes, keysym, status)
+@@ -531,82 +535,119 @@
+ {
+     unsigned int modifiers;
+     KeySym symbol;
++    /* Quinot */
++    Display *dpy = event->display;
++    DefTree *p, *pspace;
++    XLCd lcd = _XlcCurrentLC();
++
++    if (!keysym)
++      keysym = &symbol;
++
++    if (!dpy->dk_info->client_i18n) {
++      if (event->keycode & KEY_CODE_PROCESSED) {
++	*keysym = NoSymbol;
++	return 0;
++      }
++      if ((event->keycode & KEY_CODE_COMPOSED) && ((p = dpy->dk_info->composed) != NULL)) {
++	int len;
++	*keysym = p->ks;
++	if ( p->mb!='\0' ) {
++	  len = strlen(p->mb);
++	  if (len > nbytes) len = nbytes;
++	  memcpy(buffer,p->mb,len);
++	} else {
++	  len = _XTranslateKeySym(dpy,*keysym,event->state,
++				  buffer,nbytes,
++				  NULL);
++        }
++	return len;
++      }                  
++    }	
++    /* /Quinot */
+ 
+     if (! _XTranslateKey(event->display, event->keycode, event->state,
+-		  &modifiers, &symbol))
++		  &modifiers, keysym))
+ 	return 0;
+ 
+-#ifdef USE_OWN_COMPOSE
+-    if ( status ) {
+-	static int been_here= 0;
+-	if ( !been_here ) {
+-	    XimCompInitTables();
+-	    been_here = 1;
+-	}
+-	if ( !XimCompLegalStatus(status) ) {
+-	    status->compose_ptr = NULL;
+-	    status->chars_matched = 0;
+-	}
+-	if ( ((status->chars_matched>0)&&(status->compose_ptr!=NULL)) || 
+-		XimCompIsComposeKey(symbol,event->keycode,status) ) {
+-	    XimCompRtrn rtrn;
+-	    switch (XimCompProcessSym(status,symbol,&rtrn)) {
+-		case XIM_COMP_IGNORE:
+-		    break;
+-		case XIM_COMP_IN_PROGRESS:
+-		    if ( keysym!=NULL )
+-			*keysym = NoSymbol;
+-		    return 0;
+-		case XIM_COMP_FAIL:
+-		{
+-		    int n = 0, len= 0;
+-		    for (n=len=0;rtrn.sym[n]!=XK_VoidSymbol;n++) {
+-			if ( nbytes-len > 0 ) {
+-			    len+= _XTranslateKeySym(event->display,rtrn.sym[n],
+-							event->state,
+-							buffer+len,nbytes-len);
+-			}
+-		    }
+-		    if ( keysym!=NULL ) {
+-			if ( n==1 )	*keysym = rtrn.sym[0];
+-			else		*keysym = NoSymbol;
+-		    }
+-		    return len;
+-		}
+-		case XIM_COMP_SUCCEED:
+-		{
+-		    int len,n = 0;
+-
+-		    symbol = rtrn.matchSym;
+-		    if ( keysym!=NULL )	*keysym = symbol;
+-		    if ( rtrn.str[0]!='\0' ) {
+-			strncpy(buffer,rtrn.str,nbytes-1);
+-			buffer[nbytes-1]= '\0';
+-			len = strlen(buffer);
+-		    }
+-		    else {
+-			len = _XTranslateKeySym(event->display,symbol,
+-							event->state,
+-							buffer,nbytes);
+-		    }
+-		    for (n=0;rtrn.sym[n]!=XK_VoidSymbol;n++) {
+-			if ( nbytes-len > 0 ) {
+-			    len+= _XTranslateKeySym(event->display,rtrn.sym[n],
+-							event->state,
+-							buffer+len,nbytes-len);
+-			}
+-		    }
+-		    return len;
+-		}
+-	    }
+-	}
++    /* Quinot */
++    /* Now we have are ready for return, and we are going to do some
++       post-processing to collapse several keysyms into a composed
++       string. */
++
++    if (!(dpy->dk_info->client_i18n || dpy->dk_info->top)) {
++      FILE *fp;
++      char *name;
++
++      name = _XlcFileName(lcd, COMPOSE_FILE);
++      if (name == (char *)NULL)
++	goto dead_keys_failure;
++      fp = fopen(name, "r");
++      if (fp == (FILE *)NULL)
++	goto dead_keys_failure;
++      (void)XimParseStringFile(fp, &dpy->dk_info->top);
++      fclose(fp);
++      dpy->dk_info->status = dpy->dk_info->top;
++      goto dead_keys_ok;
++    dead_keys_failure:
++      dpy->dk_info->client_i18n = 1;
++    dead_keys_ok:
++      if (name)
++	Xfree (name);
++    }
++    if ((dpy->dk_info->top == NULL) || (event->type != KeyPress) ||
++	IsModifierKey(*keysym))
++      goto no_compose_fallthrough;
++
++    pspace = NULL;
++    for(p = dpy->dk_info->status; p; p = p->next) {
++      if((event->state & p->modifier_mask) == p->modifier) {
++	if (*keysym == p->keysym)
++	  break;
++	if (XK_space == p->keysym)
++	  pspace = p;
++      }
++    }
++    if (!p && pspace) {
++      XPutBackEvent (dpy, (XEvent *) event);
++      p = pspace;
++    }
++    if(p) { /* Matched */
++      if(p->succession) { /* Intermediate */
++       dpy->dk_info->status = p->succession;
++       dpy->dk_info->composed = NULL;
++       *keysym = NoSymbol;
++       event->keycode |= KEY_CODE_PROCESSED;
++       return 0;
++      } else { /* Terminate (reached to leaf) */
++	int len,n = 0;
++
++       /* initialize internal state for next key sequence */
++	dpy->dk_info->composed = p;
++	dpy->dk_info->status = dpy->dk_info->top;
++	event->keycode |= KEY_CODE_COMPOSED;
++	return _XLookupString (event, buffer, nbytes, keysym, status);
++      }
++    } else { /* Unmatched */
++      dpy->dk_info->composed = NULL;
++      if(dpy->dk_info->status == dpy->dk_info->top) {
++	/* OK : not matched at top node */
++	goto no_compose_fallthrough;
++      } else {
++       /* Error (Sequence Unmatch occured) */
++       /* initialize internal state for next key sequence */
++       dpy->dk_info->status = dpy->dk_info->top;
++
++       /* eat up erroneous keysyms, when we can do nothing else. */
++       event->keycode |= KEY_CODE_PROCESSED;
++       *keysym = NoSymbol;
++       return 0;
++      }
+     }
+-#endif
+ 
+-    if (keysym)
+-	*keysym = symbol;
++no_compose_fallthrough:
++    /* /Quinot */
+     /* arguable whether to use (event->state & ~modifiers) here */
+-    return _XTranslateKeySym(event->display, symbol, event->state,
++    return _XTranslateKeySym(event->display, *keysym, event->state,
+ 			     buffer, nbytes);
+ }
+ 
+diff -ur xc/lib/X11/OpenDis.c /space/R6.3/xc/lib/X11/OpenDis.c
+--- xc/lib/X11/OpenDis.c	Sat Aug 30 12:53:37 1997
++++ /space/R6.3/xc/lib/X11/OpenDis.c	Fri Aug 15 14:24:50 1997
+@@ -30,6 +30,7 @@
+ #define NEED_REPLIES
+ #define NEED_EVENTS
+ #include "Xlibint.h"
++#include "Ximint.h"
+ #include <X11/Xtrans.h>
+ #include <X11/Xatom.h>
+ #include "bigreqstr.h"
+@@ -227,6 +228,14 @@
+ 	dpy->flushes		= NULL;
+ 	dpy->xcmisc_opcode	= 0;
+ 	dpy->xkb_info		= NULL;
++	if ((dpy->dk_info = (struct _XDead_keys_info *)Xcalloc
++	     (1,sizeof(struct _XDead_keys_info))) == NULL) {
++	  Xfree(dpy);
++	  return(NULL);
++        }
++	dpy->dk_info->client_i18n = 0;
++	dpy->dk_info->top = dpy->dk_info->status =
++	  dpy->dk_info->composed = NULL;
+ 
+ /*
+  * Setup other information in this display structure.
+diff -ur xc/lib/X11/Xlibint.h /space/R6.3/xc/lib/X11/Xlibint.h
+--- xc/lib/X11/Xlibint.h	Sat Aug 30 12:53:37 1997
++++ /space/R6.3/xc/lib/X11/Xlibint.h	Fri Aug 15 14:24:51 1997
+@@ -63,6 +63,14 @@
+     XGCValues values;	/* shadow structure of values */
+ };
+ 
++struct _DefTree;
++struct _XDead_keys_info {
++	int client_i18n;
++	struct _DefTree *top,
++	  *status,
++	  *composed;
++};
++
+ struct _XDisplay
+ {
+ 	XExtData *ext_data;	/* hook for extension to hang data */
+@@ -167,6 +175,7 @@
+ 	int xcmisc_opcode;	/* major opcode for XC-MISC */
+ 	struct _XkbInfoRec *xkb_info; /* XKB info */
+ 	struct _XtransConnInfo *trans_conn; /* transport connection object */
++	struct _XDead_keys_info *dk_info;
+ };
+ 
+ #define XAllocIDs(dpy,ids,n) (*(dpy)->idlist_alloc)(dpy,ids,n)
+diff -ur xc/lib/X11/imLcFlt.c /space/R6.3/xc/lib/X11/imLcFlt.c
+--- xc/lib/X11/imLcFlt.c	Sat Nov 18 22:08:44 1995
++++ /space/R6.3/xc/lib/X11/imLcFlt.c	Sun May 11 17:22:19 1997
+@@ -46,7 +46,7 @@
+     Xic		 ic = (Xic)client_data;
+     KeySym	 keysym;
+     static char	 buf[256];
+-    DefTree	*p;
++    DefTree	*p, *pspace;
+ 
+     if(   (ev->type != KeyPress)
+        || (ev->xkey.keycode == 0)
+@@ -58,11 +58,17 @@
+     if(IsModifierKey(keysym))
+ 	return (False);
+ 
+-    for(p = ic->private.local.context; p; p = p->next) {
+-	if(((ev->xkey.state & p->modifier_mask) == p->modifier) &&
+-	    (keysym == p->keysym)) {
+-	    break;
++    for(pspace = NULL, p = ic->private.local.context; p; p = p->next) {
++	if((ev->xkey.state & p->modifier_mask) == p->modifier) {
++	    if (keysym == p->keysym)
++		break;
++	    if (XK_space == p->keysym)
++		pspace = p;
+ 	}
++    }
++    if (!p && pspace) {
++      XPutBackEvent (d, ev);
++      p = pspace;
+     }
+ 
+     if(p) { /* Matched */

@@ -1,0 +1,13 @@
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/vga256/drivers/mga/mga_driver.c.G200dga	Thu Jun 10 15:50:16 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/vga256/drivers/mga/mga_driver.c	Thu Jun 10 15:54:44 1999
+@@ -1054,6 +1054,10 @@
+ 	int offset, offset_modulo, ydstorg_modulo;
+ 
+ 	MGAydstorg = 0;
++
++	if ((MGAchipset == PCI_CHIP_MGA1064) || (MGA_IS_GCLASS(MGAchipset)))
++	    return 0;
++
+ 	if (vga256InfoRec.virtualX * vga256InfoRec.virtualY * BytesPerPixel
+ 		<= 4*1024*1024)
+ 	    return 0;

@@ -1,0 +1,22 @@
+--- xc/programs/Xserver/hw/xfree86/xf86config/Cards.orig	Sat Jan 23 13:15:16 1999
++++ xc/programs/Xserver/hw/xfree86/xf86config/Cards	Tue Jan 26 17:23:23 1999
+@@ -2201,16 +2201,19 @@
+ CHIPSET 3dimage975
+ SERVER SVGA
+ NOCLOCKPROBE
++LINE     Option     "noaccel"
+ 
+ NAME Trident 3DImage975 AGP (generic)
+ CHIPSET 3dimage975
+ SERVER SVGA
+ NOCLOCKPROBE
++LINE     Option     "noaccel"
+ 
+ NAME Trident 3DImage985 (generic)
+ CHIPSET 3dimage985
+ SERVER SVGA
+ NOCLOCKPROBE
++LINE     Option     "noaccel"
+ 
+ NAME Trident TVGA 8800BR
+ SEE Generic VGA compatible

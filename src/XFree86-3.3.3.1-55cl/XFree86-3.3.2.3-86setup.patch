@@ -1,0 +1,66 @@
+--- XFree86-3.3.2.3/xc/config/cf/xf86site.def.86setup	Mon Sep 21 19:20:46 1998
++++ XFree86-3.3.2.3/xc/config/cf/xf86site.def	Mon Sep 21 19:23:52 1998
+@@ -101,8 +101,8 @@
+  * Note: version 4.0 or 4.1 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTk			YES
+  */
++#define HasTk			YES
+ 
+ /*
+  * Set the paths and names for your Tk library if they don't match the
+@@ -115,25 +115,26 @@
+  *
+  * Some Linux releases need TkLibDir set to /usr/X11R6/lib
+  *
+-#define TkLibDir		/usr/local/lib
+-#define TkIncDir		/usr/local/include
+-#define TkLibName		tk
+  */
++#define TkLibDir		/usr/lib
++#define TkIncDir		/usr/include
++#define TkLibName		tk
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tk library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTk	NO
+  */
++#define XF86SetupUsesStaticTk	NO
++
+ 
+ /*
+  * If you have Tcl (which is required to build XF86Setup), uncomment this
+  * Note: version 7.4 or 7.5 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTcl			YES
+  */
++#define HasTcl			YES
+ 
+ /*
+  * Set the paths and names for your Tcl library if they don't match the
+@@ -143,17 +144,17 @@
+  *
+  * Some Linux releases need TclIncDir set to /usr/include/tcl.
+  *
+-#define TclLibDir		/usr/local/lib
+-#define TclIncDir		/usr/local/include
+-#define TclLibName		tcl
+  */
++#define TclLibDir		/usr/lib
++#define TclIncDir		/usr/include
++#define TclLibName		tcl
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tcl library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTcl	NO
+  */
++#define XF86SetupUsesStaticTcl	NO
+ 
+ /*
+  * Which servers do you wish to build, you can save a lot of disk space

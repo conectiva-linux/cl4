@@ -1,0 +1,73 @@
+#!/bin/sh -login
+# Conectiva Linux 4.0 
+
+freetemp=/usr/X11R6/bin/freetemp
+xmodmap=/usr/X11R6/bin/xmodmap
+xrdb=/usr/X11R6/bin/xrdb
+
+# redirect errors to a file in user's home directory if we can
+errfile="$HOME/.xsession-errors"
+if cp /dev/null "$errfile" 2> /dev/null
+then
+	chmod 600 "$errfile"
+	exec > "$errfile" 2>&1
+fi
+
+# clean up after xbanner
+if [ -f $freetemp ]; then
+    $freetemp
+fi
+
+# This is taken from xinitrc
+userresources=$HOME/.Xresources 
+usermodmap=$HOME/.Xmodmap 
+sysresources=/usr/X11R6/lib/X11/xinit/.Xresources 
+sysmodmap=/usr/X11R6/lib/X11/xinit/.Xmodmap 
+
+# merge in defaults and keymaps 
+if [ -f $sysresources ]; then 
+    $xrdb -merge $sysresources 
+fi 
+ 
+if [ -f $sysmodmap ]; then 
+    $xmodmap $sysmodmap 
+fi 
+ 
+if [ -f $userresources ]; then 
+    $xrdb -merge $userresources 
+fi 
+ 
+if [ -f $usermodmap ]; then 
+    $xmodmap $usermodmap 
+fi 
+
+# now, we see if xdm/gdm/kdm has asked for a specific environment
+case "$1" in
+    WindowMaker)
+        exec /usr/X11R6/bin/RunWM.WindowMaker ;;
+    kde)
+        exec startkde ;;
+    gnome)
+	exec gnome-session ;;
+    icewm)
+        exec /usr/X11R6/bin/RunWM.icewm ;;
+    AfterStep)
+        exec /usr/X11R6/bin/RunWM.AfterStep ;;
+    Fvwm95)
+        exec /usr/X11R6/bin/RunWM.Fvwm95 ;;
+    MWM)
+        exec /usr/X11R6/bin/RunWM.MWM ;;
+    failsafe|Terminal)
+        exec xterm -geometry 80x24-0-0 ;;
+esac
+
+# otherwise, take default action
+if [ -x "$HOME/.xsession" ]; then
+    exec "$HOME/.xsession"
+elif [ -x "$HOME/.Xclients" ]; then
+    exec "$HOME/.Xclients"
+elif [ -x /etc/X11/xinit/Xclients ]; then
+    exec /etc/X11/xinit/Xclients
+else
+    exec xsm
+fi

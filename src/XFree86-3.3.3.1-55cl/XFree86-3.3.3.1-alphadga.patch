@@ -1,0 +1,22 @@
+--- XFree86-3.3.3.1/xc/lib/Xxf86dga/XF86DGA.c.alphadga	Mon Mar 15 10:56:01 1999
++++ XFree86-3.3.3.1/xc/lib/Xxf86dga/XF86DGA.c	Mon Mar 15 10:55:39 1999
+@@ -28,6 +28,9 @@
+ #define XF86DGACheckExtension(dpy,i,val) \
+   XextCheckExtension (dpy, i, xf86dga_extension_name, val)
+ 
++/* Alpha Patch by Georg Acher, acher@in.tum.de */ 
++extern unsigned long _bus_base(void);  /* GA */ 
++
+ /*****************************************************************************
+  *                                                                           *
+  *			   private utility routines                          *
+@@ -594,7 +597,8 @@
+ #endif
+    /* This requires linux-0.99.pl10 or above */
+    *addr = (void *)mmap(NULL, *bank, PROT_READ,
+-                        MAP_FILE | MAP_SHARED, fd, (off_t)offset);
++                        MAP_FILE | MAP_SHARED, fd, 
++			(off_t)offset+_bus_base());
+ #ifdef DEBUG
+    fprintf(stderr, "XF86DGAGetVideo: physaddr: 0x%08x, size: %d\n",
+ 	   (long)offset, *bank);

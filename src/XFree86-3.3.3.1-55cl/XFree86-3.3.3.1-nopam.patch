@@ -1,0 +1,241 @@
+--- XFree86-3.3.3.1/xc/programs/Xserver/os/Imakefile.nopam	Thu Apr  8 10:56:51 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/os/Imakefile	Thu Apr  8 11:07:57 1999
+@@ -95,6 +95,7 @@
+    KRB5_DEFINES = Krb5Defines
+         DEFINES = -DXSERV_t -DTRANS_SERVER $(CONNECTION_FLAGS) $(MEM_DEFINES) $(XDMAUTHDEFS) $(RPCDEFS) $(SIGNAL_DEFINES) $(OS_DEFINES) $(KRB5_DEFINES) $(RGB_DEFINES)
+        INCLUDES = -I.  -I../include -I$(XINCLUDESRC) -I$(EXTINCSRC) -I$(TOP)/lib/Xau -I../lbx Krb5Includes
++	EXTRA_DEFINES = -DUSE_PAM
+  DEPEND_DEFINES = $(DBM_DEFINES) $(XDMCP_DEFINES) $(EXT_DEFINES) $(TRANS_INCLUDES) $(CONNECTION_FLAGS)
+        LINTLIBS = ../dix/llib-ldix.ln
+ 
+--- XFree86-3.3.3.1/xc/programs/Xserver/Imakefile.nopam	Thu Apr  8 11:08:02 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/Imakefile	Thu Apr  8 11:11:10 1999
+@@ -160,6 +160,7 @@
+ #else
+         SYSLIBS = $(ZLIB) MathLibrary Krb5Libraries DBMLibrary $(EXTRASYSLIBS)
+ #endif
++	PAMLIBS = -lpam -lpam_misc -ldl
+            CBRT = mi/LibraryTargetName(cbrt)
+         STDDIRS = include dix os mi $(XPDDXDIR) $(EXTDIRS)
+ 
+@@ -1810,7 +1811,7 @@
+ 
+ 
+ #if UseXserverWrapper
+-SetUIDProgramTarget(Xwrapper,os/wrapper.o,NullParameter,NullParameter,NullParameter)
++SetUIDProgramTarget(Xwrapper,os/wrapper.o,NullParameter,$(PAMLIBS),NullParameter)
+ InstallProgramWithFlags(Xwrapper,$(BINDIR),$(INSTUIDFLAGS))
+ #endif
+
+--- XFree86-3.3.3.1/xc/programs/xdm/greeter/verify.c.nopam	Tue May 27 02:22:28 1997
++++ XFree86-3.3.3.1/xc/programs/xdm/greeter/verify.c	Wed Apr 14 22:18:11 1999
+@@ -41,6 +41,9 @@
+ 
+ # include	"dm.h"
+ # include	<pwd.h>
++#ifdef USE_PAM
++# include	<security/pam_appl.h>
++#else /* ! USE_PAM */
+ #ifdef USESHADOW
+ # include	<shadow.h>
+ #if defined(SHADOWSUITE) && defined(linux)
+@@ -51,6 +54,7 @@
+ extern int errno;
+ #endif
+ #endif
++#endif /* USE_PAM */
+ 
+ # include	"greet.h"
+ 
+@@ -104,6 +108,52 @@
+     return env;
+ }
+ 
++#ifdef USE_PAM
++static char *PAM_password;
++
++pam_handle_t *pamh;
++static int pam_error;
++
++static int PAM_conv (int num_msg,
++		     const struct pam_message **msg,
++		     struct pam_response **resp,
++		     void *appdata_ptr) {
++	int replies = 0;
++	struct pam_response *reply = NULL;
++
++	reply = malloc(sizeof(struct pam_response));
++	if (!reply) return PAM_CONV_ERR;
++	#define COPY_STRING(s) (s) ? strdup(s) : NULL
++
++	for (replies = 0; replies < num_msg; replies++) {
++		switch (msg[replies]->msg_style) {
++		case PAM_PROMPT_ECHO_OFF:
++			/* wants password */
++			reply[replies].resp_retcode = PAM_SUCCESS;
++			reply[replies].resp = COPY_STRING(PAM_password);
++			break;
++		case PAM_TEXT_INFO:
++			/* ignore the informational mesage */
++			break;
++		case PAM_PROMPT_ECHO_ON:
++			/* user name given to PAM already */
++			/* fall through */
++		default:
++			/* unknown or PAM_ERROR_MSG */
++			free (reply);
++			return PAM_CONV_ERR;
++		}
++	}
++	*resp = reply;
++	return PAM_SUCCESS;
++}
++
++static struct pam_conv PAM_conversation = {
++	&PAM_conv,
++	NULL
++};
++#endif
++
+ int
+ Verify (d, greet, verify)
+ struct display		*d;
+@@ -131,6 +181,7 @@
+ 	} else {
+ 	    user_pass = p->pw_passwd;
+ 	}
++#ifndef USE_PAM
+ #ifdef USESHADOW
+ 	errno = 0;
+ 	sp = getspnam(greet->name);
+@@ -153,6 +204,27 @@
+ 			return 0;
+ 		} /* else: null passwd okay */
+ 	}
++#else /* USE_PAM */
++	#define PAM_BAIL if (pam_error != PAM_SUCCESS) { \
++	   pam_end(pamh, 0); return 0; \
++	 }
++	PAM_password = greet->password;
++	pam_error = pam_start("xdm", p->pw_name, &PAM_conversation, &pamh);
++	PAM_BAIL;
++	pam_error = pam_set_item(pamh, PAM_TTY, d->name);
++	PAM_BAIL;
++	pam_error = pam_authenticate(pamh, 0);
++	PAM_BAIL;
++	pam_error = pam_acct_mgmt(pamh, 0);
++	/* really should do password changing, but it doesn't fit well */
++	PAM_BAIL;
++	pam_error = pam_setcred(pamh, 0);
++	PAM_BAIL;
++	/*
++	  Session management is accompilished later, in session.c,
++	  so no need to call pam_end here.
++	*/
++#endif /* USE_PAM */
+ 	Debug ("verify succeeded\n");
+ 	bzero(user_pass, strlen(user_pass)); /* in case shadow password */
+ 	/* The password is passed to StartClient() for use by user-based
+--- XFree86-3.3.3.1/xc/programs/xdm/Imakefile.nopam	Thu Nov  5 14:28:21 1998
++++ XFree86-3.3.3.1/xc/programs/xdm/Imakefile	Wed Apr 14 17:45:19 1999
+@@ -18,6 +18,8 @@
+  * but not all NetBSD/Alpha systems have shared libraries, and
+  * it can't be shared on those which do not.
+  */
++
++/* Don't use this with PAM 
+ #ifndef SharedLibXdmGreet
+ #define SharedLibXdmGreet						\
+     ((defined(AlphaArchitecture) &&					\
+@@ -29,11 +31,23 @@
+ #ifndef BuildBoth
+ #define BuildBoth (defined(LinuxArchitecture) && !SharedLibXdmGreet && !UseElfFormat)
+ #endif
++*/
++
++/* this is a hack */
+ 
+ #ifndef LinuxShadowSuite
+ #define LinuxShadowSuite NO
+ #endif
+ 
++#ifdef BuildBoth
++#undef BuildBoth
++#define BuildBoth 0
++#endif
++
++#ifdef SharedLibXdmGreet
++#undef SharedLibXdmGreet
++#endif
++
+ #if HasXdmAuth
+ XDMAUTH_DEFINES = -DHASXDMAUTH
+ XDMAUTHOBJS = xdmauth.o
+@@ -133,7 +147,7 @@
+ 
+ INCLUDES = $(KRB5_INCLUDE)
+ DEPLIBS = $(DEPXMULIB) $(DEPXTOOLLIB) $(DEPXLIB) $(DEPXAUTHLIB) $(DEPXDMCPLIB)
+-LOCAL_LIBRARIES = $(XMULIB) $(XTOOLLIB) $(XLIB) $(XAUTHLIB) $(XDMCPLIB) $(RPCLIB) $(DLLIBRARY) $(CRYPT_LIBRARIES)
++LOCAL_LIBRARIES = $(XMULIB) $(XTOOLLIB) $(XLIB) $(XAUTHLIB) $(XDMCPLIB) $(RPCLIB) -lpam -ldl $(CRYPT_LIBRARIES)
+ 
+           SRCS1 = auth.c daemon.c server.c dpylist.c dm.c error.c file.c \
+ 		  netaddr.c reset.c resource.c protodpy.c policy.c \
+@@ -182,6 +196,7 @@
+  OSMAJORVERSION = OSMajorVersion
+  OSMINORVERSION = OSMinorVersion
+    CONN_DEFINES = $(CONNECTION_FLAGS)
++  EXTRA_DEFINES = -DUSE_PAM
+         DEFINES = -DBINDIR=\"$(BINDIR)\" -DXDMDIR=\"$(XDMDIR)\" \
+ 		$(SIGNAL_DEFINES) \
+ 		$(XDMAUTH_DEFINES) $(RPC_DEFINES) $(KRB5_DEFINES) \
+--- XFree86-3.3.3.1/xc/programs/xdm/session.c.nopam	Sat Oct 24 03:57:19 1998
++++ XFree86-3.3.3.1/xc/programs/xdm/session.c	Wed Apr 14 17:45:19 1999
+@@ -55,6 +55,12 @@
+ #ifdef K5AUTH
+ # include <krb5/krb5.h>
+ #endif
++#ifdef USE_PAM
++# include <security/pam_appl.h>
++#endif
++#ifdef USESHADOW
++# include <shadow.h>
++#endif
+ 
+ #ifndef GREET_USER_STATIC
+ #include <dlfcn.h>
+@@ -141,6 +147,10 @@
+ 
+ static Jmp_buf	abortSession;
+ 
++#ifdef USE_PAM
++extern pam_handle_t *pamh;
++#endif
++
+ /* ARGSUSED */
+ static SIGVAL
+ catchTerm (n)
+@@ -482,6 +492,14 @@
+ 	    }
+ 	}
+ #endif /* K5AUTH */
++#ifdef USE_PAM
++	if (pamh) {
++	  /* shutdown PAM session */
++	  pam_close_session(pamh, 0);
++	  pam_end(pamh, PAM_SUCCESS);
++	  pamh = NULL;
++	}
++#endif
+     }
+     Debug ("Display %s exiting with status %d\n", d->name, status);
+     exit (status);
+@@ -513,6 +531,9 @@
+ 		Debug ("%s ", *f);
+ 	Debug ("\n");
+     }
++#ifdef USE_PAM
++    if (pamh) pam_open_session(pamh, 0);
++#endif    
+     switch (pid = fork ()) {
+     case 0:
+ 	CleanUpChild ();

@@ -1,0 +1,20 @@
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/sun/sunKeyMap.c.ru_sparc	Thu Jun  3 14:37:13 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/sun/sunKeyMap.c	Thu Jun  3 14:39:15 1999
+@@ -5638,7 +5638,7 @@
+ 	NULL, /* Hungary5 */	/* 51 */
+ 	NULL, /* Poland5 */	/* 52 */
+ 	NULL, /* Czech5 */	/* 53 */
+-	NULL, /* Russia5 */	/* 54 */
++	US5Keymap, /* Russia5 *//* 54 */
+ 	NULL, 			/* 55 */
+ 	NULL,			/* 56 */
+ 	NULL,			/* 57 */
+@@ -5750,7 +5750,7 @@
+ 	NULL, /* Hungary5 */	/* 51 */
+ 	NULL, /* Poland5 */	/* 52 */
+ 	NULL, /* Czech5 */	/* 53 */
+-	NULL, /* Russia5 */	/* 54 */
++	US5Keymap, /* Russia5 *//* 54 */
+ 	NULL, 			/* 55 */
+ 	NULL,			/* 56 */
+ 	NULL,			/* 57 */

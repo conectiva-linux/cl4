@@ -1,0 +1,20 @@
+--- xc/programs/xkbcomp/symbols/dvorak.orig	Wed Mar 17 07:23:15 1999
++++ xc/programs/xkbcomp/symbols/dvorak	Wed Mar 17 07:24:56 1999
+@@ -27,7 +27,7 @@
+     key <AE09> {	[	    9,	parenleft	]	};
+     key <AE10> {	[	    0,	parenright	]	};
+     key <AE11> {	[ bracketleft,	braceleft	]	};
+-    key <AE12> {	[       equal,	plus		]	};
++    key <AE12> {	[ bracketright,	braceright	]	};
+     key <BKSP> {	[   BackSpace,	Delete 		]	};
+ 
+     key  <TAB> {	[ 	  Tab,	ISO_Left_Tab	]	};
+@@ -42,7 +42,7 @@
+     key <AD09> {	[	    r,	R		]	};
+     key <AD10> {	[	    l,	L		]	};
+     key <AD11> {	[       slash,	question	]	};
+-    key <AD12> {	[ bracketright,	braceright	]	};
++    key <AD12> {	[       equal,	plus		]	};
+     key <RTRN> {	[ Return			]	};
+ 
+     key <CAPS> {	[	Caps_Lock		]	};

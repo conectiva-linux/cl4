@@ -1,0 +1,67 @@
+--- XFree86-3.3.3/xc/config/cf/linux.cf.gafton	Fri Dec  4 17:30:16 1998
++++ XFree86-3.3.3/xc/config/cf/linux.cf	Sat Dec  5 00:37:16 1998
+@@ -40,7 +40,9 @@
+ 
+ /* Set some defaults for the Default* values in case imake doesn't find them */
+ #ifndef DefaultLinuxCLibMajorVersion
+-#if defined(AlphaArchitecture) || defined(PowerPCArchitecture)
++#if defined(AlphaArchitecture) || defined(PowerPCArchitecture) || \
++    defined(SparcArchitecture) || defined(ArmArchitecure) || \
++    defined(i386Architecture)
+ #define DefaultLinuxCLibMajorVersion	6
+ #else
+ #define DefaultLinuxCLibMajorVersion	5
+@@ -92,13 +94,13 @@
+ 				-D_POSIX_SOURCE -D_XOPEN_SOURCE=500L \
+ 				-D_BSD_SOURCE -D_SVID_SOURCE
+ #define XawI18nDefines		-DHAS_WCHAR_H -DHAS_WCTYPE_H -DNO_WIDEC_H
+-/*#if !defined(AlphaArchitecture)*/
++#if !defined(ArmArchitecture)
+ #define HasPosixThreads		YES
+ #define ThreadedX		YES
+ #define HasThreadSafeAPI	YES
+ #define ThreadsLibraries	-lpthread
+ #define SystemMTDefines		-D_REENTRANT
+-/*#endif*/
++#endif
+ #ifndef HasLibCrypt
+ #define HasLibCrypt		YES
+ #endif
+@@ -269,6 +271,14 @@
+ #define ServerOSDefines		XFree86ServerOSDefines -DDDXTIME -DPART_NET
+ #define ServerExtraDefines	-DGCCUSESGAS XFree86ServerDefines
+ #endif /* PowerPCArchitecture */
++
++#ifdef ArmArchitecture
++#define DefaultCCOptions        -fsigned-char
++#define OptimizedCDebugFlags	-O2
++#define LinuxMachineDefines 	-D__arm__
++#define ServerOSDefines		XFree86ServerOSDefines -DDDXTIME -DPART_NET
++#define ServerExtraDefines	-DGCCUSESGAS XFree86ServerDefines
++#endif /* Arm */
+ 
+ #ifdef SparcArchitecture
+ #define OptimizedCDebugFlags	-O2
+--- XFree86-3.3.3/xc/config/cf/Imake.cf.gafton	Fri Dec  4 17:37:35 1998
++++ XFree86-3.3.3/xc/config/cf/Imake.cf	Fri Dec  4 17:47:15 1998
+@@ -583,6 +583,20 @@
+ #    define Sparc64Architecture
+ #  endif
+ # endif
++# if defined(arm) || defined(__arm__)
++#   define ArmArchitecture
++#   undef arm
++#   undef __arm__
++#   if defined(__ARM_ARCH_4__)
++#     define Arm4Architecture
++#     define Arm32Architecture
++#     undef __ARM_ARCH_4__
++#   endif
++#   if defined(__ARM_ARCH_3__)
++#     define Arm3Architecture
++#     undef __ARM_ARCH_3__
++#   endif
++# endif
+ #endif /* linux */
+ 
+ #if (defined(__Lynx__) || defined(Lynx)) && (defined(i386) || defined(__i386__) || defined(__x86__) || defined(__powerpc__) || defined(__sparc__) || defined(sparc))

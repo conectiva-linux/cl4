@@ -1,0 +1,631 @@
+diff -ru xc-3.3.3.1/include/extensions/xf86dga.h xc/include/extensions/xf86dga.h
+--- xc-3.3.3.1/include/extensions/xf86dga.h	Fri Oct 18 07:57:24 1996
++++ xc/include/extensions/xf86dga.h	Mon Mar  8 16:33:58 1999
+@@ -21,6 +21,8 @@
+ #define X_XF86DGAInstallColormap	7
+ #define X_XF86DGAQueryDirectVideo	8
+ #define X_XF86DGAViewPortChanged	9
++#define X_XF86DGACopyArea		10
++#define X_XF86DGAFillRectangle		11
+ 
+ #define XF86DGADirectPresent		0x0001
+ #define XF86DGADirectGraphics		0x0002
+@@ -28,6 +30,8 @@
+ #define XF86DGADirectKeyb		0x0008
+ #define XF86DGAHasColormap		0x0100
+ #define XF86DGADirectColormap		0x0200
++#define XF86DGAAccelPresent		0x0400
++#define XF86DGADoAccel			0x0800
+ 
+ #define XF86DGANumberEvents		0
+ 
+@@ -156,6 +160,34 @@
+     Display *		/* dpy */,
+     int			/* screen */,
+     int			/* n */
++#endif
++);
++
++Bool XF86DGACopyArea(
++#if NeedFunctionPrototypes
++    Display *		/* dpy */,
++    int			/* screen */,
++    Drawable		/* drawable */,
++    GC			/* GC */,
++    int			/* srcx */,
++    int			/* srcy */,
++    unsigned int	/* width */,
++    unsigned int	/* height */,
++    int			/* dstx */,
++    int			/* dsty */
++#endif
++);
++
++Bool XF86DGAFillRectangle(
++#if NeedFunctionPrototypes
++    Display *		/* dpy */,
++    int			/* screen */,
++    Drawable		/* drawable */,
++    GC			/* GC */,
++    int			/* x */,
++    int			/* y */,
++    unsigned int	/* width */,
++    unsigned int	/* height */
+ #endif
+ );
+ 
+diff -ru xc-3.3.3.1/include/extensions/xf86dgastr.h xc/include/extensions/xf86dgastr.h
+--- xc-3.3.3.1/include/extensions/xf86dgastr.h	Fri Oct 18 07:57:25 1996
++++ xc/include/extensions/xf86dgastr.h	Mon Mar  8 16:33:58 1999
+@@ -14,7 +14,7 @@
+ #define XF86DGANAME "XFree86-DGA"
+ 
+ #define XF86DGA_MAJOR_VERSION	1	/* current version numbers */
+-#define XF86DGA_MINOR_VERSION	0
++#define XF86DGA_MINOR_VERSION	1
+ 
+ typedef struct _XF86DGAQueryVersion {
+     CARD8	reqType;		/* always DGAReqCode */
+@@ -196,6 +196,41 @@
+     CARD32	pad5 B32;
+ } xXF86DGAViewPortChangedReply;
+ #define sz_xXF86DGAViewPortChangedReply 32
++
++
++typedef struct _XF86DGACopyArea {
++    CARD8	reqType;		/* always DGAReqCode */
++    CARD8	dgaReqType;		/* always X_DGAQueryVersion */
++    CARD16	length B16;
++    CARD16	screen B16;
++    CARD16	pad B16;
++    Drawable	drawable B32;
++    CARD32	gc B32;
++    CARD16      srcX B16;
++    CARD16	srcY B16;
++    CARD16      dstX B16;
++    CARD16	dstY B16;
++    CARD16      width B16;
++    CARD16	height B16;
++} xXF86DGACopyAreaReq;
++#define sz_xXF86DGACopyAreaReq		28
++
++
++typedef struct _XF86DGAFillRectangle {
++    CARD8	reqType;		/* always DGAReqCode */
++    CARD8	dgaReqType;		/* always X_DGAQueryVersion */
++    CARD16	length B16;
++    CARD16	screen B16;
++    CARD16	pad B16;
++    Drawable	drawable B32;
++    CARD32	gc B32;
++    CARD16      x B16;
++    CARD16	y B16;
++    CARD16      width B16;
++    CARD16	height B16;
++} xXF86DGAFillRectangleReq;
++#define sz_xXF86DGAFillRectangleReq	24
++
+ 
+ #endif /* _XF86DGASTR_H_ */
+ 
+diff -ru xc-3.3.3.1/lib/Xxf86dga/XF86DGA.c xc/lib/Xxf86dga/XF86DGA.c
+--- xc-3.3.3.1/lib/Xxf86dga/XF86DGA.c	Fri Jan 17 22:52:20 1997
++++ xc/lib/Xxf86dga/XF86DGA.c	Mon Mar  8 16:33:58 1999
+@@ -346,6 +346,71 @@
+     return rep.result;
+ }
+ 
++Bool XF86DGACopyArea(dpy, screen, d, gc,
++		     src_x, src_y, width, height, dst_x, dst_y)
++    Display* dpy;
++    int screen;
++    Drawable d;
++    GC gc;
++    int src_x, src_y;
++    unsigned int width, height;
++    int dst_x, dst_y;
++{
++    XExtDisplayInfo *info = find_display (dpy);
++    xXF86DGACopyAreaReq *req;
++
++    XF86DGACheckExtension(dpy, info, False);
++
++    LockDisplay(dpy);
++    FlushGC(dpy, gc);
++    GetReq(XF86DGACopyArea, req);
++    req->reqType = info->codes->major_opcode;
++    req->dgaReqType = X_XF86DGACopyArea;
++    req->screen = screen;
++    req->drawable = d;
++    req->gc = gc->gid;
++    req->srcX = src_x;
++    req->srcY = src_y;
++    req->dstX = dst_x;
++    req->dstY = dst_y;
++    req->width = width;
++    req->height = height;
++    UnlockDisplay(dpy);
++    SyncHandle();
++    return True;
++}
++
++Bool XF86DGAFillRectangle(dpy, screen, d, gc,
++			  x, y, width, height)
++    Display* dpy;
++    int screen;
++    Drawable d;
++    GC gc;
++    int x, y;
++    unsigned int width, height;
++{
++    XExtDisplayInfo *info = find_display (dpy);
++    xXF86DGAFillRectangleReq *req;
++
++    XF86DGACheckExtension(dpy, info, False);
++
++    LockDisplay(dpy);
++    FlushGC(dpy, gc);
++    GetReq(XF86DGAFillRectangle, req);
++    req->reqType = info->codes->major_opcode;
++    req->dgaReqType = X_XF86DGAFillRectangle;
++    req->screen = screen;
++    req->drawable = d;
++    req->gc = gc->gid;
++    req->x = x;
++    req->y = y;
++    req->width = width;
++    req->height = height;
++    UnlockDisplay(dpy);
++    SyncHandle();
++    return True;
++}
++
+ 
+ 
+ /* Helper functions */
+diff -ru xc-3.3.3.1/programs/Xserver/Xext/xf86dga.c xc/programs/Xserver/Xext/xf86dga.c
+--- xc-3.3.3.1/programs/Xserver/Xext/xf86dga.c	Fri Jan 17 22:53:01 1997
++++ xc/programs/Xserver/Xext/xf86dga.c	Mon Mar  8 16:33:57 1999
+@@ -21,6 +21,8 @@
+ #define _XF86DGA_SERVER_
+ #include "xf86dgastr.h"
+ #include "swaprep.h"
++#include "gcstruct.h"
++#include "pixmapstr.h"
+ #include "../hw/xfree86/common/xf86.h"
+ 
+ #include <X11/Xtrans.h>
+@@ -51,6 +53,8 @@
+ static DISPATCH_PROC(ProcDGAInstallColormap);
+ static DISPATCH_PROC(ProcDGAQueryDirectVideo);
+ static DISPATCH_PROC(ProcDGAViewPortChanged);
++static DISPATCH_PROC(ProcDGACopyArea);
++static DISPATCH_PROC(ProcDGAFillRectangle);
+ 
+ /*
+  * SProcs should probably be deleted, a local connection can never
+@@ -66,6 +70,24 @@
+ #endif
+ );
+ 
++static int ProcXF86DGACopyArea1(
++#if NeedFunctionPrototypes
++    ClientPtr client
++#endif
++);
++
++static int ProcXF86DGAFillRectangle1(
++#if NeedFunctionPrototypes
++    ClientPtr client
++#endif
++);
++
++static PixmapPtr GetScreenPixmap(
++#if NeedFunctionPrototypes
++    ScreenPtr pScreen
++#endif
++);
++
+ static unsigned char DGAReqCode = 0;
+ 
+ void
+@@ -115,6 +137,9 @@
+     xXF86DGAQueryVersionReply rep;
+     register int n;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     REQUEST_SIZE_MATCH(xXF86DGAQueryVersionReq);
+     rep.type = X_Reply;
+     rep.length = 0;
+@@ -138,6 +163,9 @@
+     ScrnInfoPtr vptr;
+     register int n;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+@@ -172,12 +200,17 @@
+     register ClientPtr client;
+ {
+     REQUEST(xXF86DGADirectVideoReq);
++    ScreenPtr pScreen;
+     ScrnInfoPtr vptr;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+-    vptr = (ScrnInfoPtr) screenInfo.screens[stuff->screen]->devPrivates[xf86ScreenIndex].ptr;
++    pScreen = screenInfo.screens[stuff->screen];
++    vptr = (ScrnInfoPtr) pScreen->devPrivates[xf86ScreenIndex].ptr;
+ 
+     REQUEST_SIZE_MATCH(xXF86DGADirectVideoReq);
+     if (!(vptr->directMode&XF86DGADirectPresent)) {
+@@ -191,7 +224,9 @@
+     }
+ 
+     if (stuff->enable&XF86DGADirectGraphics) {
+-       vptr->directMode = stuff->enable|XF86DGADirectPresent;
++       vptr->directMode &= XF86DGADirectPresent | XF86DGAAccelPresent;
++       vptr->directMode |= stuff->enable &
++			   ~(XF86DGADoAccel | XF86DGAAccelPresent);
+        if (xf86VTSema == TRUE) {
+ 	  vptr->EnterLeaveVT(LEAVE, stuff->screen);
+ 	  xf86VTSema = FALSE;
+@@ -201,7 +236,9 @@
+           xf86VTSema = TRUE;
+           vptr->EnterLeaveVT(ENTER, stuff->screen);
+        }
+-       vptr->directMode = (0x0f&stuff->enable)|XF86DGADirectPresent;
++       vptr->directMode &= XF86DGADirectPresent | XF86DGAAccelPresent;
++       vptr->directMode |= stuff->enable &
++			   (XF86DGADirectKeyb | XF86DGADirectMouse);
+     }
+ 
+     return (client->noClientException);
+@@ -216,6 +253,9 @@
+     register int n;
+     ScrnInfoPtr vptr;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+@@ -245,9 +285,6 @@
+     REQUEST(xXF86DGASetViewPortReq);
+     ScrnInfoPtr vptr;
+ 
+-    if (stuff->screen > screenInfo.numScreens)
+-	return BadValue;
+-
+     vptr = (ScrnInfoPtr) screenInfo.screens[stuff->screen]->devPrivates[xf86ScreenIndex].ptr;
+ 
+     REQUEST_SIZE_MATCH(xXF86DGASetViewPortReq);
+@@ -268,6 +305,9 @@
+     REQUEST(xXF86DGAGetVidPageReq);
+     ScrnInfoPtr vptr;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+@@ -351,6 +391,9 @@
+     register int n;
+     ScrnInfoPtr vptr;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+@@ -380,6 +423,9 @@
+     register int n;
+     ScrnInfoPtr vptr;
+ 
++    if (!LocalClient(client))
++	return DGAErrorBase + XF86DGAClientNotLocal;
++
+     if (stuff->screen > screenInfo.numScreens)
+ 	return BadValue;
+ 
+@@ -401,15 +447,157 @@
+     return (client->noClientException);
+ }
+ 
++
++static int
++ProcXF86DGACopyArea(client)
++    register ClientPtr client;
++{
++    REQUEST(xXF86DGACopyAreaReq);
++    ScreenPtr pScreen;
++    ScrnInfoPtr vptr;
++    int error;
++
++    REQUEST_SIZE_MATCH(xXF86DGACopyAreaReq);
++
++    if (stuff->screen > screenInfo.numScreens)
++	return BadValue;
++    pScreen = screenInfo.screens[stuff->screen];
++    vptr = (ScrnInfoPtr) pScreen->devPrivates[xf86ScreenIndex].ptr;
++
++    if (xf86VTSema || (vptr->directMode&XF86DGADirectGraphics) == 0)
++	return DGAErrorBase + XF86DGAScreenNotActive;
++    if ((vptr->directMode&XF86DGAAccelPresent) == 0)
++	return DGAErrorBase + XF86DGANoDirectVideoMode;
++
++    xf86VTSema = TRUE;
++    vptr->directMode |= XF86DGADoAccel;
++    vptr->EnterLeaveVT(ENTER, stuff->screen);
++    vptr->directMode &= ~XF86DGADirectGraphics;
++
++    error = ProcXF86DGACopyArea1(client);
++
++    vptr->directMode |= XF86DGADirectGraphics;
++    vptr->EnterLeaveVT(LEAVE, stuff->screen);
++    vptr->directMode &= ~XF86DGADoAccel;
++    xf86VTSema = FALSE;
++
++    return error;
++}
++
++static int
++ProcXF86DGACopyArea1(client)
++    register ClientPtr client;
++{
++    REQUEST(xXF86DGACopyAreaReq);
++    DrawablePtr pDrawable;
++    GCPtr pGC;
++    RegionPtr pRgn;
++
++    VALIDATE_DRAWABLE_AND_GC(stuff->drawable, pDrawable, pGC, client); 
++
++    if (pDrawable->pScreen->myNum != stuff->screen)
++	return BadMatch;
++
++    /* XXX do this here or in the library, or by the client? */
++    if (pGC->subWindowMode != IncludeInferiors) {
++	XID subwindowMode = IncludeInferiors;
++	ChangeGC(pGC, GCSubwindowMode, &subwindowMode);
++	ValidateGC(pDrawable, pGC);
++    }
++
++    /* XXX
++    SET_DBE_SRCBUF(pDrawable, stuff->drawable);
++    */
++
++    pRgn = pGC->ops->CopyArea(pDrawable, pDrawable, pGC,
++			      stuff->srcX, stuff->srcY,
++			      stuff->width, stuff->height,
++			      stuff->dstX, stuff->dstY);
++
++    if (pRgn != NULL)
++	REGION_DESTROY(pDrawable->pScreen, pRgn);
++
++    return (client->noClientException);
++}
++
++static int
++ProcXF86DGAFillRectangle(client)
++    register ClientPtr client;
++{
++    REQUEST(xXF86DGAFillRectangleReq);
++    ScreenPtr pScreen;
++    ScrnInfoPtr vptr;
++    int error;
++
++    REQUEST_SIZE_MATCH(xXF86DGAFillRectangleReq);
++
++    if (stuff->screen > screenInfo.numScreens)
++	return BadValue;
++    pScreen = screenInfo.screens[stuff->screen];
++    vptr = (ScrnInfoPtr) pScreen->devPrivates[xf86ScreenIndex].ptr;
++
++    if (xf86VTSema || (vptr->directMode&XF86DGADirectGraphics) == 0)
++	return DGAErrorBase + XF86DGAScreenNotActive;
++    if ((vptr->directMode&XF86DGAAccelPresent) == 0)
++	return DGAErrorBase + XF86DGANoDirectVideoMode;
++
++    xf86VTSema = TRUE;
++    vptr->directMode |= XF86DGADoAccel;
++    vptr->EnterLeaveVT(ENTER, stuff->screen);
++    vptr->directMode &= ~XF86DGADirectGraphics;
++
++    error = ProcXF86DGAFillRectangle1(client);
++
++    vptr->directMode |= XF86DGADirectGraphics;
++    vptr->EnterLeaveVT(LEAVE, stuff->screen);
++    vptr->directMode &= ~XF86DGADoAccel;
++    xf86VTSema = FALSE;
++
++    return error;
++}
++
++static int
++ProcXF86DGAFillRectangle1(client)
++    register ClientPtr client;
++{
++    REQUEST(xXF86DGAFillRectangleReq);
++    DrawablePtr pDrawable;
++    GCPtr pGC;
++    RegionPtr pRgn;
++    xRectangle r;
++
++    VALIDATE_DRAWABLE_AND_GC(stuff->drawable, pDrawable, pGC, client); 
++
++    if (pDrawable->pScreen->myNum != stuff->screen)
++	return BadMatch;
++
++    /* XXX do this here or in the library, or by the client? */
++    if (pGC->subWindowMode != IncludeInferiors) {
++	XID subwindowMode = IncludeInferiors;
++	ChangeGC(pGC, GCSubwindowMode, &subwindowMode);
++	ValidateGC(pDrawable, pGC);
++    }
++
++    /* XXX
++    SET_DBE_SRCBUF(pDrawable, stuff->drawable);
++    */
++
++    r.x = stuff->x;
++    r.y = stuff->y;
++    r.width = stuff->width;
++    r.height = stuff->height;
++    pGC->ops->PolyFillRect(pDrawable, pGC, 1, &r);
++
++    return (client->noClientException);
++}
++
++
+ static int
+ ProcXF86DGADispatch (client)
+     register ClientPtr	client;
+ {
+     REQUEST(xReq);
+ 
+-    if (!LocalClient(client))
+-	return DGAErrorBase + XF86DGAClientNotLocal;
+-
+     switch (stuff->data)
+     {
+     case X_XF86DGAQueryVersion:
+@@ -432,6 +620,10 @@
+ 	return ProcXF86DGAQueryDirectVideo(client);
+     case X_XF86DGAViewPortChanged:
+ 	return ProcXF86DGAViewPortChanged(client);
++    case X_XF86DGACopyArea:
++	return ProcXF86DGACopyArea(client);
++    case X_XF86DGAFillRectangle:
++	return ProcXF86DGAFillRectangle(client);
+     default:
+ 	return BadRequest;
+     }
+@@ -480,4 +672,3 @@
+ 	return BadRequest;
+     }
+ }
+-
+diff -ru xc-3.3.3.1/programs/Xserver/hw/xfree86/accel/mach64/mach64.c xc/programs/Xserver/hw/xfree86/accel/mach64/mach64.c
+--- xc-3.3.3.1/programs/Xserver/hw/xfree86/accel/mach64/mach64.c	Mon Oct 19 13:39:08 1998
++++ xc/programs/Xserver/hw/xfree86/accel/mach64/mach64.c	Mon Mar  8 16:33:57 1999
+@@ -1760,7 +1760,7 @@
+ 
+ #ifdef XFreeXDGA
+     mach64InfoRec.displayWidth = mach64InfoRec.virtualX;
+-    mach64InfoRec.directMode = XF86DGADirectPresent;
++    mach64InfoRec.directMode = XF86DGADirectPresent | XF86DGAAccelPresent;
+ #endif
+ 
+     return(TRUE);
+@@ -1916,6 +1916,55 @@
+             break;
+         }
+     }
++
++#ifdef XFreeXDGA
++    /*
++     * Patch up things to allow a graphics operations to go to the screen
++     * while remaining in direct graphics mode.
++     */
++    if (mach64InfoRec.directMode & XF86DGADoAccel) {
++	if (enter) {
++	    pspix->devPrivate.ptr = mach64VideoMem;
++	    pScreen->CopyWindow = mach64CopyWindow;
++	    pScreen->PaintWindowBackground = mach64PaintWindow;
++	    pScreen->PaintWindowBorder = mach64PaintWindow;
++	    switch (mach64InfoRec.bitsPerPixel) {
++	    case 8:
++		pScreen->GetSpans = cfbGetSpans;
++		break;
++	    case 16:
++		pScreen->GetSpans = cfb16GetSpans;
++		break;
++	    case 32:
++		pScreen->GetSpans = cfb32GetSpans;
++		break;
++	    }
++	} else {
++	    pspix->devPrivate.ptr = ppix->devPrivate.ptr;
++            switch (mach64InfoRec.bitsPerPixel) {
++            case 8:
++                pScreen->CopyWindow = cfbCopyWindow;
++                pScreen->GetSpans = cfbGetSpans;
++                pScreen->PaintWindowBackground = cfbPaintWindow;
++                pScreen->PaintWindowBorder = cfbPaintWindow;
++                break;
++            case 16:
++                pScreen->CopyWindow = cfb16CopyWindow;
++                pScreen->GetSpans = cfb16GetSpans;
++                pScreen->PaintWindowBackground = cfb16PaintWindow;
++                pScreen->PaintWindowBorder = cfb16PaintWindow;
++                break;
++            case 32:
++                pScreen->CopyWindow = cfb32CopyWindow;
++                pScreen->GetSpans = cfb32GetSpans;
++                pScreen->PaintWindowBackground = cfb32PaintWindow;
++                pScreen->PaintWindowBorder = cfb32PaintWindow;
++                break;
++            }
++	}
++	return;
++    }
++#endif /* XFreeXDGA */
+ 
+     if (pScreen && !xf86Exiting && !xf86Resetting)
+         WalkTree(pScreen, mach64NewSerialNumber, 0);
+diff -ru xc-3.3.3.1/programs/Xserver/hw/xfree86/vga256/vga/vga.c xc/programs/Xserver/hw/xfree86/vga256/vga/vga.c
+--- xc-3.3.3.1/programs/Xserver/hw/xfree86/vga256/vga/vga.c	Sun Nov  8 03:28:28 1998
++++ xc/programs/Xserver/hw/xfree86/vga256/vga/vga.c	Mon Mar  8 16:33:57 1999
+@@ -1102,6 +1102,8 @@
+ 	vgaLinearSize = Drivers[i]->ChipLinearSize;
+ 
+ #ifdef XFreeXDGA
++	if (vga256InfoRec.directMode & XF86DGADirectPresent)
++	    vga256InfoRec.directMode |= XF86DGAAccelPresent;
+ 	if (vgaUseLinearAddressing) {
+ 	    vga256InfoRec.physBase = vgaPhysLinearBase;
+ 	    vga256InfoRec.physSize = vga256InfoRec.videoRam * 1024;
+@@ -1555,6 +1557,31 @@
+       pspix = (PixmapPtr)pScreen->devPrivate;
+ #endif
+     }
++
++#ifdef XFreeXDGA
++    /*
++     * Patch up things to allow a graphics operations to go to the screen
++     * while remaining in direct graphics mode.
++     */
++    if (vga256InfoRec.directMode & XF86DGADoAccel) {
++	if (enter) {
++#if !defined(MONOVGA) && !defined(XF86VGA16)
++            if (vgaBitsPerPixel == 8)
++	        pspix->devPrivate.ptr = (pointer)vgaVirtBase;
++	    else
++	        pspix->devPrivate.ptr = vgaLinearBase;
++#else
++	    pspix->devPrivate.ptr = (pointer)vgaVirtBase;
++#endif
++	} else {
++#if !defined(MONOVGA) && !defined(XF86VGA16)
++	    xf86AccelInfoRec.Sync();	/* XXX */
++#endif
++	    pspix->devPrivate.ptr = ppix->devPrivate.ptr;
++	}
++	return;
++    }
++#endif /* XFreeXDGA */
+ 
+   /* Force every GC writing to the screen to be validated.  */
+   if (pScreen && !xf86Exiting && !xf86Resetting)

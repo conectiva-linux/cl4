@@ -1,0 +1,32 @@
+--- xc/programs/Xserver/hw/xfree86/doc/sgml/RELNOTE.sgml~	Fri Jun 25 15:04:59 1999
++++ xc/programs/Xserver/hw/xfree86/doc/sgml/RELNOTE.sgml	Fri Jun 25 18:50:44 1999
+@@ -94,6 +94,8 @@
+   <item>Japanese documentation and manpage updates.
+   <item>Updates and new hardware support (Acecad flair, Calcomp DrawingBoard)
+         for xinput extension.
++  <item>Bug fixed for cards with S3 Aurora64V+ (M65) chip, VGA output
++        should now work.
+ </itemize>
+ 
+ <p> 
+--- xc/programs/Xserver/hw/xfree86/accel/s3/s3misc.c~	Sun Feb  8 16:35:07 1998
++++ xc/programs/Xserver/hw/xfree86/accel/s3/s3misc.c	Fri Jun 25 18:37:38 1999
+@@ -988,6 +988,7 @@
+ {
+    unsigned char scrn;
+    static unsigned char saved_sr31=0x10;
++   static int first_run=1;
+ 
+    if (on)
+       SetTimeSinceLastInputEvent();
+@@ -1013,6 +1014,10 @@
+          outb(0x3c4, 0x08);  /* unlock extended SEQ regs */
+          outb(0x3c5, 0x06);
+          outb(0x3c4, 0x31);
++	 if (first_run) {
++	   saved_sr31 = inb(0x3c5);
++	   first_run = 0;
++	 }
+          if (on)
+             outb(0x3c5, saved_sr31);           /* LCD on */
+          else {  

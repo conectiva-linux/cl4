@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# xfs:       Starts the X Font Server
+#
+# Version:      @(#) /etc/rc.d/init.d/xfs 1.4
+#
+# chkconfig: 2345 90 10
+# description: Starts and stops the X Font Server at boot time and shutdown.
+# description(pt_BR): Inicia e pára o servidor de fontes X.
+#
+# processname: xfs
+# config: /etc/X11/fs/config
+# hide: true
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting %s: " "X Font Server"
+	rm -fr /tmp/.font-unix
+	daemon --check xfs su xfs -c \"xfs -port -1\" -s /bin/sh
+	touch /var/lock/subsys/xfs
+	echo
+	;;
+  stop)
+	gprintf "Stopping %s: " "X Font Server"
+	killproc xfs
+	rm -f /var/lock/subsys/xfs
+	echo
+	;;
+  status)
+	status xfs
+	;;
+  restart)
+	gprintf "Restarting %s. " "X Font Server"
+	if [ -f /var/lock/subsys/xfs ]; then
+	    killproc xfs -USR1
+	else
+	    rm -fr /tmp/.font-unix
+	    daemon --check xfs su xfs -c \"xfs -port -1\" -s /bin/sh
+	    touch /var/lock/subsys/xfs
+	fi
+	echo
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "xfs"
+	exit 1
+esac
+
+exit 0

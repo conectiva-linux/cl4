@@ -1,0 +1,21 @@
+--- XFree86-3.3.3.1/xc/config/cf/xfree86.cf.fbdev	Wed Jan 27 13:50:33 1999
++++ XFree86-3.3.3.1/xc/config/cf/xfree86.cf	Wed Jan 27 13:52:45 1999
+@@ -77,7 +77,7 @@
+ #define XF86GLINTServer		YES
+ #endif
+ #ifndef XF86FBDevServer
+-#define XF86FBDevServer		NO
++#define XF86FBDevServer		YES
+ #endif
+ #endif
+ 
+@@ -118,6 +118,9 @@
+ #endif
+ #ifndef XF86Vga2Drivers
+ #define XF86Vga2Drivers		generic
++#endif
++#ifndef XF86FBDevServer
++#define XF86FBDevServer		YES
+ #endif
+ #endif
+ 

@@ -1,0 +1,39 @@
+Here is the XFree86 SRPM fix for Creator crashes.  Please call it
+"XFree86-3.3.3.1-ffbcrash.patch" and try to push this into SQA along
+with the urgent X updates Jeff told me about at LE.
+
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/sun/FFB/VISmoveImage.s.visfix	Fri May 28 16:20:21 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/sun/FFB/VISmoveImage.s	Fri May 28 16:20:24 1999
+@@ -241,13 +241,13 @@
+ 	cmp			%skind, %tmp2
+ 	bgeu,pt			%ICC, 2f
+ 	 andn			%tmp4, 63, %tmp2			! Group 24
+-	SMUL			%skind, %h, %srcstop
++	SMUL			%skind, %srcnotdone, %srcstop
+ 	ba,pt			%xcc, 2f
+ 	 add			%tmp4, %srcstop, %srcstop
+ 1:	addcc			%tmp2, %skind, %g0
+ 	ble,pt			%ICC, 2f
+ 	 sub			%srcnext, 64, %tmp2
+-	SMUL			%skind, %h, %srcstop
++	SMUL			%skind, %srcnotdone, %srcstop
+ 	sub			%srcstart, 64, %narrow
+ 	add			%srcstop, %narrow, %srcstop
+ 2:	add			%srcnext, 64, %narrow
+@@ -1206,13 +1206,13 @@
+ 	cmp			%skind, %tmp2
+ 	bgeu,pt			%ICC, 3f
+ 	 add			%srcnext, 64, %fregset
+-	SMUL			%skind, %h, %srcstop
++	SMUL			%skind, %srcnotdone, %srcstop
+ 	ba,pt			%xcc, 2f
+ 	 add			%srcstart, 63, %tmp4
+ 1:	addcc			%tmp2, %skind, %g0
+ 	ble,pt			%ICC, 3f
+ 	 sub			%srcnext, 64, %fregset
+-	SMUL			%skind, %h, %srcstop
++	SMUL			%skind, %srcnotdone, %srcstop
+ 	sub			%tmp4, 64, %tmp4
+ 2:	add			%srcstop, %tmp4, %srcstop
+ 3:	cmp			%srcnext, %srcend
+

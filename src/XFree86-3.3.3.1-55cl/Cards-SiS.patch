@@ -1,0 +1,20 @@
+--- ./xc/programs/Xserver/hw/xfree86/xf86config/Cards.sis	Mon Jun  7 16:56:11 1999
++++ ./xc/programs/Xserver/hw/xfree86/xf86config/Cards	Mon Jun  7 17:01:46 1999
+@@ -2243,6 +2243,8 @@
+ NAME SiS 5598
+ CHIPSET SIS5598
+ SERVER SVGA
++LINE     Option "sw_cursor"
++LINE     Option "no_bitblt"
+ LINE     # Option "no_accel" # Use this if acceleration is causing problems
+ LINE     # Option "fifo_moderate" 
+ LINE     # Option "fifo_conserv" 
+@@ -2257,6 +2259,8 @@
+ NAME SiS 6326
+ CHIPSET SiS6326
+ SERVER SVGA
++LINE     Option "sw_cursor"
++LINE     Option "no_bitblt"
+ LINE     # Option "no_accel" # Use this if acceleration is causing problems
+ LINE     # Option "fifo_moderate" 
+ LINE     # Option "fifo_conserv" 

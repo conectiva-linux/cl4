@@ -1,0 +1,139 @@
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/xf86config/Cards.suncards	Thu Feb 18 11:55:53 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/xf86config/Cards	Thu Feb 18 11:58:48 1999
+@@ -2692,6 +2692,136 @@
+ CHIPSET SPC8110
+ SERVER SVGA
+ 
++# Sun Cards / Servers (added by Red Hat Software 02/1999)
++
++NAME Sun Monochrome (bwtwo)
++CHIPSET bwtwo
++SERVER SunMono
++ 
++NAME Sun Color3 (cgthree)
++CHIPSET cgthree
++SERVER Sun
++ 
++NAME Sun CG8/RasterOps
++CHIPSET cgeight
++SERVER Sun
++ 
++NAME Sun GS (cgtwelve)
++CHIPSET cgtwelve
++SERVER Sun24
++ 
++NAME Sun Graphics Tower
++CHIPSET gt
++SERVER Sun24
++
++NAME Quantum 3D MGXplus with 4M VRAM
++CHIPSET mgx
++SERVER Sun24
++ 
++NAME Quantum 3D MGXplus
++CHIPSET mgx
++SERVER Sun24
++ 
++NAME Sun Unknown GX
++CHIPSET cgsix
++SERVER Sun
++ 
++NAME Sun Double width GX
++CHIPSET cgsix
++SERVER Sun
++ 
++NAME Sun Single width GX
++CHIPSET cgsix
++SERVER Sun
++
++NAME Sun Turbo GX with 1M VSIMM
++CHIPSET cgsix
++SERVER Sun
++ 
++NAME Sun Turbo GX Plus
++CHIPSET cgsix
++SERVER Sun
++ 
++NAME Sun Turbo GX
++CHIPSET cgsix
++SERVER Sun
++ 
++NAME Sun SX with 4M VSIMM
++CHIPSET cgfourteen
++SERVER Sun24
++ 
++NAME Sun SX with 8M VSIMM
++CHIPSET cgfourteen
++SERVER Sun24
++ 
++NAME Sun SX
++CHIPSET cgfourteen
++SERVER Sun24
++
++NAME Sun Turbo ZX
++CHIPSET leo
++SERVER Sun24
++ 
++NAME Sun ZX or Turbo ZX
++CHIPSET leo
++SERVER Sun24
++ 
++NAME Sun TCX (8bit)
++CHIPSET tcx
++SERVER Sun
++ 
++NAME Sun TCX (S24)
++CHIPSET tcx
++SERVER Sun24
++ 
++NAME Sun Elite3D-M6 Horizontal
++CHIPSET afb
++SERVER Sun24
++ 
++NAME Sun Elite3D
++CHIPSET afb
++SERVER Sun24
++
++NAME Sun FFB 67MHz Creator
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB 67MHz Creator 3D
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB 75MHz Creator 3D
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB2 Vertical Creator
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB2 Vertical Creator 3D
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB2+ Vertical Creator
++CHIPSET ffb
++SERVER Sun24
++
++NAME Sun FFB2+ Vertical Creator 3D
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB2 Horizontal Creator
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB2 Horizontal Creator 3D
++CHIPSET ffb
++SERVER Sun24
++ 
++NAME Sun FFB
++CHIPSET ffb
++SERVER Sun24
++
+ # Misc
+ 
+ END

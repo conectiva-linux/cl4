@@ -1,0 +1,20 @@
+#!/bin/sh
+# Conectiva Linux
+
+sysmodmap=/usr/X11R6/lib/X11/xinit/.Xmodmap 
+if [ -f $sysmodmap ]; then 
+    /usr/X11R6/bin/xmodmap $sysmodmap 
+fi 
+
+prefdm=`ls -l /etc/X11/prefdm | sed 's/.* //'`
+if [ "$prefdm" = "/usr/bin/kdm" ] ; then
+	if [ -x /usr/bin/kdmdesktop ] ; then
+		/usr/bin/kdmdesktop
+	elif [ -x /opt/kde/bin/kdmdesktop ] ; then
+		/opt/kde/bin/kdmdesktop
+	else
+		/usr/X11R6/bin/xsetroot -solid "#356390"
+	fi
+else
+	/usr/X11R6/bin/xsetroot -solid "#356390"
+fi

@@ -1,0 +1,11 @@
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_Mouse.c.thinkingmouse	Fri Mar 19 12:39:58 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_Mouse.c	Fri Mar 19 12:41:55 1999
+@@ -903,7 +903,7 @@
+ 	        (mouse->pBuf[0] & 0x02) >> 1 |       /* Right */
+ 		(mouse->pBuf[0] & 0x01) << 2 |       /* Left */
+ 		((mouse->pBuf[0] & 0x08) ? 0x08 : 0);/* fourth button */
+-      dx = (mouse->pBuf[0] & 0x10) ?    mouse->pBuf[1]-256  :  mouse->pBuf[1];
++      dx = (mouse->pBuf[0] & 0x10) ?  (mouse->pBuf[1] & 0x7f)-128  : mouse->pBuf[1];
+       dy = (mouse->pBuf[0] & 0x20) ?  -(mouse->pBuf[2]-256) : -mouse->pBuf[2];
+       break;
+ 

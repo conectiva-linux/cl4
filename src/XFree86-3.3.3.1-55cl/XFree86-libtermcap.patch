@@ -1,0 +1,12 @@
+--- xc/config/cf/xf86site.def.orig	Mon Jun 21 15:57:00 1999
++++ xc/config/cf/xf86site.def	Mon Jun 21 15:57:36 1999
+@@ -93,8 +93,8 @@
+  * Some Linux releases don't have a libtermcap.  In this case you may need
+  * to uncomment the following
+  *
+-#define TermcapLibrary		-lncurses
+  */
++#define TermcapLibrary		-lncurses
+ 
+ /*
+  * If you have Tk (which is required to build XF86Setup), uncomment this
