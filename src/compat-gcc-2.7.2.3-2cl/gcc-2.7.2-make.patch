@@ -1,0 +1,54 @@
+--- gcc-2.7.2/Makefile.in.rh	Mon Dec 25 13:47:55 1995
++++ gcc-2.7.2/Makefile.in	Mon Dec 25 13:47:56 1995
+@@ -47,7 +47,7 @@
+ # to the stage2 and stage3 compilations
+ # XCFLAGS is used for most compilations but not when using the GCC just built.
+ XCFLAGS =
+-CFLAGS = -g
++CFLAGS = -O
+ BOOT_CFLAGS = -O $(CFLAGS)
+ # These exists to be overridden by the x-* and t-* files, respectively.
+ X_CFLAGS =
+@@ -201,7 +201,7 @@
+ includedir = $(local_prefix)/include
+ # assertdir is overridden in cross-make.
+ # (But this currently agrees with what is in cross-make.)
+-assertdir = $(tooldir)/include
++assertdir = $(prefix)/include
+ # where the info files go
+ infodir = $(prefix)/info
+ # Extension (if any) to put in installed man-page filename.
+@@ -2056,9 +2056,8 @@
+ 	-if [ -d $(libdir)/gcc-lib/$(target)/$(version)/include ] ; then true ; else mkdir $(libdir)/gcc-lib/$(target)/$(version)/include ; chmod a+rx $(libdir)/gcc-lib/$(target)/$(version)/include ; fi
+ 	-if [ -d $(bindir) ] ; then true ; else mkdir $(bindir) ; chmod a+rx $(bindir) ; fi
+ 	-if [ -d $(includedir) ] ; then true ; else mkdir $(includedir) ; chmod a+rx $(includedir) ; fi
+-	-if [ -d $(tooldir) ] ; then true ; else mkdir $(tooldir) ; chmod a+rx $(tooldir) ; fi
+-	-if [ -d $(assertdir) ] ; then true ; else mkdir $(assertdir) ; chmod a+rx $(assertdir) ; fi
+-	-if [ -d $(infodir) ] ; then true ; else mkdir $(infodir) ; chmod a+rx $(infodir) ; fi
++	-if [ -d $(assertdir) ] ; then true ; else mkdir $(assertdir) ; chmod a+rx $(assertdir) ; fi
++	-if [ -d $(infodir) ] ; then true ; else mkdir $(infodir) ; chmod a+rx $(infodir) ; fi
+ # We don't use mkdir -p to create the parents of mandir,
+ # because some systems don't support it.
+ # Instead, we use this technique to create the immediate parent of mandir.
+@@ -2231,10 +2230,6 @@
+ 	    chmod a-x $(assertdir)/assert.h; \
+ 	  else true; \
+ 	  fi; \
+-	else \
+-	  rm -f $(assertdir)/assert.h; \
+-	  $(INSTALL_DATA) $(srcdir)/assert.h $(assertdir)/assert.h; \
+-	  chmod a-x $(assertdir)/assert.h; \
+ 	fi
+ 
+ # Use this target to install the program `collect2' under the name `ld'.
+--- gcc-2.7.2/cross-make.rh	Mon Dec 25 13:48:20 1995
++++ gcc-2.7.2/cross-make	Mon Dec 25 13:48:30 1995
+@@ -21,7 +21,7 @@
+ FLOAT_H = $(CROSS_FLOAT_H)
+ 
+ # Don't install assert.h in /usr/local/include.
+-assertdir = $(tooldir)/include
++assertdir = $(prefix)/include
+ 
+ # Don't run fixproto
+ STMP_FIXPROTO =
