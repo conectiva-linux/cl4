@@ -1,0 +1,24 @@
+--- swatch-2.2/install.pl.nobr	Sun Aug 16 20:41:39 1998
++++ swatch-2.2/install.pl	Sun Aug 16 20:44:43 1998
+@@ -16,6 +16,8 @@
+ $ENV{'IFS'} = '' if $ENV{'IFS'} ne '' ;
+ 
+ 
++$RPM_BUILD_ROOT = $ENV{'RPM_BUILD_ROOT'} ;
++
+ ##
+ ## Default values
+ ##
+@@ -152,9 +154,9 @@
+     local($uid, $gid, $mode, $src_file, $dest_file) = @_ ;
+ 
+     print "Installing $src_file..." ;
+-    system("$COPY -v $src_file $dest_file") ;
+-    chown($uid, $gid, $dest_file) ;
+-    system("$CHMOD -v $mode $dest_file") ;
++    system("$COPY -v $src_file $RPM_BUILD_ROOT$dest_file") ;
++    chown($uid, $gid, "$RPM_BUILD_ROOT$dest_file") ;
++    system("$CHMOD -v $mode $RPM_BUILD_ROOT$dest_file") ;
+     print "done.\n" ;
+ }
+ 
