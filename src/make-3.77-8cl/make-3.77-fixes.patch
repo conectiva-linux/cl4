@@ -1,0 +1,631 @@
+--- make-3.77/glob/configure.in.fixes	Wed Jul 29 16:17:55 1998
++++ make-3.77/glob/configure.in	Wed Sep 16 12:13:04 1998
+@@ -13,6 +13,12 @@
+ AC_AIX
+ AC_MINIX
+ AC_ISC_POSIX
++
++dnl This test must come as early as possible after the compiler configuration
++dnl tests, because the choice of the file model can (in principle) affect
++dnl whether functions and headers are available, whether they work, etc.
++AC_LFS
++
+ AC_CONST
+ AC_HEADER_STDC
+ AC_CHECK_HEADERS(memory.h unistd.h string.h)
+--- make-3.77/glob/glob.c.fixes	Wed Jul 29 16:22:45 1998
++++ make-3.77/glob/glob.c	Wed Sep 16 12:13:04 1998
+@@ -155,6 +155,12 @@
+ 
+ #endif	/* Standard headers.  */
+ 
++#ifdef HAVE_GETLOGIN_R
++extern int getlogin_r __P ((char *, size_t));
++#else
++extern char *getlogin __P ((void));
++#endif
++
+ #ifndef	ANSI_STRING
+ 
+ # ifndef bzero
+@@ -180,7 +186,6 @@
+ # define mempcpy(Dest, Src, Len) __mempcpy (Dest, Src, Len)
+ #endif
+ 
+-
+ #ifndef	__GNU_LIBRARY__
+ # ifdef	__GNUC__
+ __inline
+@@ -240,11 +245,17 @@
+ #endif
+ 
+ #ifdef _LIBC
++# undef strdup
+ # define strdup(str) __strdup (str)
+ # define sysconf(id) __sysconf (id)
+ # define closedir(dir) __closedir (dir)
+ # define opendir(name) __opendir (name)
+ # define readdir(str) __readdir (str)
++# define getpwnam_r(name, bufp, buf, len, res) \
++   __getpwnam_r (name, bufp, buf, len, res)
++# ifndef __stat
++#  define __stat(fname, buf) __xstat (_STAT_VER, fname, buf)
++# endif
+ #endif
+ 
+ #if !(defined STDC_HEADERS || defined __GNU_LIBRARY__)
+@@ -282,7 +293,7 @@
+ const char *next_brace_sub __P ((const char *begin));
+ static int glob_in_dir __P ((const char *pattern, const char *directory,
+ 			     int flags,
+-			     int (*errfunc) __P ((const char *, int)),
++			     int (*errfunc) (const char *, int),
+ 			     glob_t *pglob));
+ static int prefix_array __P ((const char *prefix, char **array, size_t n));
+ static int collated_compare __P ((const __ptr_t, const __ptr_t));
+@@ -349,7 +360,7 @@
+      glob_t *pglob;
+ {
+   const char *filename;
+-  char *dirname;
++  const char *dirname;
+   size_t dirlen;
+   int status;
+   int oldcount;
+@@ -501,39 +512,40 @@
+     {
+       /* This can mean two things: a simple name or "~name".  The later
+ 	 case is nothing but a notation for a directory.  */
+-      if ((flags & GLOB_TILDE) && pattern[0] == '~')
++      if ((flags & (GLOB_TILDE|GLOB_TILDE_CHECK)) && pattern[0] == '~')
+ 	{
+-	  dirname = (char *) pattern;
++	  dirname = pattern;
+ 	  dirlen = strlen (pattern);
+ 
+-          /* Set FILENAME to NULL as a special flag.  This is ugly but
+-             other solutions would require much more code.  We test for
+-             this special case below.  */
+-          filename = NULL;
++	  /* Set FILENAME to NULL as a special flag.  This is ugly but
++	     other solutions would require much more code.  We test for
++	     this special case below.  */
++	  filename = NULL;
+ 	}
+       else
+ 	{
+-          filename = pattern;
++	  filename = pattern;
+ #ifdef _AMIGA
+-          dirname = (char *) "";
++	  dirname = "";
+ #else
+-          dirname = (char *) ".";
++	  dirname = ".";
+ #endif
+-          dirlen = 0;
+-        }
++	  dirlen = 0;
++	}
+     }
+   else if (filename == pattern)
+     {
+       /* "/pattern".  */
+-      dirname = (char *) "/";
++      dirname = "/";
+       dirlen = 1;
+       ++filename;
+     }
+   else
+     {
++      char *newp;
+       dirlen = filename - pattern;
+ #if defined __MSDOS__ || defined WINDOWS32
+-      if ((*filename == ':')
++      if (*filename == ':'
+ 	  || (filename > pattern + 1 && filename[-1] == ':'))
+ 	{
+ 	  char *drive_spec;
+@@ -555,30 +567,31 @@
+ 	     from "d:/", since "d:" and "d:/" are not the same.*/
+ 	}
+ #endif
+-      dirname = (char *) __alloca (dirlen + 1);
++      newp = (char *) __alloca (dirlen + 1);
+ #ifdef HAVE_MEMPCPY
+-      *((char *) mempcpy (dirname, pattern, dirlen)) = '\0';
++      *((char *) mempcpy (newp, pattern, dirlen)) = '\0';
+ #else
+-      memcpy (dirname, pattern, dirlen);
+-      dirname[dirlen] = '\0';
++      memcpy (newp, pattern, dirlen);
++      newp[dirlen] = '\0';
+ #endif
++      dirname = newp;
+       ++filename;
+ 
+       if (filename[0] == '\0'
+ #if defined __MSDOS__ || defined WINDOWS32
+-          && dirname[dirlen-1] != ':'
+-          && (dirlen < 3 || dirname[dirlen-2] != ':'
+-	      || dirname[dirlen-1] != '/')
+-#endif
+-          && dirlen > 1)
+-      /* "pattern/".  Expand "pattern", appending slashes.  */
+-      {
+-        int val = glob (dirname, flags | GLOB_MARK, errfunc, pglob);
+-        if (val == 0)
+-          pglob->gl_flags = ((pglob->gl_flags & ~GLOB_MARK)
+-                             | (flags & GLOB_MARK));
+-        return val;
+-      }
++          && dirname[dirlen - 1] != ':'
++	  && (dirlen < 3 || dirname[dirlen - 2] != ':'
++	      || dirname[dirlen - 1] != '/')
++#endif
++	  && dirlen > 1)
++	/* "pattern/".  Expand "pattern", appending slashes.  */
++	{
++	  int val = glob (dirname, flags | GLOB_MARK, errfunc, pglob);
++	  if (val == 0)
++	    pglob->gl_flags = ((pglob->gl_flags & ~GLOB_MARK)
++			       | (flags & GLOB_MARK));
++	  return val;
++	}
+     }
+ 
+   if (!(flags & GLOB_APPEND))
+@@ -590,12 +603,12 @@
+   oldcount = pglob->gl_pathc;
+ 
+ #ifndef VMS
+-  if ((flags & GLOB_TILDE) && dirname[0] == '~')
++  if ((flags & (GLOB_TILDE|GLOB_TILDE_CHECK)) && dirname[0] == '~')
+     {
+       if (dirname[1] == '\0' || dirname[1] == '/')
+ 	{
+ 	  /* Look up home directory.  */
+-	  char *home_dir = getenv ("HOME");
++	  const char *home_dir = getenv ("HOME");
+ # ifdef _AMIGA
+ 	  if (home_dir == NULL || home_dir[0] == '\0')
+ 	    home_dir = "SYS:";
+@@ -607,37 +620,38 @@
+ 	  if (home_dir == NULL || home_dir[0] == '\0')
+ 	    {
+ 	      int success;
++	      char *name;
+ #   if defined HAVE_GETLOGIN_R || defined _LIBC
+-	      extern int getlogin_r __P ((char *, size_t));
+ 	      size_t buflen = sysconf (_SC_LOGIN_NAME_MAX) + 1;
+-	      char *name;
+ 
+ 	      if (buflen == 0)
+ 		/* `sysconf' does not support _SC_LOGIN_NAME_MAX.  Try
+ 		   a moderate value.  */
+-		buflen = 16;
++		buflen = 20;
+ 	      name = (char *) __alloca (buflen);
+ 
+ 	      success = getlogin_r (name, buflen) >= 0;
+ #   else
+-	      extern char *getlogin __P ((void));
+-	      char *name;
+-
+ 	      success = (name = getlogin ()) != NULL;
+ #   endif
+ 	      if (success)
+ 		{
++		  struct passwd *p;
+ #   if defined HAVE_GETPWNAM_R || defined _LIBC
+ 		  size_t pwbuflen = sysconf (_SC_GETPW_R_SIZE_MAX);
+ 		  char *pwtmpbuf;
+-		  struct passwd pwbuf, *p;
++		  struct passwd pwbuf;
+ 
++		  if (pwbuflen == -1)
++		    /* `sysconf' does not support _SC_GETPW_R_SIZE_MAX.
++		       Try a moderate value.  */
++		    pwbuflen = 1024;
+ 		  pwtmpbuf = (char *) __alloca (pwbuflen);
+ 
+-		  success = (__getpwnam_r (name, &pwbuf, pwtmpbuf,
+-					   pwbuflen, &p) >= 0);
++		  success = (getpwnam_r (name, &pwbuf, pwtmpbuf, pwbuflen, &p)
++			     >= 0);
+ #   else
+-		  struct passwd *p = getpwnam (name);
++		  p = getpwnam (name);
+ 		  success = p != NULL;
+ #   endif
+ 		  if (success)
+@@ -645,7 +659,10 @@
+ 		}
+ 	    }
+ 	  if (home_dir == NULL || home_dir[0] == '\0')
+-	    home_dir = (char *) "~"; /* No luck.  */
++	    if (flags & GLOB_TILDE_CHECK)
++	      return GLOB_NOMATCH;
++	    else
++	      home_dir = "~"; /* No luck.  */
+ #  endif /* WINDOWS32 */
+ # endif
+ 	  /* Now construct the full directory.  */
+@@ -670,35 +687,45 @@
+       else
+ 	{
+ 	  char *end_name = strchr (dirname, '/');
+-	  char *user_name;
+-	  char *home_dir;
++	  const char *user_name;
++	  const char *home_dir;
+ 
+ 	  if (end_name == NULL)
+ 	    user_name = dirname + 1;
+ 	  else
+ 	    {
+-	      user_name = (char *) __alloca (end_name - dirname);
++	      char *newp;
++	      newp = (char *) __alloca (end_name - dirname);
+ # ifdef HAVE_MEMPCPY
+-	      *((char *) mempcpy (user_name, dirname + 1, end_name - dirname))
++	      *((char *) mempcpy (newp, dirname + 1, end_name - dirname))
+ 		= '\0';
+ # else
+-	      memcpy (user_name, dirname + 1, end_name - dirname);
+-	      user_name[end_name - dirname - 1] = '\0';
++	      memcpy (newp, dirname + 1, end_name - dirname);
++	      newp[end_name - dirname - 1] = '\0';
+ # endif
++	      user_name = newp;
+ 	    }
+ 
+ 	  /* Look up specific user's home directory.  */
+ 	  {
++	    struct passwd *p;
+ #  if defined HAVE_GETPWNAM_R || defined _LIBC
+ 	    size_t buflen = sysconf (_SC_GETPW_R_SIZE_MAX);
+-	    char *pwtmpbuf = (char *) __alloca (buflen);
+-	    struct passwd pwbuf, *p;
+-	    if (__getpwnam_r (user_name, &pwbuf, pwtmpbuf, buflen, &p) >= 0)
++	    char *pwtmpbuf;
++	    struct passwd pwbuf;
++
++	    if (buflen == -1)
++	      /* `sysconf' does not support _SC_GETPW_R_SIZE_MAX.  Try a
++		 moderate value.  */
++	      buflen = 1024;
++	    pwtmpbuf = (char *) __alloca (buflen);
++
++	    if (getpwnam_r (user_name, &pwbuf, pwtmpbuf, buflen, &p) >= 0)
+ 	      home_dir = p->pw_dir;
+ 	    else
+ 	      home_dir = NULL;
+ #  else
+-	    struct passwd *p = getpwnam (user_name);
++	    p = getpwnam (user_name);
+ 	    if (p != NULL)
+ 	      home_dir = p->pw_dir;
+ 	    else
+@@ -722,6 +749,11 @@
+ #  endif
+ 	      dirname = newp;
+ 	    }
++	  else
++	    if (flags & GLOB_TILDE_CHECK)
++	      /* We have to regard it as an error if we cannot find the
++		 home directory.  */
++	      return GLOB_NOMATCH;
+ 	}
+ # endif	/* Not Amiga && not WINDOWS32.  */
+     }
+@@ -915,8 +947,8 @@
+ 
+ 	    /* Now we know how large the gl_pathv vector must be.  */
+ 	    new_pathv = (char **) realloc (pglob->gl_pathv,
+-                                           ((pglob->gl_pathc + 1)
+-                                            * sizeof (char *)));
++					   ((pglob->gl_pathc + 1)
++					    * sizeof (char *)));
+ 	    if (new_pathv != NULL)
+ 	      pglob->gl_pathv = new_pathv;
+ 	  }
+@@ -1092,6 +1124,8 @@
+ }
+ 
+ 
++/* We must not compile this function twice.  */
++#if !defined _LIBC || !defined NO_GLOB_PATTERN_P
+ /* Return nonzero if PATTERN contains any metacharacters.
+    Metacharacters can be quoted with backslashes if QUOTE is nonzero.  */
+ int
+@@ -1126,8 +1160,9 @@
+ 
+   return 0;
+ }
+-#ifdef _LIBC
++# ifdef _LIBC
+ weak_alias (__glob_pattern_p, glob_pattern_p)
++# endif
+ #endif
+ 
+ 
+--- make-3.77/glob/glob.h.fixes	Mon Dec 22 16:59:07 1997
++++ make-3.77/glob/glob.h	Wed Sep 16 12:13:04 1998
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 1991, 1992, 1995, 1996, 1997 Free Software Foundation, Inc.
++/* Copyright (C) 1991, 92, 95, 96, 97, 98 Free Software Foundation, Inc.
+ 
+    The GNU C Library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public License as
+@@ -25,7 +25,9 @@
+ #undef	__ptr_t
+ #if defined __cplusplus || (defined __STDC__ && __STDC__) || defined WINDOWS32
+ # undef	__P
++# undef __PMT
+ # define __P(protos)	protos
++# define __PMT(protos)	protos
+ # define __ptr_t	void *
+ # if !defined __GNUC__ || __GNUC__ < 2
+ #  undef __const
+@@ -33,7 +35,9 @@
+ # endif
+ #else /* Not C++ or ANSI C.  */
+ # undef	__P
++# undef __PMT
+ # define __P(protos)	()
++# define __PMT(protos)	()
+ # undef	__const
+ # define __const
+ # define __ptr_t	char *
+@@ -57,10 +61,12 @@
+ # define GLOB_NOMAGIC	 (1 << 11)/* If no magic chars, return the pattern.  */
+ # define GLOB_TILDE	 (1 << 12)/* Expand ~user and ~ to home directories. */
+ # define GLOB_ONLYDIR	 (1 << 13)/* Match only directories.  */
++# define GLOB_TILDE_CHECK (1 << 14)/* Like GLOB_TILDE but return an error
++				      if the user name is not available.  */
+ # define __GLOB_FLAGS	(GLOB_ERR|GLOB_MARK|GLOB_NOSORT|GLOB_DOOFFS| \
+ 			 GLOB_NOESCAPE|GLOB_NOCHECK|GLOB_APPEND|     \
+ 			 GLOB_PERIOD|GLOB_ALTDIRFUNC|GLOB_BRACE|     \
+-			 GLOB_NOMAGIC|GLOB_TILDE|GLOB_ONLYDIR)
++			 GLOB_NOMAGIC|GLOB_TILDE|GLOB_ONLYDIR|GLOB_TILDE_CHECK)
+ #else
+ # define __GLOB_FLAGS	(GLOB_ERR|GLOB_MARK|GLOB_NOSORT|GLOB_DOOFFS| \
+ 			 GLOB_NOESCAPE|GLOB_NOCHECK|GLOB_APPEND|     \
+@@ -71,41 +77,52 @@
+ #define	GLOB_NOSPACE	1	/* Ran out of memory.  */
+ #define	GLOB_ABORTED	2	/* Read error.  */
+ #define	GLOB_NOMATCH	3	/* No matches found.  */
+-
++#define GLOB_NOSYS	4	/* Not implemented.  */
+ #ifdef _GNU_SOURCE
+ /* Previous versions of this file defined GLOB_ABEND instead of
+    GLOB_ABORTED.  Provide a compatibility definition here.  */
+ # define GLOB_ABEND GLOB_ABORTED
+ #endif
+ 
+-/* This value is returned if the implementation does not support
+-   `glob'.  Since this is not the case here it will never be
+-   returned but the conformance test suites still require the symbol
+-   to be defined.  */
+-#if (_XOPEN_SOURCE - 0) == 500
+-# define GLOB_NOSYS	(-1)
+-#endif
+-
+ /* Structure describing a globbing run.  */
+ #if !defined _AMIGA && !defined VMS /* Buggy compiler.   */
+ struct stat;
+ #endif
+ typedef struct
+   {
+-    int gl_pathc;		/* Count of paths matched by the pattern.  */
++    size_t gl_pathc;		/* Count of paths matched by the pattern.  */
+     char **gl_pathv;		/* List of matched pathnames.  */
+-    int gl_offs;		/* Slots to reserve in `gl_pathv'.  */
++    size_t gl_offs;		/* Slots to reserve in `gl_pathv'.  */
+     int gl_flags;		/* Set to FLAGS, maybe | GLOB_MAGCHAR.  */
+ 
+     /* If the GLOB_ALTDIRFUNC flag is set, the following functions
+        are used instead of the normal file access functions.  */
+-    void (*gl_closedir) __P ((void *));
+-    struct dirent *(*gl_readdir) __P ((void *));
+-    __ptr_t (*gl_opendir) __P ((__const char *));
+-    int (*gl_lstat) __P ((__const char *, struct stat *));
+-    int (*gl_stat) __P ((__const char *, struct stat *));
++    void (*gl_closedir) __PMT ((void *));
++    struct dirent *(*gl_readdir) __PMT ((void *));
++    __ptr_t (*gl_opendir) __PMT ((__const char *));
++    int (*gl_lstat) __PMT ((__const char *, struct stat *));
++    int (*gl_stat) __PMT ((__const char *, struct stat *));
+   } glob_t;
+ 
++#ifdef _LARGEFILE64_SOURCE
++struct stat64;
++typedef struct
++  {
++    size_t gl_pathc;
++    char **gl_pathv;
++    size_t gl_offs;
++    int gl_flags;
++
++    /* If the GLOB_ALTDIRFUNC flag is set, the following functions
++       are used instead of the normal file access functions.  */
++    void (*gl_closedir) __PMT ((void *));
++    struct dirent64 *(*gl_readdir) __PMT ((void *));
++    __ptr_t (*gl_opendir) __PMT ((__const char *));
++    int (*gl_lstat) __PMT ((__const char *, struct stat64 *));
++    int (*gl_stat) __PMT ((__const char *, struct stat64 *));
++  } glob64_t;
++#endif
++
+ /* Do glob searching for PATTERN, placing results in PGLOB.
+    The bits defined above may be set in FLAGS.
+    If a directory cannot be opened or read and ERRFUNC is not nil,
+@@ -114,12 +131,33 @@
+    `glob' returns GLOB_ABEND; if it returns zero, the error is ignored.
+    If memory cannot be allocated for PGLOB, GLOB_NOSPACE is returned.
+    Otherwise, `glob' returns zero.  */
++#if _FILE_OFFSET_BITS != 64
+ extern int glob __P ((__const char *__pattern, int __flags,
+ 		      int (*__errfunc) __P ((__const char *, int)),
+ 		      glob_t *__pglob));
+ 
+ /* Free storage allocated in PGLOB by a previous `glob' call.  */
+ extern void globfree __P ((glob_t *__pglob));
++#else
++# if __GNUC__ >= 2
++extern int glob __P ((__const char *__pattern, int __flags,
++		      int (*__errfunc) __P ((__const char *, int)),
++		      glob_t *__pglob)) __asm__ ("glob64");
++
++extern void globfree __P ((glob_t *__pglob)) __asm__ ("globfree64");
++# else
++#  define glob glob64
++#  define globfree globfree64
++# endif
++#endif
++
++#ifdef _LARGEFILE64_SOURCE
++extern int glob64 __P ((__const char *__pattern, int __flags,
++			int (*__errfunc) __P ((__const char *, int)),
++			glob64_t *__pglob));
++
++extern void globfree64 __P ((glob64_t *__pglob));
++#endif
+ 
+ 
+ #ifdef _GNU_SOURCE
+--- make-3.77/glob/acinclude.m4.fixes	Wed Sep 16 12:14:42 1998
++++ make-3.77/glob/acinclude.m4	Wed Sep 16 12:14:35 1998
+@@ -0,0 +1,131 @@
++dnl acinclude.m4 -- Extra macros needed for GNU make.
++dnl
++dnl Automake will incorporate this into its generated aclocal.m4.
++
++dnl ---------------------------------------------------------------------------
++dnl Got this from the lynx 2.8 distribution.
++dnl by T.E.Dickey <dickey@clark.net>
++dnl and Jim Spath <jspath@mail.bcpl.lib.md.us>
++dnl and Philippe De Muyter <phdm@macqel.be>
++dnl
++dnl Created: 1997/1/28
++dnl Updated: 1997/12/23
++dnl ---------------------------------------------------------------------------
++dnl After checking for functions in the default $LIBS, make a further check
++dnl for the functions that are netlib-related (these aren't always in the
++dnl libc, etc., and have to be handled specially because there are conflicting
++dnl and broken implementations.
++dnl Common library requirements (in order):
++dnl	-lresolv -lsocket -lnsl
++dnl	-lnsl -lsocket
++dnl	-lsocket
++dnl	-lbsd
++AC_DEFUN([CF_NETLIBS],[
++cf_test_netlibs=no
++AC_MSG_CHECKING(for network libraries)
++AC_CACHE_VAL(cf_cv_netlibs,[
++AC_MSG_RESULT(working...)
++cf_cv_netlibs=""
++cf_test_netlibs=yes
++AC_CHECK_FUNCS(gethostname,,[
++	CF_RECHECK_FUNC(gethostname,nsl,cf_cv_netlibs,[
++		CF_RECHECK_FUNC(gethostname,socket,cf_cv_netlibs)])])
++#
++# FIXME:  sequent needs this library (i.e., -lsocket -linet -lnsl), but
++# I don't know the entrypoints - 97/7/22 TD
++AC_CHECK_LIB(inet,main,cf_cv_netlibs="-linet $cf_cv_netlibs")
++#
++if test "$ac_cv_func_lsocket" != no ; then
++AC_CHECK_FUNCS(socket,,[
++	CF_RECHECK_FUNC(socket,socket,cf_cv_netlibs,[
++		CF_RECHECK_FUNC(socket,bsd,cf_cv_netlibs)])])
++fi
++#
++AC_CHECK_FUNCS(gethostbyname,,[
++	CF_RECHECK_FUNC(gethostbyname,nsl,cf_cv_netlibs)])
++#
++AC_CHECK_FUNCS(strcasecmp,,[
++	CF_RECHECK_FUNC(strcasecmp,resolv,cf_cv_netlibs)])
++])
++LIBS="$LIBS $cf_cv_netlibs"
++test $cf_test_netlibs = no && echo "$cf_cv_netlibs" >&AC_FD_MSG
++])dnl
++dnl ---------------------------------------------------------------------------
++dnl Re-check on a function to see if we can pick it up by adding a library.
++dnl	$1 = function to check
++dnl	$2 = library to check in
++dnl	$3 = environment to update (e.g., $LIBS)
++dnl	$4 = what to do if this fails
++dnl
++dnl This uses 'unset' if the shell happens to support it, but leaves the
++dnl configuration variable set to 'unknown' if not.  This is a little better
++dnl than the normal autoconf test, which gives misleading results if a test
++dnl for the function is made (e.g., with AC_CHECK_FUNC) after this macro is
++dnl used (autoconf does not distinguish between a null token and one that is
++dnl set to 'no').
++AC_DEFUN([CF_RECHECK_FUNC],[
++AC_CHECK_LIB($2,$1,[
++	CF_UPPER(cf_tr_func,$1)
++	AC_DEFINE_UNQUOTED(HAVE_$cf_tr_func)
++	ac_cv_func_$1=yes
++	$3="-l$2 [$]$3"],[
++	ac_cv_func_$1=unknown
++	unset ac_cv_func_$1 2>/dev/null
++	$4],
++	[[$]$3])
++])dnl
++dnl ---------------------------------------------------------------------------
++dnl Make an uppercase version of a variable
++dnl $1=uppercase($2)
++AC_DEFUN([CF_UPPER],
++[
++changequote(,)dnl
++$1=`echo $2 | tr '[a-z]' '[A-Z]'`
++changequote([,])dnl
++])dnl
++
++dnl ---------------------------------------------------------------------------
++dnl Got this from the GNU fileutils 3.16r distribution
++dnl by Paul Eggert <egger@twinsun.com>
++dnl ---------------------------------------------------------------------------
++
++dnl The problem is that the default compilation flags in Solaris 2.6 won't
++dnl let programs access large files;  you need to tell the compiler that
++dnl you actually want your programs to work on large files.  For more
++dnl details about this brain damage please see:
++dnl http://www.sas.com/standards/large.file/x_open.20Mar96.html
++
++AC_DEFUN(AC_LFS,
++[dnl
++  # If available, prefer support for large files unless the user specified
++  # one of the CPPFLAGS, LDFLAGS, or LIBS variables.
++  AC_MSG_CHECKING(whether large file support needs explicit enabling)
++  ac_getconfs=''
++  ac_result=yes
++  ac_set=''
++  ac_shellvars='CPPFLAGS LDFLAGS LIBS'
++  for ac_shellvar in $ac_shellvars; do
++    case $ac_shellvar in
++      CPPFLAGS) ac_lfsvar=LFS_CFLAGS ;;
++      *) ac_lfsvar=LFS_$ac_shellvar ;;
++    esac
++    eval test '"${'$ac_shellvar'+set}"' = set && ac_set=$ac_shellvar
++    (getconf $ac_lfsvar) >/dev/null 2>&1 || { ac_result=no; break; }
++    ac_getconf=`getconf $ac_lfsvar`
++    ac_getconfs=$ac_getconfs$ac_getconf
++    eval ac_test_$ac_shellvar=\$ac_getconf
++  done
++  case "$ac_result$ac_getconfs" in
++    yes) ac_result=no ;;
++  esac
++  case "$ac_result$ac_set" in
++    yes?*) ac_result="yes, but $ac_set is already set, so use its settings"
++  esac
++  AC_MSG_RESULT($ac_result)
++  case $ac_result in
++    yes)
++      for ac_shellvar in $ac_shellvars; do
++	eval $ac_shellvar=\$ac_test_$ac_shellvar
++      done ;;
++  esac
++])
