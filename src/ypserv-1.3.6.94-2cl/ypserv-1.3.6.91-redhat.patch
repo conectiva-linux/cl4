@@ -1,0 +1,22 @@
+--- ypserv-1.3.6.91/ypMakefile.in.redhat	Fri Feb 19 10:07:35 1999
++++ ypserv-1.3.6.91/ypMakefile.in	Fri Mar 26 15:13:10 1999
+@@ -28,8 +28,8 @@
+ # entries) in the NIS password database, for security. MINUID is the
+ # lowest uid that will be included in the password maps.
+ # MINGID is the lowest gid that will be included in the group maps.
+-MINUID=100
+-MINGID=100
++MINUID=500
++MINGID=500
+ 
+ # Should we merge the passwd file with the shadow file ?
+ # MERGE_PASSWD=true|false
+@@ -96,7 +96,7 @@
+ # them out from this list.
+ 
+ all:  passwd group hosts rpc services netid protocols netgrp mail \
+-	shadow publickey # networks ethers bootparams amd.home \
++	#shadow publickey # networks ethers bootparams amd.home \
+ 	auto.master auto.home passwd.adjunct
+ 
+ 
