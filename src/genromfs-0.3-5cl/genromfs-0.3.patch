@@ -1,0 +1,13 @@
+--- genromfs-0.3/Makefile	Thu Sep 17 14:56:35 1998
++++ genromfs-0.3/Makefile	Fri Oct 30 15:54:57 1998
+@@ -14,8 +14,8 @@
+ install: all install-bin install-man
+ 
+ install-bin:
+-	install -m 755 genromfs /usr/bin
++	install -m 755 genromfs $(PREFIX)/usr/bin
+ 
+ install-man:
+-	install -m 644 genromfs.8 /usr/man/man8
++	install -m 644 genromfs.8 $(PREFIX)/usr/man/man8
+ 
