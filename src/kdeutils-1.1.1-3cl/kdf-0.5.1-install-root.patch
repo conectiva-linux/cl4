@@ -1,0 +1,289 @@
+diff -Nur kdf-0.5.1.orig/Makefile.in kdf-0.5.1/Makefile.in
+--- kdf-0.5.1.orig/Makefile.in	Sun Apr 18 07:19:36 1999
++++ kdf-0.5.1/Makefile.in	Thu May  6 15:03:27 1999
+@@ -103,21 +103,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/kdf/Makefile.in kdf-0.5.1/kdf/Makefile.in
+--- kdf-0.5.1.orig/kdf/Makefile.in	Sun Apr 18 07:19:37 1999
++++ kdf-0.5.1/kdf/Makefile.in	Thu May  6 15:03:45 1999
+@@ -34,7 +34,7 @@
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ 
+-bindir = @bindir@
++bindir = ${install_root}@bindir@
+ sbindir = @sbindir@
+ libexecdir = @libexecdir@
+ datadir = @datadir@
+@@ -116,21 +116,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/kdf/doc/Makefile.in kdf-0.5.1/kdf/doc/Makefile.in
+--- kdf-0.5.1.orig/kdf/doc/Makefile.in	Sun Apr 18 07:19:37 1999
++++ kdf-0.5.1/kdf/doc/Makefile.in	Thu May  6 15:03:27 1999
+@@ -103,21 +103,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/kdf/doc/de/Makefile.in kdf-0.5.1/kdf/doc/de/Makefile.in
+--- kdf-0.5.1.orig/kdf/doc/de/Makefile.in	Sun Apr 18 07:19:37 1999
++++ kdf-0.5.1/kdf/doc/de/Makefile.in	Thu May  6 15:03:27 1999
+@@ -107,21 +107,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/kdf/doc/en/Makefile.in kdf-0.5.1/kdf/doc/en/Makefile.in
+--- kdf-0.5.1.orig/kdf/doc/en/Makefile.in	Sun Apr 18 07:19:37 1999
++++ kdf-0.5.1/kdf/doc/en/Makefile.in	Thu May  6 15:03:27 1999
+@@ -107,21 +107,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/kdf/pics/Makefile.in kdf-0.5.1/kdf/pics/Makefile.in
+--- kdf-0.5.1.orig/kdf/pics/Makefile.in	Sun Apr 18 07:19:37 1999
++++ kdf-0.5.1/kdf/pics/Makefile.in	Thu May  6 15:03:27 1999
+@@ -107,21 +107,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@
+diff -Nur kdf-0.5.1.orig/po/Makefile.in kdf-0.5.1/po/Makefile.in
+--- kdf-0.5.1.orig/po/Makefile.in	Sun Apr 18 07:19:38 1999
++++ kdf-0.5.1/po/Makefile.in	Thu May  6 15:03:27 1999
+@@ -98,21 +98,21 @@
+ all_includes = @all_includes@
+ all_libraries = @all_libraries@
+ install_root = @install_root@
+-kde_appsdir = @kde_appsdir@
+-kde_bindir = @kde_bindir@
+-kde_cgidir = @kde_cgidir@
+-kde_confdir = @kde_confdir@
+-kde_datadir = @kde_datadir@
+-kde_htmldir = @kde_htmldir@
+-kde_icondir = @kde_icondir@
+-kde_includes = @kde_includes@
+-kde_libraries = @kde_libraries@
+-kde_locale = @kde_locale@
+-kde_mimedir = @kde_mimedir@
+-kde_minidir = @kde_minidir@
+-kde_partsdir = @kde_partsdir@
+-kde_toolbardir = @kde_toolbardir@
+-kde_wallpaperdir = @kde_wallpaperdir@
++kde_appsdir = ${install_root}@kde_appsdir@
++kde_bindir = ${install_root}@kde_bindir@
++kde_cgidir = ${install_root}@kde_cgidir@
++kde_confdir = ${install_root}@kde_confdir@
++kde_datadir = ${install_root}@kde_datadir@
++kde_htmldir = ${install_root}@kde_htmldir@
++kde_icondir = ${install_root}@kde_icondir@
++kde_includes = ${install_root}@kde_includes@
++kde_libraries = ${install_root}@kde_libraries@
++kde_locale = ${install_root}@kde_locale@
++kde_mimedir = ${install_root}@kde_mimedir@
++kde_minidir = ${install_root}@kde_minidir@
++kde_partsdir = ${install_root}@kde_partsdir@
++kde_toolbardir = ${install_root}@kde_toolbardir@
++kde_wallpaperdir = ${install_root}@kde_wallpaperdir@
+ qt_includes = @qt_includes@
+ qt_libraries = @qt_libraries@
+ topdir = @topdir@

@@ -1,0 +1,91 @@
+
+diff -uNr kclock-0.6/kclock/Makefile.in kclock-0.6-fixed/kclock/Makefile.in
+--- kclock-0.6/kclock/Makefile.in	Sun May 24 20:47:06 1998
++++ kclock-0.6-fixed/kclock/Makefile.in	Mon Apr 19 22:28:33 1999
+@@ -16,7 +16,11 @@
+ prefix       = @prefix@
+ BINDIR       = $(prefix)/bin
+ ICONDIR      = $(prefix)/share/icons/
+-DOCSDIR      = $(prefix)/share/doc/HTML/default/kclock/
++DOCSDIR      = $(prefix)/share/doc/HTML/en/kclock
++DOCSDIR_DE      = $(prefix)/share/doc/HTML/de/kclock
++DOCSDIR_ES      = $(prefix)/share/doc/HTML/es/kclock
++DOCSDIR_IT      = $(prefix)/share/doc/HTML/it/kclock
++DOCSDIR_NL      = $(prefix)/share/doc/HTML/nl/kclock
+ APPSDIR      = $(prefix)/share/applnk/Utilities/
+ LOCALEDIR    = $(prefix)/share/locale/
+ KCLOCKDIR    = $(prefix)/share/apps/kclock
+@@ -74,7 +78,15 @@
+ 	$(INSTALL_DIR) $(BINDIR)
+ 	$(INSTALL) $(TARGET) $(BINDIR)
+ 	$(INSTALL_DIR) $(DOCSDIR)
+-	$(INSTALL_DATA) docs/kclock*.html $(DOCSDIR)
++	$(INSTALL_DATA) docs/kclock.html $(DOCSDIR)/kclock.html
++	$(INSTALL_DIR) $(DOCSDIR_DE)
++	$(INSTALL_DATA) docs/kclock.de.html $(DOCSDIR_DE)/kclock.html
++	$(INSTALL_DIR) $(DOCSDIR_ES)
++	$(INSTALL_DATA) docs/kclock.es.html $(DOCSDIR_ES)/kclock.html
++	$(INSTALL_DIR) $(DOCSDIR_IT)
++	$(INSTALL_DATA) docs/kclock.it.html $(DOCSDIR_IT)/kclock.html
++	$(INSTALL_DIR) $(DOCSDIR_NL)
++	$(INSTALL_DATA) docs/kclock.nl.html $(DOCSDIR_NL)/kclock.html
+ 	$(INSTALL_DIR) $(APPSDIR)
+ 	$(INSTALL_DATA) kclock.kdelnk $(APPSDIR)
+ 	$(INSTALL_DIR) $(ICONDIR)
+@@ -115,3 +127,7 @@
+ 	done
+ 
+ # DO NOT DELETE THIS LINE -- make depend depends on it.
++
++
++
++
+diff -uNr kclock-0.6/kclock/docs/kclock.html kclock-0.6-fixed/kclock/docs/kclock.html
+--- kclock-0.6/kclock/docs/kclock.html	Sun May 24 20:47:06 1998
++++ kclock-0.6-fixed/kclock/docs/kclock.html	Mon Apr 19 22:28:33 1999
+@@ -17,16 +17,16 @@
+ <P>Version 0.6, 25 May 1998
+ <BR>&nbsp;
+ <LI>
+-<A HREF="kclock.it.html">Italian version of this page (old)</A></LI>
++<A HREF="../../it/kclock/kclock.html">Italian version of this page (old)</A></LI>
+ 
+ <LI>
+-<A HREF="kclock.es.html">Spanish version of this page (old)</A></LI>
++<A HREF="../../es/kclock/kclock.html">Spanish version of this page (old)</A></LI>
+ 
+ <LI>
+-<A HREF="kclock.de.html">German version of this page (old)</A></LI>
++<A HREF="../../de/kclock/kclock.html">German version of this page (old)</A></LI>
+ 
+ <LI>
+-<A HREF="kclock.nl.html">Dutch version of this page (old)</A></LI>
++<A HREF="../../nl/kclock/kclock.html">Dutch version of this page (old)</A></LI>
+ 
+ 
+ <P>
+@@ -69,7 +69,7 @@
+ 
+ <LI>
+ modify the hour and the date of the system ( calling the new "kcmclock"
+-kcontrol module )</LI>
++kcontrol module ) (FEATURE REMOVED)</LI>
+ </UL>
+ 
+ <H2>
+diff -uNr kclock-0.6/kclock/kclock.cpp kclock-0.6-fixed/kclock/kclock.cpp
+--- kclock-0.6/kclock/kclock.cpp	Sun May 24 20:47:06 1998
++++ kclock-0.6-fixed/kclock/kclock.cpp	Mon Apr 19 22:28:33 1999
+@@ -60,8 +60,8 @@
+ 	menu2->insertSeparator();
+ 	menu2->insertItem(klocale->translate("Reset Colors"), this, SLOT(resetCol()));
+ 
+-	menu->insertSeparator();
+-	menu->insertItem(klocale->translate("Set system Date/Time"), this, SLOT(Set_time()));
++//	menu->insertSeparator();
++//	menu->insertItem(klocale->translate("Set system Date/Time"), this, SLOT(Set_time()));
+ 	menu->insertSeparator();
+ 	menu->insertItem(klocale->translate("Save setting"), this, SLOT(Save_config()));
+ 	menu->insertItem(klocale->translate("Help"), this, SLOT(Help()));
+
+
