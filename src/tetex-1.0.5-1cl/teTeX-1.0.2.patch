@@ -1,0 +1,67 @@
+From godoy@conectiva.com.br Wed Jun  9 13:47:58 1999
+Date: Wed, 9 Jun 1999 13:37:06 -0300 (EST)
+From: Jorge Godoy <godoy@conectiva.com.br>
+To: distro@conectiva.com.br
+Subject: [distro] small fixes: teTeX-1.0.2 released (fwd)
+
+PSC.
+
+Sds,
+Jorge Godoy.			<godoy@conectiva.com.br>
+
+Except where explicitly stated I speak on my own behalf.
+Exceto onde explicitado as declarações aqui feitas são apenas minhas.
+
+---------- Forwarded message ----------
+Date: Wed, 9 Jun 1999 12:14:44 +0200 (MET DST)
+From: Thomas Esser <te@informatik.uni-hannover.de>
+To: tetex-announce@informatik.uni-hannover.de,
+     tetex-pretest@informatik.uni-hannover.de, tetex@informatik.uni-hannover.de
+Subject: small fixes: teTeX-1.0.2 released
+
+I have released teTeX-1.0.2. It includes two fixes compared with
+teTeX-1.0.  One is about "make clean" not working properly, the other
+about a harmless message of mktextfm which should be suppressed in a
+better way. There is no need to recompile. The fix to mktextfm can be
+applied to the installed script (just change that line marked with !).
+
+Thomas
+
+*** teTeX-1.0/texk/Makefile.in	Tue Feb  9 08:39:36 1999
+--- teTeX-1.0.1/texk/Makefile.in	Mon Jun  7 19:22:12 1999
+***************
+*** 5,11 ****
+  
+  programs = web2c $(ESUBDIRS)
+  kpathsea_dir = kpathsea
+! all_dirs = $(programs) $(kpathsea_dir) contrib
+  
+  ac_include make/paths.mk
+  ac_include make/makevars.mk
+--- 5,11 ----
+  
+  programs = web2c $(ESUBDIRS)
+  kpathsea_dir = kpathsea
+! all_dirs = $(programs) $(kpathsea_dir)
+  
+  ac_include make/paths.mk
+  ac_include make/makevars.mk
+*** teTeX-1.0/texk/kpathsea/mktextfm	Sat May 29 22:39:03 1999
+--- teTeX-1.0.2/texk/kpathsea/mktextfm	Tue Jun  8 18:22:26 1999
+***************
+*** 79,85 ****
+  fi
+  
+  # Check if this font is supported by hbf2gf else use metafont.
+! if hbf2gf -q -t $NAME >/dev/null 2>&1; then
+    cmd="hbf2gf -g $NAME $DPI"
+  else
+    cmd="mf \mode:=$MODE; mag:=$MAG; nonstopmode; input $NAME"
+--- 79,85 ----
+  fi
+  
+  # Check if this font is supported by hbf2gf else use metafont.
+! if (hbf2gf -q -t $NAME) >/dev/null 2>&1; then
+    cmd="hbf2gf -g $NAME $DPI"
+  else
+    cmd="mf \mode:=$MODE; mag:=$MAG; nonstopmode; input $NAME"

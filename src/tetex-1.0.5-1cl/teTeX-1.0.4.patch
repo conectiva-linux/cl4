@@ -1,0 +1,236 @@
+From godoy@conectiva.com.br Tue Jun 15 12:43:29 1999
+Date: Tue, 15 Jun 1999 12:35:30 -0300 (EST)
+From: Jorge Godoy <godoy@conectiva.com.br>
+To: distro@conectiva.com.br
+Subject: [distro] teTeX-1.0.4 (fwd)
+
+Hehehehe... Os caras estão apanhando demais desse teTeX novo... Toda hora
+estão saindo bug fixes. Cá está mais um ("sutaque" portugueis...)
+
+Sds,
+Jorge Godoy.			<godoy@conectiva.com.br>
+
+Except where explicitly stated I speak on my own behalf.
+Exceto onde explicitado as declarações aqui feitas são apenas minhas.
+
+---------- Forwarded message ----------
+Date: Sat, 12 Jun 1999 13:28:18 +0200 (MET DST)
+From: Thomas Esser <te@informatik.uni-hannover.de>
+To: tetex-announce@informatik.uni-hannover.de,
+     tetex-pretest@informatik.uni-hannover.de, tetex@informatik.uni-hannover.de
+Subject: teTeX-1.0.4
+
+Hello,
+
+unfortunately, a rather important bug in xdvi's tmpfile handling was
+found. The following patch will hopefully fix it. Other than the first
+three patches for teTeX-1.0, this one really affects the binaries.
+The new version number for xdvik will be 22.05c. A newer version of
+xdvik has been released (22.08b), but this version cannot be considered
+stable, yet. It has a change in signal handling which needs some testing.
+
+Thomas
+
+*** teTeX-1.0/texk/xdvik/special.c	Sat May  8 17:58:02 1999
+--- teTeX-1.0.4/texk/xdvik/special.c	Sat Jun 12 13:01:41 1999
+***************
+*** 748,756 ****
+  		    tikp = (struct tickrec *)
+  			xmalloc(sizeof(struct tickrec));
+  		    
+! 		    sprintf(buffer,"%s%d",temporary_dir,fileno);
+  		    fileno++;
+- 		    fprintf(stderr,"TMP file: %s\n",buffer);
+  		    
+  		    tikp->tmpname = buffer;
+  		    tikp->pageno = -1;
+--- 748,757 ----
+  		    tikp = (struct tickrec *)
+  			xmalloc(sizeof(struct tickrec));
+  		    
+! 		    sprintf(buffer,"%s/%d",temporary_dir,fileno);
+! 		    fprintf(stderr,"TMP file: %s -> %s, %d\n",filename,
+! 			    buffer,fileno);
+  		    fileno++;
+  		    
+  		    tikp->tmpname = buffer;
+  		    tikp->pageno = -1;
+***************
+*** 769,775 ****
+  	    if (strcmp(filename, tikp->command) == 0) {	/* found it */
+  		*linkp = tikp->next;	/* unlink it */
+  		*fp = xfopen(tikp->tmpname, OPEN_MODE);
+! 		if (*fp == NULL) perror(tikp->tmpname);
+  		break;
+  	    }
+  	    if (tikp->pageno != current_page) freerecp = linkp;
+--- 770,779 ----
+  	    if (strcmp(filename, tikp->command) == 0) {	/* found it */
+  		*linkp = tikp->next;	/* unlink it */
+  		*fp = xfopen(tikp->tmpname, OPEN_MODE);
+! 		if (*fp == NULL) {
+! 		  fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+! 		  perror(tikp->tmpname);
+! 		}
+  		break;
+  	    }
+  	    if (tikp->pageno != current_page) freerecp = linkp;
+***************
+*** 795,801 ****
+  #endif
+  
+  static	void
+! sendfile P2C(char *,filename, kpse_file_format_type, pathinfo)
+  {
+  	FILE		*f;
+  	static _Xconst char *argv[]	= {NULL, "-c", NULL, NULL};
+--- 799,805 ----
+  #endif
+  
+  static	void
+! send_ps_file P2C(char *,filename, kpse_file_format_type, pathinfo)
+  {
+  	FILE		*f;
+  	static _Xconst char *argv[]	= {NULL, "-c", NULL, NULL};
+***************
+*** 839,844 ****
+--- 843,849 ----
+  		(void) system(ffline);
+  		f = xfopen(tikp->tmpname, OPEN_MODE);
+  		if (f == NULL) {
++ 		    fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+  		    perror(tikp->tmpname);
+  		    return;
+  		}
+***************
+*** 883,893 ****
+  			int	handle;
+  			int	status;
+  
+  			argv[2] = bufp;
+  			handle = open(tikp->tmpname, O_EXCL | O_CREAT | 
+! 				      O_RDWR | O_TRUNC, 
+! 				      S_IRUSR | S_IWUSR);
+  			if (handle == -1) {
+  			    perror(tikp->tmpname);
+  			    return;
+  			}
+--- 888,908 ----
+  			int	handle;
+  			int	status;
+  
++ 			fprintf(stderr,"File %s -> %s\n", filename, 
++ 				tikp->tmpname);
++ 
+  			argv[2] = bufp;
+  			handle = open(tikp->tmpname, O_EXCL | O_CREAT | 
+! 				      O_RDWR | S_IRUSR | S_IWUSR);
+! 			if (handle == -1 && errno == EEXIST) {
+! 			  /* The tmpnames are reused for each page so
+! 			     unlink the tmpname file from the previous page */
+! 			  unlink(tikp->tmpname);
+! 			  handle = open(tikp->tmpname, O_EXCL | O_CREAT | 
+! 					O_RDWR | S_IRUSR | S_IWUSR);
+! 			}
+  			if (handle == -1) {
++ 			    fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+  			    perror(tikp->tmpname);
+  			    return;
+  			}
+***************
+*** 923,928 ****
+--- 938,945 ----
+  			}
+  			f = xfopen(tikp->tmpname, OPEN_MODE);
+  			if (f == NULL) {
++ 			    fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",
++ 				    __LINE__);
+  			    perror(tikp->tmpname);
+  			    return;
+  			}
+***************
+*** 958,965 ****
+  	/* Note:  old NeXT systems (at least) lack atexit/on_exit.  */
+  	psp.destroy();
+  	for (tikp = tickhead; tikp != NULL; tikp = tikp->next)
+! 	    if (unlink(tikp->tmpname) < 0)
+  		perror(tikp->tmpname);
+  }
+  
+  #endif	/* PS */
+--- 975,984 ----
+  	/* Note:  old NeXT systems (at least) lack atexit/on_exit.  */
+  	psp.destroy();
+  	for (tikp = tickhead; tikp != NULL; tikp = tikp->next)
+!     if (unlink(tikp->tmpname) < 0) {
+!       fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+  		perror(tikp->tmpname);
++     }
+  }
+  
+  #endif	/* PS */
+***************
+*** 1002,1008 ****
+  	    }
+  	    *cp = '\0';
+  #if	PS
+! 	    if (currwin.win == mane.win) sendfile(filename, kpse_pict_format);
+  #endif
+  	} else if (strncmp(cp, ":[end]", 6) == 0) {
+  	    cp += 6;
+--- 1021,1028 ----
+  	    }
+  	    *cp = '\0';
+  #if	PS
+! 	    if (currwin.win == mane.win) 
+! 	      send_ps_file(filename, kpse_pict_format);
+  #endif
+  	} else if (strncmp(cp, ":[end]", 6) == 0) {
+  	    cp += 6;
+***************
+*** 1142,1148 ****
+  	    psp.drawbegin(PXL_H - currwin.base_x, PXL_V - currwin.base_y,
+  		buffer);
+  	    /* talk directly with the DPSHandler here */
+! 	    sendfile(filename, kpse_pict_format);
+  	    psp.drawend(" @endspecial");
+  #else
+  	    draw_bbox();
+--- 1162,1168 ----
+  	    psp.drawbegin(PXL_H - currwin.base_x, PXL_V - currwin.base_y,
+  		buffer);
+  	    /* talk directly with the DPSHandler here */
+! 	    send_ps_file(filename, kpse_pict_format);
+  	    psp.drawend(" @endspecial");
+  #else
+  	    draw_bbox();
+***************
+*** 1188,1194 ****
+  	}
+  
+  	psp.beginheader();
+! 	sendfile(filename, kpse_tex_ps_header_format);
+  }
+  
+  static	void
+--- 1208,1214 ----
+  	}
+  
+  	psp.beginheader();
+! 	send_ps_file(filename, kpse_tex_ps_header_format);
+  }
+  
+  static	void
+*** teTeX-1.0/texk/xdvik/version.h	Sat Jun 12 13:05:33 1999
+--- teTeX-1.0.4/texk/xdvik/version.h	Sat Jun 12 13:06:02 1999
+***************
+*** 1,4 ****
+! #define XDVIVERSION "22.05b-k"
+  #ifdef Omega
+  #define TVERSION XDVIVERSION" for Omega"
+  #else
+--- 1,4 ----
+! #define XDVIVERSION "22.05c-k"
+  #ifdef Omega
+  #define TVERSION XDVIVERSION" for Omega"
+  #else

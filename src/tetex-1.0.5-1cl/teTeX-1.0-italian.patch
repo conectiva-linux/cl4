@@ -1,0 +1,41 @@
+--- teTeX-1.0-orig/texk/share/texmf/tex/generic/config/language.dat	Thu Jun 10 10:32:56 1999
++++ teTeX-1.0/texk/share/texmf/tex/generic/config/language.dat	Thu Jun 10 10:33:26 1999
+@@ -49,7 +49,7 @@
+ %finnish	fi8hyph.tex
+ %galician	gahyph.tex
+ %greek		grhyph.tex
+-%italian	ithyph.tex
++italian	ithyph.tex
+ %latin		lahyph8.tex     % for T1 encoding. Use lahyph7.tex for OT1.
+ %magyar		huhyph.tex
+ %norsk		nohyph.tex
+--- teTeX-1.0-orig/texk/share/texmf/tex/generic/hyphen/ithyph.tex	Thu Jun 10 10:35:23 1999
++++ teTeX-1.0/texk/share/texmf/tex/generic/hyphen/ithyph.tex	Thu Jun 10 10:36:11 1999
+@@ -28,6 +28,7 @@
+ % See comments and loading instructions at the end of the file after the
+ % \endinput line
+ %
++\begingroup
+ {\lccode`\'=`\'      % Apostrophe has its own lccode so that it is treated
+                      % as a letter 
+                      %>> 1998/04/14 inserted grouping
+@@ -97,7 +98,7 @@
+ y1ou y1i
+ 1z   2zb   2zd   2zl  2zn  2zp  2zt  2zs  2zv  2zz  2z.  2z'. 2z''  .z2
+ }}                          % Pattern end
+-
++\endgroup
+ \endinput
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- teTeX-1.0-orig/texk/share/texmf/web2c/texmf.cnf	Thu Jun 10 10:38:36 1999
++++ teTeX-1.0/texk/share/texmf/web2c/texmf.cnf	Thu Jun 10 10:39:05 1999
+@@ -392,7 +392,7 @@
+ % Max number of characters in all strings, including all error messages,
+ % help texts, font names, control sequences.  These values apply to TeX and MP.
+ pool_size.context = 750000
+-pool_size = 125000		
++pool_size = 150000		
+ % Minimum pool space after TeX/MP's own strings; must be at least
+ % 25000 less than pool_size, but doesn't need to be nearly that large.
+ string_vacancies.context = 45000

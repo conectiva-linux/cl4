@@ -1,0 +1,320 @@
+From godoy@conectiva.com.br Wed Jun 16 15:41:48 1999
+Date: Wed, 16 Jun 1999 15:30:55 -0300 (EST)
+From: Jorge Godoy <godoy@conectiva.com.br>
+To: distro@conectiva.com.br
+Subject: [distro] teTeX-1.0.5 (fwd)
+
+Os caras não enjoam...
+
+Sds,
+Jorge Godoy.			<godoy@conectiva.com.br>
+
+Except where explicitly stated I speak on my own behalf.
+Exceto onde explicitado as declarações aqui feitas são apenas minhas.
+
+---------- Forwarded message ----------
+Date: Wed, 16 Jun 1999 08:05:25 +0200
+From: Thomas Esser <te@informatik.uni-hannover.de>
+To: tetex-announce@informatik.uni-hannover.de,
+     tetex-pretest@informatik.uni-hannover.de, tetex@informatik.uni-hannover.de
+Cc: Nicolai Langfeldt <janl@linpro.no>
+Subject: teTeX-1.0.5
+
+Well, the fix for xdvik in 1.0.4 was wrong. The xdvik maintainer has
+send me a new fix which should work now. I am sorry, but we have a
+change that affects the binaries (xdvi.bin and oxdvi.bin) again.
+
+I have taken the opportunity to fix a few other (minor) things.
+
+The ChangeLog entries:
+
+Wed Jun 16 07:53:55 CEST 1999 te
+	* correct broken fix from last xdvik patch
+	* strip binaries for install-exec target
+	* install kpathsea header files for install-exec target
+	* avoid installing mktex.opt etc. for install-exec target
+	* rename strcasestr -> ht_strcasestr in libwww to avoid problems
+	with existing strcasestr function
+	* change strdup -> xstrdup in xdvi.c, because not all systems
+	have strdup
+
+Thomas
+
+-----
+To apply this patch, just
+  cd teTeX-1.0
+  patch -p1 -s < this-mail
+
+diff -rc teTeX-1.0.4/Makefile.in teTeX-1.0/Makefile.in
+*** teTeX-1.0.4/Makefile.in	Fri May 28 16:55:13 1999
+--- teTeX-1.0/Makefile.in	Wed Jun 16 07:46:57 1999
+***************
+*** 94,99 ****
+--- 94,100 ----
+  	   (cd $$dir && PATH=$(scriptdir):$(bindir):$(PATH) \
+                $(MAKE) $@) || exit 1; \
+  	done
++ 	cd $(bindir); for i in $(ALLPROGS); do test -f $$i && { echo strip $$i; strip $$i || true; }; done; true
+  	test -f $(scriptdir)/texlinks && \
+  	  TEXMFMAIN=$(texmf) PATH=$(scriptdir):$(bindir):$(PATH) \
+  	    $(scriptdir)/texlinks
+diff -rc teTeX-1.0.4/PROBLEMS teTeX-1.0/PROBLEMS
+*** teTeX-1.0.4/PROBLEMS	Sat May 29 15:04:46 1999
+--- teTeX-1.0/PROBLEMS	Wed Jun 16 07:41:35 1999
+***************
+*** 2,7 ****
+--- 2,10 ----
+  
+  Problems with known workarounds:
+  - Compiling on NEXTSTEP: create an 'uname' command that simply says 'NEXTSTEP'.
++ - Digital Unix 4.0e: the system compiler compiles web2c wrongly when
++   optimization is used. tex, mf, mpost cannot read their pool files.
++   Fix: use gcc or compile with -O0.
+  - core dump of mf and mp on HP-UX with -O2 + gcc 2.8.1.
+    Recompiling mf1.c and mp1.c with -O seems to cure the problems.
+  - xdvi, mfw don't find the shared X libraries on some systems. Fix: relink
+diff -rc teTeX-1.0.4/libs/libwww/HTFTP.c teTeX-1.0/libs/libwww/HTFTP.c
+*** teTeX-1.0.4/libs/libwww/HTFTP.c	Tue Jan 19 09:56:24 1999
+--- teTeX-1.0/libs/libwww/HTFTP.c	Wed Jun 16 07:35:52 1999
+***************
+*** 257,263 ****
+  	StrAllocCopy(me->ctrl->reply, ptr);
+  /* begin _GM_ */
+  /* Note: libwww bug ID: GM3 */
+! 	if ( (reply == 530) && (strcasestr(me->buffer, "already") != NULL) ) {
+  	    me->ctrl->alreadyLoggedIn = YES;
+  	} else {
+  	    me->ctrl->alreadyLoggedIn = NO;
+--- 257,263 ----
+  	StrAllocCopy(me->ctrl->reply, ptr);
+  /* begin _GM_ */
+  /* Note: libwww bug ID: GM3 */
+! 	if ( (reply == 530) && (ht_strcasestr(me->buffer, "already") != NULL) ) {
+  	    me->ctrl->alreadyLoggedIn = YES;
+  	} else {
+  	    me->ctrl->alreadyLoggedIn = NO;
+diff -rc teTeX-1.0.4/libs/libwww/HTHost.c teTeX-1.0/libs/libwww/HTHost.c
+*** teTeX-1.0.4/libs/libwww/HTHost.c	Tue Jan 19 09:56:26 1999
+--- teTeX-1.0/libs/libwww/HTHost.c	Wed Jun 16 07:35:57 1999
+***************
+*** 645,651 ****
+      if (host && unit) {
+  #if 0
+  	if (host->range_units) {
+! 	    char * start = strcasestr(host->range_units, "none");
+  
+  	    /*
+  	    **  Check that "none" is infact a token. It could be part of some
+--- 645,651 ----
+      if (host && unit) {
+  #if 0
+  	if (host->range_units) {
+! 	    char * start = ht_strcasestr(host->range_units, "none");
+  
+  	    /*
+  	    **  Check that "none" is infact a token. It could be part of some
+diff -rc teTeX-1.0.4/libs/libwww/HTString.c teTeX-1.0/libs/libwww/HTString.c
+*** teTeX-1.0.4/libs/libwww/HTString.c	Tue Jan 19 09:56:35 1999
+--- teTeX-1.0/libs/libwww/HTString.c	Wed Jun 16 07:36:13 1999
+***************
+*** 57,65 ****
+  
+  
+  /*
+! ** strcasestr(s1,s2) -- like strstr(s1,s2) but case-insensitive.
+  */
+! PUBLIC char * strcasestr (char * s1, char * s2)
+  {
+      char * ptr = s1;
+  
+--- 57,65 ----
+  
+  
+  /*
+! ** ht_strcasestr(s1,s2) -- like strstr(s1,s2) but case-insensitive.
+  */
+! PUBLIC char * ht_strcasestr (char * s1, char * s2)
+  {
+      char * ptr = s1;
+  
+diff -rc teTeX-1.0.4/libs/libwww/HTString.h teTeX-1.0/libs/libwww/HTString.h
+*** teTeX-1.0.4/libs/libwww/HTString.h	Tue Jan 19 19:31:56 1999
+--- teTeX-1.0/libs/libwww/HTString.h	Wed Jun 16 07:36:19 1999
+***************
+*** 107,113 ****
+  This works like strstr() but is not case-sensitive.
+  */
+  
+! extern char * strcasestr (char * s1, char * s2);
+  
+  /*
+  .
+--- 107,113 ----
+  This works like strstr() but is not case-sensitive.
+  */
+  
+! extern char * ht_strcasestr (char * s1, char * s2);
+  
+  /*
+  .
+diff -rc teTeX-1.0.4/texk/kpathsea/Makefile.in teTeX-1.0/texk/kpathsea/Makefile.in
+*** teTeX-1.0.4/texk/kpathsea/Makefile.in	Thu Apr 15 21:57:11 1999
+--- teTeX-1.0/texk/kpathsea/Makefile.in	Wed Jun 16 07:44:37 1999
+***************
+*** 170,186 ****
+  	   || test ! -r $(scriptdir)/mktexlsr; then \
+  	  $(INSTALL_SCRIPT) $(srcdir)/mktexlsr $(scriptdir)/mktexlsr; \
+  	else true; fi
+- 	$(INSTALL_DATA) $(srcdir)/mktex.opt $(web2cdir)/mktex.opt
+- 	$(INSTALL_SCRIPT) $(srcdir)/mktexdir $(web2cdir)/mktexdir
+- 	$(INSTALL_DATA) $(srcdir)/mktexdir.opt $(web2cdir)/mktexdir.opt
+- 	$(INSTALL_SCRIPT) $(srcdir)/mktexnam $(web2cdir)/mktexnam
+- 	$(INSTALL_DATA) $(srcdir)/mktexnam.opt $(web2cdir)/mktexnam.opt
+- 	$(INSTALL_SCRIPT) $(srcdir)/mktexupd $(web2cdir)/mktexupd
+  	$(INSTALL_LIBTOOL_LIBS) $(libdir) lib$(library).la
+  	$(INSTALL_LIBTOOL_PROG) $(bindir) kpsewhich
+  	$(INSTALL_PROGRAM) kpsestat $(bindir)
+  	$(INSTALL_PROGRAM) access $(bindir)
+  	$(INSTALL_PROGRAM) readlink $(bindir)
+  uninstall-exec:
+  	rm -f $(bindir)/kpsewhich
+  
+--- 170,187 ----
+  	   || test ! -r $(scriptdir)/mktexlsr; then \
+  	  $(INSTALL_SCRIPT) $(srcdir)/mktexlsr $(scriptdir)/mktexlsr; \
+  	else true; fi
+  	$(INSTALL_LIBTOOL_LIBS) $(libdir) lib$(library).la
+  	$(INSTALL_LIBTOOL_PROG) $(bindir) kpsewhich
+  	$(INSTALL_PROGRAM) kpsestat $(bindir)
+  	$(INSTALL_PROGRAM) access $(bindir)
+  	$(INSTALL_PROGRAM) readlink $(bindir)
++ # Should we install the headers?  They are not just system-dependent,
++ # which is bad enough, but even compiler-dependent.
++ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(includedir)/kpathsea
++ 	for f in $(install_headers); do \
++ 	  $(INSTALL_DATA) $$f $(includedir)/kpathsea/; done
++ 	rm -f $(includedir)/kpathsea/acconfig.h
++ 	$(POSTINSTALL)
+  uninstall-exec:
+  	rm -f $(bindir)/kpsewhich
+  
+***************
+*** 192,208 ****
+  	else true; fi
+  	test -r kpathsea.info || cd $(srcdir) && for i in kpathsea.i*; do \
+  	  $(INSTALL_DATA) $$i $(infodir)/$$i; done
+- # Should we install the headers?  They are not just system-dependent,
+- # which is bad enough, but even compiler-dependent.
+- 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(includedir)/kpathsea
+- 	for f in $(install_headers); do \
+- 	  $(INSTALL_DATA) $$f $(includedir)/kpathsea/; done
+- 	rm -f $(includedir)/kpathsea/acconfig.h
+- 	$(POSTINSTALL)
+  	test -r $(infodir)/dir || $(INSTALL_DATA) $(top_srcdir)/../dir $(infodir)
+  	if $(SHELL) -c 'install-info --version' >/dev/null 2>&1; then \
+  	  install-info --info-dir=$(infodir) $(infodir)/kpathsea.info; \
+  	else true; fi
+  
+  uninstall-data:
+  	rm -f $(infodir)/kpathsea.i*
+--- 193,208 ----
+  	else true; fi
+  	test -r kpathsea.info || cd $(srcdir) && for i in kpathsea.i*; do \
+  	  $(INSTALL_DATA) $$i $(infodir)/$$i; done
+  	test -r $(infodir)/dir || $(INSTALL_DATA) $(top_srcdir)/../dir $(infodir)
+  	if $(SHELL) -c 'install-info --version' >/dev/null 2>&1; then \
+  	  install-info --info-dir=$(infodir) $(infodir)/kpathsea.info; \
+  	else true; fi
++ 	$(INSTALL_DATA) $(srcdir)/mktex.opt $(web2cdir)/mktex.opt
++ 	$(INSTALL_SCRIPT) $(srcdir)/mktexdir $(web2cdir)/mktexdir
++ 	$(INSTALL_DATA) $(srcdir)/mktexdir.opt $(web2cdir)/mktexdir.opt
++ 	$(INSTALL_SCRIPT) $(srcdir)/mktexnam $(web2cdir)/mktexnam
++ 	$(INSTALL_DATA) $(srcdir)/mktexnam.opt $(web2cdir)/mktexnam.opt
++ 	$(INSTALL_SCRIPT) $(srcdir)/mktexupd $(web2cdir)/mktexupd
+  
+  uninstall-data:
+  	rm -f $(infodir)/kpathsea.i*
+diff -rc teTeX-1.0.4/texk/xdvik/special.c teTeX-1.0/texk/xdvik/special.c
+*** teTeX-1.0.4/texk/xdvik/special.c	Tue Jun 15 07:39:36 1999
+--- teTeX-1.0/texk/xdvik/special.c	Wed Jun 16 07:15:59 1999
+***************
+*** 749,756 ****
+  			xmalloc(sizeof(struct tickrec));
+  		    
+  		    sprintf(buffer,"%s/%d",temporary_dir,fileno);
+- 		    fprintf(stderr,"TMP file: %s -> %s, %d\n",filename,
+- 			    buffer,fileno);
+  		    fileno++;
+  		    
+  		    tikp->tmpname = buffer;
+--- 749,754 ----
+***************
+*** 888,905 ****
+  			int	handle;
+  			int	status;
+  
+- 			fprintf(stderr,"File %s -> %s\n", filename, 
+- 				tikp->tmpname);
+- 
+  			argv[2] = bufp;
+! 			handle = open(tikp->tmpname, O_EXCL | O_CREAT | 
+! 				      O_RDWR | S_IRUSR | S_IWUSR);
+  			if (handle == -1 && errno == EEXIST) {
+  			  /* The tmpnames are reused for each page so
+  			     unlink the tmpname file from the previous page */
+  			  unlink(tikp->tmpname);
+! 			  handle = open(tikp->tmpname, O_EXCL | O_CREAT | 
+! 					O_RDWR | S_IRUSR | S_IWUSR);
+  			}
+  			if (handle == -1) {
+  			    fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+--- 886,900 ----
+  			int	handle;
+  			int	status;
+  
+  			argv[2] = bufp;
+! 			handle = open(tikp->tmpname, O_RDWR | O_CREAT | O_EXCL,
+! 				      S_IRUSR | S_IWUSR);
+  			if (handle == -1 && errno == EEXIST) {
+  			  /* The tmpnames are reused for each page so
+  			     unlink the tmpname file from the previous page */
+  			  unlink(tikp->tmpname);
+! 			  handle = open(tikp->tmpname, O_RDWR | O_EXCL | 
+! 					O_CREAT, S_IRUSR | S_IWUSR);
+  			}
+  			if (handle == -1) {
+  			    fprintf(stderr,"xdvi: ("__FILE__" at line %d) ",__LINE__);
+diff -rc teTeX-1.0.4/texk/xdvik/version.h teTeX-1.0/texk/xdvik/version.h
+*** teTeX-1.0.4/texk/xdvik/version.h	Tue Jun 15 07:39:36 1999
+--- teTeX-1.0/texk/xdvik/version.h	Wed Jun 16 07:11:15 1999
+***************
+*** 1,4 ****
+! #define XDVIVERSION "22.05c-k"
+  #ifdef Omega
+  #define TVERSION XDVIVERSION" for Omega"
+  #else
+--- 1,4 ----
+! #define XDVIVERSION "22.05d-k"
+  #ifdef Omega
+  #define TVERSION XDVIVERSION" for Omega"
+  #else
+diff -rc teTeX-1.0.4/texk/xdvik/xdvi.c teTeX-1.0/texk/xdvik/xdvi.c
+*** teTeX-1.0.4/texk/xdvik/xdvi.c	Thu May 27 19:48:39 1999
+--- teTeX-1.0/texk/xdvik/xdvi.c	Wed Jun 16 07:34:25 1999
+***************
+*** 1843,1849 ****
+    if (TmpDir!=NULL)
+      oops("make_temporary_dir called twice!\n");
+  
+!   TmpDir=strdup(*tmpdir);
+  
+    atexit(remove_temporary_dir);
+  
+--- 1843,1849 ----
+    if (TmpDir!=NULL)
+      oops("make_temporary_dir called twice!\n");
+  
+!   TmpDir=xstrdup(*tmpdir);
+  
+    atexit(remove_temporary_dir);
+  

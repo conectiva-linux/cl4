@@ -1,0 +1,33 @@
+--- teTeX-1.0/texk/web2c/Makefile.in.buildr	Sun Jul  5 07:37:28 1998
++++ teTeX-1.0/texk/web2c/Makefile.in	Mon Sep 21 20:52:56 1998
+@@ -371,7 +371,7 @@
+ all_bases = mf.base $(bases)
+ all_mems = mpost.mem $(mems)
+ 
+-dumpenv = TEXMFCNF=../kpathsea TEXMF=$(texmf)
++dumpenv = TEXMFCNF=../kpathsea TEXMF=../share/texmf
+ 
+ formats: fmts efmts cfmts ofmts pdffmts bases mems
+ fmts: $(all_fmts)
+--- teTeX-1.0/Makefile.in.buildr	Wed Jun  9 17:56:47 1999
++++ teTeX-1.0/Makefile.in	Wed Jun  9 19:01:20 1999
+@@ -79,14 +79,16 @@
+ 	     (cd $$dir && PATH=$(scriptdir):$(bindir):$(PATH) \
+                 $(MAKE) $@) || exit 1; \
+ 	done
+-	$(srcdir)/selfautofix "$(bindir)" "$(texmf)/web2c"
++
++init:
++	$(srcdir)/selfautofix "$(bindir)" "$(bindir)/$(texmfmain)/web2c"
+ 	cd $(bindir); for i in $(ALLPROGS); do test -f $$i && { echo strip $$i; strip $$i || true; }; done; true
+ 	test -f $(scriptdir)/mktexlsr && \
+ 	  TEXMFMAIN=$(texmf) PATH=$(scriptdir):$(bindir):$(PATH) \
+ 	    $(scriptdir)/mktexlsr
+ 	test -f $(scriptdir)/texconfig && \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir):$(bindir):$(PATH) \
+-	    $(scriptdir)/texconfig init
++ 	  PATH=$(scriptdir):$(bindir):$(PATH) \
++	  TEXMFMAIN=$(texmf) $(scriptdir)/texconfig init
+ 
+ install-exec:
+ 	for dir in $(ESUBDIRS); do \

@@ -1,0 +1,22 @@
+--- teTeX-1.0-orig/texk/share/texmf/tex/generic/config/language.dat	Thu Jun 10 10:32:56 1999
++++ teTeX-1.0/texk/share/texmf/tex/generic/config/language.dat	Thu Jun 10 10:52:59 1999
+@@ -54,13 +54,17 @@
+ %magyar		huhyph.tex
+ %norsk		nohyph.tex
+ %polish		plhyph.tex
+-%portuges	pt8hyph.tex
++portuges	pt8hyph.tex
++=portuguese %
++=portugues %
+ %romanian	rohyphen.tex
+ %russian	ruhyphen.tex	% note: edit ruhyphen.tex for your encoding!
+ %serbocroatian	shhyphl.tex
+ %slovak         skhyph2e.tex
+ %slovene	sihyph22.tex
+-%spanish	sphyph.tex
++spanish		sphyph.tex
++=espanol %
++=espanhol %
+ %swedish	sehyph.tex
+ %turkish	trhyph.tex
+ 
