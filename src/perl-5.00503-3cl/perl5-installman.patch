@@ -1,0 +1,34 @@
+--- perl5/lib/ExtUtils/MM_Unix.pm.gafton	Tue Apr  6 18:14:25 1999
++++ perl5/lib/ExtUtils/MM_Unix.pm	Tue Apr  6 21:36:07 1999
+@@ -1736,18 +1736,6 @@
+ 	    $self->prefixify($install_variable,$search_prefix,$replace_prefix);
+ 	}
+     }
+-    $search_prefix = $configure_prefix =~ /perl/ ?
+-	$self->catdir($configure_prefix,"man") :
+-	    $self->catdir($configure_prefix,"lib","perl5","man");
+-    $replace_prefix = $self->{PREFIX} =~ /perl/ ? 
+-	$self->catdir(qq[\$\(PREFIX\)],"man") :
+-	    $self->catdir(qq[\$\(PREFIX\)],"lib","perl5","man");
+-    for $install_variable (qw/
+-			   INSTALLMAN1DIR
+-			   INSTALLMAN3DIR
+-			   /) {
+-	$self->prefixify($install_variable,$search_prefix,$replace_prefix);
+-    }
+ 
+     # Now we head at the manpages. Maybe they DO NOT want manpages
+     # installed
+@@ -1773,6 +1761,12 @@
+     }
+     $self->{MAN3EXT} ||= $Config::Config{man3ext};
+ 
++    for $install_variable (qw/
++			   INSTALLMAN1DIR
++			   INSTALLMAN3DIR
++			   /) {
++	$self->prefixify($install_variable,$configure_prefix,qq[\$\(PREFIX\)]);
++    }
+ 
+     # Get some stuff out of %Config if we haven't yet done so
+     print STDOUT "CONFIG must be an array ref\n"
