@@ -1,0 +1,22 @@
+--- gnorpm/find/trans.c.rh	Thu Apr  8 20:38:17 1999
++++ gnorpm/find/trans.c	Thu Apr  8 20:41:29 1999
+@@ -203,7 +203,7 @@
+  * server. */
+ static char *remote_file(char *relative) {
+   char *server = gnome_config_get_string(
+-		"/gnorpm/rpmfind/server=http://rufus.w3.org/linux/RDF");
++                "/gnorpm/rpmfind/server=http://www.redhat.com/RDF");
+   char *ret = g_strconcat(server, "/", relative, NULL);
+   g_free(server);
+   return ret;
+--- gnorpm/rpmprops.c.rh	Thu Apr  8 20:38:17 1999
++++ gnorpm/rpmprops.c	Thu Apr  8 20:40:59 1999
+@@ -305,7 +305,7 @@
+   gtk_combo_set_value_in_list(GTK_COMBO(self->metadataServer), FALSE, FALSE);
+   gtk_combo_set_popdown_strings(GTK_COMBO(self->metadataServer),
+ 				metadataGetList());
+-  text = gnome_config_get_string("/gnorpm/rpmfind/server=http://rufus.w3.org/linux/RDF");
++  text = gnome_config_get_string("/gnorpm/rpmfind/server=http://www.redhat.com/RDF");
+   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(self->metadataServer)->entry), text);
+   g_free(text);
+   gtk_signal_connect_object(GTK_OBJECT(GTK_COMBO(self->metadataServer)->entry),
