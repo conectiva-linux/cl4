@@ -1,0 +1,8 @@
+postilion name "postilion"
+postilion description "Mail user agent based on TkRat"
+postilion exec "postilion &"
+postilion group "Utilities/Mail"
+postilion description(pt_BR) "Leitor de Correio Eletrônico baseado no TkRat"
+postilion group(pt_BR) "Utilitários/Correio Eletrônico"
+postilion description(es) "Lector de Correo Eletrónico basado en el TkRat"
+postilion group(es) "Utilitarios/Correo Electrónico"
