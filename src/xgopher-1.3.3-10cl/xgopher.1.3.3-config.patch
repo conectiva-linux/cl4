@@ -1,0 +1,20 @@
+--- conf.h.orig	Tue Aug 15 10:40:46 1995
++++ conf.h	Tue Aug 15 10:43:07 1995
+@@ -50,7 +50,7 @@
+ #define ALLOW_COPY	TRUE		/* allow files to be copied?	  */
+ 
+ #define ALLOW_PRINT	TRUE		/* allow files to be printed?	  */
+-#define PRINT_COMMAND	"/bin/echo No print command was provided:"
++#define PRINT_COMMAND	"lpr"
+ 					/* default print command	  */
+ 
+ #define ALLOW_TELNET	TRUE		/* allow telnet sessions          */
+@@ -75,7 +75,7 @@
+ #define SOUND_COMMAND	"/bin/false"	/* command to get sound out  	  */
+ 
+ #define ALLOW_IMAGE	TRUE		/* image display is allowed 	  */
+-#define IMAGE_COMMAND	"/bin/echo The image display command was not provided:"
++#define IMAGE_COMMAND	"xv"
+ 					/* command to display image file  */
+ 
+ #define LOAD_BOOKMARKS	TRUE		/* load bookmarks at each restart */
