@@ -1,0 +1,11 @@
+--- bsd-finger-0.10/fingerd/fingerd.c.ewt	Mon Sep 22 21:25:10 1997
++++ bsd-finger-0.10/fingerd/fingerd.c	Mon Sep 22 21:25:22 1997
+@@ -100,6 +100,8 @@
+ 	if ((pw = getpwnam("nobody")) != NULL) {
+ 	        setgid(pw->pw_gid);
+ 		setuid(pw->pw_uid);
++	} else {
++		fatal("getpeername", 1);
+ 	}
+ 
+ 	opterr = 0;

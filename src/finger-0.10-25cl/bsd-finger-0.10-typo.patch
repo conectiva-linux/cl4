@@ -1,0 +1,11 @@
+--- bsd-finger-0.10/fingerd/fingerd.c.typo	Wed Aug 12 12:45:24 1998
++++ bsd-finger-0.10/fingerd/fingerd.c	Wed Aug 12 12:45:41 1998
+@@ -101,7 +101,7 @@
+ 	        setgid(pw->pw_gid);
+ 		setuid(pw->pw_uid);
+ 	} else {
+-		fatal("getpeername", 1);
++		fatal("getpwname", 1);
+ 	}
+ 
+ 	opterr = 0;

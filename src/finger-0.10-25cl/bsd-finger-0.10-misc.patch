@@ -1,0 +1,24 @@
+--- bsd-finger-0.10/MCONFIG.ewt	Sun Aug 24 09:23:47 1997
++++ bsd-finger-0.10/MCONFIG	Sun Aug 24 09:28:48 1997
+@@ -30,10 +30,10 @@
+ CC=gcc
+ 
+ # Compiler warnings
+-WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
++WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline 
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 $(WARNINGS)
++CFLAGS= -pipe $(RPM_OPT_FLAGS) $(WARNINGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -46,7 +46,7 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ 
+ 

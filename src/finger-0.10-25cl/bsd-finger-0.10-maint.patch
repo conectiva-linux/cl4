@@ -1,0 +1,9 @@
+--- bsd-finger-0.10/README.maint	Thu Apr  8 14:51:34 1999
++++ bsd-finger-0.10/README	Thu Apr  8 14:52:09 1999
+@@ -67,5 +67,5 @@
+ 	are including fixes. :-)
+ 
+ 
+-David A. Holland	dholland@hcs.harvard.edu
++David A. Holland	netbug@ftp.uk.linux.org
+ 								8-Mar-1996

@@ -1,0 +1,148 @@
+--- bsd-finger-0.10/fingerd/fingerd.8.kevin	Sat Feb  1 22:39:57 1997
++++ bsd-finger-0.10/fingerd/fingerd.8	Mon Feb 22 10:25:47 1999
+@@ -40,8 +40,9 @@
+ .Nd remote user information server
+ .Sh SYNOPSIS
+ .Nm fingerd
+-.Op Fl wul
++.Op Fl wulf
+ .Op Fl pL Ar path
++.Op Fl t Ar timeout
+ .Sh DESCRIPTION
+ .Nm Fingerd
+ is a simple daemon based on
+@@ -76,6 +77,12 @@
+ option probably violates users' privacy and should not be used on
+ multiuser boxes.
+ .Pp
++If the
++.Fl f
++option is given, finger forwarding (user@host1@host2) is allowed.
++Useful behind firewalls, but probably not wise for security and
++resource reasons.
++.Pp
+ The 
+ .Fl p
+ option allows specification of an alternate location for fingerd to find
+@@ -84,6 +91,11 @@
+ program. The
+ .Fl L
+ option is equivalent.
++.Pp
++The
++.Fl t
++option specifies the time to wait for a request before closing the
++connection.  A value of 0 waits forever.  The default is 60 seconds.
+ .Pp
+ Options to fingerd should be specified in 
+ .Pa /etc/inetd.conf .
+--- bsd-finger-0.10/fingerd/fingerd.c.kevin	Sun Feb 21 19:03:29 1999
++++ bsd-finger-0.10/fingerd/fingerd.c	Mon Feb 22 10:24:31 1999
+@@ -48,6 +48,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <signal.h>
+ #include <syslog.h>
+ #include <getopt.h>
+ #include <netinet/in.h>
+@@ -75,6 +76,14 @@
+ 	exit(1);
+ }
+ 
++static
++void
++timeout(int sig)
++{
++	errno = ETIMEDOUT;
++	fatal("timeout", 1||sig);  /* lint removal */
++}
++
+ 
+ int
+ main(int argc, char *argv[])
+@@ -86,13 +95,14 @@
+ 	const char *av[ENTRIES + 1];
+ 	char line[1024];
+ 	int welcome = 0, heavylogging = 0, nouserlist = 0;
++	int patience = 60, forwarding = 0;
+ 	int k, pid, nusers;
+ 	char *s, *t;
+ 	const char *fingerpath = NULL;
+-
+-
+ 	struct sockaddr_in sn;
+ 	size_t sval = sizeof(sn);
++
++
+ 	if (getpeername(0, (struct sockaddr *) &sn, &sval) < 0) {
+ 		fatal("getpeername", 0);
+ 	}
+@@ -105,7 +115,7 @@
+ 	}
+ 
+ 	opterr = 0;
+-	while ((ca = getopt(argc, argv, "wlLpuh?")) != EOF) {
++	while ((ca = getopt(argc, argv, "wlLp:uft:h?")) != EOF) {
+ 		switch(ca) {
+ 		  case 'w':
+ 			welcome = 1;
+@@ -120,10 +130,17 @@
+ 		  case 'u':
+ 		        nouserlist = 1;
+ 			break;
++		  case 'f':
++		        forwarding = 1;
++			break;
++		  case 't':
++		        patience = atoi(optarg);
++			break;
+ 		  case '?':
+ 		  case 'h':
+ 		  default:
+-			syslog(LOG_ERR, "usage: fingerd [-lLwu]");
++			syslog(LOG_ERR, "usage: fingerd [-wulf]"
++					"[-pL /path/finger] [-t timeout]");
+ 			exit(1);
+ 		}
+ 	}
+@@ -132,6 +149,14 @@
+ 
+ 	openlog("fingerd", LOG_PID, LOG_DAEMON);
+ 
++	/* this deals with the DoS varation called a process
++	   table attack.  odd that mr. garfinkel can make warnings
++	   but not provide patches.  seen in comp.risks 20.22.
++	   kevin@suberic.net */
++	if (patience != 0) {
++		signal(SIGALRM, timeout);
++		alarm(patience);
++	}
+ 	if (!fgets(line, sizeof(line), stdin))
+ 		exit(1);
+ 
+@@ -170,11 +195,14 @@
+ 	for (s = strtok(line, WS); s && k<ENTRIES; s = strtok(NULL, WS)) {
+ 		/* RFC742: "/[Ww]" == "-l" */
+ 		if (!strncasecmp(s, "/w", 2)) memcpy(s, "-l", 2);
+-		t = strchr(s, '@');
+-		if (t) {
+-			fprintf(stderr, "fingerd: forwarding not allowed\r\n");
+-			syslog(LOG_WARNING, "rejected %s\n", s);
+-			exit(1);
++		if (!forwarding) {
++		    t = strchr(s, '@');
++		    if (t) {
++			    fprintf(stderr,
++				    "fingerd: forwarding not allowed\r\n");
++			    syslog(LOG_WARNING, "rejected %s\n", s);
++			    exit(1);
++		    }
+ 		}
+ 		if (heavylogging) {
+ 		    if (*s=='-') syslog(LOG_INFO, "option %s\n", s);
+@@ -224,4 +252,3 @@
+ 	}
+ 	return 0;
+ }
+-

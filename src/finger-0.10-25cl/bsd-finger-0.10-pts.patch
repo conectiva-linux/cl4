@@ -1,0 +1,51 @@
+--- bsd-finger-0.10/finger/util.c.pts	Thu Apr  8 13:49:11 1999
++++ bsd-finger-0.10/finger/util.c	Thu Apr  8 13:51:49 1999
+@@ -68,9 +68,15 @@
+ 		return;
+ 	snprintf(tbuf, TBUFLEN, "%s/%s", _PATH_DEV, w->tty);
+ 	if (stat(tbuf, &sb) < 0) {
++	    switch(errno) {
++	    case ENOENT:
++		break;
++	    default:
+ 		(void)fprintf(stderr,
+ 		    "finger: %s: %s\n", tbuf, strerror(errno));
+-		return;
++		break;
++	    }
++	    return;
+ 	}
+ 	w->idletime = now < sb.st_atime ? 0 : now - sb.st_atime;
+ 
+--- bsd-finger-0.10/finger/sprint.c.pts	Thu Apr  8 14:20:51 1999
++++ bsd-finger-0.10/finger/sprint.c	Thu Apr  8 14:38:32 1999
+@@ -90,7 +90,7 @@
+ 	if (maxlname + maxrname < space-2) { maxlname++; maxrname++; }
+ 
+ 	(void)printf("%-*s %-*s %s\n", maxlname, "Login", maxrname,
+-	    "Name", "Tty  Idle  Login Time   Office     Office Phone");
++	    "Name", " Tty   Idle  Login Time   Office     Office Phone");
+ 	for (cnt = 0; cnt < entries; ++cnt) {
+ 		pn = list[cnt];
+ 		for (w = pn->whead; w != NULL; w = w->next) {
+@@ -103,12 +103,14 @@
+ 			}
+ 			(void)putchar(w->info == LOGGEDIN && !w->writable ?
+ 			    '*' : ' ');
+-			if (*w->tty)
+-				(void)printf("%-2.2s ",
+-				    w->tty[0] != 't' || w->tty[1] != 't' ||
+-				    w->tty[2] != 'y' ? w->tty : w->tty + 3);
+-			else
+-				(void)printf("   ");
++			if (*w->tty) {
++				char *t = w->tty;
++				if ((t[0] == 't' && t[1] == 't' && t[2] == 'y')
++				 || (t[0] == 'p' && t[1] == 't' && t[2] == 's'))
++					t += 3;
++				(void)printf("%-4.4s ", t);
++			} else
++				(void)printf("     ");
+ 			if (w->info == LOGGEDIN) {
+ 				stimeprint(w);
+ 				(void)printf("  ");
