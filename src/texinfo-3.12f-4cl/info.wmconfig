@@ -1,0 +1,4 @@
+info name "info"
+info description "GNU Info Page Reader"
+info exec "xterm -e info &"
+info group "Utilities/Misc"
