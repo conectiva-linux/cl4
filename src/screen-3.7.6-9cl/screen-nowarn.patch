@@ -1,0 +1,23 @@
+--- screen-3.7.6/screen.c.nowarn	Sun Oct 18 15:22:20 1998
++++ screen-3.7.6/screen.c	Mon Apr 26 17:23:43 1999
+@@ -949,11 +949,15 @@
+ 	    {
+ 	      if (!S_ISDIR(st.st_mode))
+ 		Panic(0, "'%s' must be a directory.", SockDir);
+-              if (eff_uid == 0 && st.st_uid != eff_uid)
+-		Panic(0, "Directory '%s' must be owned by root.", SockDir);
+-	      n = (eff_uid == 0) ? 0755 :
+-	          (eff_gid == st.st_gid && eff_gid != real_gid) ? 0775 :
+-		  0777;
++              /*
++	       * if (eff_uid == 0 && st.st_uid != eff_uid)
++	       * Panic(0, "Directory '%s' must be owned by root.", SockDir);
++	       */
++	      n = 0777;
++	      /* n = (eff_uid == 0) ? 0755 :
++	       *  (eff_gid == st.st_gid && eff_gid != real_gid) ? 0775 :
++	       *  0777;
++	       */
+ 	      if ((st.st_mode & 0777) != n)
+ 		Panic(0, "Directory '%s' must have mode %03o.", SockDir, n);
+ 	    }

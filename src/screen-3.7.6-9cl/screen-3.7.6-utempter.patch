@@ -1,0 +1,42 @@
+--- screen-3.7.6/utmp.c.ewt	Wed Apr  7 02:58:32 1999
++++ screen-3.7.6/utmp.c	Wed Apr  7 02:58:46 1999
+@@ -43,6 +43,8 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ 
++#include <utempter.h>
++
+ #include "config.h"
+ #include "screen.h"
+ #include "extern.h"
+@@ -436,6 +438,9 @@
+ # endif /* _SEQUENT_ */
+ #endif /* UTHOST */
+ 
++  addToUtmp(wi->w_tty, NULL, wi->w_ptyfd);
++  return 0;
++
+   wi->w_slot = (slot_t)0;
+   if (!utmpok)
+     return -1;
+@@ -586,6 +591,9 @@
+ #endif /* GETUTENT */
+   struct utmp u;
+   slot_t slot;
++
++  removeLineFromUtmp(wi->w_tty, wi->w_ptyfd);
++  return 0;
+ 
+   slot = wi->w_slot;
+ #ifdef GETUTENT
+--- screen-3.7.6/Makefile.in.ewt	Wed Apr  7 02:58:54 1999
++++ screen-3.7.6/Makefile.in	Wed Apr  7 02:58:58 1999
+@@ -22,7 +22,7 @@
+ CC = @CC@
+ CFLAGS = -O
+ LDFLAGS =
+-LIBS = @LIBS@
++LIBS = @LIBS@ -lutempter
+ 
+ CPP_DEPEND=/lib/cpp -MM
+ 

@@ -1,0 +1,22 @@
+--- screen-3.7.6/window.c.unix98	Wed Nov 18 15:19:47 1998
++++ screen-3.7.6/window.c	Fri Mar 26 15:35:00 1999
+@@ -622,7 +622,7 @@
+       if (newfd >= 0)
+ 	{
+ 	  struct mode fakemode, *modep;
+-#if defined(SVR4) && !defined(sgi) && !defined(M_UNIX)
++#if defined(SVR4) && !defined(sgi) && !defined(M_UNIX) && !defined(linux)
+ 	  if (ioctl(newfd, I_PUSH, "ptem"))
+ 	    {
+ 	      SendErrorMsg("Cannot I_PUSH ptem %s %s", ttyn, strerror(errno));
+--- screen-3.7.6/pty.c.unix98	Fri Mar 26 15:39:38 1999
++++ screen-3.7.6/pty.c	Fri Mar 26 15:40:01 1999
+@@ -211,7 +211,7 @@
+ 
+ /***************************************************************/
+ 
+-#if defined(SVR4) && !defined(PTY_DONE)
++#if (defined(SVR4) && !defined(PTY_DONE)) || defined(__linux__)
+ #define PTY_DONE
+ int
+ OpenPTY(ttyn)
