@@ -1,0 +1,19 @@
+--- blt2.4f/demos/Makefile.in.ewt	Thu Sep 17 18:30:58 1998
++++ blt2.4f/demos/Makefile.in	Thu Sep 17 18:41:42 1998
+@@ -4,6 +4,7 @@
+ 
+ prefix =	@prefix@
+ exec_prefix =	@exec_prefix@
++bare_prefix =	@exec_prefix@
+ libdir =	@libdir@
+ bindir =	@bindir@
+ scriptdir =	@BLT_LIBRARY@
+@@ -55,7 +56,7 @@
+ 	    src=$(srcdir)/$$i ; \
+ 	    dest=$(destdir)/$$i ; \
+ 	    rm -f $$dest ; \
+-	    echo "#!$(bindir)/bltwish" > $$dest ; \
++	    echo "#!$(bare_prefix)/bin/bltwish" > $$dest ; \
+ 	    cat $$src >> $$dest ; \
+ 	    chmod 555 $$dest; \
+ 	done 
