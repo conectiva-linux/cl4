@@ -1,0 +1,122 @@
+" Conectiva Linux
+" Configuration file for vim
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.vimrc
+
+set nocompatible	" Use Vim defaults (much better!)
+set bs=2		" allow backspacing over everything in insert mode
+set autoindent		" always set autoindenting on
+set smartindent		" always set smartindenting on
+" set backup		" keep a backup file
+set viminfo='20,\"50	" read/write a .viminfo file, don't store more
+			" than 50 lines of registers
+
+set textwidth=0		" Don't wrap words by default
+
+" Suffixes that get lower priority when doing tab completion for filenames.
+" These are files we are not likely to want to edit or read.
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+
+" Delete key
+:if &term =~ "xterm"
+  set t_kD=[3~
+:endif
+
+
+" And colors
+:if &term =~ "xterm" || &term =~ "linux"
+  set background=dark
+  set t_Co=8
+  set t_Sf=[3%dm
+  set t_Sb=[4%dm
+:endif
+
+" gvim
+:if has("gui_running")
+  set background=light
+  set t_Co=16
+:endif
+
+" if you like highlight search, you can also reconfigure the colors
+":hi search guifg=black
+":set background=light
+":hi ErrorMsg guifg=black
+":set bg=dark
+
+" nice syntax
+if has("syntax") && filereadable("/usr/share/vim/syntax/syntax.vim") && (&t_Co > 2 || has("gui_running"))
+  syntax on
+endif
+
+" C programing
+augroup cprog
+  " Remove all cprog autocommands
+  au!
+
+  " When starting to edit a file:
+  "   For *.c and *.h files set formatting of comments and set C-indenting on.
+  "   For other files switch it off.
+  "   Don't change the order, it's important that the line with * comes first.
+  autocmd BufRead *       set formatoptions=tcql nocindent comments&
+  autocmd BufRead *.c,*.h set formatoptions=croql cindent comments=sr:/*,mb:*,el:*/,://
+augroup END
+
+" edit gziped files
+augroup gzip
+  " Remove all gzip autocommands
+  au!
+
+  " Enable editing of gzipped files
+  "	  read:	set binary mode before reading the file
+  "		uncompress text in buffer after reading
+  "	 write:	compress file after writing
+  "	append:	uncompress file, append, compress file
+  autocmd BufReadPre,FileReadPre	*.gz set bin
+  autocmd BufReadPost,FileReadPost	*.gz let ch_save = &ch|set ch=2
+  autocmd BufReadPost,FileReadPost	*.gz '[,']!gunzip
+  autocmd BufReadPost,FileReadPost	*.gz set nobin
+  autocmd BufReadPost,FileReadPost	*.gz let &ch = ch_save|unlet ch_save
+  autocmd BufReadPost,FileReadPost	*.gz execute ":doautocmd BufReadPost " . expand("%:r")
+
+  autocmd BufWritePost,FileWritePost	*.gz !mv <afile> <afile>:r
+  autocmd BufWritePost,FileWritePost	*.gz !gzip <afile>:r
+
+  autocmd FileAppendPre			*.gz !gunzip <afile>
+  autocmd FileAppendPre			*.gz !mv <afile>:r <afile>
+  autocmd FileAppendPost		*.gz !mv <afile> <afile>:r
+  autocmd FileAppendPost		*.gz !gzip <afile>:r
+augroup END
+
+" Several maps useful for most terminals
+map [A <Up>
+map! [A <Up>
+map [B <Down>
+map! [B <Down>
+map [D <Left>
+map! [D <Left>
+map [C <Right>
+map! [C <Right>
+map [H <Home>
+map! [H <Home>
+map OH <Home>
+map! OH <Home>
+map [F <End>
+map! [F <End>
+map OF <End>
+map! OF <End>
+map [3~ <Delete>
+map! [3~ <Delete>
+
+" The following are commented out as they cause vim to behave a lot
+" different from regular vi. They are highly recommended though.
+"set showcmd		" Show (partial) command in status line.
+"set showmatch		" Show matching brackets.
+"set ruler		" Show the line and column numbers of the cursor 
+"set ignorecase		" Do case insensitive matching
+"set incsearch		" Incremental search
+"set autowrite		" Automatically save before commands like :next & :make

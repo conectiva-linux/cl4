@@ -1,0 +1,11 @@
+--- vim-5.1/doc/howto.txt.orig	Tue Jun 30 11:04:34 1998
++++ vim-5.1/doc/howto.txt	Tue Jun 30 11:05:12 1998
+@@ -89,7 +89,7 @@
+ 
+ 							*tutor*
+ To get started with Vim:  There is a 30 minute tutorial that teaches the most
+-basic Vim functionality.  The name of the file is "$VIM/tutor/tutor".  Make a
++basic Vim functionality.  The name of the file is "/usr/doc/vim-5.1/tutor/tutor".  Make a
+ copy of the file (so you can mess with it), and take a little time to learn
+ your first Vim commands.
+ 

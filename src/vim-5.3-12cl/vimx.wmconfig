@@ -1,0 +1,4 @@
+gvim name "gvim"
+gvim description "The vi editor for X Windows"
+gvim exec "gvim &"
+gvim group "Utilities/Editors"

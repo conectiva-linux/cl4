@@ -1,0 +1,4 @@
+# .bash_profile
+# set color options on.
+
+/usr/bin/color-vim -u /usr/share/vim/macros/vimrc $1
