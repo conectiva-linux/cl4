@@ -1,0 +1,11 @@
+--- WavPlugin.orig/Makefile	Mon Feb 10 18:43:15 1997
++++ WavPlugin/Makefile	Tue Mar 23 16:28:15 1999
+@@ -13,7 +13,7 @@
+ default all: $(SHAREDTARGET)
+ 
+ $(SHAREDTARGET): $(OBJ)
+-	$(CC) -shared -o $(SHAREDTARGET) $(OBJ) $(LDFLAGS)
++	$(CC) -shared -o $(SHAREDTARGET) $(OBJ) $(LDFLAGS) -L/usr/X11R6/lib
+ 
+ Wavplug.o: Wavplug.c
+ 	$(CC) -c $(CFLAGS) Wavplug.c
