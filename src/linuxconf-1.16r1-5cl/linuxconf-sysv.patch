@@ -1,0 +1,45 @@
+--- linuxconf-1.16r1.orig/modules/redhat/sysv.cc	Wed May  6 15:19:52 1998
++++ linuxconf-1.16r1/modules/redhat/sysv.cc	Thu Jun 17 18:27:36 1999
+@@ -1,3 +1,7 @@
++/* Marcelo Tosatti <marcelo@conectiva.com.br> :
++   unset LANG and LC_ALL before running chkconfig to avoid parse
++   problems with traslations */
++
+ #include <string.h>
+ #include <stdlib.h>
+ #include "redhat.h"
+@@ -8,7 +12,34 @@
+ int sysv_getserv(SERVICES &tb)
+ {
+ 	int ret = -1;
++	bool lc = false, langb = false;
++	char *lc_all = NULL, *lang = NULL;
++
++	if(getenv("LC_ALL") != NULL)  {
++		lc = true;
++		lc_all = strdup(getenv("LC_ALL"));
++	}
++
++	if(getenv("LANG") != NULL) {
++		langb = true;
++		lang = strdup(getenv("LANG"));
++	}
++
++	setenv("LC_ALL","",1);
++	setenv("LANG","",1);
++
+ 	POPEN pop ("chkconfig","--list");
++
++	if(langb == true) {
++		setenv("LANG",lang,1);
++		free(lang);
++	}
++
++	if(lc == true) {
++		setenv("LC_ALL",lc_all,1);
++		free(lc_all);
++	}
++
+ 	if (pop.isok()){
+ 		ret = 0;
+ 		while (pop.wait(10)!=-1){

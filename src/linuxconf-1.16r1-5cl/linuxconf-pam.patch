@@ -1,0 +1,16 @@
+diff -Nur linuxconf-1.16r1.orig/modules/conectiva/Makefile linuxconf-1.16r1/modules/conectiva/Makefile
+--- linuxconf-1.16r1.orig/modules/conectiva/Makefile	Fri Jun 25 17:07:31 1999
++++ linuxconf-1.16r1/modules/conectiva/Makefile	Fri Jun 25 18:07:03 1999
+@@ -5,9 +5,11 @@
+ LOCAL_INSTALL=local_install
+ all: $(CURDIR).so
+ OBJS =  conectiva.o  devinfo.o filter.o reduser.o routes.o \
+-	sysv.o _dict.o
++	sysv.o _dict.o pam.o
+ 
+ include ../rules.mak
++
++EXTRAMODLIBS += $(PAMLIB)
+ 
+ ISREDHAT=$(shell test -f /etc/redhat-release && /bin/echo -n 1)
+ ifeq ($(ISREDHAT),1)

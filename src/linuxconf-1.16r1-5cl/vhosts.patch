@@ -1,0 +1,75 @@
+--- linuxconf-1.16r1.orig/modules/apache/apache.m	Mon May 24 19:01:56 1999
++++ linuxconf-1.16r1/modules/apache/apache.m	Thu Jun 10 17:09:30 1999
+@@ -2,7 +2,7 @@
+ #ifndef DICTIONARY_REQUEST
+ 	#define DICTIONARY_REQUEST \
+ 	const char **_dictionary_apache;\
+-	TRANSLATE_SYSTEM_REQ _dictionary_req_apache("apache",_dictionary_apache,122,6);\
++	TRANSLATE_SYSTEM_REQ _dictionary_req_apache("apache",_dictionary_apache,123,6);\
+ 	void dummy_dict_apache(){}
+ #endif
+ #ifndef MSG_U
+@@ -135,3 +135,4 @@
+ #define T_APANAMEPASS	119
+ #define I_APANAMEPASS	120
+ #define T_USERFILES	121
++#define F_IP	122
+diff -Nur linuxconf-1.16r1.orig/modules/apache/hedit.cc linuxconf-1.16r1/modules/apache/hedit.cc
+--- linuxconf-1.16r1.orig/modules/apache/hedit.cc	Mon May 24 19:01:54 1999
++++ linuxconf-1.16r1/modules/apache/hedit.cc	Thu Jun 10 17:09:29 1999
+@@ -280,6 +280,7 @@
+ 	bool advanced)		// Show advanced features
+ {
+ 	dia.newf_str (MSG_U(F_SERVERADMIN,"Administrator email"),serveradmin);
++	dia.newf_str (MSG_U(F_IP,"Domain IP address"),namevhost);
+ 	dia.newf_str (MSG_U(F_SERVERNAME,"Server name"),servername);
+ 	dia.newf_str (MSG_U(F_SERVERALIAS,"Server aliases"),serveralias);
+ 	dia.newf_str (MSG_U(F_DOCUMENTROOT,"Document root"),documentroot);
+diff -Nur linuxconf-1.16r1.orig/modules/apache/httpd.cc linuxconf-1.16r1/modules/apache/httpd.cc
+--- linuxconf-1.16r1.orig/modules/apache/httpd.cc	Mon Jun  7 18:47:46 1999
++++ linuxconf-1.16r1/modules/apache/httpd.cc	Thu Jun 10 17:09:47 1999
+@@ -46,7 +46,6 @@
+ static const char MAXCLIENTS[]="MaxClients";
+ static const char MAXREQUESTSPERCHILD[]="MaxRequestsPerChild";
+ static const char VIRTUALHOST[]="VirtualHost";
+-static const char NAMEVIRTUALHOST[]="nameVirtualHost";
+ static const char TIMEOUT[]="Timeout";
+ static const char MINSPARESERVERS[]="MinSpareServers";
+ static const char MAXSPARESERVERS[]="MaxSpareServers";
+@@ -88,6 +87,8 @@
+ static const char SCRIPTALIAS[]="ScriptAlias";
+ static const char SETUIDUSER[]="User";
+ static const char SETUIDGROUP[]="Group";
++static const char NAMEVIRTUALHOST[]="NameVirtualHost";
++
+ 
+ static const char IFMODULE [] = "IfModule";
+ static const char SSLIDENT [] = "mod_ssl.c";
+@@ -376,6 +377,7 @@
+ PUBLIC void HTTPD_DOMOPT::write(const char *prefix, FILE *fout)
+ {
+ 	writeif (fout,prefix,SERVERADMIN,serveradmin);
++	writeif (fout,prefix,NAMEVIRTUALHOST,namevhost);
+ 	writeif (fout,prefix,SERVERNAME,servername);
+ 	writeif (fout,prefix,SERVERALIAS,serveralias);
+ 	writeif (fout,prefix,DOCUMENTROOT,documentroot);
+@@ -790,6 +792,9 @@
+ 					}if (stricmp(word,SERVERADMIN)==0){
+ 						dom->serveradmin.setcomment(comments);
+ 						dom->serveradmin.setfrom(arg);
++					}if (stricmp(word,NAMEVIRTUALHOST)==0){
++						dom->namevhost.setcomment(comments);
++						dom->namevhost.setfrom(arg);
+ 					}else if (stricmp(word,SERVERNAME)==0){
+ 						dom->servername.setcomment(comments);
+ 						dom->servername.setfrom(arg);
+--- linuxconf-1.16r1.orig/modules/apache/internal.h	Mon May 24 18:47:49 1999
++++ linuxconf-1.16r1/modules/apache/internal.h	Thu Jun 10 17:07:27 1999
+@@ -272,6 +272,7 @@
+ 	//CSSTRING host;
+ 	CSSTRING serveradmin;
+ 	CSSTRING servername;
++	CSSTRING namevhost;
+ 	CSSTRING serveralias;
+ 	CSSTRING documentroot;
+ 	CSSTRING errorlog;

@@ -1,0 +1,397 @@
+diff -Nur linuxconf-1.16.orig/conf.files/Makefile linuxconf-1.16/conf.files/Makefile
+--- linuxconf-1.16.orig/conf.files/Makefile	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/conf.files/Makefile	Mon May 31 15:53:14 1999
+@@ -7,15 +7,13 @@
+ UUCPFILE=uucp/uucp.tasks uucp/uucp.poll uucp/uucp.cleanup
+ 
+ localinstall:
+-	install -m 644 -o root -g root conf.amd.map $(LIB_LINUXCONF)/conf.amd.map
+-	rm -fr $(LIB_LINUXCONF)/std $(LIB_LINUXCONF)/suse
+-	rm -fr $(LIB_LINUXCONF)/debian $(LIB_LINUXCONF)/conectiva
+-	rm -fr $(LIB_LINUXCONF)/redhat $(LIB_LINUXCONF)/caldera
+-	cp -a std suse debian redhat caldera conectiva $(LIB_LINUXCONF)
+-	chown -R root.root $(LIB_LINUXCONF)/std $(LIB_LINUXCONF)/suse \
+-		$(LIB_LINUXCONF)/redhat $(LIB_LINUXCONF)/conectiva \
+-		$(LIB_LINUXCONF)/debian $(LIB_LINUXCONF)/caldera
+-	mkdir -p $(LIB_LINUXCONF)/lib $(LIB_LINUXCONF)/uucp $(LIB_LINUXCONF)/install
++	rm -fr $(LIB_LINUXCONF)/std $(LIB_LINUXCONF)/conectiva \
++                    $(LIB_LINUXCONF)/redhat
++	cp -a std redhat conectiva $(LIB_LINUXCONF)
++	chown -R root.root $(LIB_LINUXCONF)/std $(LIB_LINUXCONF)/redhat \
++                    $(LIB_LINUXCONF)/conectiva
++	mkdir -p $(LIB_LINUXCONF)/lib $(LIB_LINUXCONF)/uucp \
++                    $(LIB_LINUXCONF)/install
+ 	install -m 755 -o root -g root $(UUCPFILE) $(LIB_LINUXCONF)/uucp
+ 	install -m 644 -o root -g root root.cache $(LIB_LINUXCONF)/lib
+ 	install -m 755 -o root -g root checkdist.sh $(LIB_LINUXCONF)/lib
+diff -Nur linuxconf-1.16.orig/conf.files/conectiva/scripts/S00linuxconf linuxconf-1.16/conf.files/conectiva/scripts/S00linuxconf
+--- linuxconf-1.16.orig/conf.files/conectiva/scripts/S00linuxconf	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/conf.files/conectiva/scripts/S00linuxconf	Mon May 31 15:57:20 1999
+@@ -4,17 +4,19 @@
+ #			    a runlevel so it can do some cleanups
+ #
+ # description: Initial cleanup for linuxconf
++# description(pt_BR): limpeza inicial para o linuxconf
++. /etc/rc.d/init.d/functions
+ 
+ # See how we were called.
+ case "$1" in
+   start)
+ 	if [ -x /bin/linuxconf ] ; then
+-		echo "Linuxconf initialisations"
++		gprintf "%s initialisations\n" "Linuxconf" 
+ 		/bin/netconf --S00linuxconf	
+ 	fi
+ 	;;
+   *)
+-	echo "Usage: S00linuxconf start"
++	gprintf "Usage: %s start\n" "$0"
+ 	exit 1
+ esac
+ 
+diff -Nur linuxconf-1.16.orig/conf.files/conectiva/scripts/S99linuxconf linuxconf-1.16/conf.files/conectiva/scripts/S99linuxconf
+--- linuxconf-1.16.orig/conf.files/conectiva/scripts/S99linuxconf	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/conf.files/conectiva/scripts/S99linuxconf	Mon May 31 15:44:17 1999
+@@ -5,12 +5,15 @@
+ #
+ # chkconfig: 2345 99 00
+ # description: post-startup hook for linuxconf
+-
++# description(pt_BR): gancho pós-inicialização do linuxconf
++#
+ # See how we were called.
++. /etc/rc.d/init.d/functions
++
+ case "$1" in
+   start)
+         if [ -x /bin/linuxconf ] ; then
+-                echo "Linuxconf final setup"
++				gprintf "%s final setup\n" "Linuxconf"	
+                 /bin/netconf --S99linuxconf
+         fi
+         ;;
+@@ -18,8 +21,8 @@
+         # ignore
+         ;;
+   *)
+-        echo "Usage: $0 start"
+-        exit 1
++        gprintf "Usage: %s start\n" "$0"
++		exit 1
+ esac
+ 
+ exit 0 
+diff -Nur linuxconf-1.16.orig/conf.files/conectiva/scripts/setmodules.sh linuxconf-1.16/conf.files/conectiva/scripts/setmodules.sh
+--- linuxconf-1.16.orig/conf.files/conectiva/scripts/setmodules.sh	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/conf.files/conectiva/scripts/setmodules.sh	Mon May 31 15:44:18 1999
+@@ -14,15 +14,17 @@
+ installif /etc/httpd/conf/httpd.conf apache
+ installif /etc/ftpaccess wuftpd
+ installif /etc/dhcpd.conf dhcpd
++installif /etc/ppp/options dialout
++installif /etc/ppp/options pppdialin
+ 
+ 
+ # Install the dialout module if they are some *.dconf
+-NBDCONF=`ls /etc/ppp/*.dconf 2>/dev/null | wc -l`
+-NBDCONF=`expr $NBDCONF`
+-if [ "$NBDCONF" != "0" ] ; then
+-	echo Some ppp dialout configs: Enabling module dialout
+-	linuxconf --setmod dialout
+-fi
++#NBDCONF=`ls /etc/ppp/*.dconf 2>/dev/null | wc -l`
++#NBDCONF=`expr $NBDCONF`
++#if [ "$NBDCONF" != "0" ] ; then
++#	echo Some ppp dialout configs: Enabling module dialout
++#	linuxconf --setmod dialout
++#fi
+ echo Enabling module redhatppp
+ linuxconf --setmod redhatppp
+ echo Enabling module motd
+diff -Nur linuxconf-1.16.orig/conf.files/redhat/scripts/setmodules.sh linuxconf-1.16/conf.files/redhat/scripts/setmodules.sh
+--- linuxconf-1.16.orig/conf.files/redhat/scripts/setmodules.sh	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/conf.files/redhat/scripts/setmodules.sh	Mon May 31 15:44:18 1999
+@@ -14,15 +14,18 @@
+ installif /etc/httpd/conf/httpd.conf apache
+ installif /etc/ftpaccess wuftpd
+ installif /etc/dhcpd.conf dhcpd
++installif /etc/ppp/options dialout
++installif /etc/ppp/options pppdialin
++
+ 
+ 
+ # Install the dialout module if they are some *.dconf
+-NBDCONF=`ls /etc/ppp/*.dconf 2>/dev/null | wc -l`
+-NBDCONF=`expr $NBDCONF`
+-if [ "$NBDCONF" != "0" ] ; then
+-	echo Some ppp dialout configs: Enabling module dialout
+-	linuxconf --setmod dialout
+-fi
++#NBDCONF=`ls /etc/ppp/*.dconf 2>/dev/null | wc -l`
++#NBDCONF=`expr $NBDCONF`
++#if [ "$NBDCONF" != "0" ] ; then
++#	echo Some ppp dialout configs: Enabling module dialout
++#	linuxconf --setmod dialout
++#fi
+ echo Enabling module redhatppp
+ linuxconf --setmod redhatppp
+ echo Enabling module motd
+diff -Nur linuxconf-1.16.orig/dialog/ftitle.cc linuxconf-1.16/dialog/ftitle.cc
+--- linuxconf-1.16.orig/dialog/ftitle.cc	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/dialog/ftitle.cc	Mon May 31 15:44:18 1999
+@@ -91,7 +91,7 @@
+ 	if (strcmp(buf,"-")==0){
+ 		html_printf ("<tr><td>%s<td><hr>\n",prompt);
+ 	}else{
+-		html_printf ("<tr><td>%s<th colspan=10 align=center><strong>%s</strong>\n"
++		html_printf ("<tr><td>%s<th colspan=10 align=center bgcolor=darkblue><font color=white>%s</b></font>\n"
+ 			,prompt,buf);
+ 	}
+ }
+diff -Nur linuxconf-1.16.orig/dialog/html.cc linuxconf-1.16/dialog/html.cc
+--- linuxconf-1.16.orig/dialog/html.cc	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/dialog/html.cc	Mon May 31 15:44:18 1999
+@@ -672,7 +672,7 @@
+ 				,internal->internal_title.get());
+ 		}
+ 		html_printf ("<body %s>\n",html_getbodyparm());
+-		html_printf ("<center><h1>%s</h1></center>\n",internal->title.get());
++       html_printf ("<img src=\"/images:images/logo.gif\" align=left alt=logo><p><br><center><h1><font color=red>%s</font></h1></center></p><br>\n",internal->title.get());
+ 		html_printf ("<p>\n<hr>\n<p>\n");
+ 		html_draw_history();
+ 	}else{
+diff -Nur linuxconf-1.16.orig/help.files/Makefile linuxconf-1.16/help.files/Makefile
+--- linuxconf-1.16.orig/help.files/Makefile	Mon May 31 15:43:47 1999
++++ linuxconf-1.16/help.files/Makefile	Mon May 31 15:44:20 1999
+@@ -4,9 +4,6 @@
+ doc:
+ 	scripts/doallhelp.sh sources
+ 
+-doc.fr:
+-	scripts/doallhelp.sh fr
+-
+ LOCAL_INSTALL=localinstall
+ LOCAL_CLEAN=localclean
+ 
+@@ -22,13 +19,6 @@
+ 	/bin/linuxconf --helpfile | scripts/build_list.sh ok
+ 
+ ### Other languages ####
+-
+-# Canadian french
+-install.cfr:
+-	./install.script cfr $(LIB_LINUXCONF)/help.cfr
+-
+-doc.cfr:
+-	@for i in $(DIRS); do make -C cfr/$$i $@ ; done
+ 
+ README: README.sgml
+ 	sgml2txt -l README.sgml
+diff -Nur linuxconf-1.16.orig/images/Makefile linuxconf-1.16/images/Makefile
+--- linuxconf-1.16.orig/images/Makefile	Mon May 31 15:43:57 1999
++++ linuxconf-1.16/images/Makefile	Mon May 31 15:44:59 1999
+@@ -4,7 +4,7 @@
+ 
+ localinstall:
+ 	@mkdir -p $(LIB_LINUXCONF)/images
+-	cp `find . -name \*.gif -o -name \*.xpm` $(LIB_LINUXCONF)/images
++	cp `find . -name \*.gif -o -name \*.xpm -o -name \*.jpg` $(LIB_LINUXCONF)/images
+ 
+ 
+ 
+diff -Nur linuxconf-1.16.orig/modules/stdmod.mak linuxconf-1.16/modules/stdmod.mak
+--- linuxconf-1.16.orig/modules/stdmod.mak	Mon May 31 15:44:00 1999
++++ linuxconf-1.16/modules/stdmod.mak	Mon May 31 15:46:00 1999
+@@ -69,13 +69,10 @@
+ 
+ 
+ install_daemons:
+-	mkdir -p $(LIB_LINUXCONF)/redhat $(LIB_LINUXCONF)/caldera $(LIB_LINUXCONF)/suse \
+-		$(LIB_LINUXCONF)/conectiva $(LIB_LINUXCONF)/debian $(LIB_LINUXCONF)/std
++	mkdir -p $(LIB_LINUXCONF)/redhat $(LIB_LINUXCONF)/conectiva \
++	$(LIB_LINUXCONF)/std
+ 	$(COPYDIR) redhat	$(LIB_LINUXCONF)
+ 	$(COPYDIR) conectiva $(LIB_LINUXCONF) redhat
+-	$(COPYDIR) suse		$(LIB_LINUXCONF)
+-	$(COPYDIR) caldera	$(LIB_LINUXCONF)
+-	$(COPYDIR) debian	$(LIB_LINUXCONF)
+ 	$(COPYDIR) std		$(LIB_LINUXCONF)
+ 
+ install_helps:
+diff -Nur linuxconf-1.16.orig/rpmfiles/rpm-identdist.sh linuxconf-1.16/rpmfiles/rpm-identdist.sh
+--- linuxconf-1.16.orig/rpmfiles/rpm-identdist.sh	Mon May 31 15:44:01 1999
++++ linuxconf-1.16/rpmfiles/rpm-identdist.sh	Mon May 31 15:47:58 1999
+@@ -1,82 +1,17 @@
+ #!/bin/sh
+ # First we identify which distribution we are working on
+-OLDINSTALL=/usr/lib/linuxconf/help.eng/notices/01-oldinstall
+-GRABNOTICE=/usr/lib/linuxconf/help.eng/notices/02-grabinfo
++OLDINSTALL=/usr/lib/linuxconf/help.pt/notices/01-oldinstall
++GRABNOTICE=/usr/lib/linuxconf/help.pt/notices/02-grabinfo
+ INITTABREPLACE=/usr/lib/linuxconf/uninstall/inittab.replace
+ 
+-if [ -f /etc/rc.d/rc.boot ] ; then
+-	GRABINFO=/usr/lib/linuxconf/caldera/scripts/grabinfo.sh
+-	SETMODULES=/usr/lib/linuxconf/caldera/scripts/setmodules.sh
+-	CHECKDIST=caldera
+-	SPCCONF=conf.linuxconf-caldera
+-	RCSYSV=rcsysv-caldera
+-	RCINIT=rc.boot
+-	PATHRCINIT=/etc/rc.d/rc.boot
+-	PATHRC=/etc/rc.d/rc
+-elif [ -f /etc/versão-conectiva ] ; then
+-	SPCCONF=conf.linuxconf-conectiva
+-	GRABINFO=/usr/lib/linuxconf/conectiva/scripts/grabinfo.sh
+-	SETMODULES=/usr/lib/linuxconf/conectiva/scripts/setmodules.sh
+-	CHECKDIST=conectiva
+-	RCINIT=rc.sysinit
+-	PATHRCINIT=/etc/rc.d/rc.sysinit
+-	SYSVLINUXCONF=/usr/lib/linuxconf/conectiva/scripts
+-	RUNLEVELSPATH="/etc/rc.d/rc2.d /etc/rc.d/rc3.d /etc/rc.d/rc4.d /etc/rc.d/rc5.d"
+-	PATHINITD=/etc/rc.d/init.d
+-	CHKCONFIG=/sbin/chkconfig
+-elif [ -f /etc/rc.d/rc.sysinit ] ; then
+-	GRABINFO=/usr/lib/linuxconf/redhat/scripts/grabinfo.sh
+-	SETMODULES=/usr/lib/linuxconf/redhat/scripts/setmodules.sh
+-	CHECKDIST=redhat
+-	SPCCONF=conf.linuxconf-redhat-4.x
+-	read a b c d e f </etc/redhat-release
+-	# Raw Hide is like 5.2
+-	if [ "$a" = "Raw" -a "$b" = "Hide" ] ; then
+-		ver=5.2
+-	elif [ "$b" = "Raw" -a "$c" = "Hide" ] ; then
+-		ver=5.2
+-	elif [ "$c" = "Raw" -a "$d" = "Hide" ] ; then
+-		ver=5.2
+-	elif [ "$d" = "Raw" -a "$e" = "Hide" ] ; then
+-		ver=5.2
+-	elif [ "$a" = "release" ] ; then
+-		ver=$b
+-	elif [ "$b" = "release" ] ; then
+-		ver=$c
+-	elif [ "$c" = "release" ] ; then
+-		ver=$d
+-	elif [ "$d" = "release" ] ; then
+-		ver=$e
+-	fi
+-	if [ "$ver" = "4.0" -o "$ver" = "4.1" -o "$ver" = "4.2" -o "$ver" = "5.0" ] ; then
+-		RCSYSV=rcsysv-redhat4.x
+-		RCINIT=rc.sysinit
+-		PATHRCINIT=/etc/rc.d/rc.sysinit
+-		PATHRC=/etc/rc.d/rc
+-		INITTAB=inittab.redhat-4.0
+-	else
+-		# Anything newer than 5.0 is linuxconf aware. No need
+-		# to replace the rc script and inittab
+-		RCINIT=rc.sysinit
+-		PATHRCINIT=/etc/rc.d/rc.sysinit
+-		SYSVLINUXCONF=/usr/lib/linuxconf/redhat/scripts
+-		RUNLEVELSPATH="/etc/rc.d/rc2.d /etc/rc.d/rc3.d /etc/rc.d/rc4.d /etc/rc.d/rc5.d"
+-		PATHINITD=/etc/rc.d/init.d
+-		CHKCONFIG=/sbin/chkconfig
+-	fi
+-elif [ -f /sbin/init.d/boot ] ; then
+-	SETMODULES=/usr/lib/linuxconf/suse/scripts/setmodules.sh
+-	CHECKDIST=suse
+-	SPCCONF=conf.linuxconf-suse
++GRABINFO=/usr/lib/linuxconf/conectiva/scripts/grabinfo.sh
++SETMODULES=/usr/lib/linuxconf/conectiva/scripts/setmodules.sh
++CHECKDIST=conectiva
++SPCCONF=conf.linuxconf-conectiva
++RCINIT=rc.sysinit
++PATHRCINIT=/etc/rc.d/rc.sysinit
++SYSVLINUXCONF=/usr/lib/linuxconf/conectiva/scripts
++RUNLEVELSPATH="/etc/rc.d/rc2.d /etc/rc.d/rc3.d /etc/rc.d/rc4.d /etc/rc.d/rc5.d"
++PATHINITD=/etc/rc.d/init.d
++CHKCONFIG=/sbin/chkconfig
+ 
+-	if [ -f /etc/SuSE-release ]; then
+-		# we found a version >= 6.0
+-		RCSYSV=rcsysv-suse6.0
+-	else
+-		RCSYSV=rcsysv-suse5.x
+-	fi
+-	RCINIT=boot
+-	PATHRCINIT=/sbin/init.d/boot
+-	PATHRC=/sbin/init.d/rc
+-	USE_SED_ON_RCS=Y
+-fi
+diff -Nur linuxconf-1.16.orig/rpmfiles/rpm-postinst.sh linuxconf-1.16/rpmfiles/rpm-postinst.sh
+--- linuxconf-1.16.orig/rpmfiles/rpm-postinst.sh	Mon May 31 15:44:01 1999
++++ linuxconf-1.16/rpmfiles/rpm-postinst.sh	Mon May 31 15:51:37 1999
+@@ -60,27 +60,27 @@
+ fi
+ 
+ # Update /etc/rc.d/rc.sysinit
+-if [ "$PATHRCINIT" != "" ] ; then
+-	if [ `grep askrunlevel $PATHRCINIT | wc -l` = 0 ] ; then
+-		if [ ! -f /usr/lib/linuxconf/uninstall/$RCINIT.beforelinuxconf ] ; then
+-			log cp $PATHRCINIT /usr/lib/linuxconf/uninstall/$RCINIT.beforelinuxconf
+-		fi
+-		if [ "$USE_SED_ON_RCS" = "Y" ] ; then
+-			mv $PATHRCINIT $PATHRCINIT.old
+-			sed "s.exit 0./sbin/askrunlevel." <$PATHRCINIT.old \
+-				>$PATHRCINIT
+-		else
+-			echo >> $PATHRCINIT
+-			echo /sbin/askrunlevel >> $PATHRCINIT
+-		fi
+-		chown root.root $PATHRCINIT
+-		chmod 755 $PATHRCINIT
+-	else
+-		if [ ! `grep FIRST /usr/lib/linuxconf/uninstall/options | wc -l` = 0 ] ; then
+-			echo $PATHRCINIT >> /usr/lib/linuxconf/uninstall/options
+-		fi
+-	fi
+-fi
++#if [ "$PATHRCINIT" != "" ] ; then
++#	if [ `grep askrunlevel $PATHRCINIT | wc -l` = 0 ] ; then
++#		if [ ! -f /usr/lib/linuxconf/uninstall/$RCINIT.beforelinuxconf ] ; then
++#			log cp $PATHRCINIT /usr/lib/linuxconf/uninstall/$RCINIT.beforelinuxconf
++#		fi
++#		if [ "$USE_SED_ON_RCS" = "Y" ] ; then
++#			mv $PATHRCINIT $PATHRCINIT.old
++#			sed "s.exit 0./sbin/askrunlevel." <$PATHRCINIT.old \
++#				>$PATHRCINIT
++#		else
++#			echo >> $PATHRCINIT
++#			echo /sbin/askrunlevel >> $PATHRCINIT
++#		fi
++#		chown root.root $PATHRCINIT
++#		chmod 755 $PATHRCINIT
++#	else
++#		if [ ! `grep FIRST /usr/lib/linuxconf/uninstall/options | wc -l` = 0 ] ; then
++#			echo $PATHRCINIT >> /usr/lib/linuxconf/uninstall/options
++#		fi
++#	fi
++#fi
+ 
+ # Replace /etc/rc.d/rc
+ if [ "$PATHRC" != "" ] ; then
+@@ -105,12 +105,10 @@
+ 	if [ ! -f /usr/lib/linuxconf/uninstall/inetd.conf.beforelinuxconf ] ; then
+ 		log cp /etc/inetd.conf /usr/lib/linuxconf/uninstall/inetd.conf.beforelinuxconf
+ 	fi
+-
+-	echo >> /etc/inetd.conf
+-	echo linuxconf stream tcp wait root /bin/linuxconf linuxconf --http >> /etc/inetd.conf
+-	if [ -f /var/run/inetd.pid ] ; then
+-		kill -HUP `cat /var/run/inetd.pid`
+-	fi
++	 echo -e '# descomente a linha seguinte para utilizar a interface web\n# linuxconf stream tcp wait root /bin/linuxconf linuxconf --http' >> /etc/inetd.conf
++#	if [ -f /var/run/inetd.pid ] ; then
++#		kill -HUP `cat /var/run/inetd.pid`
++#	fi
+ else	
+ 	if [ ! `grep FIRST /usr/lib/linuxconf/uninstall/options | wc -l` = 0 ] ; then
+ 		echo /etc/inetd.conf >> /usr/lib/linuxconf/uninstall/options
+--- linuxconf-1.16.orig/modules/Makefile	Mon May 31 16:42:33 1999
++++ linuxconf-1.16/modules/Makefile	Mon May 31 16:43:21 1999
+@@ -1,6 +1,6 @@
+ DIRS = apache inittab samba netadm dhcpd dialout mrtg wuftpd usermenu \
+ 	mailconf dnsconf xterminals treemenu rarp squid pppdialin \
+-	firewall motd status uucp suse redhatppp redhat conectiva
++	firewall motd status uucp redhatppp redhat conectiva
+ 
+ # We produce a single RPM that fits on all distro (at least we try)
+ # This is why the distributions specific modules are compiled

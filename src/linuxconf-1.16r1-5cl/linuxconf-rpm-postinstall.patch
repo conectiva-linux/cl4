@@ -1,0 +1,11 @@
+--- linuxconf-1.16r1/rpmfiles/rpm-postinst.sh.orig	Wed Jun 30 20:45:39 1999
++++ linuxconf-1.16r1/rpmfiles/rpm-postinst.sh	Wed Jun 30 21:02:09 1999
+@@ -101,7 +101,7 @@
+ fi
+ 
+ # Update /etc/inetd.conf
+-if [ `grep linuxconf /etc/inetd.conf | wc -l` = 0 ] ; then
++if [ `grep -s linuxconf /etc/inetd.conf | wc -l` = 0 ] ; then
+ 	if [ ! -f /usr/lib/linuxconf/uninstall/inetd.conf.beforelinuxconf ] ; then
+ 		log cp /etc/inetd.conf /usr/lib/linuxconf/uninstall/inetd.conf.beforelinuxconf
+ 	fi
