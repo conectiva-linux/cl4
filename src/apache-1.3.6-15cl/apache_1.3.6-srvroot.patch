@@ -1,0 +1,62 @@
+diff -Nur apache_1.3.6.orig/configure apache_1.3.6/configure
+--- apache_1.3.6.orig/configure	Thu Mar 25 17:37:44 1999
++++ apache_1.3.6/configure	Thu Mar 25 17:42:42 1999
+@@ -393,7 +393,7 @@
+             OIFS="$IFS" IFS="$DIFS"
+             for var in prefix exec_prefix bindir sbindir libexecdir mandir \
+                        sysconfdir datadir includedir localstatedir runtimedir \
+-                       logfiledir proxycachedir; do
++                       logfiledir proxycachedir serverroot; do
+                 eval "val=\"\$$var\""
+                 case $val in
+                     *+ )
+@@ -1048,7 +1048,7 @@
+     echo "        proxycachedir: $proxycachedir" 
+     echo ""
+     echo "Compilation paths:"
+-    echo "           HTTPD_ROOT: $prefix"
++    echo "           HTTPD_ROOT: $serverroot"
+     echo "      SHARED_CORE_DIR: $libexecdir"
+     echo "       DEFAULT_PIDLOG: ${runtimedir_relative}${thetarget}.pid"
+     echo "   DEFAULT_SCOREBOARD: ${runtimedir_relative}${thetarget}.scoreboard"
+diff -Nur apache_1.3.6.orig/configure apache_1.3.6/configure
+--- apache_1.3.6.orig/configure	Thu Mar 25 17:46:16 1999
++++ apache_1.3.6/configure	Thu Mar 25 17:49:45 1999
+@@ -555,6 +555,9 @@
+             sysconfdir="$apc_optarg"    
+             autosuffix_sysconfdir=no
+             ;;
++        --serverroot=*)    
++            serverroot="$apc_optarg"    
++            ;;
+         --datadir=*)       
+             datadir="$apc_optarg"       
+             autosuffix_datadir=no
+@@ -1032,8 +1035,8 @@
+ ##   path is just the emtpy one, i.e. ""]
+ ##
+ runtimedir_relative=`echo $runtimedir | sed -e "s:^$prefix/*::" -e 's:\(.\)$:\1/:'`
+-logfiledir_relative=`echo $logfiledir | sed -e "s:^$prefix/*::" -e 's:\(.\)$:\1/:'`
+-sysconfdir_relative=`echo $sysconfdir | sed -e "s:^$prefix/*::" -e 's:\(.\)$:\1/:'`
++logfiledir_relative=`echo $logfiledir | sed -e "s:^$serverroot/*::" -e 's:\(.\)$:\1/:'`
++sysconfdir_relative=`echo $sysconfdir | sed -e "s:^$serverroot/*::" -e 's:\(.\)$:\1/:'`
+ libexecdir_relative=`echo $libexecdir | sed -e "s:^$prefix/*::" -e 's:\(.\)$:\1/:'`
+ 
+ ##
+@@ -1107,6 +1110,7 @@
+ -e "s%@libexecdir_relative@%$libexecdir_relative%g" \
+ -e "s%@mandir@%$mandir%g" \
+ -e "s%@sysconfdir@%$sysconfdir%g" \
++-e "s%@serverroot@%$serverroot%g" \
+ -e "s%@datadir@%$datadir%g" \
+ -e "s%@localstatedir@%$localstatedir%g" \
+ -e "s%@includedir@%$includedir%g" \
+@@ -1140,7 +1144,7 @@
+ echo "#!/bin/sh" >$src/apaci
+ echo "## USED AS A COMMAND LINE EXPANDER TO OVERRIDE PATHS" >>$src/apaci
+ echo "## WITHOUT DISTURBING THE KNOWN MAKE BUILD PROCESS DISPLAY" >>$src/apaci
+-echo "echo '-DHTTPD_ROOT=\"$prefix\"'" >>$src/apaci
++echo "echo '-DHTTPD_ROOT=\"$serverroot\"'" >>$src/apaci
+ echo "echo '-DSUEXEC_BIN=\"$sbindir/suexec\"'" >>$src/apaci
+ echo "echo '-DSHARED_CORE_DIR=\"$libexecdir\"'" >>$src/apaci
+ echo "echo '-DDEFAULT_PIDLOG=\"${runtimedir_relative}${thetarget}.pid\"'" >>$src/apaci

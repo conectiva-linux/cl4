@@ -1,0 +1,9 @@
+diff -Nur apache_1.3.6.orig/htdocs/manual/search/manual-index.cgi apache_1.3.6/htdocs/manual/search/manual-index.cgi
+--- apache_1.3.6.orig/htdocs/manual/search/manual-index.cgi	Thu Mar 25 18:51:27 1999
++++ apache_1.3.6/htdocs/manual/search/manual-index.cgi	Thu Mar 25 18:51:48 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl5 -w
++#!/usr/bin/perl -w
+ # ====================================================================
+ # Copyright (c) 1995-1997 The Apache Group.  All rights reserved.
+ #

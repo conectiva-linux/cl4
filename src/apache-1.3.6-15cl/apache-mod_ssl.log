@@ -1,0 +1,22 @@
+/var/log/httpd/access_log {
+    missingok
+}
+
+/var/log/httpd/ssl_log {
+    missingok
+}
+
+/var/log/httpd/ssl_misc_log {
+    missingok
+}
+
+/var/log/httpd/referer_log {
+    missingok
+}
+
+/var/log/httpd/error_log {
+    missingok
+    postrotate
+        xargs kill -HUP < /var/run/httpd.pid 
+    endscript
+}

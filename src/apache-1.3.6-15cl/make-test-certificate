@@ -1,0 +1,19 @@
+#!/bin/sh
+
+SSLCONF=/etc/openssl.cnf
+SSLPROG=/usr/bin/openssl
+
+if [ -f $SSLCONF ] ; then
+	echo $SSLCONF not found. See openssl docs.
+	exit 1
+fi
+
+cd /var/tmp
+$SSLPROG req \
+	-config $SSLCONF \
+	-new -x509 -days 999 -nodes -out /etc/httpd/conf/ssl.crt/test.crt \
+	-keyout /etc/httpd/conf/ssl.key/test.key
+
+
+ln -sf /etc/httpd/conf/ssl.crt/test.crt \
+        /etc/httpd/conf/ssl.crt/`openssl x509 -noout -hash < /etc/httpd/conf/ssl.crt/test.crt`.0

@@ -1,0 +1,131 @@
+ Server configuration directive :
+ --------------------------------
+
+ -  BandWidthModule 
+    Syntax  : BandWidthModule <On|Off>
+    Default : Off
+    Context : per server config
+
+    Enable or disable totaly the whole module. By default, the module is
+    disable so it is safe to compile it in the server anyway.
+
+ Directory / Server / Virtual Server configuration directive :
+ -------------------------------------------------------------
+
+ -  BandWidth
+    Syntax  : BandWidth <domain|ip|all> <rate>
+    Default : none
+    Context : per directory, .htaccess
+
+    Limit the bandwidth for files in this directory and
+    sub-directories based on the remote host <domain> or
+    <ip> address or for <all> remote hosts.
+
+    The <rate> is in Bytes/second.
+    A <rate> of "0" means no bandwidth limit.
+
+    Several BandWidth limits can be set for the same
+    directory to set different limits for different
+    hosts. In this case, the order of the "BandWidth"
+    keywords is important as the module will take the
+    first entry which matches the client address.
+
+    Example :
+       <Directory /home/www>
+       BandWidth ecp.fr 0
+       BandWidth 138.195 0
+       BandWidth all 1024
+       </Directory>
+
+      This will limit the bandwith for directory /home/www and 
+      all it's subdirectories to 1024Bytes/sec, except for 
+      *.ecp.fr or 138.195.*.* where no limit is set.
+
+ -  LargeFileLimit
+    Syntax  : LargeFileLimit <filesize> <rate>
+    Default : none
+    Context : per directory, .htaccess
+
+    Set a maximal <rate> (in bytes/sec) to use when transfering
+    a file of <filesize> KBytes or more.
+
+    Several "LargeFileLimit" can be set for various files sizes
+    to create range. The rate used for a given file size will be
+    the one of the matching range.
+
+    A <rate> of "0" mean that there isn't any limit based on
+    the size.
+
+    A <rate> of "-1" mean that there isn't any limit for that type
+    of file. It's override even a BandWidth limit. I found this usefull
+    to give priority to very small files (html pages, very small pictures)
+    while seting limits for larger files... (users with their video files
+    can go to hell ! :)
+
+    Example :
+    If the following limits are set :
+       LargeFileLimit 200 3072
+       LargeFileLimit 1024 2048
+
+       That's mean that a file of less than 200KBytes won't be
+       limited based on his size. A file with a size between
+       200KBytes (included) and 1023Kbytes (included) will be
+       limited to 3072Bytes/sec and a file of 1024Kbytes or more
+       will be limited to 2048Bytes/sec.
+
+ -  MinBandWidth
+    Syntax  : MinBandWidth <domain|ip|all> <rate>
+    Default : all 256
+    Context : per directory, .htaccess
+
+    Set a minimal bandwidth to use for transfering data. This
+    over-ride both BandWidth and LargeFileLimit rules as well
+    as the calculated rate based on the number of connections.
+
+    The first argument is used in the same way as the first
+    argument of BandWidth.
+
+    <rate> is in bytes per second.
+
+    A rate of "0" explicitly means to use the default minimal
+    value (256 KBytes/sec).
+
+    A rate of "-1" means that the minimal rate is equal to the
+    actual rate defined by BandWidth and LargeFileLimit.
+    In fact, that means that the final rate won't depend
+    of the number of connections but only on what was defined.
+
+    Example :
+    If BandWidth is set to "3072" (3KBytes/sec) and MinBandWidth
+    is set to "1024" (1KBytes/sec) that means :
+       - if there is one connection, the file will be transfered
+         at 3072 Bytes/sec.
+       - if there is two connections, each files will be transfered
+         at 1536 Bytes/sec. 
+       - if there is three or more connections, each files will be
+         transfered at 1024 Bytes/sec. (Minimal of 1024 Bytes/sec).
+
+    If MinBandWidth is set to "-1" that means :
+       - if there is one connection, the file will be transfered
+         at 3072 Bytes/sec.
+       - if there is two or more connections, each files will be
+         transfered at 3072 Bytes/sec. In effect, the rate doesn't
+         depend anymore on the number of connections but only on
+         the configuration values.
+
+    Note that the total transfer rate will never exceed your physical
+    bandwidth limitation.
+
+ Note : If both a "BandWidth" and a "LargeFileLimit" limit apply,
+        the lowest one will be used. (But never lower than the
+        "MinBandWidth" rate)
+
+        If both a virtual server limit is defined and another
+        apply for a directory under this virtual server, the
+        directory limit will over-ride it.
+
+        If a limit is defined outside a Directory or VirtualHost
+        directive, it will act as default on a per virtual server
+        basis. (Ie: each virtual server will have that limit,
+        _independantly_ of the other servers)
+

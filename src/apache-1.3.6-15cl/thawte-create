@@ -1,0 +1,62 @@
+#!/bin/sh
+# thawte_create
+# Conectiva Internet Solutions
+# Fabio Dorival Victoreli <fabio@conectiva.com.br>
+# rotas atualizadas em conformidade com rpm SSLeay-0.9.0b-1
+
+
+if [ $# -ne 1 ]; then
+	echo "Uso: `basename $0` <dominio.para.registrar> " 
+	exit 1
+fi
+
+function verifica () {
+  if [ "$1" != "0" ]; then
+	echo "Problemas na geracao do arquivo $2"
+	exit 1
+  fi
+}
+
+function verifica_dir () {
+  if [ ! -d $1 ]; then
+	echo "Diretório $1 não encontrado"
+	exit 1
+  fi
+}
+
+DOMINIO=$1
+
+SSLPROG=/usr/bin/openssl
+
+KEY_DIR=/etc/httpd/conf/ssl.key
+CRT_DIR=/etc/httpd/conf/ssl.crt
+CSR_DIR=/etc/httpd/conf/ssl.csr
+
+if [ ! -x $SSLPROG ]; then
+	echo "Executável $SSLPROG não encontrado" 
+	exit 1
+fi
+
+verifica_dir $KEY_DIR
+verifica_dir $CRT_DIR
+verifica_dir $CSR_DIR
+
+
+echo
+echo "** GERANDO chave privada RSA"
+$SSLPROG genrsa -des3 -rand /var/log/messages:/var/log/messages.1:/var/log/messages.2:/var/log/messages.3:/var/log/messages.4 1024 > $KEY_DIR/$DOMINIO.key
+veifica $? $KEY_DIR/$DOMINIO.key
+
+echo
+echo "** GERANDO certificado"
+$SSLPROG req -new -key $KEY_DIR/$DOMINIO.key       > $CSR_DIR/$DOMINIO.csr
+verifica $? $CSR_DIR/$DOMINIO.csr
+
+echo
+echo "** GERANDO requisição de certificado"
+$SSLPROG req -new -x509 -key $KEY_DIR/$DOMINIO.key > $CRT_DIR/$DOMINIO.crt
+verifica $? $CRT_DIR/$DOMINIO.crt
+
+echo
+echo "Geracao ok"
+exit 0

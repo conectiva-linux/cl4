@@ -1,0 +1,24 @@
+diff -Nur apache_1.3.6.orig/src/modules/standard/mod_rewrite.h apache_1.3.6/src/modules/standard/mod_rewrite.h
+--- apache_1.3.6.orig/src/modules/standard/mod_rewrite.h	Tue Jun  1 16:58:05 1999
++++ apache_1.3.6/src/modules/standard/mod_rewrite.h	Tue Jun  1 16:59:14 1999
+@@ -126,7 +126,7 @@
+      * so we also need to know the file extension
+      */
+ #ifndef NO_DBM_REWRITEMAP
+-#include <ndbm.h>
++#include <db1/ndbm.h>
+ #if defined(__FreeBSD__) || (defined(DB_LOCK) && defined(DB_SHMEM))
+ #define NDBM_FILE_SUFFIX ".db"
+ #else
+diff -Nur apache_1.3.6.orig/src/modules/standard/mod_auth_dbm.c apache_1.3.6/src/modules/standard/mod_auth_dbm.c
+--- apache_1.3.6.orig/src/modules/standard/mod_auth_dbm.c	Tue Jun  1 17:07:39 1999
++++ apache_1.3.6/src/modules/standard/mod_auth_dbm.c	Tue Jun  1 17:08:41 1999
+@@ -74,7 +74,7 @@
+ #include "http_core.h"
+ #include "http_log.h"
+ #include "http_protocol.h"
+-#include <ndbm.h>
++#include <db1/ndbm.h>
+ #include "ap_md5.h"
+ 
+ /*

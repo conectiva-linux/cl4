@@ -1,0 +1,12 @@
+--- apache_1.3.3/src/main/http_main.c.cnc	Wed Mar 23 12:03:32 1999
++++ apache_1.3.3/src/main/http_main.c	Wed Mar 23 12:16:32 1999
+@@ -404,6 +404,9 @@
+     else {
+ 	ap_add_version_component(SERVER_BASEVERSION " (" PLATFORM ")");
+     }
++
++    ap_add_version_component(" (Conectiva/Linux)");
++    
+     /*
+      * Lock the server_version string if we're not displaying
+      * the full set of tokens

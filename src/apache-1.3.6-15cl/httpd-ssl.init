@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# Startup script for the Apache Web Server
+#
+# chkconfig: 345 85 15
+# description: Apache is a World Wide Web server.  It is used to serve \
+#	       HTML files and CGI. This version supports SSL (https).
+# description(pt_BR): Servidor WWW usado para servir páginas HTML \
+#	       e scripts CGI. Esta versão suporta SSL (https).
+# processname: httpd
+# pidfile: /var/run/httpd.pid
+# config: /etc/httpd/conf/access.conf
+# config: /etc/httpd/conf/httpd.conf
+# config: /etc/httpd/conf/srm.conf
+
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting %s: " "httpd"
+	daemon httpd -DSSL
+	echo
+	touch /var/lock/subsys/httpd
+	;;
+  stop)
+	gprintf "Shutting down %s: " "httpd"
+	[ -f /var/run/httpd.pid ] && {
+	    kill `cat /var/run/httpd.pid`
+	    echo -n httpd
+	}
+	echo
+	rm -f /var/lock/subsys/httpd
+	rm -f /var/run/httpd.pid
+	;;
+  status)
+	status httpd
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  reload)
+	gprintf "Reloading %s: " "httpd"
+	[ -f /var/run/httpd.pid ] && {
+	    kill -HUP `cat /var/run/httpd.pid`
+	    echo -n httpd
+	}
+	echo
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart|reload}\n" "httpd"
+	exit 1
+esac
+
+exit 0

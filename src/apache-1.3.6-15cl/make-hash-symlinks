@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+#  Script to keep the hash symlinks in SSLCACertificatePath up to date
+#  Conectiva - based on the Makefile by
+#  Copyright (c) 1998 Ralf S. Engelschall, All Rights Reserved. 
+#
+
+SSLPROG=openssl
+
+rm -f [0-9a-fA-F]*.[0-9]*
+
+for file in *.crt; do
+    if [ ".`grep SKIPME $file`" != . ]; then
+        echo dummy | \
+        awk '{ printf("%-15s ... Skipped\n", file); }' \
+        "file=$file";
+    else
+        n=0;
+        while [ 1 ]; do
+            hash="`$SSLPROG x509 -noout -hash <$file`";
+            if [ -r "$hash.$n" ]; then
+                n=`expr $n + 1`;
+            else
+                echo dummy |\
+                awk '{ printf("%-15s ... %s\n", file, hash); }' \
+                "file=$file" "hash=$hash.$n";
+                ln -s $file $hash.$n;
+                break;
+            fi;
+        done;
+    fi;
+done
