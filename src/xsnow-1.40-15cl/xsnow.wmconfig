@@ -1,0 +1,4 @@
+xsnow name "xsnow"
+xsnow description "Snow Snow Everywhere..."
+xsnow exec "xsnow &"
+xsnow group "Amusements/Misc"
