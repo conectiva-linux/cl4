@@ -1,0 +1,27 @@
+--- ./gncal/gncal.desktop~	Mon Feb 22 16:24:50 1999
++++ ./gncal/gncal.desktop	Tue Jun 29 23:34:50 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Calendar
++Name[pt_BR]=Calendário
+ Name[da]=Kalender
+ Name[de]=Kalender
+ Name[es]=Calendario
+@@ -8,6 +9,7 @@
+ Name[no]=Kalender
+ Name[pt]=Agenda
+ Comment=Calendar application
++Comment[pt_BR]=Aplicação calendário
+ Comment[da]=Gnome Kalender
+ Comment[de]=Gnome Kalender
+ Comment[es]=Calendario de Gnome
+--- ./gnomecard/gnomecard.desktop~	Tue Apr  6 13:11:27 1999
++++ ./gnomecard/gnomecard.desktop	Tue Jun 29 23:35:02 1999
+@@ -5,6 +5,7 @@
+ Name[ko]=±×³ðÄ«µå
+ Name[no]=GnomeKort
+ Comment=Address Book
++Comment[pt_BR]=Caderno de Endereços
+ Comment[es]=Gestor de cartas de visita electrónico
+ Comment[fr]=Carnet d'adresses
+ Comment[ko]=ÁÖ¼Ò·Ï

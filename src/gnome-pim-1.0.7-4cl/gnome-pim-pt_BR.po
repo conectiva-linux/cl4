@@ -1,0 +1,1531 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 1999-02-14 16:47-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Sandro Henrique <sandro@conectiva.com.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: gncal/calobj.c:885
+msgid "Appointment"
+msgstr "Compromisso"
+
+#: gncal/eventedit.c:231
+msgid "Time"
+msgstr "Data"
+
+#: gncal/eventedit.c:249
+msgid "Start time:"
+msgstr "Horário de início:"
+
+#: gncal/eventedit.c:265
+msgid "End time:"
+msgstr "Horário final:"
+
+#. 3. All day checkbox
+#: gncal/eventedit.c:275
+msgid "All day event"
+msgstr "Evento repete-se todos os dias"
+
+#: gncal/eventedit.c:291
+msgid "Minutes"
+msgstr "Minutos"
+
+#: gncal/eventedit.c:291
+msgid "Hours"
+msgstr "Horas"
+
+#: gncal/eventedit.c:291
+msgid "Days"
+msgstr "Dias"
+
+#: gncal/eventedit.c:350 gncal/eventedit.c:388
+msgid "Mail to:"
+msgstr "Mensagem para:"
+
+#: gncal/eventedit.c:359
+msgid "Run program:"
+msgstr "Executar programa:"
+
+#: gncal/eventedit.c:362
+msgid "Select program to run at alarm time"
+msgstr "Selecionar programa a ser executado quando o alarme soar"
+
+#: gncal/eventedit.c:380
+msgid "Alarms"
+msgstr "Alarmes"
+
+#: gncal/eventedit.c:391
+msgid "Display"
+msgstr "Mostrar"
+
+#: gncal/eventedit.c:392
+msgid "Audio"
+msgstr "Áudio"
+
+#: gncal/eventedit.c:393
+msgid "Program"
+msgstr "Programa"
+
+#: gncal/eventedit.c:394
+msgid "Mail"
+msgstr "Correio"
+
+#: gncal/eventedit.c:405
+msgid "Classification"
+msgstr "Classificação"
+
+#: gncal/eventedit.c:411
+msgid "Public"
+msgstr "Público"
+
+#: gncal/eventedit.c:412
+msgid "Private"
+msgstr "Particular"
+
+#: gncal/eventedit.c:413
+msgid "Confidential"
+msgstr "Confidencial"
+
+#: gncal/eventedit.c:793
+msgid "General"
+msgstr "Geral"
+
+#: gncal/eventedit.c:802
+msgid "Owner:"
+msgstr "Dono:"
+
+#: gncal/eventedit.c:805
+msgid "?"
+msgstr ""
+
+#: gncal/eventedit.c:809 gncal/gncal-todo.c:109
+msgid "Summary:"
+msgstr "Resumo:"
+
+#: gncal/eventedit.c:859
+msgid "None"
+msgstr "Nenhum"
+
+#: gncal/eventedit.c:860
+msgid "Daily"
+msgstr "Diário"
+
+#: gncal/eventedit.c:861
+msgid "Weekly"
+msgstr "Semanal"
+
+#: gncal/eventedit.c:862
+msgid "Monthly"
+msgstr "Mensal"
+
+#: gncal/eventedit.c:863
+msgid "Yearly"
+msgstr "Anual"
+
+#: gncal/eventedit.c:885
+msgid "1st"
+msgstr "1o."
+
+#: gncal/eventedit.c:886
+msgid "2nd"
+msgstr "2o."
+
+#: gncal/eventedit.c:887
+msgid "3rd"
+msgstr "3o."
+
+#: gncal/eventedit.c:888
+msgid "4th"
+msgstr "4o."
+
+#: gncal/eventedit.c:889
+msgid "5th"
+msgstr "5o."
+
+#: gncal/eventedit.c:894 gncal/prop.c:273
+msgid "Monday"
+msgstr "Segunda-feira"
+
+#: gncal/eventedit.c:895
+msgid "Tuesday"
+msgstr "Terça-feira"
+
+#: gncal/eventedit.c:896
+msgid "Wednesday"
+msgstr "Quarta-feira"
+
+#: gncal/eventedit.c:897
+msgid "Thursday"
+msgstr "Quinta-feira"
+
+#: gncal/eventedit.c:898
+msgid "Friday"
+msgstr "Sexta-feira"
+
+#: gncal/eventedit.c:899
+msgid "Saturday"
+msgstr "Sábado"
+
+#: gncal/eventedit.c:900 gncal/prop.c:272
+msgid "Sunday"
+msgstr "Domingo"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:737
+msgid "Mon"
+msgstr "Seg"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:738
+msgid "Tue"
+msgstr "Ter"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:739
+msgid "Wed"
+msgstr "Qua"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:740
+msgid "Thu"
+msgstr "Qui"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:741
+msgid "Fri"
+msgstr "Sex"
+
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:742
+msgid "Sat"
+msgstr "Sáb"
+
+#. Initialize by default to three-letter day names
+#: gncal/eventedit.c:953 gncal/gnome-month-item.c:736
+msgid "Sun"
+msgstr "Dom"
+
+#: gncal/eventedit.c:964
+msgid "Recurrence rule"
+msgstr "Regra recorrente"
+
+#: gncal/eventedit.c:1065 gncal/eventedit.c:1079 gncal/eventedit.c:1124
+#: gncal/eventedit.c:1146
+msgid "Every"
+msgstr "Sempre"
+
+#: gncal/eventedit.c:1067
+msgid "day(s)"
+msgstr "dia(s)"
+
+#: gncal/eventedit.c:1081
+msgid "week(s)"
+msgstr "semana(s)"
+
+#: gncal/eventedit.c:1102 gncal/eventedit.c:1114
+msgid "Recur on the"
+msgstr "Ocorre no"
+
+#: gncal/eventedit.c:1104
+msgid "th day of the month"
+msgstr "o. dia do mês"
+
+#: gncal/eventedit.c:1129
+msgid "month(s)"
+msgstr "mês(es)"
+
+#: gncal/eventedit.c:1148
+msgid "year(s)"
+msgstr "ano(s)"
+
+#: gncal/eventedit.c:1186
+msgid "Ending date"
+msgstr "Data final"
+
+#: gncal/eventedit.c:1199
+msgid "Repeat forever"
+msgstr "Repete-se indefinidamente"
+
+#: gncal/eventedit.c:1208
+msgid "End on"
+msgstr "Termina em"
+
+#: gncal/eventedit.c:1233
+msgid "End after"
+msgstr "Termina após"
+
+#: gncal/eventedit.c:1249
+msgid "occurrence(s)"
+msgstr "ocorrência(s)"
+
+#: gncal/eventedit.c:1373
+msgid "Exceptions"
+msgstr "Exceções"
+
+#: gncal/eventedit.c:1385
+msgid "Add exception"
+msgstr "Adicionar exceção"
+
+#: gncal/eventedit.c:1395
+msgid "Change selected"
+msgstr "Alterar selecionado"
+
+#: gncal/eventedit.c:1401
+msgid "Delete selected"
+msgstr "Apagar selecionado"
+
+#: gncal/eventedit.c:1430
+msgid "Recurrence"
+msgstr "Recorrente"
+
+#: gncal/eventedit.c:1466
+msgid "Create new appointment"
+msgstr "Criar novo compromisso"
+
+#: gncal/getdate.y:391
+msgid "january"
+msgstr "janeiro"
+
+#: gncal/getdate.y:392
+msgid "february"
+msgstr "fevereiro"
+
+#: gncal/getdate.y:393
+msgid "march"
+msgstr "março"
+
+#: gncal/getdate.y:394
+msgid "april"
+msgstr "abril"
+
+#: gncal/getdate.y:395
+msgid "may"
+msgstr "maio"
+
+#: gncal/getdate.y:396
+msgid "june"
+msgstr "junho"
+
+#: gncal/getdate.y:397
+msgid "july"
+msgstr "julho"
+
+#: gncal/getdate.y:398
+msgid "august"
+msgstr "agosto"
+
+#: gncal/getdate.y:399
+msgid "september"
+msgstr "setembro"
+
+#: gncal/getdate.y:400
+msgid "sept"
+msgstr "set"
+
+#: gncal/getdate.y:401
+msgid "october"
+msgstr "outubro"
+
+#: gncal/getdate.y:402
+msgid "november"
+msgstr "novembro"
+
+#: gncal/getdate.y:403
+msgid "december"
+msgstr "dezembro"
+
+#: gncal/getdate.y:404
+msgid "sunday"
+msgstr "domingo"
+
+#: gncal/getdate.y:405
+msgid "monday"
+msgstr "segunda"
+
+#: gncal/getdate.y:406
+msgid "tuesday"
+msgstr "terça"
+
+#: gncal/getdate.y:407
+msgid "tues"
+msgstr "ter"
+
+#: gncal/getdate.y:408
+msgid "wednesday"
+msgstr "quarta"
+
+#: gncal/getdate.y:409
+msgid "wednes"
+msgstr "qua"
+
+#: gncal/getdate.y:410
+msgid "thursday"
+msgstr "quinta"
+
+#: gncal/getdate.y:411
+msgid "thur"
+msgstr "qui"
+
+#: gncal/getdate.y:412
+msgid "thurs"
+msgstr "quinta"
+
+#: gncal/getdate.y:413
+msgid "friday"
+msgstr "sexta"
+
+#: gncal/getdate.y:414
+msgid "saturday"
+msgstr "sábado"
+
+#: gncal/getdate.y:420
+msgid "year"
+msgstr "ano"
+
+#: gncal/getdate.y:421
+msgid "month"
+msgstr "mês"
+
+#: gncal/getdate.y:422
+msgid "fortnight"
+msgstr "quinzena"
+
+#: gncal/getdate.y:423
+msgid "week"
+msgstr "semana"
+
+#: gncal/getdate.y:424
+msgid "day"
+msgstr "dia"
+
+#: gncal/getdate.y:425
+msgid "hour"
+msgstr "hora"
+
+#: gncal/getdate.y:426
+msgid "minute"
+msgstr "minuto"
+
+#: gncal/getdate.y:427
+msgid "min"
+msgstr ""
+
+#: gncal/getdate.y:428
+msgid "second"
+msgstr "segundo"
+
+#: gncal/getdate.y:429
+msgid "sec"
+msgstr "seg"
+
+#: gncal/getdate.y:435
+msgid "tomorrow"
+msgstr "amanhã"
+
+#: gncal/getdate.y:436
+msgid "yesterday"
+msgstr "ontem"
+
+#: gncal/getdate.y:437
+msgid "today"
+msgstr "hoje"
+
+#: gncal/getdate.y:438
+msgid "now"
+msgstr "agora"
+
+#: gncal/getdate.y:439 gnomecard/dialog.c:1670 gnomecard/dialog.c:1671
+msgid "last"
+msgstr "último"
+
+#: gncal/getdate.y:440
+msgid "this"
+msgstr "este"
+
+#: gncal/getdate.y:441
+msgid "next"
+msgstr "próximo"
+
+#: gncal/getdate.y:442 gnomecard/dialog.c:1670 gnomecard/dialog.c:1671
+msgid "first"
+msgstr "primeiro"
+
+#. { N_("second"),		tUNUMBER,	2 },
+#: gncal/getdate.y:444
+msgid "third"
+msgstr "terceiro"
+
+#: gncal/getdate.y:445
+msgid "fourth"
+msgstr "quarto"
+
+#: gncal/getdate.y:446
+msgid "fifth"
+msgstr "quinto"
+
+#: gncal/getdate.y:447
+msgid "sixth"
+msgstr "sexto"
+
+#: gncal/getdate.y:448
+msgid "seventh"
+msgstr "sétimo"
+
+#: gncal/getdate.y:449
+msgid "eighth"
+msgstr "oitavo"
+
+#: gncal/getdate.y:450
+msgid "ninth"
+msgstr "nono"
+
+#: gncal/getdate.y:451
+msgid "tenth"
+msgstr "décimo"
+
+#: gncal/getdate.y:452
+msgid "eleventh"
+msgstr "décimo primeiro"
+
+#: gncal/getdate.y:453
+msgid "twelfth"
+msgstr "décimo segundo"
+
+#: gncal/getdate.y:454
+msgid "ago"
+msgstr ""
+
+#: gncal/gncal-day-view.c:135 gncal/gncal-full-day.c:495
+#: gncal/gncal-full-day.c:504 gncal/gncal-full-day.c:1671
+msgid "New appointment..."
+msgstr "Novo compromisso..."
+
+#: gncal/gncal-full-day.c:492 gncal/gncal-full-day.c:500
+msgid "Edit this appointment..."
+msgstr "Editar este compromisso..."
+
+#: gncal/gncal-full-day.c:493
+msgid "Delete this appointment"
+msgstr "Apagar este compromisso"
+
+#: gncal/gncal-full-day.c:499
+msgid "Make this appointment movable"
+msgstr "Tornar este compromisso móvel"
+
+#: gncal/gncal-full-day.c:501
+msgid "Delete this occurance"
+msgstr "Apagar esta ocorrência"
+
+#: gncal/gncal-full-day.c:502
+msgid "Delete all occurances"
+msgstr "Apagar todas as ocorrências"
+
+#: gncal/gncal-todo.c:99
+msgid "Create to-do item"
+msgstr "Criar item de tarefa"
+
+#: gncal/gncal-todo.c:99
+msgid "Edit to-do item"
+msgstr "Editar item de tarefa"
+
+#: gncal/gncal-todo.c:199
+msgid "Add to-do item..."
+msgstr "Adicionar item de tarefa..."
+
+#: gncal/gncal-todo.c:200 gnomecard/list.c:62
+msgid "Edit this item..."
+msgstr "Editar este item..."
+
+#: gncal/gncal-todo.c:201 gnomecard/list.c:64
+msgid "Delete this item"
+msgstr "Apagar este item"
+
+#. Label
+#: gncal/gncal-todo.c:241
+msgid "To-do list"
+msgstr "Lista de tarefas"
+
+#. Add
+#: gncal/gncal-todo.c:272
+msgid "Add..."
+msgstr "Adicionar..."
+
+#. Edit
+#: gncal/gncal-todo.c:281
+msgid "Edit..."
+msgstr "Editar..."
+
+#. Delete
+#: gncal/gncal-todo.c:292 gnomecard/gnomecard.c:470
+msgid "Delete"
+msgstr "Apagar"
+
+#: gncal/gnome-cal.c:57
+msgid "Day View"
+msgstr "Visualização do Dia"
+
+#: gncal/gnome-cal.c:58
+msgid "Week View"
+msgstr "Visualização da Semana"
+
+#: gncal/gnome-cal.c:59
+msgid "Month View"
+msgstr "Visualização do Mês"
+
+#: gncal/gnome-cal.c:60
+msgid "Year View"
+msgstr "Visualização do Ano"
+
+#: gncal/gnome-cal.c:333 gncal/gnome-cal.c:368 gncal/gnome-cal.c:398
+msgid "Reminder of your appointment at "
+msgstr "Relembrar do compromisso em "
+
+#: gncal/goto.c:82
+msgid "Year:"
+msgstr "Ano:"
+
+#: gncal/goto.c:264
+msgid "Go to date"
+msgstr "Ir para o dia"
+
+#. Instructions
+#: gncal/goto.c:273
+msgid ""
+"Please select the date you want to go to.\n"
+"When you click on a day, you will be taken\n"
+"to that date."
+msgstr ""
+"Por favor selecione a data para a qual se\n"
+"se deseja ir. Após clique em um dia e a data\n"
+"selecionada será apresentada."
+
+#: gncal/goto.c:310
+msgid "Go to today"
+msgstr "Ir para o dia de hoje"
+
+#: gncal/main.c:53
+msgid "Outline:"
+msgstr "Contorno:"
+
+#: gncal/main.c:54
+msgid "Headings:"
+msgstr "Cabeçalhos:"
+
+#: gncal/main.c:55
+msgid "Empty days:"
+msgstr "Dias vazios:"
+
+#: gncal/main.c:56
+msgid "Appointments:"
+msgstr "Compromissos:"
+
+#: gncal/main.c:57
+msgid "Highlighted day:"
+msgstr "Dia destacado:"
+
+#: gncal/main.c:58
+msgid "Day numbers:"
+msgstr "Números de dias:"
+
+#: gncal/main.c:59
+msgid "Current day's number:"
+msgstr "Número do dia atual:"
+
+#: gncal/main.c:155
+msgid "Gnome Calendar"
+msgstr "Calendário GNOME"
+
+#: gncal/main.c:158
+msgid "The GNOME personal calendar and schedule manager."
+msgstr "O calendário pessoal GNOME e o gerente de tarefas"
+
+#: gncal/main.c:306
+msgid "Open calendar"
+msgstr "Abrir calendário"
+
+#: gncal/main.c:347
+msgid "Save calendar"
+msgstr "Salvar calendário"
+
+#: gncal/main.c:387
+#, c-format
+msgid ""
+"File %s has changed since it was loaded\n"
+"Continue?"
+msgstr ""
+"Arquivo %s foi alterado desde que foi carregado\n"
+"Continuar?"
+
+#: gncal/main.c:420
+msgid "_New calendar"
+msgstr "_Novo calendário"
+
+#: gncal/main.c:421
+msgid "Create a new calendar"
+msgstr "Criar um novo calendário"
+
+#: gncal/main.c:440
+msgid "_New appointment..."
+msgstr "_Novo compromisso..."
+
+#: gncal/main.c:441 gncal/main.c:473
+msgid "Create a new appointment"
+msgstr "Criar um novo compromisso"
+
+#: gncal/main.c:443
+msgid "New appointment for _today..."
+msgstr "Novo compromisso para _hoje..."
+
+#: gncal/main.c:444
+msgid "Create a new appointment for today"
+msgstr "Criar um novo compromisso para hoje"
+
+#: gncal/main.c:473 gnomecard/gnomecard.c:396
+msgid "New"
+msgstr "Novo"
+
+#: gncal/main.c:477 gnomecard/gnomecard.c:422 gnomecard/gnomecard.c:590
+msgid "Prev"
+msgstr "Anterior"
+
+#: gncal/main.c:477
+msgid "Go back in time"
+msgstr "Retornar no tempo"
+
+#: gncal/main.c:478
+msgid "Today"
+msgstr "Hoje"
+
+#: gncal/main.c:478
+msgid "Go to present time"
+msgstr "Ir para o tempo presente"
+
+#: gncal/main.c:479 gnomecard/gnomecard.c:426 gnomecard/gnomecard.c:594
+msgid "Next"
+msgstr "Próximo"
+
+#: gncal/main.c:479
+msgid "Go forward in time"
+msgstr "Avançar no tempo"
+
+#: gncal/main.c:483
+msgid "Go to"
+msgstr "Ir para"
+
+#: gncal/main.c:483
+msgid "Go to a specific date"
+msgstr "Ir para uma data específica"
+
+#. i18n: This "%s%s" indicates possession. Languages where the order is
+#. the inverse should translate it to "%2$s%1$s".
+#: gncal/main.c:521
+#, c-format
+msgid "%s%s"
+msgstr ""
+
+#: gncal/main.c:521
+msgid "'s calendar"
+msgstr "do calendário"
+
+#: gncal/main.c:689
+msgid "Show events and quit"
+msgstr "Mostrar eventos e finalizar"
+
+#: gncal/main.c:691
+msgid "Specifies start date [for --events]"
+msgstr "Especificar data de início [para --eventos]"
+
+
+#: gncal/main.c:691 gncal/main.c:696
+msgid "DATE"
+msgstr "DATA"
+
+#: gncal/main.c:692
+msgid "File to load calendar from"
+msgstr "Arquivo de calendário a ser carregado"
+
+#: gncal/main.c:692
+msgid "FILE"
+msgstr "ARQUIVO"
+
+#: gncal/main.c:693
+msgid "Load the user calendar"
+msgstr "Carregar o calendário de usuário"
+
+#: gncal/main.c:694
+msgid "Geometry for starting up"
+msgstr "Geometria para inicialização"
+
+#: gncal/main.c:694
+msgid "GEOMETRY"
+msgstr "GEOMETRIA"
+
+#: gncal/main.c:695
+msgid "The startup view mode"
+msgstr "Modo de visão ao iniciar"
+
+#: gncal/main.c:695
+msgid "VIEW"
+msgstr "VISÃO"
+
+#: gncal/main.c:696
+msgid "Specifies ending date [for --events]"
+msgstr "Especificar data final [para --eventos]"
+
+#: gncal/main.c:697
+msgid "If used, starts in iconic mode"
+msgstr "Caso usando, inicia em modo de ícone"
+
+#: gncal/month-view.c:88 gncal/year-view.c:307
+msgid "%a %b %d %Y"
+msgstr ""
+
+#: gncal/month-view.c:157 gncal/year-view.c:230
+msgid "_New appointment in this day..."
+msgstr "_Novo compromisso neste dia..."
+
+#: gncal/month-view.c:161 gncal/year-view.c:234
+msgid "Jump to this _day"
+msgstr "Ir para este _dia"
+
+#: gncal/month-view.c:162 gncal/year-view.c:235
+msgid "Jump to this _week"
+msgstr "Ir para esta _semana"
+
+#: gncal/month-view.c:163
+msgid "Jump to this _year"
+msgstr "Ir para este _ano"
+
+#: gncal/month-view.c:755
+msgid "%B %Y"
+msgstr ""
+
+#: gncal/prop.c:255
+msgid "Time display"
+msgstr "Apresentação da data"
+
+#. Time format
+#: gncal/prop.c:259
+msgid "Time format"
+msgstr "Formato da data e horário"
+
+#: gncal/prop.c:260
+msgid "12-hour (AM/PM)"
+msgstr "12-horas (AM/PM)"
+
+#: gncal/prop.c:261
+msgid "24-hour"
+msgstr "24 horas"
+
+#. Weeks start on
+#: gncal/prop.c:271
+msgid "Weeks start on"
+msgstr "Semana começa no(a)"
+
+#. Day range
+#: gncal/prop.c:283
+msgid "Day range"
+msgstr "Faixa de dias"
+
+#: gncal/prop.c:294
+msgid ""
+"Please select the start and end hours you want\n"
+"to be displayed in the day view and week view.\n"
+"Times outside this range will not be displayed\n"
+"by default."
+msgstr ""
+"Por favor selecione a hora de início e final que\n"
+"se deseja mostrar na visão de dia e semana. \n"
+"Horário fora desta faixa não serão mostradas\n"
+"por padrão."
+
+#: gncal/prop.c:310
+msgid "Day start:"
+msgstr "Dia de início:"
+
+#: gncal/prop.c:321
+msgid "Day end:"
+msgstr "Dia final:"
+
+#: gncal/prop.c:444
+msgid "Colors for months"
+msgstr "Cores para meses"
+
+#: gncal/prop.c:447
+msgid "Colors"
+msgstr "Cores"
+
+#: gncal/prop.c:513
+msgid "Preferences"
+msgstr "Preferências"
+
+#: gncal/quick-view.c:175
+msgid "No appointments for this day"
+msgstr "Não há compromissos para este dia"
+
+#: gncal/timeutil.c:84
+msgid "am"
+msgstr ""
+
+#: gncal/timeutil.c:84
+msgid "pm"
+msgstr ""
+
+#: gncal/timeutil.c:86
+msgid "h"
+msgstr ""
+
+#: gncal/year-view.c:236
+msgid "Jump to this _month"
+msgstr "Ir para este _mês"
+
+#: gnomecard/addresslist.c:37 gnomecard/canvas.c:283 gnomecard/phonelist.c:39
+msgid "Home"
+msgstr "Doméstico"
+
+#: gnomecard/addresslist.c:37 gnomecard/canvas.c:350 gnomecard/phonelist.c:39
+msgid "Work"
+msgstr "Profissional"
+
+#: gnomecard/addresslist.c:37
+msgid "Postal Box"
+msgstr "Caixa Postal"
+
+#: gnomecard/addresslist.c:38
+msgid "Parcel"
+msgstr "Quantidade"
+
+#: gnomecard/addresslist.c:38
+msgid "Domestic"
+msgstr "Doméstico"
+
+#: gnomecard/addresslist.c:38
+msgid "International"
+msgstr "Internacional"
+
+#. make a frame for the address entry area
+#: gnomecard/addresslist.c:255
+msgid "Address"
+msgstr "Endereço"
+
+#: gnomecard/addresslist.c:267
+msgid "Select address:"
+msgstr "Selecionar endereço"
+
+#: gnomecard/addresslist.c:295
+msgid "Street 1:"
+msgstr "Rua 1:"
+
+#: gnomecard/addresslist.c:307
+msgid "Street 2:"
+msgstr "Rua 2:"
+
+#: gnomecard/addresslist.c:318
+msgid "City:"
+msgstr "Cidade:"
+
+#: gnomecard/addresslist.c:329
+msgid "State:"
+msgstr "Estado:"
+
+#: gnomecard/addresslist.c:340
+msgid "Zip Code:"
+msgstr "Código Postal:"
+
+#: gnomecard/addresslist.c:351
+msgid "Country:"
+msgstr "País:"
+
+#: gnomecard/canvas.c:184
+msgid "Phone Numbers"
+msgstr "Telefone"
+
+#: gnomecard/canvas.c:203
+msgid "Home:"
+msgstr "Pessoal:"
+
+#: gnomecard/canvas.c:232
+msgid "Work:"
+msgstr "Comercial:"
+
+#: gnomecard/canvas.c:262 gnomecard/dialog.c:469
+msgid "Addresses"
+msgstr "Endereços"
+
+#: gnomecard/canvas.c:416
+msgid "Memo(s)"
+msgstr "Anotações"
+
+#: gnomecard/canvas.c:496
+msgid "No fname for this card."
+msgstr "Nenhum nome para este cartão"
+
+#: gnomecard/columnhdrs.c:32
+msgid "Full Name"
+msgstr "Nome completo"
+
+#: gnomecard/columnhdrs.c:33
+msgid "Card Name"
+msgstr "Nome do cartão"
+
+#: gnomecard/columnhdrs.c:34
+msgid "First Name"
+msgstr "Primeiro Nome"
+
+#: gnomecard/columnhdrs.c:35
+msgid "Middle Name"
+msgstr "Segundo Nome"
+
+#: gnomecard/columnhdrs.c:36
+msgid "Last Name"
+msgstr "Último Nome"
+
+#: gnomecard/columnhdrs.c:37
+msgid "Prefix"
+msgstr "Prefixo"
+
+#: gnomecard/columnhdrs.c:38
+msgid "Suffix"
+msgstr "Sufixo"
+
+#: gnomecard/columnhdrs.c:39 gnomecard/dialog.c:411
+msgid "Organization"
+msgstr "Organização"
+
+#: gnomecard/columnhdrs.c:40
+msgid "Title"
+msgstr "Cargo"
+
+#: gnomecard/columnhdrs.c:41
+msgid "Email"
+msgstr ""
+
+#: gnomecard/columnhdrs.c:42
+msgid "Web Page"
+msgstr "Página Web"
+
+#: gnomecard/columnhdrs.c:43
+msgid "Home Phone"
+msgstr "Telefone Pessoal"
+
+#: gnomecard/columnhdrs.c:44
+msgid "Work Phone"
+msgstr "Telefone Comercial"
+
+#: gnomecard/dialog.c:98
+msgid "America On-Line"
+msgstr ""
+
+#: gnomecard/dialog.c:98
+msgid "Apple Link"
+msgstr "Ligação Apple"
+
+#: gnomecard/dialog.c:98
+msgid "AT&T"
+msgstr ""
+
+#: gnomecard/dialog.c:99
+msgid "CIS"
+msgstr ""
+
+#: gnomecard/dialog.c:99
+msgid "e-World"
+msgstr ""
+
+#: gnomecard/dialog.c:99
+msgid "Internet"
+msgstr ""
+
+#: gnomecard/dialog.c:99
+msgid "IBM"
+msgstr ""
+
+#: gnomecard/dialog.c:100
+msgid "MCI"
+msgstr ""
+
+#: gnomecard/dialog.c:100
+msgid "Power Share"
+msgstr ""
+
+#: gnomecard/dialog.c:100
+msgid "Prodigy"
+msgstr ""
+
+#: gnomecard/dialog.c:100
+msgid "TLX"
+msgstr ""
+
+#: gnomecard/dialog.c:101
+msgid "X400"
+msgstr ""
+
+#: gnomecard/dialog.c:320
+msgid "Identity"
+msgstr "Identidade"
+
+#: gnomecard/dialog.c:324
+msgid "File As:"
+msgstr "Arquivar como:"
+
+#: gnomecard/dialog.c:327
+msgid "Take from Name"
+msgstr "Obter a partir do Nome"
+
+#. create name frame
+#: gnomecard/dialog.c:340
+msgid "Name"
+msgstr "Nome"
+
+#. first name
+#: gnomecard/dialog.c:348
+msgid "First:"
+msgstr "Primeiro:"
+
+#: gnomecard/dialog.c:360
+msgid "Middle:"
+msgstr "Segundo:"
+
+#: gnomecard/dialog.c:370
+msgid "Last:"
+msgstr "Último:"
+
+#: gnomecard/dialog.c:384
+msgid "Prefix:"
+msgstr "Prefixo:"
+
+#: gnomecard/dialog.c:395
+msgid "Suffix:"
+msgstr "Sufixo:"
+
+#: gnomecard/dialog.c:417
+msgid "Name:"
+msgstr "Nome:"
+
+#: gnomecard/dialog.c:428
+msgid "Title:"
+msgstr "Cargo:"
+
+#. internet related information
+#: gnomecard/dialog.c:440
+msgid "Internet Info"
+msgstr "Informações Internet"
+
+#: gnomecard/dialog.c:446
+msgid "Email Address:"
+msgstr "Email"
+
+#: gnomecard/dialog.c:457
+msgid "Homepage URL:"
+msgstr "URL de Página Pessoal"
+
+#. make a frame for the phone entry area
+#: gnomecard/dialog.c:474 gnomecard/phonelist.c:232
+msgid "Phone"
+msgstr "Fone"
+
+#: gnomecard/dialog.c:508
+msgid "Geographical"
+msgstr "Geográfico"
+
+#: gnomecard/dialog.c:516
+msgid "Time Zone"
+msgstr "Zona de Horário"
+
+#: gnomecard/dialog.c:523
+msgid "hrs."
+msgstr ""
+
+#: gnomecard/dialog.c:531
+msgid "mins."
+msgstr ""
+
+#: gnomecard/dialog.c:539
+msgid "Geographic Position"
+msgstr "Posição Geográfica"
+
+#: gnomecard/dialog.c:546
+msgid "lat, "
+msgstr ""
+
+#: gnomecard/dialog.c:554
+msgid "lon."
+msgstr ""
+
+#: gnomecard/dialog.c:566
+msgid "Explanatory"
+msgstr "Explanatória"
+
+#: gnomecard/dialog.c:569
+msgid "Comment:"
+msgstr "Comentário:"
+
+#: gnomecard/dialog.c:597
+msgid "Last Revision:"
+msgstr "Última Revisão:"
+
+#: gnomecard/dialog.c:599
+msgid "The last revision goes here."
+msgstr "Última revisão vai aqui."
+
+#: gnomecard/dialog.c:605
+msgid "Security"
+msgstr "Segurança"
+
+#: gnomecard/dialog.c:608
+msgid "Public Key:"
+msgstr "Chave pública:"
+
+#: gnomecard/dialog.c:626
+msgid "PGP"
+msgstr ""
+
+#: gnomecard/dialog.c:633
+msgid "X509"
+msgstr ""
+
+#: gnomecard/dialog.c:933
+msgid "Layout"
+msgstr ""
+
+#: gnomecard/dialog.c:937
+msgid "Column Display"
+msgstr "Mostrar Coluna"
+
+#. make list of possible columns to add
+#: gnomecard/dialog.c:944
+msgid "Possible Columns"
+msgstr "Colunas Possíveis"
+
+#. make list of currently displayed column types
+#: gnomecard/dialog.c:960
+msgid "Displayed Columns"
+msgstr "Colunas Apresentadas"
+
+#. add add/remove buttons in center
+#: gnomecard/dialog.c:976 gnomecard/gnomecard.c:572
+msgid "Add"
+msgstr "Adicionar"
+
+#: gnomecard/dialog.c:977
+msgid "Remove"
+msgstr "Remover"
+
+#: gnomecard/dialog.c:978
+msgid "Move Up"
+msgstr "Mover Acima"
+
+#: gnomecard/dialog.c:979
+msgid "Move Dn"
+msgstr "Mover Abaixo"
+
+#. + 7 for case crd->fname == 0, which sprintf's to "(null)"
+#: gnomecard/dialog.c:1082
+msgid "Add E-mail for "
+msgstr "Adicionar Email para "
+
+#: gnomecard/dialog.c:1084
+#, c-format
+msgid "Add E-mail for %s"
+msgstr "Adicionar Email para %s"
+
+#: gnomecard/dialog.c:1100
+msgid "E-mail type:"
+msgstr "Tipo de Email:"
+
+#. + 7 for case crd->fname == 0, which sprintf's to "(null)"
+#: gnomecard/dialog.c:1164
+msgid "Add Telephone Number for "
+msgstr "Adicionar Número de Telefone para "
+
+#: gnomecard/dialog.c:1166
+#, c-format
+msgid "Add Telephone Number for %s"
+msgstr "Adicionar Número de Telefone para %s"
+
+#: gnomecard/dialog.c:1180
+msgid "Phone type:"
+msgstr "Tipo de Telefone"
+
+#. + 7 for case crd->fname == 0, which sprintf's to "(null)"
+#: gnomecard/dialog.c:1263
+msgid "Add Delivery Address for "
+msgstr "Adicionar Endereço de Entrega para "
+
+#: gnomecard/dialog.c:1265
+#, c-format
+msgid "Add Delivery Address for %s"
+msgstr "Adicionar Endereço de Entrega para  %s"
+
+#: gnomecard/dialog.c:1280
+msgid "Address type:"
+msgstr "Tipo de Endereço"
+
+#: gnomecard/dialog.c:1407 gnomecard/dialog.c:1408
+msgid "Error reading file."
+msgstr "Erro na leitura do arquivo"
+
+#: gnomecard/dialog.c:1434
+msgid "Append GnomeCard File"
+msgstr "Anexar Arquivo de Cartões Gnome"
+
+#: gnomecard/dialog.c:1475
+msgid "Open GnomeCard File"
+msgstr "Abrir Arquivo de Cartões Gnome"
+
+#: gnomecard/dialog.c:1499
+msgid "Save GnomeCard File As..."
+msgstr "Salvar Arquivo de Cartões Gnome Como..."
+
+#: gnomecard/dialog.c:1517
+msgid "gnomecard"
+msgstr "cartão GNOME"
+
+#: gnomecard/dialog.c:1520
+msgid "Electronic Business Card Manager"
+msgstr "Gerente Eletrônico de Cartões de Negócios"
+
+#: gnomecard/dialog.c:1657
+msgid "No matching record found."
+msgstr "Nenhum registro foi encontrado"
+
+#: gnomecard/dialog.c:1672
+#, c-format
+msgid ""
+"Reached %s record.\n"
+"Continue from the %s one?"
+msgstr "Continuar a partir de %s? "
+
+#: gnomecard/dialog.c:1707
+msgid "Find Card"
+msgstr "Encontrar Cartão"
+
+#: gnomecard/dialog.c:1707 gnomecard/gnomecard.c:481 gnomecard/gnomecard.c:604
+msgid "Find"
+msgstr "Encontrar"
+
+#: gnomecard/dialog.c:1716
+msgid "Find:"
+msgstr "Encontrar:"
+
+#: gnomecard/dialog.c:1719
+msgid "Case Sensitive"
+msgstr "Sensível à Maiúsculas/Minúsculas"
+
+#: gnomecard/dialog.c:1722
+msgid "Find Backwards"
+msgstr "Pesquisar para trás"
+
+#: gnomecard/gnomecard.c:267
+msgid ""
+"There are cards which are currently being modified.\n"
+"Finish any pending modifications and try again."
+msgstr ""
+"Há cartões que foram modificados. \n"
+"Finalize qualquer modificação pendente e \n"
+"tente novamente."
+
+#: gnomecard/gnomecard.c:280
+msgid " changed. Save?"
+msgstr " alterado. Salvar ?"
+
+#: gnomecard/gnomecard.c:384
+msgid "A new Gnomecard could not be spawned. Maybe it is not in your path."
+msgstr "Um novo cartão Gnome não pode ser gerado. \n"
+"Talvez ele não esteja no caminho padrão."
+
+#: gnomecard/gnomecard.c:396
+msgid "Create a new card file"
+msgstr "Criar um novo arquivo de cartões"
+
+#: gnomecard/gnomecard.c:405
+msgid "_Append..."
+msgstr "_Anexar..."
+
+#: gnomecard/gnomecard.c:406
+msgid "Add the contents of another Card File."
+msgstr "Adicionar o conteúdo de outro Arquivo de Cartões"
+
+#: gnomecard/gnomecard.c:418 gnomecard/gnomecard.c:586
+msgid "First"
+msgstr "Primeiro"
+
+#: gnomecard/gnomecard.c:418 gnomecard/gnomecard.c:586
+msgid "First card"
+msgstr "Primeiro cartão"
+
+#: gnomecard/gnomecard.c:422 gnomecard/gnomecard.c:590
+msgid "Previous card"
+msgstr "Cartão anterior"
+
+#: gnomecard/gnomecard.c:426 gnomecard/gnomecard.c:594
+msgid "Next card"
+msgstr "Próximo cartão"
+
+#: gnomecard/gnomecard.c:430 gnomecard/gnomecard.c:598
+msgid "Last"
+msgstr "Último"
+
+#: gnomecard/gnomecard.c:430 gnomecard/gnomecard.c:598
+msgid "Last card"
+msgstr "Último cartão"
+
+#: gnomecard/gnomecard.c:439
+msgid "By Card Name"
+msgstr "Por Nome no Cartão"
+
+#: gnomecard/gnomecard.c:443
+msgid "By Name"
+msgstr "Por Nome"
+
+#: gnomecard/gnomecard.c:447
+msgid "By E-mail"
+msgstr "Por Email"
+
+#: gnomecard/gnomecard.c:451
+msgid "By Organization"
+msgstr "Por Organização"
+
+#: gnomecard/gnomecard.c:466 gnomecard/gnomecard.c:519
+msgid "Card"
+msgstr "Cartão"
+
+#: gnomecard/gnomecard.c:466 gnomecard/gnomecard.c:576
+msgid "Edit card"
+msgstr "Editar cartão"
+
+#: gnomecard/gnomecard.c:470
+msgid "Delete element"
+msgstr "Apagar elemento"
+
+#: gnomecard/gnomecard.c:476
+msgid "Go"
+msgstr "Ir"
+
+#: gnomecard/gnomecard.c:476
+msgid "Change current card"
+msgstr "Mudar o cartão atual"
+
+#: gnomecard/gnomecard.c:481 gnomecard/gnomecard.c:604
+msgid "Search card"
+msgstr "Pesquisar cartão"
+
+#: gnomecard/gnomecard.c:485
+msgid "Sort"
+msgstr "Ordenar"
+
+#: gnomecard/gnomecard.c:485
+msgid "Set sort criteria"
+msgstr "Definir critério de ordenamento"
+
+#: gnomecard/gnomecard.c:519
+msgid "Toggle Card View"
+msgstr "Alternar Visão de Cartão"
+
+#: gnomecard/gnomecard.c:524
+msgid "Tree"
+msgstr "Árvore"
+
+#: gnomecard/gnomecard.c:524
+msgid "Toggle Tree View"
+msgstr "Alternar Visão da Árvore"
+
+#: gnomecard/gnomecard.c:562
+msgid "Open"
+msgstr "Abrir"
+
+#: gnomecard/gnomecard.c:562
+msgid "Open file"
+msgstr "Abrir arquivo"
+
+#: gnomecard/gnomecard.c:566
+msgid "Save"
+msgstr "Salvar"
+
+#: gnomecard/gnomecard.c:566
+msgid "Save changes"
+msgstr "Salvar alterações"
+
+#: gnomecard/gnomecard.c:572
+msgid "Create new card"
+msgstr "Criar um novo cartão"
+
+#: gnomecard/gnomecard.c:576
+msgid "Edit"
+msgstr "Editar"
+
+#: gnomecard/gnomecard.c:580
+msgid "Del"
+msgstr "Apagar"
+
+#: gnomecard/gnomecard.c:580
+msgid "Delete card"
+msgstr "Apagar cartão"
+
+#: gnomecard/list.c:457
+msgid "Name: "
+msgstr "Nome: "
+
+#: gnomecard/list.c:462
+msgid "Phones:\n"
+msgstr "Fones:\n"
+
+#: gnomecard/list.c:472
+msgid "Email: "
+msgstr ""
+
+#: gnomecard/phonelist.c:39
+msgid "Preferred"
+msgstr "Preferências"
+
+#: gnomecard/phonelist.c:40
+msgid "Voice"
+msgstr "Voz"
+
+#: gnomecard/phonelist.c:40
+msgid "Fax"
+msgstr ""
+
+#: gnomecard/phonelist.c:40
+msgid "Message Recorder"
+msgstr "Gravador de Mensagens"
+
+#: gnomecard/phonelist.c:41
+msgid "Cellular"
+msgstr "Celular"
+
+#: gnomecard/phonelist.c:41
+msgid "Pager"
+msgstr ""
+
+#: gnomecard/phonelist.c:41
+msgid "Bulletin Board"
+msgstr "BBS"
+
+#: gnomecard/phonelist.c:42
+msgid "Modem"
+msgstr ""
+
+#: gnomecard/phonelist.c:42
+msgid "Car"
+msgstr "Carro"
+
+#: gnomecard/phonelist.c:42
+msgid "ISDN"
+msgstr "RSDI"
+
+#: gnomecard/phonelist.c:42
+msgid "Video"
+msgstr "Vídeo"
+
+#: gnomecard/phonelist.c:244
+msgid "Phone # Type:"
+msgstr "Fone # Tipo:"
+
+#: gnomecard/phonelist.c:272
+msgid "Phone Number:"
+msgstr "Número de Telefone:"
+

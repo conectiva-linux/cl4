@@ -1,0 +1,12 @@
+diff -uNr gnome-pim-1.0.7/configure.in gnome-pim-1.0.7-pt_BR/configure.in
+--- gnome-pim-1.0.7/configure.in	Thu Apr  8 23:58:09 1999
++++ gnome-pim-1.0.7-pt_BR/configure.in	Fri Jun 25 15:38:14 1999
+@@ -50,7 +50,7 @@
+ AC_FUNC_STRFTIME
+ AC_CHECK_FUNCS(getcwd gettimeofday getwd putenv strdup strtoul uname)
+ 
+-ALL_LINGUAS="de es fi fr hu it ko cs no ga pt sv ja ru"
++ALL_LINGUAS="de es fi fr hu it ko cs no ga pt pt_BR sv ja ru"
+ AM_GNU_GETTEXT
+ 
+ AC_SUBST(CFLAGS)
