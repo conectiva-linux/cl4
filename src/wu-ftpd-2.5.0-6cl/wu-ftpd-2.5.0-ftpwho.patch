@@ -1,0 +1,11 @@
+--- wu-ftpd-2.5.0/src/ftpcount.c.ftpwho	Mon Jun  7 18:42:09 1999
++++ wu-ftpd-2.5.0/src/ftpcount.c	Mon Jun  7 18:43:19 1999
+@@ -275,7 +275,7 @@
+ #elif defined(sun)
+                     sprintf(line,"/usr/ucb/ps auxww %d",buf[which]);
+ #else
+-#if defined (LINUX)
++#if defined (LINUX_BUT_NOT_REDHAT_6_0)
+                     sprintf(line,"/bin/ps axwww %d",buf[which]);
+ #else
+                     sprintf(line,"/bin/ps -f -p %d",buf[which]);
