@@ -1,0 +1,56 @@
+diff -Naur gd1.2.orig/Makefile gd1.2/Makefile
+--- gd1.2.orig/Makefile	Tue Aug  8 14:28:27 1995
++++ gd1.2/Makefile	Mon Apr 20 02:52:14 1998
+@@ -7,18 +7,22 @@
+ #If the ar command fails on your system, consult the ar manpage
+ #for your system. 
+ 
+-CC=gcc 
++CC=gcc
++CFLAGS=$(RPM_OPT_FLAGS) -fPIC
++CCNORM=gcc -O
+ AR=ar
+-CFLAGS=-O
+ LIBS=-L./ -lgd -lm
+ 
+-all: libgd.a gddemo giftogd webgif
++SHLIB=libgd.so.1.2
++SHLIBMAJ=libgd.so.1
+ 
+-gddemo: gddemo.o libgd.a gd.h gdfonts.h gdfontl.h
+-	$(CC) gddemo.o -o gddemo	$(LIBS)
++all: $(SHLIB) gddemo giftogd webgif
+ 
+-giftogd: giftogd.o libgd.a gd.h
+-	$(CC) giftogd.o -o giftogd	$(LIBS) 
++gddemo: gddemo.c $(SHLIB) gd.h gdfonts.h gdfontl.h
++	$(CCNORM) gddemo.c -o gddemo	$(LIBS)
++
++giftogd: giftogd.c $(SHLIB) gd.h
++	$(CCNORM) giftogd.c -o giftogd	$(LIBS) 
+ 
+ libgd.a: gd.o gdfontt.o gdfonts.o gdfontmb.o gdfontl.o gdfontg.o \
+ 	gd.h gdfontt.h gdfonts.h gdfontmb.h gdfontl.h gdfontg.h
+@@ -26,9 +30,19 @@
+ 	$(AR) rc libgd.a gd.o gdfontt.o gdfonts.o gdfontmb.o \
+ 		gdfontl.o gdfontg.o
+ 
+-webgif: webgif.o libgd.a gd.h
+-	$(CC) webgif.o -o webgif	$(LIBS)
++$(SHLIB): gd.o gdfontt.o gdfonts.o gdfontmb.o gdfontl.o gdfontg.o \
++	gd.h gdfontt.h gdfonts.h gdfontmb.h gdfontl.h gdfontg.h
++	rm -f $(SHLIB)
++	gcc -shared -Wl,-soname,$(SHLIBMAJ) -o $(SHLIB) \
++		gd.o gdfontt.o gdfonts.o gdfontmb.o \
++		gdfontl.o gdfontg.o
++#	cp -p $(SHLIB) /usr/lib
++	ln -sf $(SHLIB) libgd.so
++#	ldconfig
++
++webgif: webgif.c $(SHLIB) gd.h
++	$(CCNORM) webgif.c -o webgif	$(LIBS)
+ 
+ clean:
+-	rm -f *.o *.a gddemo giftogd 
++	rm -f *.o *.a *.so* gddemo giftogd 
+ 
