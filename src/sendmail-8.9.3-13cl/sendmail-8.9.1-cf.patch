@@ -1,0 +1,34 @@
+diff -Nur sendmail-8.9.1.orig/cf/cf/conectiva.mc sendmail-8.9.1/cf/cf/conectiva.mc
+--- sendmail-8.9.1.orig/cf/cf/conectiva.mc      Wed Dec 31 21:00:00 1969
++++ sendmail-8.9.1/cf/cf/conectiva.mc   Fri Nov  6 05:49:52 1998
+@@ -0,0 +1,14 @@
++divert(-1)
++include(`../m4/cf.m4')
++define(`confDEF_USER_ID',``8:12'')
++OSTYPE(`linux')
++undefine(`UUCP_RELAY')
++undefine(`BITNET_RELAY')
++FEATURE(redirect)
++FEATURE(always_add_domain)
++FEATURE(use_cw_file)
++FEATURE(local_procmail)
++MAILER(procmail)
++MAILER(smtp)
++FEATURE(access_db)
++FEATURE(relay_hosts_only)
+
+diff -Nur sendmail-8.9.1.orig/cf/ostype/linux.m4 sendmail-8.9.1/cf/ostype/linux.m4
+--- sendmail-8.9.1.orig/cf/ostype/linux.m4	Fri Nov  6 06:35:22 1998
++++ sendmail-8.9.1/cf/ostype/linux.m4	Fri Nov  6 06:35:50 1998
+@@ -11,6 +11,9 @@
+ #
+ #
+ 
+-divert(0)
++divert(-1)
+ VERSIONID(`@(#)linux.m4	8.7 (Berkeley) 5/19/1998')
+-define(`LOCAL_MAILER_PATH', /bin/mail.local)dnl
++define(`PROCMAIL_MAILER_PATH', `/usr/bin/procmail')dnl
++# define(`LOCAL_MAILER_FLAGS', `ShPfn')dnl
++# define(`LOCAL_MAILER_ARGS', `procmail -a $h -d $u')dnl
++define(`STATUS_FILE', `/var/log/sendmail.st')dnl

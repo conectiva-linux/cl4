@@ -1,0 +1,14 @@
+--- sendmail-8.7.5/makemap/makemap.8.marc	Tue Jul 23 17:11:02 1996
++++ sendmail-8.7.5/makemap/makemap.8	Tue Jul 23 17:11:51 1996
+@@ -63,11 +63,6 @@
+ parameter.
+ They may be
+ .Bl -tag -width Fl
+-.It Li dbm
+-DBM format maps.
+-This requires the
+-.Xr ndbm 3
+-library.
+ .It Li btree
+ B-Tree format maps.
+ This requires the new Berkeley

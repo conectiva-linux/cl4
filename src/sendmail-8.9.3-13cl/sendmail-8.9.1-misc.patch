@@ -1,0 +1,15 @@
+diff -Nur sendmail-8.9.1.orig/BuildTools/OS/Linux sendmail-8.9.1/BuildTools/OS/Linux
+--- sendmail-8.9.1.orig/BuildTools/OS/Linux	Tue May 19 20:33:41 1998
++++ sendmail-8.9.1/BuildTools/OS/Linux	Fri Nov  6 02:46:02 1998
+@@ -3,3 +3,11 @@
+ define(`confHFDIR', `/usr/lib')
+ define(`confDEPEND_TYPE', `CC-M')
+ define(`confMANROOT', `/usr/man/man')
++define(`confSBINGRP',`mail')  
++define(`confSBINMODE',`6755') 
++define(`confMAN1',`/usr/man/man1/')
++define(`confMAN5',`/usr/man/man5/')
++define(`confMAN8',`/usr/man/man8/')
++define(`confMAPDEF',`-DNIS')
++define(`confOPTIMIZE',`-O2 -m486 -fno-strength-reduce')
++define(`confLIBS',`-lnsl')

@@ -1,0 +1,11 @@
+diff -Nur sendmail-8.9.1.orig/cf/cf/conectiva.cf sendmail-8.9.1/cf/cf/conectiva.cf
+--- sendmail-8.9.1.orig/cf/cf/conectiva.cf	Mon Jan 18 14:34:57 1999
++++ sendmail-8.9.1/cf/cf/conectiva.cf	Mon Jan 18 14:45:35 1999
+@@ -744,6 +744,7 @@
+ S98
+ 
+ # addresses sent to foo@host.REDIRECT will give a 551 error code
++R$*@$*@$*	$#error $@ 5.7.1 $: "551 Sorry, no redirections."
+ R$* < @ $+ .REDIRECT. >		$: $1 < @ $2 . REDIRECT . > < ${opMode} >
+ R$* < @ $+ .REDIRECT. > <i>	$: $1 < @ $2 . REDIRECT. >
+ R$* < @ $+ .REDIRECT. > < $- >	$# error $@ 5.1.1 $: "551 User has moved; please try " <$1@$2>

@@ -1,0 +1,12 @@
+diff -Nur sendmail-8.9.1.orig/src/Makefile.m4 sendmail-8.9.1/src/Makefile.m4
+--- sendmail-8.9.1.orig/src/Makefile.m4	Mon Nov 30 23:36:45 1998
++++ sendmail-8.9.1/src/Makefile.m4	Mon Nov 30 23:37:15 1998
+@@ -54,7 +54,7 @@
+ STDIR=	${DESTDIR}ifdef(`confSTDIR', `confSTDIR', `/var/log')
+ 
+ # location of sendmail.hf file (usually /usr/share/misc or /usr/lib)
+-HFDIR=	${DESTDIR}ifdef(`confHFDIR', `confHFDIR', `/usr/share/misc')
++HFDIR=	${DESTDIR}ifdef(`confHFDIR', `confHFDIR', `/usr/lib')
+ 
+ # additional .o files needed
+ OBJADD=	ifdef(`confOBJADD', `confOBJADD') ifdef(`confSMOBJADD', `confSMOBJADD')
