@@ -1,0 +1,11 @@
+diff -u markers.c.orig markers.c
+--- markers.c.orig	Sat Oct 24 15:08:07 1998
++++ markers.c	Sat Oct 24 15:07:40 1998
+@@ -87,6 +87,7 @@
+   " -33.93   18.47 \"Cape Town\"           # South Africa          ",
+   "  33.6    -7.6  \"Casablanca\"          # Morocco (Rabat?)      ",
+   "  41.83  -87.75 \"Chicago\"             # Illinois, USA         ",
++  " -25.4   -49.2  \"Conectiva\"           # Curitiba, Brazil      ",
+   "  32.78  -96.80 \"Dallas\"              # Texas, USA            ",
+   "  28.63   77.20 \"New Delhi\"           # India                 ",
+   "  39.75 -105.00 \"Denver\"              # Colorado, USA         ",

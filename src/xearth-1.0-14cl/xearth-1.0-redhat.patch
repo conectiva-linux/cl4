@@ -1,0 +1,12 @@
+*** markers.c.orig	Mon Oct  9 21:51:04 1995
+--- markers.c	Mon Oct  9 21:52:20 1995
+***************
+*** 123,128 ****
+--- 123,129 ----
+    "  45.5  -122.5  \"Portland\"            # Oregon, USA           ",
+    "  -0.2   -78.5  \"Quito\"               # Ecuador               ",
+    "  64.15  -21.97 \"Reykjavik\"           # Iceland               ",
++   "  36.0   -79.0  \"Red Hat Software\"    # Durham, N.C., USA     ",
+    " -22.88  -43.28 \"Rio de Janeiro\"      # Brazil                ",
+    "  41.88   12.50 \"Rome\"                # Italy                 ",
+    "  11.0   106.7  \"Ho Chi Minh City\"    # Vietnam (Hanoi?)      ",
