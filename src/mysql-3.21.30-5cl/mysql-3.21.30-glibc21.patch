@@ -1,0 +1,51 @@
+diff -Nur mysql-3.21.30.orig/client/mysql.cc mysql-3.21.30/client/mysql.cc
+--- mysql-3.21.30.orig/client/mysql.cc	Wed Jun  2 17:34:56 1999
++++ mysql-3.21.30/client/mysql.cc	Wed Jun  2 17:36:50 1999
+@@ -28,6 +28,9 @@
+ void sql_element_free(void *ptr);
+ #include "sql_string.h"
+ 
++#undef HAVE_ASM_TERMBITS_H
++#undef HAVE_TERMCAP_H
++
+ extern "C" {
+ #if defined(HAVE_TERMBITS_H)
+ #include <termbits.h>
+diff -Nur mysql-3.21.30.orig/include/m_string.h mysql-3.21.30/include/m_string.h
+--- mysql-3.21.30.orig/include/m_string.h	Wed Jun  2 17:34:59 1999
++++ mysql-3.21.30/include/m_string.h	Wed Jun  2 17:35:24 1999
+@@ -135,8 +135,8 @@
+ #endif
+ 
+ #if !defined(__cplusplus) && !defined(_WINDOWS)
+-extern char *strpbrk(const char *, const char *);
+-extern char *strstr(const char *, const char *);
++extern char *_strpbrk(const char *, const char *);
++extern char *_strstr(const char *, const char *);
+ #endif
+ extern qsort_cmp get_ptr_compare(uint);
+ extern int is_prefix(const char *, const char *);
+diff -Nur mysql-3.21.30.orig/strings/strstr.c mysql-3.21.30/strings/strstr.c
+--- mysql-3.21.30.orig/strings/strstr.c	Wed Jun  2 17:34:58 1999
++++ mysql-3.21.30/strings/strstr.c	Wed Jun  2 17:37:27 1999
+@@ -13,7 +13,7 @@
+ #include <global.h>
+ #include "m_string.h"
+ 
+-char *strstr(str,search)
++char *_strstr(str,search)
+ register const char *str;
+ const char *search;
+ {
+diff -Nur mysql-3.21.30.orig/sql/mysqld.cc mysql-3.21.30/sql/mysqld.cc
+--- mysql-3.21.30.orig/sql/mysqld.cc	Wed Jun  2 17:34:58 1999
++++ mysql-3.21.30/sql/mysqld.cc	Wed Jun  2 17:40:11 1999
+@@ -51,7 +51,7 @@
+ #endif
+ 
+ #ifdef HAVE_LINUXTHREADS
+-#include <gnu/types.h>
++#include <sys/types.h>
+ #define THR_KILL_SIGNAL SIGINT
+ #else
+ #include <my_pthread.h>			// For thr_setconcurency()

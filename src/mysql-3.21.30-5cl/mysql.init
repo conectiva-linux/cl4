@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# chkconfig: 345 85 15
+# description: Mysql deamon start/stop script.
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+PATH=/sbin:/usr/bin:/usr/sbin:/bin
+basedir=/
+bindir=/usr/bin
+export PATH
+
+mode=$1
+
+# The following test may be removed if mysqld isn't to be run as root.
+if test ! -w /
+then
+  echo "$0: this script must be run as root ... fatal error"
+  exit 1
+fi
+
+# Safeguard (relative paths, core dumps..)
+cd $basedir
+
+case "$mode" in
+ start)
+       if test -x $bindir/safe_mysqld
+       then
+         echo -n "Starting mysql: "
+         $bindir/safe_mysqld --log=/var/log/mysql.log > /dev/null 2>&1 &
+         echo "mysql"
+         touch /var/lock/subsys/mysql
+       else
+         echo "Can't execute $bindir/safe_mysqld"
+       fi
+       ;;
+ stop)
+       echo -n "Shutting down mysql: "
+       $bindir/mysqladmin shutdown
+       echo "done"
+       rm -f /var/lock/subsys/mysql
+       ;;
+ status)
+       status mysqld
+       ;;
+ restart)
+       $0 stop
+       $0 start
+       ;;
+  *)
+    echo "Usage: mysql {start|stop|status|restart}"
+    exit 1
+    ;;
+esac

@@ -1,0 +1,6 @@
+/var/log/mysql.log {
+    postrotate
+        /etc/rc.d/init.d/mysql stop
+        /etc/rc.d/init.d/mysql start
+    endscript
+}
