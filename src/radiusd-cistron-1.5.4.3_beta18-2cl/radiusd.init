@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# radiusd	Start the radius daemon.
+#
+#		This is a script suitable for the Redhat Linux distribution.
+#		Copy it to /etc/rc.d/init.d/radiusd.init and
+#		use tksysv or your favorite runlevel editor to start it
+#		at runlevel 3
+#
+# chkconfig: 345 90 19
+# description: Radius server
+# description(pt_BR): Servidor RADIUS com muitas funções. Visão geral: \
+#	- Suporta acesso baseado em huntgroups \
+#	- Múltiplas entradas DEFAULT no arquivo de usuários \
+#	- Faz cache de todos os arquivos de configuração em memória \
+#	- Mantém uma lista dos usuários conectados (arquivo radutmp) \
+#	- O programa radwho pode ser instalado como fingerd \
+#	- Registra tanto no formato UNIX wtmp quanto no RADIUS detail \
+#	- Suporta o parâmetro Simultaneous-Use = X. Sim, isto significa \
+#	  que você pode evitar logins duplos!
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+WATCHER=/usr/sbin/radwatch
+LOCKF=/var/lock/subsys/radiusd
+
+test -f /etc/raddb/clients || exit 0
+
+case "$1" in
+  start)
+	[ -f /var/log/radutmp ] || touch /var/log/radutmp
+	gprintf "Starting %s server: " "radiusd"
+	if [ -x $WATCHER ]
+	then
+		daemon $WATCHER
+	fi
+	touch $LOCKF
+	echo
+	;;
+  stop)
+	gprintf "Stopping %s server: " "radiusd"
+	if [ -x $WATCHER ]
+	then
+		killproc $WATCHER 2> /dev/null
+	fi
+	rm -f $LOCKF
+	echo
+	;;
+  status)
+	status radiusd
+	;;
+  reload|restart)
+	$0 stop
+	sleep 3
+	$0 start
+	;;
+  *)
+        gprintf "Usage: %s {start|stop|status|reload}\n" "$0"
+        exit 1
+esac
+
+exit 0
