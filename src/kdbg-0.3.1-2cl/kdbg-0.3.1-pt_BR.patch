@@ -1,0 +1,12 @@
+diff -uNr kdbg-0.3.1/po/Makefile.in kdbg-0.3.1-pt_BR/po/Makefile.in
+--- kdbg-0.3.1/po/Makefile.in	Sat Jun 19 14:29:20 1999
++++ kdbg-0.3.1-pt_BR/po/Makefile.in	Tue Jun 29 18:53:44 1999
+@@ -158,7 +158,7 @@
+ x_includes = @x_includes@
+ x_libraries = @x_libraries@
+ 
+-GMOFILES = cs.gmo da.gmo de.gmo fr.gmo hr.gmo 	no.gmo pt.gmo ro.gmo ru.gmo sk.gmo zh_CN.GB2312.gmo
++GMOFILES = cs.gmo da.gmo de.gmo fr.gmo hr.gmo no.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo zh_CN.GB2312.gmo
+ 
+ POFILES = $(GMOFILES:.gmo=.po) 
+ 
