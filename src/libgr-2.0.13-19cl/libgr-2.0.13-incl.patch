@@ -1,0 +1,11 @@
+--- libgr-2.0.13/png/GNUmakefile.gafton	Sun May 25 11:08:59 1997
++++ libgr-2.0.13/png/GNUmakefile	Thu Apr 30 15:36:34 1998
+@@ -5,7 +5,7 @@
+ SRCDIR=..
+ include $(SRCDIR)/Make.Rules
+ 
+-CFLAGS+=-I../zlib -I../ppm
++CFLAGS+=-I../zlib -I../ppm -I../pnm -I../pgm -I../pbm
+ 
+ HDRS = png.h pngconf.h
+ 

@@ -1,0 +1,121 @@
+--- libgr-2.0.13/Makefile.orig	Thu Apr  3 23:25:53 1997
++++ libgr-2.0.13/Makefile	Tue Oct 14 13:50:48 1997
+@@ -1,5 +1,5 @@
+ SRCDIR = .
+-SUBDIRS = zlib pbm pgm ppm pnm fbm jpeg rle tiff png
++SUBDIRS = pbm pgm ppm pnm fbm rle
+ 
+ include $(SRCDIR)/Make.Rules
+ 
+--- libgr-2.0.13/config.guess.orig	Tue Oct 29 23:55:09 1996
++++ libgr-2.0.13/config.guess	Tue Oct 14 13:51:53 1997
+@@ -103,13 +103,13 @@
+     CRAY-2:UNICOS:*:*)
+ 	echo cray2-cray-unicos
+         exit 0 ;;
+-    i[345]86:Linux:*:*)
+-	echo ${UNAME_MACHINE}-unknown-linux
++    *:Linux:*:*)
++	echo ${UNAME_MACHINE}-redhat-linux
+ 	exit 0 ;;
+-    i[345]86:UNIX_SV:4.*:*)
++    i[3456]86:UNIX_SV:4.*:*)
+ 	echo i486-unknown-sysv4
+ 	exit 0 ;;
+-    i[345]86:*:3.2:*)
++    i[3456]86:*:3.2:*)
+ 	if /bin/uname -X 2>/dev/null >/dev/null ; then
+ 		UNAME_REL=`(/bin/uname -X|egrep Release|sed -e 's/.*= //')`
+ 		(/bin/uname -X|egrep i80486 >/dev/null) && UNAME_MACHINE=i486
+--- libgr-2.0.13/Make.Rules.orig	Tue Oct 14 13:51:23 1997
++++ libgr-2.0.13/Make.Rules	Tue Oct 14 13:51:35 1997
+@@ -32,7 +32,7 @@
+ AR		=ar
+ ARFLAGS		=r
+ 
+-endif
++else
+ 
+ ## HPUX
+ ifneq (,$(findstring hpux,$(ARCHITECTURE)))
+@@ -87,6 +87,7 @@
+ ARFLAGS         =rc
+ endif
+ 
++endif
+ 
+ ## Common defines
+ LIB		=$(prefix)/lib
+--- libgr-2.0.13/ppm/libppm4.c.djb	Wed Oct 29 16:14:09 1997
++++ libgr-2.0.13/ppm/libppm4.c	Wed Oct 29 16:15:04 1997
+@@ -218,6 +218,8 @@
+         canonstr( colorname );
+         while ( fgets( buf1, sizeof(buf1), f ) != NULL )
+             {
++	  if (buf1[0] == '!' )
++		continue;
+             if ( sscanf( buf1, "%ld %ld %ld %[^\n]", &r, &g, &b, buf2 ) != 4 )
+                 {
+                 pm_message(
+--- libgr-2.0.13/Makefile.djb	Thu Nov  6 17:07:45 1997
++++ libgr-2.0.13/Makefile	Thu Nov  6 17:08:08 1997
+@@ -11,5 +11,5 @@
+ 
+ archive shared install_a install_s install_h install_p install_m clean progs:
+ 	set -e; for dir in $(SUBDIRS); do \
+-		(cd $$dir; make $@); \
++		(cd $$dir; make $@ || exit 1); \
+ 	done
+--- libgr-2.0.13/pnm/sgitopnm.c.djb	Thu Nov  6 18:29:31 1997
++++ libgr-2.0.13/pnm/sgitopnm.c	Thu Nov  6 18:29:35 1997
+@@ -18,7 +18,7 @@
+ #include "pnm.h"
+ #include "sgi.h"
+ #ifndef VMS
+-#include <unistd.h>
++/* #include <unistd.h> */
+ #endif
+ 
+ /*#define DEBUG*/
+--- libgr-2.0.13/pnm/GNUmakefile.djb	Thu Nov  6 19:08:18 1997
++++ libgr-2.0.13/pnm/GNUmakefile	Thu Nov  6 19:15:24 1997
+@@ -1,7 +1,7 @@
+ SRCDIR = ..
+ include $(SRCDIR)/Make.Rules
+ 
+-CFLAGS+=-I. -I$(SRCDIR)/pbm -I$(SRCDIR)/pgm -I$(SRCDIR)/ppm
++CFLAGS+=-I. -I$(SRCDIR)/pbm -I$(SRCDIR)/pgm -I$(SRCDIR)/ppm -DLIBTIFF
+ 
+ HDRS = pnm.h
+ 
+--- libgr-2.0.13/pnm/Makefile.tiff.djb	Thu Nov  6 19:16:23 1997
++++ libgr-2.0.13/pnm/Makefile.tiff	Thu Nov  6 19:16:00 1997
+@@ -0,0 +1,28 @@
++SRCDIR = ..
++include $(SRCDIR)/Make.Rules
++
++CFLAGS+=-I. -I$(SRCDIR)/pbm -I$(SRCDIR)/pgm -I$(SRCDIR)/ppm -DLIBTIFF
++
++HDRS = pnm.h
++
++ARLIB = libpnm.a
++
++OBJS = libpnm1.o libpnm2.o libpnm3.o libpnm4.o
++
++MAJOR = 1
++MINOR = 0
++PATCH = 0
++
++SHBASE=pnm
++
++MAN1S = 	pnmtotiff.1 tifftopnm.1
++
++MAN3S = libpnm.3
++
++MAN5S = pnm.5
++
++APPS= 		pnmtotiff tifftopnm
++
++LOADLIBES=-L. -lpnm -L../ppm -lppm -L../pgm -lpgm -L../pbm -lpbm -ltiff -lm
++
++include $(SRCDIR)/Make.Targets

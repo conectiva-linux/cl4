@@ -1,0 +1,96 @@
+--- libgr-2.0.13/ppm/bmptoppm.c.bmptoppm	Sun Apr  6 19:50:36 1997
++++ libgr-2.0.13/ppm/bmptoppm.c	Mon Mar 22 18:11:00 1999
+@@ -1,5 +1,5 @@
+ /*\
+- * $Id: bmptoppm.c,v 1.1 1997/04/06 23:50:36 neal Exp $
++ * $Id: bmptoppm.c,v 1.10 1992/11/24 19:38:17 dws Exp dws $
+  * 
+  * bmptoppm.c - Converts from a Microsoft Windows or OS/2 .BMP file to a
+  * PPM file.
+@@ -17,9 +17,6 @@
+  * without express or implied warranty.
+  * 
+  * $Log: bmptoppm.c,v $
+- * Revision 1.1  1997/04/06 23:50:36  neal
+- * From netpbm.
+- *
+  * Revision 1.10  1992/11/24  19:38:17  dws
+  * Added code to verify that reading occurred at the correct offsets.
+  * Added copyright.
+@@ -336,6 +333,30 @@
+ /*
+  * returns the number of bytes read, or -1 on error.
+  */
++
++static int
++BMPReadBytes(fp,ppos,count)
++	FILE		*fp;
++	unsigned long  *ppos;	/* number of bytes read from fp */
++	unsigned long	count;
++{
++	unsigned long	i;
++
++	pm_message("Read %d Bytes from %d",count,*ppos);
++
++	count = *ppos;
++	for (i = 0; i < count; i++)
++	{
++		GetByte(fp);
++	}
++
++	*ppos += count;
++
++	pm_message("..to %d",*ppos);
++	
++	return count;
++}
++
+ static int
+ BMPreadrgbtable(fp, ppos, cBitCount, class, R, G, B)
+ 	FILE           *fp;
+@@ -403,7 +424,15 @@
+ 		}
+ 		nbyte += rc;
+ 
+-		PPM_ASSIGN(*row, R[v], G[v], B[v]);
++		if (cBitCount == 24) {
++			PPM_ASSIGN(*row, 
++			(pixval)(v & 0xFF),
++			(pixval)((v & 0xFF00) >> 8),
++			(pixval)((v & 0xFF0000) >> 16)
++			);
++		} else {
++			PPM_ASSIGN(*row, R[v], G[v], B[v]);
++		}
+ 	}
+ 
+ 	if ((rc = pm_bitfini(b)) != 0)
+@@ -545,16 +574,20 @@
+ 			, pos
+ 			, BMPoffbits(class, cBitCount));
+ 	}
++/* samjam@bigfoot.com: no rgb table for 24 bit bmp's*/
++	if (cBitCount==24) {
++		pm_message("No palette for 24 bit bitmap");
++	} else {
++		pm_message("Reading for bitmap");
++		rc = BMPreadrgbtable(ifp, &pos, cBitCount, class, R, G, B);
+ 
+-	rc = BMPreadrgbtable(ifp, &pos, cBitCount, class, R, G, B);
+-
+-	if(rc != BMPlenrgbtable(class, cBitCount))
+-	{
+-		pm_message("warning: %d-byte RGB table, expected %d bytes"
+-			, rc
+-			, BMPlenrgbtable(class, cBitCount));
++		if(rc != BMPlenrgbtable(class, cBitCount))
++		{
++			pm_message("warning: %d-byte RGB table, expected %d bytes"
++				, rc
++				, BMPlenrgbtable(class, cBitCount));
++		}
+ 	}
+-
+ 
+ 	pixels = BMPreadbits(ifp, &pos, offBits, cx, cy
+ 			, cBitCount, class, R, G, B);

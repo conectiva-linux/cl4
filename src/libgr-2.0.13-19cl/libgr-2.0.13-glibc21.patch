@@ -1,0 +1,36 @@
+--- libgr-2.0.13/rle/rle_hdr.c~	Mon Aug 14 22:46:23 1995
++++ libgr-2.0.13/rle/rle_hdr.c	Wed Jan  6 23:43:04 1999
+@@ -72,8 +72,12 @@
+     /* Default file name for stdin/stdout. */
+     if ( fname == NULL || strcmp( fname, "-" ) == 0 || *fname == '\0' )
+ 	fname = "Standard I/O";
+-    if ( pgmname == NULL )
++
++    if ( pgmname == NULL ) {
+ 	pgmname = rle_dflt_hdr.cmd;
++	/* this was not initialized */
++	rle_dflt_hdr.rle_file = stdout;
++    }
+ 
+     /* Fill in with copies of the strings. */
+     if ( the_hdr->cmd != pgmname )
+@@ -279,6 +283,8 @@
+     {
+ 	no_recurse++;
+ 	ret_hdr = rle_hdr_cp( &rle_dflt_hdr, the_hdr );
++	/* pay attention and init this thing */
++	the_hdr->rle_file = stdout;
+ 	no_recurse--;
+     }
+     else
+--- libgr-2.0.13/rle/rle_global.c~	Mon Aug 14 22:46:23 1995
++++ libgr-2.0.13/rle/rle_global.c	Wed Jan  6 23:37:43 1999
+@@ -76,7 +76,7 @@
+     8,				/* cmaplen (log2 of length of color map) */
+     NULL,			/* pointer to color map */
+     NULL,			/* pointer to comment strings */
+-    stdout,			/* output file */
++    NULL,			/* output file */
+     { 7 },			/* RGB channels only */
+     0L,				/* Can't free name and file fields. */
+     "Urt",			/* Default "program name". */

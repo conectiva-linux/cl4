@@ -1,0 +1,28 @@
+--- libgr-2.0.13/pbm/pbmplus.h.glibc	Wed Jun 10 15:17:18 1998
++++ libgr-2.0.13/pbm/pbmplus.h	Wed Jun 10 15:21:05 1998
+@@ -67,9 +67,17 @@
+ /* CONFIGURE: uncomment this to enable debugging checks. */
+ /* #define DEBUG */
+ 
++#if __GLIBC__ >= 2
++
++#include <string.h>
++#include <stdlib.h> /* random is defined here. */
++
++#else /*__GLIBC__*/
++
+ #ifdef SYSV
+ 
+ #include <string.h>
++
+ #define index(s,c) strchr(s,c)
+ #define rindex(s,c) strrchr(s,c)
+ #define srandom(s) srand(s)
+@@ -92,6 +100,7 @@
+ 
+ #endif /*__hpux*/
+ #endif /*SYSV*/
++#endif /*__GLIBC__*/
+ 
+ extern int atoi();
+ extern void exit();
