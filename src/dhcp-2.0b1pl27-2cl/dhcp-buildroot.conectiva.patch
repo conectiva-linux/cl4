@@ -1,0 +1,19 @@
+--- dhcp-2.0b1pl27.orig/Makefile.conf	Sun Jun 20 15:40:46 1999
++++ dhcp-2.0b1pl27/Makefile.conf	Sun Jun 20 15:41:53 1999
+@@ -32,12 +32,12 @@
+ 
+ ## Defaults...
+ SCRIPT = none
+-BINDIR = /usr/sbin
+-CLIENTBINDIR=/sbin
++BINDIR = $(RPM_BUILD_ROOT)/usr/sbin
++CLIENTBINDIR=$(RPM_BUILD_ROOT)/sbin
+ ADMMANEXT = .0
+ FFMANEXT = .0
+-ADMMANDIR = /usr/share/man/cat8
+-FFMANDIR = /usr/share/man/cat5
++ADMMANDIR = $(RPM_BUILD_ROOT)/usr/share/man/cat8
++FFMANDIR = $(RPM_BUILD_ROOT)/usr/share/man/cat5
+ INSTALL = install -c
+ MANINSTALL = install -c -m 444
+ CHMOD = chmod

@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# dhcpd         This shell script takes care of starting and stopping
+#               dhcpd.
+#
+# chkconfig: 2345 65 35
+# description: dhcpd provide access to Dynamic Host Control Protocol.
+# description(pt_BR): Servidor para o protocolo de controle dinâmico de hosts (DHCP)
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -f /usr/sbin/dhcpd ] || exit 0
+[ -f /etc/dhcpd.conf ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	# Start daemons.
+	gprintf "Starting %s: " "dhcpd"
+	daemon /usr/sbin/dhcpd
+	echo
+	touch /var/lock/subsys/dhcpd
+	;;
+  stop)
+	# Stop daemons.
+	gprintf "Stopping %s: " "dhcpd"
+	killproc dhcpd
+	echo
+	rm -f /var/lock/subsys/dhcpd
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+	status dhcpd
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "dhcpd"
+	exit 1
+esac
+
+exit 0
+
