@@ -1,0 +1,19 @@
+--- wmconfig.h.cnc	Fri Jun  4 16:27:02 1999
++++ wmconfig.h	Fri Jun  4 16:27:30 1999
+@@ -42,14 +42,14 @@
+  * How the root menu is called...
+  */
+ #ifndef DEFAULT_ROOT_NAME
+-#define DEFAULT_ROOT_NAME	"Red Hat Linux"
++#define DEFAULT_ROOT_NAME	"Conectiva Linux"
+ #endif /* DEFAULT_ROOT_NAME */
+ 
+ /*
+  * Where start menu directories generate
+  */
+ #ifndef DEFAULT_OUTPUTDIR
+-#define DEFAULT_OUTPUTDIR "GNUstep/Library/AfterStep/redhat"
++#define DEFAULT_OUTPUTDIR "GNUstep/Library/AfterStep/conectiva"
+ #endif /* DEFAULT_OUTPUTDIR */
+ 
+ /* Maximum items per group */

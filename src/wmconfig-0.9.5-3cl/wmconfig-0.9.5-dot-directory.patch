@@ -1,0 +1,94 @@
+diff -Nur wmconfig-0.9.5.orig/input-gnome.c wmconfig-0.9.5/input-gnome.c
+--- wmconfig-0.9.5.orig/input-gnome.c	Thu Mar 11 00:53:46 1999
++++ wmconfig-0.9.5/input-gnome.c	Fri Jun 25 17:43:10 1999
+@@ -118,6 +118,8 @@
+     int		nr_files;
+     int 	i;
+     const char  *curgroup;
++    char  *d_name_i18n = NULL;
++    char  *name;
+ 
+     if (dir_from == NULL)
+ 	return PARSE_OK;
+@@ -149,7 +151,9 @@
+     nr_files = scandir(dir_from, &namelist, NULL, alphasort);
+     for (i = 0; i < nr_files; i++) {
+ 	if ( (strcmp(namelist[i]->d_name, ".") != 0) &&
+-	     (strcmp(namelist[i]->d_name, "..") != 0) ) {
++	     (strcmp(namelist[i]->d_name, "..") != 0) && 
++		 strcmp(namelist[i]->d_name, ".order") != 0 &&
++		 strcmp(namelist[i]->d_name, ".directory") != 0) {
+ 	    char filename[PATH_MAX];
+ 	    int ret_val;
+ 
+@@ -157,6 +161,7 @@
+ 	    if (namelist[i]->d_name[0] == '.')
+ 		continue;
+ #endif	    
++
+ 	    snprintf(filename, PATH_MAX, "%s/%s", dir_from, namelist[i]->d_name);
+ 
+ 	    /* is this a directory to recurse into? */
+@@ -166,16 +171,32 @@
+ 
+ 	    if (S_ISDIR(st.st_mode) &&
+ 		(strcmp(namelist[i]->d_name, "Settings") != 0)) {
+-		char *newgroup;
+-		int  len;
++		   char *newgroup;
++		   int  len;
++		   char dot_directory[PATH_MAX];
++
++		   snprintf(dot_directory, PATH_MAX, "%s/%s", filename, ".directory");
++	       ret = stat(dot_directory, &st);
++		   if (ret == 0) {
++			  GnomeDesktopEntry *dentry;
++			  dentry = gnome_desktop_entry_load(dot_directory);
++			  if (!dentry || !dentry->name) {
++				gnome_desktop_entry_free(dentry);
++				free(namelist[i]);	
++				continue;
++			  }
++		      d_name_i18n = strdup(dentry->name);
++		      gnome_desktop_entry_free(dentry);
++		   }		
+ 
+-		len = strlen(curgroup) + strlen(namelist[i]->d_name) + 2;
++		name = d_name_i18n ? d_name_i18n : namelist[i]->d_name;
++		len = strlen(curgroup) + strlen(name) + 2;
+ 		newgroup = malloc(len);
++
+ 		if (*curgroup)
+-		    snprintf(newgroup,len-1,"%s/%s",curgroup,
+-			     namelist[i]->d_name);
++		    snprintf(newgroup,len-1,"%s/%s",curgroup, name);
+ 		else
+-		    strcpy(newgroup, namelist[i]->d_name);
++		    strcpy(newgroup, name);
+ 
+ 		ret_val = parse_gnome_files(filename, newgroup);
+ 		free(newgroup);
+@@ -184,18 +205,17 @@
+ 			    filename);
+ 		}
+ 	    } else {
+-		ret_val = read_gnome_file(filename, curgroup);
+-		if (ret_val != 0) {
+-		    fprintf(stderr, "\tReading file \"%s\" failed !\n",
+-			    filename);
+-		}
++		    ret_val = read_gnome_file(filename, curgroup);
++		    if (ret_val != 0)
++		        fprintf(stderr, "\tReading file \"%s\" failed !\n", filename);
+ 	    }
+ 	}
+ 	free(namelist[i]);	
+     }
++    if (d_name_i18n)
++	free(d_name_i18n);
+     if (nr_files && namelist)
+ 	free(namelist);
+-/*     print_groups(root_group, 0); */
+     
+     return PARSE_OK;
+ }

@@ -1,0 +1,30 @@
+diff -Nur wmconfig-0.7/package.c wmconfig-0.7.cnc/package.c
+--- wmconfig-0.7/package.c	Mon Mar  9 16:33:11 1998
++++ wmconfig-0.7.cnc/package.c	Fri Feb 26 16:48:38 1999
+@@ -133,8 +133,10 @@
+ 	adr = &pkg->copy;
+     }
+ 
+-    if (adr)
+-	*adr = x_strdup(value);
++    if (!adr)
++	return -1;
++
++    *adr = x_strdup(value);
+ 
+     return 0;
+ }
+diff -Nur wmconfig-0.7/rootmenu.c wmconfig-0.7.cnc/rootmenu.c
+--- wmconfig-0.7/rootmenu.c	Mon May 11 17:50:31 1998
++++ wmconfig-0.7.cnc/rootmenu.c	Fri Feb 26 16:48:38 1999
+@@ -283,6 +283,10 @@
+ 	    fprintf(stderr, "ignoring groupless package: %s\n", pkg->__package);
+ 	    continue;
+ 	}
++
++	if (pkg->name == NULL)
++	    pkg->name = pkg->__package;
++
+ 	/* Try to ignore packages wich are choosen to be skipped */
+ 	if (strcmp(pkg->group, "-") == 0)
+ 	    continue;

@@ -1,0 +1,80 @@
+--- wmconfig-0.7/prototypes.h	Mon Mar  8 16:52:35 1999
++++ wmconfig-0.7.cnc/prototypes.h	Mon Mar  8 16:10:50 1999
+@@ -35,7 +35,7 @@
+ 
+ /* parse.c */
+ const char *parse_errstr(int err_code);
+-int parse_line(char *buffer, char **package, char **tag, char **string);
++int parse_line(char *buffer, char **package, char **tag, char **lang, char **string);
+ 
+ /* fvwm95.c */
+ void output_fvwm95(struct group *root);
+--- wmconfig-0.7/parse.c	Wed Apr 22 12:15:26 1998
++++ wmconfig-0.7.cnc/parse.c	Mon Mar  8 17:05:28 1999
+@@ -82,7 +82,7 @@
+ #define SKIP_TO(c, x)	while (*c && (*c != x)) c++
+ #define FINISH(code) 	{ *package=item1; *tag=item2; *string=item3; return(code); }
+ 
+-int parse_line(char *buffer, char **package, char **tag, char **string)
++int parse_line(char *buffer, char **package, char **tag, char **lang, char **string)
+ {
+     char *item1 = NULL;
+     char *item2 = NULL;
+@@ -133,6 +135,21 @@
+     c = strrchr(item3, '\n');
+     if (c != NULL)
+ 	*c = '\0';	
++
++    c = strchr (item2, '(');
++    if (c == NULL)
++        *lang = NULL;
++    else
++    {
++	*c++ = '\0';
++	*lang = c;
++	c = strchr (c, ')');
++	if (c != NULL) 
++	    *c = '\0';	
++	else
++	    FINISH(2);
++    }
++
+     FINISH(0);
+ }    
+ 
+--- wmconfig-0.7/input.c	Wed Apr 22 12:15:26 1998
++++ wmconfig-0.7.cnc/input.c	Mon Mar  8 16:14:04 1999
+@@ -51,10 +51,13 @@
+ {
+     FILE 	*fd;
+     char 	buffer[BUFSIZ];
++    char 	*lang, *LANG;
+     
+     if (!filename)
+ 	return -1;
+ 
++    LANG = getenv("LANG");
++
+     fd = fopen(filename, "r");
+     if (fd == (FILE *)NULL) {
+ 	fprintf(stderr, "Could not read settings from %s\n", filename);
+@@ -75,11 +78,18 @@
+ 	    buffer[slen--] = '\0';
+ 	}
+ 
+-	ret = parse_line(buffer, &package, &tag, &string);
++	ret = parse_line(buffer, &package, &tag, &lang, &string);
+ 	if (ret != 0) {
+ 	    memset(buffer, 0, sizeof(buffer));
+ 	    continue;
+ 	}
++
++	if (lang != NULL)
++	   if (LANG == NULL)
++              continue;
++	   else if (strcmp(lang,LANG) != 0)
++              continue;
++
+ #ifdef STRICT_PACKAGES
+ 	if (strcmp(package, filename) != 0) {
+ 	    /* for the system file the package name must be the same
