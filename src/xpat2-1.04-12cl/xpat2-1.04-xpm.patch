@@ -1,0 +1,11 @@
+--- xpat2-1.04/src/X-gfx2.c.ewt	Thu Jul 31 11:49:37 1997
++++ xpat2-1.04/src/X-gfx2.c	Thu Jul 31 11:49:45 1997
+@@ -17,7 +17,7 @@
+ 
+ #include "X-pat.h"
+ #include <time.h>
+-#include <xpm.h>
++#include <X11/xpm.h>
+ 
+ #ifndef NO_ROUND_CARDS
+ #include <X11/Xmu/Drawing.h>

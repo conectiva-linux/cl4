@@ -1,0 +1,12 @@
+diff -ur xpat2-1.03.orig/src/Imakefile xpat2-1.03/src/Imakefile
+--- xpat2-1.03.orig/src/Imakefile	Mon Feb 13 12:51:35 1995
++++ xpat2-1.03/src/Imakefile	Wed Jun 14 16:46:00 1995
+@@ -37,7 +37,7 @@
+ # BINDIR and LIBDIR should be predefined by the templates
+ # BINDIR = /usr/bin/X11
+ # LIBDIR = /usr/lib/X11
+-XPATLIBDIR = /usr/games/lib/xpat
++XPATLIBDIR = /usr/lib/games/xpat
+ APPDEFSDIR = $(LIBDIR)
+ XPATMANDIR = /usr/man/man6
+ 
