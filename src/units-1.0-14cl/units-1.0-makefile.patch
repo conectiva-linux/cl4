@@ -1,0 +1,10 @@
+diff -uNr units-1.0.orig/Makefile units-1.0/Makefile
+--- units-1.0.orig/Makefile	Sun Jan 14 14:46:48 1996
++++ units-1.0/Makefile	Sun Jan 14 14:47:11 1996
+@@ -1,5 +1,5 @@
+ CC=gcc
+-CFLAGS= -DUNITSFILE=\"units.lib\"
++CFLAGS= -DUNITSFILE=\"/usr/lib/units.lib\"
+ 
+ units:	units.o
+ 	$(CC) -o units units.o

@@ -1,0 +1,20 @@
+--- units-1.0/units.lib.jbj	Sun Aug 23 19:11:19 1998
++++ units-1.0/units.lib	Sun Aug 23 19:16:40 1998
+@@ -158,7 +158,7 @@
+ mi			mile
+ 
+ british			1200|3937 m/ft
+-nmile			1852m
++nmile			1852 m
+ 
+ acre			4840 yd2
+ 
+@@ -537,7 +537,7 @@
+ water			gram g / cc
+ wey			40 bu
+ weymass			252 lb
+-Xunit			1.00202e-13m
++Xunit			1.00202e-13 m
+ k			1.38047e-16 erg/degC
+ 
+ 
