@@ -1,0 +1,17 @@
+--- trojka/Makefile.marc	Fri Feb 23 17:29:42 1996
++++ trojka/Makefile	Fri Feb 23 17:31:29 1996
+@@ -20,7 +20,7 @@
+ 
+ trojka: $(OBJS)
+ #	$(CC) $(CFLAGS) $(OBJS) -lcurses -ltermlib -o trojka
+-	$(CC) $(CFLAGS) $(OBJS) -lcurses -o trojka
++	$(CC) $(CFLAGS) $(OBJS) -lncurses -o trojka
+ 
+ 
+ # patch for HP-UX, need 'codelibs'
+@@ -52,4 +52,4 @@
+ 	make trojka_ux "CFLAGS=-DHPUX"
+ 
+ linux:
+-	make trojka "CFLAGS=-DLINUX"
++	make trojka "CFLAGS=-DLINUX -I/usr/include/ncurses $(RPM_OPT_FLAGS)"
