@@ -1,0 +1,20 @@
+--- python/Conf.py.orig	Fri Jul 10 12:25:16 1998
++++ python/Conf.py	Fri Jul 10 16:41:48 1998
+@@ -888,6 +888,8 @@
+ 		elif not cmp(var[0], 'options'):
+ 		    if keep:
+ 			self.vars[var[1]]['keep']=1
++		    else:
++			self.vars[var[1]]['keep']=0
+ 		    self.vars[var[1]]['options'] = self.splitoptlist(var[2:])
+ 		elif not cmp(var[0], 'post-install'):
+ 		    self.vars[var[1]]['post-install'] = var[2:]
+@@ -930,7 +932,7 @@
+ 	    elif not cmp(key, 'options'):
+ 		endofline = self.joinoptlist(value[key])
+ 		replace = key + ' ' + varname + ' ' + endofline
+-		if self.vars[varname]['keep']:
++		if self.vars[varname].has_key('keep') and self.vars[varname]['keep']:
+ 		    findexp = '[\t ]*' + key + '[\t ]+-k[\t ]+' + varname
+ 		    replace = key + ' -k ' + varname + ' ' + endofline
+ 	    elif not cmp(key, 'post-install'):

@@ -1,0 +1,14 @@
+diff -uNr pythonlib-1.22.orig/Makefile pythonlib-1.22/Makefile
+--- pythonlib-1.22.orig/Makefile	Sat Jul 27 23:51:44 1996
++++ pythonlib-1.22/Makefile	Thu Feb 11 04:17:16 1999
+@@ -6,8 +6,8 @@
+ 	export PYTHONPATH=. ; for i in $(WHAT); do \
+ 	    a=`basename $$i .py` ;\
+ 	    echo "import $$a;" | python ;\
+-	    install -m 0644 -o 0 -g 0 $$i $(LIBDIR); \
+-	    install -m 0644 -o 0 -g 0 $$a.pyc $(LIBDIR); \
++	    install -m 0644 $$i $(LIBDIR); \
++	    install -m 0644 $$a.pyc $(LIBDIR); \
+ 	done
+ 
+ clean:
