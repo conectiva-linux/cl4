@@ -1,0 +1,740 @@
+cvs server: Diffing .
+Index: ChangeLog
+===================================================================
+RCS file: /cvs/automake/automake/ChangeLog,v
+retrieving revision 1.676
+retrieving revision 1.688
+diff -u -r1.676 -r1.688
+--- ChangeLog	1999/01/14 22:45:40	1.676
++++ ChangeLog	1999/02/02 09:51:52	1.688
+@@ -1,3 +1,52 @@
++1999-02-02  Tom Tromey  <tromey@cygnus.com>
++
++	* automake.in (handle_merge_targets): Use INSTALL_STRIP_FLAG.
++	* progs.am (install-@DIR@PROGRAMS): Added INSTALL_STRIP_FLAG.
++	* header-vars.am (INSTALL_PROGRAM): Removed
++	AM_INSTALL_PROGRAM_FLAGS.
++	(INSTALL_STRIP_FLAG): New macro.
++
++	* automake.in: Handle `ypp' as C++ yacc source and `lpp' as C++
++	lex source.
++	(lang_yacc_finish): Likewise.
++	(lang_lex_finish): Likewise.
++
++1999-02-01  Tom Tromey  <tromey@cygnus.com>
++
++	* automake.in (handle_dist_worker): Correctly find find in $$d,
++	not $$.  From Bill Davidson.
++
++	* automake.in (finish_languages): Use "&", not "do".  From Pavel
++	Roskin.
++	(handle_single_transform_list): Likewise.
++
++1999-01-29  Tom Tromey  <tromey@cygnus.com>
++
++	* automake.in (handle_configure): Removed unused variable.  From
++	Pavel Roskin.
++
++	* ansi2knr.c: New version from L. Peter Deutsch.
++
++1999-01-22  Tom Tromey  <tromey@cygnus.com>
++
++	* automake.in (require_file_internal): Correctly examine return
++	value of `system'.  From Andris Pavenis.  Fixes copy.test.
++
++	* m4/init.m4 (AM_INIT_AUTOMAKE): Require autoconf 2.13.
++
++	* automake.in (lang_ppf77_rewrite): New function.  From Jochen
++	Kuepper.  Fixes ppf77.test.
++	(lang_ratfor_rewrite): New function
++
++	* automake.in (handle_configure): Use `&' before sub calls (Perl 4
++	fix).  From Erez Zadok.
++
++1999-01-15  Tom Tromey  <tromey@cygnus.com>
++
++	* configure.in: Version 1.4a (oops).
++
++	* configure.in: Updated version to 1.5a.
++
+ 1999-01-14  Tom Tromey  <tromey@cygnus.com>
+ 
+ 	* automake.in (handle_configure): Compute $header_dir based on
+Index: Makefile.in
+===================================================================
+RCS file: /cvs/automake/automake/Makefile.in,v
+retrieving revision 1.217
+retrieving revision 1.218
+diff -u -r1.217 -r1.218
+--- Makefile.in	1999/01/14 22:47:17	1.217
++++ Makefile.in	1999/01/14 23:15:58	1.218
+@@ -96,10 +96,10 @@
+ DATA =  $(pkgdata_DATA) $(script_DATA)
+ 
+ DIST_COMMON =  README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
+-Makefile.in NEWS THANKS TODO aclocal.in aclocal.m4 ansi2knr.1 \
+-ansi2knr.c automake.in config.guess config.sub configure configure.in \
+-elisp-comp install-sh mdate-sh missing mkinstalldirs stamp-vti \
+-texinfo.tex version.texi ylwrap
++Makefile.in NEWS README-alpha THANKS TODO aclocal.in aclocal.m4 \
++ansi2knr.1 ansi2knr.c automake.in config.guess config.sub configure \
++configure.in elisp-comp install-sh mdate-sh missing mkinstalldirs \
++stamp-vti texinfo.tex version.texi ylwrap
+ 
+ 
+ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+Index: THANKS
+===================================================================
+RCS file: /cvs/automake/automake/THANKS,v
+retrieving revision 1.79
+retrieving revision 1.82
+diff -u -r1.79 -r1.82
+--- THANKS	1999/01/10 20:39:25	1.79
++++ THANKS	1999/02/01 12:03:47	1.82
+@@ -7,10 +7,12 @@
+ Alexandre Oliva		oliva@dcc.unicamp.br
+ Andreas Schwab		schwab@lamothe.informatik.uni-dortmund.de
+ Andrew Cagney		cagney@tpgi.com.au
++Andris Pavenis		pavenis@lanet.lv
+ Anthony Green		green@cygnus.com
+ Assar Westerlund	assar@sics.se
+ Bernard Urban		Bernard.Urban@meteo.fr
+ Bill Currie		bcurrie@tssc.co.nz
++Bill Davidson		bill@kayhay.com
+ Bill Fenner		fenner@parc.xerox.com
+ Brian Jones		cbj@nortel.net
+ Chris Provenzano	proven@io.proven.org
+@@ -39,6 +41,7 @@
+ Jeff Garzik		jgarzik@pobox.com
+ Jerome Santini		santini@chambord.univ-orleans.fr
+ Jim Meyering		meyering@na-net.ornl.gov
++Jochen Kuepper		jochen@uni-duesseldorf.de
+ Joel N. Weber II	nemo@koa.iolani.honolulu.hi.us
+ Joerg-Martin Schwarz	jms@jms.prima.ruhr.de
+ Johan Danielsson	joda@pdc.kth.se
+@@ -51,8 +54,8 @@
+ Kevin Dalley		kevin@aimnet.com
+ Kevin Street		street@iname.com
+ L. Peter Deutsch	ghost@aladdin.com
+-Maciej W. Rozycki	macro@ds2.pg.gda.pl
+ Maciej Stachowiak	mstachow@mit.edu
++Maciej W. Rozycki	macro@ds2.pg.gda.pl
+ Marcus G. Daniels	mgd@ute.santafe.edu
+ Marius Vollmer		mvo@zagadka.ping.de
+ Mark Eichin		eichin@cygnus.com
+Index: TODO
+===================================================================
+RCS file: /cvs/automake/automake/TODO,v
+retrieving revision 1.371
+retrieving revision 1.372
+diff -u -r1.371 -r1.372
+--- TODO	1999/01/14 22:45:42	1.371
++++ TODO	1999/02/02 09:51:54	1.372
+@@ -2,6 +2,9 @@
+   still won't put the file into the disty.  This is wrong.
+   From Mark H Wilkinson <mhw@kremvax.demon.co.uk>
+ 
++* using "include" inside a conditional doesn't currently
++  work properly.
++
+ * AM_CONFIG_HEADER might generate the wrong stamp file names
+   when given multiple headers.  Write a test.
+ 
+Index: ansi2knr.c
+===================================================================
+RCS file: /cvs/automake/automake/ansi2knr.c,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -u -r1.10 -r1.11
+--- ansi2knr.c	1998/12/02 12:42:23	1.10
++++ ansi2knr.c	1999/01/29 14:22:15	1.11
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 1989, 1997, 1998 Aladdin Enterprises.  All rights reserved. */
++/* Copyright (C) 1989, 1997, 1998, 1999 Aladdin Enterprises.  All rights reserved. */
+ 
+ /*$Id: ansi2knr.c $*/
+ /* Convert ANSI C function definitions to K&R ("traditional C") syntax */
+@@ -51,13 +51,18 @@
+  * The following constructs will confuse it:
+  *	- Any other construct that starts at the left margin and
+  *	    follows the above syntax (such as a macro or function call).
+- *	- Some macros that tinker with the syntax of the function header.
++ *	- Some macros that tinker with the syntax of function headers.
+  */
+ 
+ /*
+  * The original and principal author of ansi2knr is L. Peter Deutsch
+  * <ghost@aladdin.com>.  Other authors are noted in the change history
+  * that follows (in reverse chronological order):
++	lpd 1999-01-28 fixed two bugs: a '/' in an argument list caused an
++		endless loop; quoted strings within an argument list
++		confused the parser
++	lpd 1999-01-24 added a check for write errors on the output,
++		suggested by Jim Meyering <meyering@ascend.com>
+ 	lpd 1998-11-09 added further hack to recognize identifier(void)
+ 		as being a procedure
+ 	lpd 1998-10-23 added hack to recognize lines consisting of
+@@ -178,6 +183,7 @@
+ 
+ /* Forward references */
+ char *skipspace();
++char *scanstring();
+ int writeblanks();
+ int test1();
+ int convert1();
+@@ -190,6 +196,8 @@
+ {	FILE *in = stdin;
+ 	FILE *out = stdout;
+ 	char *filename = 0;
++	char *program_name = argv[0];
++	char *output_name = 0;
+ #define bufsize 5000			/* arbitrary size */
+ 	char *buf;
+ 	char *line;
+@@ -205,6 +213,7 @@
+ 	 * check for this switch for backward compatibility.
+ 	 */
+ 	int convert_varargs = 1;
++	int output_error;
+ 
+ 	while ( argc > 1 && argv[1][0] == '-' ) {
+ 	  if ( !strcmp(argv[1], "--varargs") ) {
+@@ -219,7 +228,8 @@
+ 	    argv += 2;
+ 	    continue;
+ 	  }
+-	  fprintf(stderr, "Unrecognized switch: %s\n", argv[1]);
++	  fprintf(stderr, "%s: Unrecognized switch: %s\n", program_name,
++		  argv[1]);
+ 	  fprintf(stderr, usage);
+ 	  exit(1);
+ 	}
+@@ -229,16 +239,19 @@
+ 		fprintf(stderr, usage);
+ 		exit(0);
+ 	case 3:
+-		out = fopen(argv[2], "w");
++		output_name = argv[2];
++		out = fopen(output_name, "w");
+ 		if ( out == NULL ) {
+-		  fprintf(stderr, "Cannot open output file %s\n", argv[2]);
++		  fprintf(stderr, "%s: Cannot open output file %s\n",
++			  program_name, output_name);
+ 		  exit(1);
+ 		}
+ 		/* falls through */
+ 	case 2:
+ 		in = fopen(argv[1], "r");
+ 		if ( in == NULL ) {
+-		  fprintf(stderr, "Cannot open input file %s\n", argv[1]);
++		  fprintf(stderr, "%s: Cannot open input file %s\n",
++			  program_name, argv[1]);
+ 		  exit(1);
+ 		}
+ 		if ( filename == 0 )
+@@ -300,14 +313,24 @@
+ 	if ( line != buf )
+ 	  fputs(buf, out);
+ 	free(buf);
+-	if ( out != stdout )
+-	  fclose(out);
++	if ( output_name ) {
++	  output_error = ferror(out);
++	  output_error |= fclose(out);
++	} else {		/* out == stdout */
++	  fflush(out);
++	  output_error = ferror(out);
++	}
++	if ( output_error ) {
++	  fprintf(stderr, "%s: error writing to %s\n", program_name,
++		  (output_name ? output_name : "stdout"));
++	  exit(1);
++	}
+ 	if ( in != stdin )
+ 	  fclose(in);
+ 	return 0;
+ }
+ 
+-/* Skip over space and comments, in either direction. */
++/* Skip over whitespace and comments, in either direction. */
+ char *
+ skipspace(p, dir)
+     register char *p;
+@@ -328,6 +351,17 @@
+ 	return p;
+ }
+ 
++/* Scan over a quoted string, in either direction. */
++char *
++scanstring(p, dir)
++    register char *p;
++    register int dir;
++{
++    for (p += dir; ; p += dir)
++	if (*p == '"' && p[-dir] != '\\')
++	    return p + dir;
++}
++
+ /*
+  * Write blanks over part of a string.
+  * Don't overwrite end-of-line characters.
+@@ -500,8 +534,12 @@
+ 				else rp = p;
+ 				break;
+ 			   case '/':
+-				p = skipspace(p, 1) - 1;
++				if (p[1] == '*')
++				    p = skipspace(p, 1) - 1;
+ 				break;
++			   case '"':
++			       p = scanstring(p, 1) - 1;
++			       break;
+ 			   default:
+ 				;
+ 			   }
+@@ -523,9 +561,19 @@
+ 				while ( level )
+ 				 switch ( *--p )
+ 				   {
+-				   case ']': case ')': level++; break;
+-				   case '[': case '(': level--; break;
+-				   case '/': p = skipspace(p, -1) + 1; break;
++				   case ']': case ')':
++				       level++;
++				       break;
++				   case '[': case '(':
++				       level--;
++				       break;
++				   case '/':
++				       if (p > buf && p[-1] == '*')
++					   p = skipspace(p, -1) + 1;
++				       break;
++				   case '"':
++				       p = scanstring(p, -1) + 1;
++				       break;
+ 				   default: ;
+ 				   }
+ 			   }
+Index: automake.in
+===================================================================
+RCS file: /cvs/automake/automake/automake.in,v
+retrieving revision 1.644
+retrieving revision 1.652
+diff -u -r1.644 -r1.652
+--- automake.in	1999/01/14 22:45:43	1.644
++++ automake.in	1999/02/02 09:51:56	1.652
+@@ -313,11 +313,11 @@
+ &register_language ('yacc', '', 1,
+ 		    'y');
+ &register_language ('yaccxx', 'CXXLINK', 0,
+-		    'y++', 'yy', 'yxx');
++		    'y++', 'yy', 'yxx', 'ypp');
+ &register_language ('lex', '', 1,
+ 		    'l');
+ &register_language ('lexxx', 'CXXLINK', 0,
+-		    'l++', 'll', 'lxx');
++		    'l++', 'll', 'lxx', 'lpp');
+ &register_language ('asm', '', 0,
+ 		    's', 'S');
+ &register_language ('f77', 'F77LINK', 0,
+@@ -929,7 +929,7 @@
+ 
+ 	# Compute the function name of the finisher and then call it.
+ 	$name = 'lang_' . $lang . '_finish';
+-	do $name ();
++	& $name ();
+     }
+ 
+     # If the project is entirely C++ or entirely Fortran 77, don't
+@@ -1090,7 +1090,7 @@
+ 		# Found the language, so see what it says.
+ 		local ($subr) = 'lang_' . $lang . '_rewrite';
+ 		# Note: computed subr call.
+-		local ($r) = do $subr ($base, $extension);
++		local ($r) = & $subr ($base, $extension);
+ 		# Skip this entry if we were asked not to process it.
+ 		next if ! $r;
+ 
+@@ -2367,7 +2367,7 @@
+ 	$output_rules .= "\t  d=\$(srcdir); \\\n";
+     }
+     $output_rules .= ("\t  if test -d \$\$d/\$\$file; then \\\n"
+-		      . "\t    cp -pr \$\$/\$\$file \$(distdir)/\$\$file; \\\n"
++		      . "\t    cp -pr \$\$d/\$\$file \$(distdir)/\$\$file; \\\n"
+ 		      . "\t  else \\\n"
+ 		      . "\t    test -f \$(distdir)/\$\$file \\\n"
+ 		      . "\t    || ln \$\$d/\$\$file \$(distdir)/\$\$file 2> /dev/null \\\n"
+@@ -3050,7 +3050,7 @@
+ 	    }
+ 	    else
+ 	    {
+-		local (@rel_out_path, $rel_path);
++		local (@rel_out_path);
+ 		# FIXME this chunk of code should be its own sub.
+ 		# It is used elsewhere.
+ 		foreach (split (/\//, $relative_dir))
+@@ -3224,7 +3224,7 @@
+ 				    : '')
+ 			  . ' CONFIG_HEADERS= $(SHELL) ./config.status'
+ 			  . "\n");
+-	push_dist_common (@inputs);
++	&push_dist_common (@inputs);
+ 	push (@actual_other_files, $local);
+ 
+ 	# Require all input files.
+@@ -3490,7 +3490,7 @@
+     # Generate the new 'install-strip' target.  We can't just set
+     # INSTALL_PROGRAM because that might be a relative path.
+     $output_rules .= ("install-strip:\n\t"
+-		      . '$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install'
++		      . '$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install'
+ 		      . "\n");
+ }
+ 
+@@ -4502,6 +4502,18 @@
+     return 1;
+ }
+ 
++# Rewrite a single preprocessed Fortran 77 file.
++sub lang_ppf77_rewrite
++{
++    return 1;
++}
++
++# Rewrite a single ratfor file.
++sub lang_ratfor_rewrite
++{
++    return 1;
++}
++
+ # Rewrite a single Objective C file.
+ sub lang_objc_rewrite
+ {
+@@ -4660,7 +4672,7 @@
+ 	# Now generate rule to make the header file.  This should only
+ 	# be generated if `yacc -d' specified.  But right now there is
+ 	# no way to determine that.  FIXME: examine AM_YFLAGS?
+-	$file =~ /^(.*)\.(y|yy|y\+\+|yxx)$/;
++	$file =~ /^(.*)\.(y|yy|y\+\+|yxx|ypp)$/;
+ 	$base = $1;
+ 	($hname = $2) =~ tr/y/h/;
+ 	($cname = $2) =~ tr/y/c/;
+@@ -4718,7 +4730,7 @@
+ 	# statically, and the GNU rules say that yacc/lex output files
+ 	# should be removed by maintainer-clean.  So that's what we
+ 	# do.
+-	$file =~ /^(.*)\.(l|ll|l\+\+|lxx)$/;
++	$file =~ /^(.*)\.(l|ll|l\+\+|lxx|lpp)$/;
+ 	($cname = $2) =~ tr/y/c/;
+ 	push (@maintainer_clean_files, $1 . $cname);
+     }
+@@ -6907,7 +6919,7 @@
+ 				$trailer = "; error while making link: $!\n";
+ 			    }
+ 			}
+-			elsif (! system ('cp', $am_dir . '/' . $file, $errfile))
++			elsif (system ('cp', $am_dir . '/' . $file, $errfile))
+ 			{
+ 			    $suppress = 0;
+ 			    $trailer = "\n    error while copying\n";
+Index: automake.texi
+===================================================================
+RCS file: /cvs/automake/automake/automake.texi,v
+retrieving revision 1.161
+retrieving revision 1.162
+diff -u -r1.161 -r1.162
+--- automake.texi	1999/01/06 13:01:26	1.161
++++ automake.texi	1999/01/22 13:58:02	1.162
+@@ -20,7 +20,7 @@
+ @ifinfo
+ This file documents GNU automake @value{VERSION}
+ 
+-Copyright (C) 1995, 96, 97, 98 Free Software Foundation, Inc.
++Copyright (C) 1995, 96, 97, 98, 99 Free Software Foundation, Inc.
+ 
+ Permission is granted to make and distribute verbatim copies of
+ this manual provided the copyright notice and this permission notice
+@@ -103,9 +103,9 @@
+ @comment  node-name,  next,  previous,  up
+ @top GNU Automake
+ 
+-This file documents the GNU Automake package for creating GNU
+-Standards-compliant Makefiles from template files.  This edition
+-documents version @value{VERSION}.
++This file documents the GNU Automake package.  Automake is a program
++which creates GNU standards-compliant Makefiles from template files.
++This edition documents version @value{VERSION}.
+ 
+ @menu
+ * Introduction::                Automake's purpose
+Index: configure
+===================================================================
+RCS file: /cvs/automake/automake/configure,v
+retrieving revision 1.62
+retrieving revision 1.64
+diff -u -r1.62 -r1.64
+--- configure	1999/01/10 21:01:02	1.62
++++ configure	1999/01/15 09:43:45	1.64
+@@ -692,7 +692,7 @@
+ 
+ PACKAGE=automake
+ 
+-VERSION=1.4
++VERSION=1.4a
+ 
+ if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
+   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
+Index: configure.in
+===================================================================
+RCS file: /cvs/automake/automake/configure.in,v
+retrieving revision 1.67
+retrieving revision 1.69
+diff -u -r1.67 -r1.69
+--- configure.in	1999/01/10 21:01:04	1.67
++++ configure.in	1999/01/15 09:43:46	1.69
+@@ -1,7 +1,7 @@
+ dnl Process this file with autoconf to produce a configure script.
+ AC_INIT(automake.in)
+ 
+-AM_INIT_AUTOMAKE(automake, 1.4)
++AM_INIT_AUTOMAKE(automake, 1.4a)
+ 
+ # Find an appropriate tar for use in "dist" targets.  A "best guess"
+ # is good enough -- if we can't find GNU tar, we don't really care.
+Index: header-vars.am
+===================================================================
+RCS file: /cvs/automake/automake/header-vars.am,v
+retrieving revision 1.29
+retrieving revision 1.30
+diff -u -r1.29 -r1.30
+--- header-vars.am	1998/12/11 00:32:34	1.29
++++ header-vars.am	1999/02/02 09:51:57	1.30
+@@ -1,5 +1,5 @@
+ ## automake - create Makefile.in from Makefile.am
+-## Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
++## Copyright (C) 1994, 1995-98, 1999 Free Software Foundation, Inc.
+ 
+ ## This program is free software; you can redistribute it and/or modify
+ ## it under the terms of the GNU General Public License as published by
+@@ -52,12 +52,10 @@
+ AUTOHEADER = @AUTOHEADER@
+ 
+ INSTALL = @INSTALL@
+-## We use AM_INSTALL_PROGRAM_FLAGS so that install-strip can pass -s
+-## easily.  We can't just set INSTALL_PROGRAM because that might have
+-## a relative path.
+-INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
+ INSTALL_DATA = @INSTALL_DATA@
+ INSTALL_SCRIPT = @INSTALL_SCRIPT@
++INSTALL_STRIP_FLAG =
+ transform = @program_transform_name@
+ 
+ ## These are defined because otherwise make on NetBSD V1.1 will print
+Index: progs.am
+===================================================================
+RCS file: /cvs/automake/automake/progs.am,v
+retrieving revision 1.16
+retrieving revision 1.17
+diff -u -r1.16 -r1.17
+--- progs.am	1998/06/23 23:39:29	1.16
++++ progs.am	1999/02/02 09:51:58	1.17
+@@ -1,5 +1,5 @@
+ ## automake - create Makefile.in from Makefile.am
+-## Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
++## Copyright (C) 1994, 1995-98, 1999 Free Software Foundation, Inc.
+ 
+ ## This program is free software; you can redistribute it and/or modify
+ ## it under the terms of the GNU General Public License as published by
+@@ -25,8 +25,8 @@
+ ## Note that we explicitly set the libtool mode.  This avoids any
+ ## lossage if the install program doesn't have a name that libtool
+ ## expects.
+-	    echo " @LIBTOOL --mode=install@ $(INSTALL_PROGRAM) $$p $(DESTDIR)$(@DIR@dir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+-	    @LIBTOOL --mode=install@ $(INSTALL_PROGRAM) $$p $(DESTDIR)$(@DIR@dir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
++	    echo " @LIBTOOL --mode=install@ $(INSTALL_PROGRAM) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(@DIR@dir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
++	    @LIBTOOL --mode=install@ $(INSTALL_PROGRAM) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(@DIR@dir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+ 	  else :; fi; \
+ 	done
+ 
+Index: stamp-vti
+===================================================================
+RCS file: /cvs/automake/automake/stamp-vti,v
+retrieving revision 1.68
+retrieving revision 1.71
+diff -u -r1.68 -r1.71
+--- stamp-vti	1999/01/10 21:01:05	1.68
++++ stamp-vti	1999/01/22 13:58:03	1.71
+@@ -1,3 +1,3 @@
+-@set UPDATED 10 January 1999
+-@set EDITION 1.4
+-@set VERSION 1.4
++@set UPDATED 22 January 1999
++@set EDITION 1.4a
++@set VERSION 1.4a
+Index: version.texi
+===================================================================
+RCS file: /cvs/automake/automake/version.texi,v
+retrieving revision 1.141
+retrieving revision 1.144
+diff -u -r1.141 -r1.144
+--- version.texi	1999/01/10 21:01:06	1.141
++++ version.texi	1999/01/22 13:58:04	1.144
+@@ -1,3 +1,3 @@
+-@set UPDATED 10 January 1999
+-@set EDITION 1.4
+-@set VERSION 1.4
++@set UPDATED 22 January 1999
++@set EDITION 1.4a
++@set VERSION 1.4a
+cvs server: Diffing m4
+Index: m4/init.m4
+===================================================================
+RCS file: /cvs/automake/automake/m4/init.m4,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -u -r1.9 -r1.10
+--- m4/init.m4	1998/10/09 11:10:17	1.9
++++ m4/init.m4	1999/01/22 14:09:37	1.10
+@@ -9,6 +9,8 @@
+ 
+ AC_DEFUN(AM_INIT_AUTOMAKE,
+ [AC_REQUIRE([AC_PROG_INSTALL])
++dnl We require 2.13 because we rely on SHELL being computed by configure.
++AC_PREREQ([2.13])
+ PACKAGE=[$1]
+ AC_SUBST(PACKAGE)
+ VERSION=[$2]
+cvs server: Diffing tests
+Index: tests/ChangeLog
+===================================================================
+RCS file: /cvs/automake/automake/tests/ChangeLog,v
+retrieving revision 1.200
+retrieving revision 1.204
+diff -u -r1.200 -r1.204
+--- tests/ChangeLog	1999/01/14 22:29:33	1.200
++++ tests/ChangeLog	1999/02/01 11:49:55	1.204
+@@ -1,3 +1,18 @@
++1999-02-01  Tom Tromey  <tromey@cygnus.com>
++
++	* installsh.test (AUTOMAKE): Use $PERL.  From Pavel Roskin.
++
++	* cond5.test: Sleep 15 seconds, not 5.  Some people still run the
++	test on slow machines.
++
++1999-01-22  Tom Tromey  <tromey@cygnus.com>
++
++	* copy.test: New file.
++	* Makefile.am (TESTS): Added copy.test.
++
++	* ppf77.test: New file.
++	* Makefile.am (TESTS): Added ppf77.test.
++
+ 1999-01-14  Tom Tromey  <tromey@cygnus.com>
+ 
+ 	* confh3.test: New file.
+Index: tests/Makefile.am
+===================================================================
+RCS file: /cvs/automake/automake/tests/Makefile.am,v
+retrieving revision 1.170
+retrieving revision 1.172
+diff -u -r1.170 -r1.172
+--- tests/Makefile.am	1999/01/14 22:29:34	1.170
++++ tests/Makefile.am	1999/01/22 14:13:50	1.172
+@@ -13,11 +13,11 @@
+ cond4.test cond5.test cond6.test cond7.test condman.test condman2.test \
+ conf2.test confdist.test confh.test confh2.test confh3.test \
+ config.test confincl.test confsub.test confvar.test confvar2.test \
+-cxxcpp.test cxxlibobj.test cxxlink.test cxxnoc.test cxxo.test \
+-cygwin32.test defun.test defun2.test dejagnu.test depacl.test \
+-depacl2.test depend.test depend2.test depend3.test discover.test \
+-distdir.test dup.test dup2.test else.test empty.test error.test	\
+-exdir.test exdir2.test exsource.test extra.test extra3.test \
++copy.test cxxcpp.test cxxlibobj.test cxxlink.test cxxnoc.test \
++cxxo.test cygwin32.test defun.test defun2.test dejagnu.test \
++depacl.test depacl2.test depend.test depend2.test depend3.test \
++discover.test distdir.test dup.test dup2.test else.test empty.test \
++error.test exdir.test exdir2.test exsource.test extra.test extra3.test \
+ extra4.test flibs.test fnoc.test fo.test fonly.test fpinst2.test \
+ fpinstall.test gnits.test implicit.test include.test info.test \
+ insh.test insh2.test install.test installsh.test instdata.test \
+@@ -30,16 +30,16 @@
+ mkinstall.test noinst.test number.test objc.test obsolete.test \
+ order.test outdir.test output.test output2.test output3.test \
+ output4.test output5.test package.test parse.test pluseq.test \
+-pluseq2.test pluseq3.test pluseq4.test pluseq5.test prefix.test	\
+-primary.test primary2.test proginst.test ranlib.test recurs.test \
+-recurs2.test remake.test remake2.test req.test rulepat.test \
+-scripts.test seenc.test sinclude.test spell.test spell2.test \
+-spell3.test spelling.test stamph.test stdlib.test subdir.test \
+-subdir2.test subst.test symlink.test syntax.test tags.test tagsub.test \
+-target.test texinfo.test texinfo2.test texinfo3.test texinfo4.test \
+-texinfo5.test texinfo6.test texinfo7.test unused.test version.test \
+-version2.test version3.test vpath.test vtexi.test vtexi2.test \
+-whoami.test xsource.test yacc.test yaccpp.test
++pluseq2.test pluseq3.test pluseq4.test pluseq5.test ppf77.test \
++prefix.test primary.test primary2.test proginst.test ranlib.test \
++recurs.test recurs2.test remake.test remake2.test req.test \
++rulepat.test scripts.test seenc.test sinclude.test spell.test \
++spell2.test spell3.test spelling.test stamph.test stdlib.test \
++subdir.test subdir2.test subst.test symlink.test syntax.test tags.test \
++tagsub.test target.test texinfo.test texinfo2.test texinfo3.test \
++texinfo4.test texinfo5.test texinfo6.test texinfo7.test unused.test \
++version.test version2.test version3.test vpath.test vtexi.test \
++vtexi2.test whoami.test xsource.test yacc.test yaccpp.test
+ 
+ EXTRA_DIST = defs $(TESTS)
+ 
+Index: tests/Makefile.in
+===================================================================
+RCS file: /cvs/automake/automake/tests/Makefile.in,v
+retrieving revision 1.225
+retrieving revision 1.227
+diff -u -r1.225 -r1.227
+--- tests/Makefile.in	1999/01/14 22:47:20	1.225
++++ tests/Makefile.in	1999/01/22 14:13:51	1.227
+@@ -65,7 +65,7 @@
+ 
+ AUTOMAKE_OPTIONS = gnits
+ 
+-TESTS = acinclude.test aclocal.test aclocali.test aclocalii.test acoutnoq.test acoutput.test acoutqnl.test acouttbs.test acsilent.test all.test alpha.test ammissing.test ansi.test ansi2.test ansi3.test auxdir.test backsl.test badline.test badprog.test block.test canon.test canon2.test canon3.test canon4.test checkall.test clean.test colneq.test colneq2.test colon.test colon2.test colon3.test colon4.test colon5.test colon6.test colon7.test comment.test comment2.test compile_f_c_cxx.test cond.test cond2.test cond3.test cond4.test cond5.test cond6.test cond7.test condman.test condman2.test conf2.test confdist.test confh.test confh2.test confh3.test config.test confincl.test confsub.test confvar.test confvar2.test cxxcpp.test cxxlibobj.test cxxlink.test cxxnoc.test cxxo.test cygwin32.test defun.test defun2.test dejagnu.test depacl.test depacl2.test depend.test depend2.test depend3.test discover.test distdir.test dup.test dup2.test else.test empty.test error.test	exdir.test exdir2.test exsource.test extra.test extra3.test extra4.test flibs.test fnoc.test fo.test fonly.test fpinst2.test fpinstall.test gnits.test implicit.test include.test info.test insh.test insh2.test install.test installsh.test instdata.test instexec.test insthook.test instman.test interp.test interp2.test java.test javaprim.test javasubst.test ldadd.test lex.test lex2.test libobj.test libobj2.test libobj3.test libobj4.test libobj5.test	libobj6.test libobj7.test libobj8.test library.test link_c_cxx.test link_f_c.test link_f_c_cxx.test link_f_cxx.test link_f_only.test lisp.test mdate.test mdate2.test mdate3.test mkinst2.test mkinstall.test noinst.test number.test objc.test obsolete.test order.test outdir.test output.test output2.test output3.test output4.test output5.test package.test parse.test pluseq.test pluseq2.test pluseq3.test pluseq4.test pluseq5.test prefix.test	primary.test primary2.test proginst.test ranlib.test recurs.test recurs2.test remake.test remake2.test req.test rulepat.test scripts.test seenc.test sinclude.test spell.test spell2.test spell3.test spelling.test stamph.test stdlib.test subdir.test subdir2.test subst.test symlink.test syntax.test tags.test tagsub.test target.test texinfo.test texinfo2.test texinfo3.test texinfo4.test texinfo5.test texinfo6.test texinfo7.test unused.test version.test version2.test version3.test vpath.test vtexi.test vtexi2.test whoami.test xsource.test yacc.test yaccpp.test
++TESTS = acinclude.test aclocal.test aclocali.test aclocalii.test acoutnoq.test acoutput.test acoutqnl.test acouttbs.test acsilent.test all.test alpha.test ammissing.test ansi.test ansi2.test ansi3.test auxdir.test backsl.test badline.test badprog.test block.test canon.test canon2.test canon3.test canon4.test checkall.test clean.test colneq.test colneq2.test colon.test colon2.test colon3.test colon4.test colon5.test colon6.test colon7.test comment.test comment2.test compile_f_c_cxx.test cond.test cond2.test cond3.test cond4.test cond5.test cond6.test cond7.test condman.test condman2.test conf2.test confdist.test confh.test confh2.test confh3.test config.test confincl.test confsub.test confvar.test confvar2.test copy.test cxxcpp.test cxxlibobj.test cxxlink.test cxxnoc.test cxxo.test cygwin32.test defun.test defun2.test dejagnu.test depacl.test depacl2.test depend.test depend2.test depend3.test discover.test distdir.test dup.test dup2.test else.test empty.test error.test exdir.test exdir2.test exsource.test extra.test extra3.test extra4.test flibs.test fnoc.test fo.test fonly.test fpinst2.test fpinstall.test gnits.test implicit.test include.test info.test insh.test insh2.test install.test installsh.test instdata.test instexec.test insthook.test instman.test interp.test interp2.test java.test javaprim.test javasubst.test ldadd.test lex.test lex2.test libobj.test libobj2.test libobj3.test libobj4.test libobj5.test	libobj6.test libobj7.test libobj8.test library.test link_c_cxx.test link_f_c.test link_f_c_cxx.test link_f_cxx.test link_f_only.test lisp.test mdate.test mdate2.test mdate3.test mkinst2.test mkinstall.test noinst.test number.test objc.test obsolete.test order.test outdir.test output.test output2.test output3.test output4.test output5.test package.test parse.test pluseq.test pluseq2.test pluseq3.test pluseq4.test pluseq5.test ppf77.test prefix.test primary.test primary2.test proginst.test ranlib.test recurs.test recurs2.test remake.test remake2.test req.test rulepat.test scripts.test seenc.test sinclude.test spell.test spell2.test spell3.test spelling.test stamph.test stdlib.test subdir.test subdir2.test subst.test symlink.test syntax.test tags.test tagsub.test target.test texinfo.test texinfo2.test texinfo3.test texinfo4.test texinfo5.test texinfo6.test texinfo7.test unused.test version.test version2.test version3.test vpath.test vtexi.test vtexi2.test whoami.test xsource.test yacc.test yaccpp.test
+ 
+ 
+ EXTRA_DIST = defs $(TESTS)
+Index: tests/cond5.test
+===================================================================
+RCS file: /cvs/automake/automake/tests/cond5.test,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -u -r1.1 -r1.2
+--- tests/cond5.test	1998/07/18 06:37:24	1.1
++++ tests/cond5.test	1999/02/01 11:40:21	1.2
+@@ -31,7 +31,7 @@
+ $AUTOMAKE &
+ pid=$!
+ 
+-sleep 5
++sleep 15
+ kill -0 $pid && {
+    kill $pid
+    exit 1
+cvs server: tag Release-1-4 is not in file tests/copy.test
+Index: tests/installsh.test
+===================================================================
+RCS file: /cvs/automake/automake/tests/installsh.test,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -u -r1.1 -r1.2
+--- tests/installsh.test	1996/03/16 01:40:57	1.1
++++ tests/installsh.test	1999/02/01 11:49:56	1.2
+@@ -25,7 +25,7 @@
+     ;;
+ esac
+ 
+-AUTOMAKE="../../../automake --amdir=$srcdir/.. --foreign"
++AUTOMAKE="$PERL ../../../automake --amdir=$srcdir/.. --foreign"
+ 
+ # Now we proceed with the test
+ $AUTOMAKE --add-missing > output 2>&1 \
+cvs server: tag Release-1-4 is not in file tests/ppf77.test
