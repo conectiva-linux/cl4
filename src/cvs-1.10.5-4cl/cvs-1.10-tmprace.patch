@@ -1,0 +1,28 @@
+--- cvs-1.10/src/cvsbug.sh.jbj	Mon Aug 31 13:43:39 1998
++++ cvs-1.10/src/cvsbug.sh	Mon Aug 31 14:02:41 1998
+@@ -85,9 +85,9 @@
+ 
+ [ -z "$TMPDIR" ] && TMPDIR=/tmp
+ 
+-TEMP=$TMPDIR/p$$
+-BAD=$TMPDIR/pbad$$
+-REF=$TMPDIR/pf$$
++TEMP="`/bin/mktemp $TMPDIR/p.XXXXXX`"
++BAD="`/bin/mktemp $TMPDIR/pbad.XXXXXX`"
++REF="`/bin/mktemp $TMPDIR/pf.XXXXXX`"
+ 
+ if [ -z "$LOGNAME" -a -n "$USER" ]; then
+   LOGNAME=$USER
+--- cvs-1.10/contrib/rcs2log.sh.jbj	Mon Aug 31 14:04:28 1998
++++ cvs-1.10/contrib/rcs2log.sh	Mon Aug 31 14:06:06 1998
+@@ -237,8 +237,8 @@
+ 	esac
+ esac
+ 
+-llogout=$TMPDIR/rcs2log$$l
+-rlogout=$TMPDIR/rcs2log$$r
++llogout="`/bin/mktemp $TMPDIR/rcs2log.l.XXXXXX`"
++rlogout="`/bin/mktemp $TMPDIR/rcs2log.r.XXXXXX`"
+ trap exit 1 2 13 15
+ trap "rm -f $llogout $rlogout; exit 1" 0
+ 
