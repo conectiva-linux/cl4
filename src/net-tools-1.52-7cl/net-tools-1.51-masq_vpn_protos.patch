@@ -1,0 +1,14 @@
+diff -uNr net-tools-1.51-orig/lib/masq_info.c net-tools-1.51/lib/masq_info.c
+--- net-tools-1.51-orig/lib/masq_info.c	Thu Mar 18 07:53:05 1999
++++ net-tools-1.51/lib/masq_info.c	Sat Jun 12 13:36:24 1999
+@@ -124,6 +124,10 @@
+ 	    ms->proto = "udp";
+ 	else if (strcmp("ICMP", buf) == 0)
+ 	    ms->proto = "icmp";
++	else if (strcmp("GRE", buf) == 0)
++	    ms->proto = "gre";
++	else if (strcmp("ESP", buf) == 0)
++	    ms->proto = "esp";
+ 	else {
+ 	    EINTERN("masq_info.c", "ip_masquerade unknown type");
+ 	    return (-1);

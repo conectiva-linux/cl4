@@ -1,0 +1,42 @@
+--- net-tools-1.51/lib/interface.c.jbj	Thu Mar 25 01:15:34 1999
++++ net-tools-1.51/lib/interface.c	Thu Mar 25 01:22:59 1999
+@@ -99,6 +99,16 @@
+     return 0;
+ }
+ 
++int free_interface_list(void)
++{
++    struct interface *ife;
++    while ((ife = int_list) != NULL) {
++	int_list = ife->next;
++	free(ife);
++    }
++    return 0;
++}
++
+ static int if_readconf(void)
+ {
+     int numreqs = 30;
+--- net-tools-1.51/include/interface.h.jbj	Thu Mar 25 01:20:13 1999
++++ net-tools-1.51/include/interface.h	Thu Mar 25 01:20:58 1999
+@@ -65,6 +65,7 @@
+ extern int if_fetch(struct interface *ife);
+ 
+ extern int for_all_interfaces(int (*)(struct interface *, void *), void *);
++extern int free_interface_list(void);
+ extern struct interface *lookup_interface(char *name);
+ extern int if_readlist(void);
+ 
+--- net-tools-1.51/netstat.c.jbj	Thu Mar 25 01:24:02 1999
++++ net-tools-1.51/netstat.c	Thu Mar 25 01:23:33 1999
+@@ -1387,7 +1387,9 @@
+ 	perror(_("missing interface information"));
+ 	exit(1);
+     }
+-    if (!flag_cnt)
++    if (flag_cnt)
++	free_interface_list();
++    else
+         close(skfd);
+     skfd = -1;
+ 
