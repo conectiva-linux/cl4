@@ -1,0 +1,18 @@
+--- mxp/lug/general.c.ewt	Mon Aug 26 15:31:29 1996
++++ mxp/lug/general.c	Mon Aug 26 15:31:43 1996
+@@ -47,6 +47,7 @@
+   return (bits-1);
+ }
+ 
++#if 0
+ /*
+  * Like basename command.
+  */
+@@ -77,6 +78,7 @@
+ 
+   return( string );
+ }
++#endif
+ 
+ short *bytetoshort( in, out, size )
+ byte *in;

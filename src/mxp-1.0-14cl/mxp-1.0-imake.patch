@@ -1,0 +1,39 @@
+--- mxp/Imakefile.orig	Fri Jan 12 15:04:59 1996
++++ mxp/Imakefile	Fri Jan 12 15:05:43 1996
+@@ -11,14 +11,14 @@
+ XCOMM Since this is a compute intensive program, be sure to use 
+ XCOMM compiler optimization. It makes a big difference.
+ XCOMM For gcc on linux "-O2 -m486" works well.
+-XCOMM CDEBUGFLAGS = -O2 -m486
++CDEBUGFLAGS = $(RPM_OPT_FLAGS)
+ 
+ XCOMM Specify where your Xpm installation directories are
+ XCOMM If you have the XPM libraries uncomment the following lines to use
+ XCOMM color icons.
+-XCOMM #define UseXPM
+-XCOMM XPM_INCLUDEDIR = /usr/local/include
+-XCOMM XPM_LIBDIR = $(LIBDIR)/lib
++#define UseXPM
++XPM_INCLUDEDIR = /usr/local/include
++XPM_LIBDIR = $(LIBDIR)/lib
+ 
+ XCOMM Mxp will not resize correctly when used with FVWM 2.0 if the
+ XCOMM resize increment is set to 1.
+@@ -26,7 +26,7 @@
+ SIZE_INC = 1
+ 
+ XCOMM Installation directory
+-BINDIR = /usr/local/bin
++XCOMM BINDIR = /usr/local/bin
+ 
+ XCOMM ******************* End of Configuration ***********************
+ 
+@@ -43,7 +43,7 @@
+ EXTRA_DEFINES = -DRESIZE_INC=$(SIZE_INC)
+ #endif
+ 
+-LOCAL_LIBRARIES = $(XPM_LIBS) -lm -lXaw -lXt -lXmu -lX11 -lXdmcp -lXext
++LOCAL_LIBRARIES = $(XPM_LIBS) -lm -lXaw -lXt -lXmu -lSM -lICE -lX11 -lXdmcp -lXext
+ INCLUDES = -Ilug $(XPM_INCLUDE)
+ 
+ ComplexProgramTarget(mxp)
