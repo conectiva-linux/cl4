@@ -1,0 +1,10 @@
+--- kaffe-1.0.b3/config/alpha/threads.h.foo	Wed Dec  9 11:38:41 1998
++++ kaffe-1.0.b3/config/alpha/threads.h	Wed Dec  9 11:38:47 1998
+@@ -24,6 +24,6 @@
+  * This is the offset into the setjmp buffer where the stack pointer is
+  * stored.  This may be different with different OSes.
+  */
+-#define	SP_OFFSET		?
++#define	SP_OFFSET		8
+ 
+ #endif

@@ -1,0 +1,16 @@
+--- kaffe-1.0b4/developers/utf8munge.pl.perlpath	Mon Apr 12 12:15:22 1999
++++ kaffe-1.0b4/developers/utf8munge.pl	Mon Apr 12 12:15:27 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # Munge the Utf8 constants in a .class file.
+ #
+--- kaffe-1.0b4/developers/dumpClass.pl.perlpath	Mon Apr 12 12:15:41 1999
++++ kaffe-1.0b4/developers/dumpClass.pl	Mon Apr 12 12:15:44 1999
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # Dump a java .class file to stdout
+ #
