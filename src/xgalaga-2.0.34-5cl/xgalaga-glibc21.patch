@@ -1,0 +1,10 @@
+--- xgalaga-2.0.34.orig/libsprite/data.c	Tue Jun  8 18:11:04 1999
++++ xgalaga-2.0.34/libsprite/data.c	Tue Jun  8 18:11:34 1999
+@@ -79,7 +79,6 @@
+ W_Color W_White = WHITE, W_Black = BLACK, W_Red = RED, W_Green = GREEN;
+ W_Color W_Yellow = YELLOW, W_Cyan = CYAN, W_Grey = LIGHT_GREY, W_DarkGrey = DARK_GREY;
+ int     W_Textwidth, W_Textheight, W_BigTextwidth, W_BigTextheight;
+-char   *strdup();
+ 
+ int     W_in_message = 0;	/* jfy -- for Jerry's warp message hack */
+ 
