@@ -1,0 +1,11 @@
+--- timeconfig-2.7.orig/timeconfig.c	Fri Apr  9 04:58:02 1999
++++ timeconfig-2.7/timeconfig.c	Thu Jul  1 20:08:27 1999
+@@ -296,7 +296,7 @@
+     if (!timezone) {
+ 	if ((i = readlink("/etc/localtime", buf, sizeof(buf) - 1)) < 0) {
+ 	    if (errno == ENOENT)
+-		strcpy(buf, "zoneinfo/US/Eastern");
++		strcpy(buf, "zoneinfo/Brazil/East");
+ 	    else {
+    	     fprintf(stderr, 
+ 	      _("%s: critical error reading /etc/localtime: %s\n"),
