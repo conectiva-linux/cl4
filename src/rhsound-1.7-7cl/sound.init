@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# chkconfig: 345 85 15
+# description: Saves and restores sound card mixer settings at \
+#	       boot time and shutdown.
+# description(pt_BR): Salva e restaura configurações do misturador \
+#		      de som em tempo de inicialização e desligamento \
+#		      da máquina.
+
+HOME=/etc
+
+. /etc/rc.d/init.d/functions
+
+case "$1" in
+  start)
+	gprintf "Starting %s: " "sound"
+
+	# loads mixer settings from /etc/.aumixrc
+	if [ -f /etc/.aumixrc ]; then
+  	  cat /proc/devices | grep -q "\(sparcaudio\|sound\)"
+	  if [ $? = 0 ]; then  
+	      /usr/bin/aumix -L > /dev/null
+	  fi
+	fi
+	
+	gprintf som
+	echo
+	touch /var/lock/subsys/sound
+	;;
+  stop)
+	gprintf "Saving %s configuration: " "sound"
+
+	# Save mixer settings to /etc/.aumixrc
+  	cat /proc/devices | grep -q "\(sparcaudio\|sound\)"
+	if [ $? = 0 ]; then
+	    /usr/bin/aumix -S
+	fi
+
+	rm -f /var/lock/subsys/sound
+	gprintf "sound"
+	echo
+	;;
+  restart)
+	$0 stop
+        $0 start
+	;;
+  status)
+  	cat /proc/devices | grep -q "\(sparcaudio\|sound\)"
+	if [ $? = 0 ]; then
+	    lsmod | grep -q "\(sound\|audio\)"
+	    if [ $? = 0 ]; then
+		gprintf "%s sound board detected.\n" "Modular"
+	    else
+		gprintf "%s sound board detected.\n" "Monolítica"
+	    fi
+ 
+	  cat /dev/sndstat 2> /dev/null | grep -A 1 "Midi devices:" | grep -q [0-9]:
+	  if [ $? = 0 ]; then
+	    gprintf "%s device present.\n" "MIDI"
+	  else
+	    cat /dev/sndstat >/dev/null 2>&1
+	    if [ $? = 0 ]; then
+		gprintf "%s device not detected.\n" "MIDI"
+	    fi
+	  fi	
+
+	else
+		gprintf "%s board not configured.\n" "sound"
+	fi
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart}\n" "sound"
+	exit 1
+esac
+
+exit 0
