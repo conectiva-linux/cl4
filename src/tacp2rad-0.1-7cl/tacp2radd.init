@@ -1,0 +1,41 @@
+#! /bin/sh
+# chkconfig: 345 91 18
+# description: TACACS+ to RADIUS AAA Converter
+# description(pt_BR): Conversor de requisições TACACS+ para RADIUS
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/tacp2radd
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -f $DAEMON ] || exit 0
+
+set -e
+
+case "$1" in
+	start)
+		gprintf "Starting %s: " "tacp2rad"
+		daemon $DAEMON
+		echo
+		touch /var/lock/subsys/tacp2radd
+		;;
+	  stop)
+		gprintf "Stopping %s: " "tacp2rad"
+		killproc $DAEMON
+		echo "done"
+		rm -f /var/lock/subsys/tacp2radd.init
+		;;
+	  *)
+		gprintf "Uso: %s {start|stop}\n" "$0"
+		exit 1
+		;;
+esac
+
+exit 0
