@@ -1,0 +1,29 @@
+--- enlightenment-0.15.5/src/evhandlers.c.raster	Mon Apr 19 13:56:51 1999
++++ enlightenment-0.15.5/src/evhandlers.c	Mon Apr 19 13:57:37 1999
+@@ -936,10 +936,13 @@
+ 	    winrel = ewin2->win;
+ 	  xwc.sibling = winrel;
+ 	  xwc.stack_mode = ev->xconfigurerequest.detail;
+-	  if (xwc.stack_mode == Above)
+-	    RaiseEwin(ewin);
+-	  else if (xwc.stack_mode == Below)
+-	    LowerEwin(ewin);
++          if (mode.mode != MODE_NONE)
++	    {
++	      if (xwc.stack_mode == Above)
++		RaiseEwin(ewin);
++	      else if (xwc.stack_mode == Below)
++		LowerEwin(ewin);
++	    }
+ /*        else
+  * XConfigureWindow(disp, ewin->win,
+  * ev->xconfigurerequest.value_mask &
+@@ -967,6 +970,8 @@
+ 		     x - ewin->border->border.left,
+ 		     y - ewin->border->border.top,
+ 		     w, h);
++      if (mode.mode == MODE_MOVE)
++	ICCCM_Configure(ewin);
+     }
+   else
+     {

@@ -1,0 +1,28 @@
+--- src/draw.c.raster	Mon Apr  5 19:27:58 1999
++++ src/draw.c	Mon Apr  5 19:29:03 1999
+@@ -948,18 +948,19 @@
+ 	  if (firstlast < 2)
+ 	    if (mode.mode != MODE_NONE)
+ 	      SetCoords(ewin->x, ewin->y,
+-		  (ewin->client.w - ewin->client.base_w) / ewin->client.w_inc,
+-		 (ewin->client.h - ewin->client.base_h) / ewin->client.h_inc);
+-	  {
+-	    DO_DRAW_MODE_4(x, y, w, h);
+-	  }
++			(ewin->client.w - ewin->client.base_w) / ewin->client.w_inc,
++			(ewin->client.h - ewin->client.base_h) / ewin->client.h_inc);
++          if (firstlast < 2)
++	    {
++	      DO_DRAW_MODE_4(x, y, w, h);
++	    }
+ 	}
+       else if (md == 5)
+ 	{
+ 	  static PixImg      *ewin_pi = NULL;
+ 	  static PixImg      *root_pi = NULL;
+ 	  static PixImg      *draw_pi = NULL;
+-
++	  
+ 	  if (mode.mode != MODE_NONE)
+ 	    SetCoords(ewin->x, ewin->y,
+ 		  (ewin->client.w - ewin->client.base_w) / ewin->client.w_inc,

@@ -1,0 +1,13 @@
+--- e/src/slideout.c.raster	Sat Apr 10 17:13:28 1999
++++ e/src/slideout.c	Sat Apr 10 17:13:18 1999
+@@ -285,6 +285,10 @@
+ AddButtonToSlideout(Slideout * s, Button * b)
+ {
+   EDBUG(5, "AddButtonToSlideout");
++  if (!b)
++    EDBUG_RETURN_;
++  if (!s)
++    EDBUG_RETURN_;
+   s->num_buttons++;
+   s->button = Erealloc(s->button, sizeof(Button) * s->num_buttons);
+   s->button[s->num_buttons - 1] = b;

@@ -1,0 +1,132 @@
+--- enlightenment-0.15.5/src/areas.c.raster	Thu Apr 15 16:52:07 1999
++++ enlightenment-0.15.5/src/areas.c	Thu Apr 15 16:52:23 1999
+@@ -197,7 +197,10 @@
+   int                 i, num, a1, a2, x, y, dx, dy;
+ 
+   EDBUG(4, "SetCurrentArea");
+-  if (mode.mode == MODE_RESIZE)
++  /* if in resize mode... dont flip */
++  if ((mode.mode == MODE_RESIZE) ||
++      (mode.mode == MODE_RESIZE_H) ||
++      (mode.mode == MODE_RESIZE_V))
+     EDBUG_RETURN_;
+ 
+   AREA_FIX(ax, ay);
+@@ -207,23 +210,19 @@
+   dx = ax - desks.desk[desks.current].current_area_x;
+   dy = ay - desks.desk[desks.current].current_area_y;
+ 
+-  if ((mode.mode == MODE_RESIZE) ||
+-      (mode.mode == MODE_RESIZE_H) ||
+-      (mode.mode == MODE_RESIZE_V))
+-    doResizeEnd(NULL);
+-  else if ((mode.mode == MODE_MOVE) && (mode.ewin))
++  /* if we're in move mode....  and its non opaque undraw our boxes */
++  if ((mode.mode == MODE_MOVE) && (mode.ewin) && (mode.movemode > 0) && 
++      (!mode.moveresize_pending_ewin))
+     {
+-      /* undraw if in move mode that requires a server grab */
+-      if ((mode.movemode > 0) && (!mode.moveresize_pending_ewin))
+-	{
+-	  x = mode.ewin->x;
+-	  y = mode.ewin->y;
+-	  DrawEwinShape(mode.ewin, mode.movemode,
+-			x, y,
+-			mode.ewin->client.w, mode.ewin->client.h,
+-			3);
+-	}
++      x = mode.ewin->x;
++      y = mode.ewin->y;
++      DrawEwinShape(mode.ewin, mode.movemode,
++		    x, y,
++		    mode.ewin->client.w, mode.ewin->client.h,
++		    3);
+     }
++  /* remove lots of event masks from windows.. we dont want to bother */
++  /* handling events as a result of our playing wiht windows */
+   BeginNewDeskFocus();
+   /* move all the windows around */
+   lst = (EWin **) ListItemType(&num, LIST_TYPE_EWIN);
+@@ -234,6 +233,7 @@
+ 	  int                 wnum = 0;
+ 	  Window             *wl = NULL;
+ 
++	  /* create the list of windwos to move */
+ 	  for (i = 0; i < num; i++)
+ 	    {
+ 	      if ((lst[i]->desktop == desks.current) &&
+@@ -253,7 +253,7 @@
+ 		    }
+ 		}
+ 	    }
+-	  /* move them here */
++	  /* slide them */
+ 	  if (wl)
+ 	    {
+ 	      SlideWindowsBy(wl, wnum,
+@@ -262,6 +262,7 @@
+ 			     desks.slidespeed);
+ 	      Efree(wl);
+ 	    }
++	  /* move the windows to their final positions */
+ 	  for (i = 0; i < num; i++)
+ 	    {
+ 	      if ((lst[i]->desktop == desks.current) &&
+@@ -292,11 +293,15 @@
+ 	}
+       else
+ 	{
++	  /* move all widnwos across.... */
+ 	  for (i = 0; i < num; i++)
+ 	    {
+ 	      if ((lst[i]->desktop == desks.current) &&
+ 		  (!lst[i]->sticky) && (!lst[i]->fixedpos))
+ 		{
++		  /* if we're moving this window and its not opaque move */
++		  /* warp it across withotu remebering the xy stuff */
++		  /* well work out the xy stuff later when the move finishes */
+ 		  if ((lst[i]->floating) && (mode.movemode > 0))
+ 		    {
+ 		      GetWinXY(lst[i]->win, &x, &y);
+@@ -304,6 +309,7 @@
+ 				  x - (root.w * (ax - desks.desk[desks.current].current_area_x)),
+ 				  y - (root.h * (ay - desks.desk[desks.current].current_area_y)));
+ 		    }
++		  /* if we're nto moving it... move it across */
+ 		  else if (!lst[i]->floating)
+ 		    {
+ 		      char                setflip = 0;
+@@ -329,8 +335,10 @@
+ 	}
+       Efree(lst);
+     }
++  /* set the current area up in out data structs */
+   desks.desk[desks.current].current_area_x = ax;
+   desks.desk[desks.current].current_area_y = ay;
++  /* set gnome hints up for it */
+   GNOME_SetCurrentArea();
+   XSync(disp, False);
+   /* redraw any windows that were in "move mode" */
+@@ -401,8 +409,11 @@
+ 	  Efree(lst);
+ 	}
+     }
++  /* re-focus on a new ewin on that new desktop area */
+   NewDeskFocus();
++  /* tell the FX api abotu the change */
+   FX_DeskChange();
++  /* update our pager */
+   UpdatePagerSel();
+   ForceUpdatePagersForDesktop(desks.current);
+   EDBUG_RETURN_;
+--- enlightenment-0.15.5/src/evhandlers.c.raster	Thu Apr 15 16:52:13 1999
++++ enlightenment-0.15.5/src/evhandlers.c	Thu Apr 15 16:52:27 1999
+@@ -212,7 +212,7 @@
+ 			GrabModeSync, GrabModeAsync, None, None);
+ 	}
+       mode.focuswin = ewin;
+-      if ((ewin) && (!ewin->internal))
++      if ((ewin) && (!ewin->menu))
+ 	{
+ 	  mode.realfocuswin = ewin;
+ 	  if (!mode.cur_menu_mode)

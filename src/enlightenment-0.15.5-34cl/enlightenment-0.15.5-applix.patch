@@ -1,0 +1,29 @@
+--- e/src/icccm.c.raster	Mon Apr 12 14:56:04 1999
++++ e/src/icccm.c	Mon Apr 12 12:20:03 1999
+@@ -814,12 +814,7 @@
+       if (hint->input)
+ 	ewin->client.need_input = 1;
+       else
+-	{
+-	  ewin->client.need_input = 0;
+-	  ewin->skiptask = 1;
+-	  ewin->skipfocus = 1;
+-	  ewin->skipwinlist = 1;
+-	}
++	ewin->client.need_input = 0;
+     }
+   else
+     ewin->client.need_input = 1;
+@@ -834,6 +829,12 @@
+ 	      ewin->client.need_input = 1;
+ 	  XFree(prop);
+ 	}
++    }
++  if (!ewin->client.need_input)
++    {
++      ewin->skiptask = 1;
++      ewin->skipfocus = 1;
++      ewin->skipwinlist = 1;
+     }
+   if (hint->flags & StateHint)
+     {

@@ -1,0 +1,16 @@
+--- enlightenment-0.15.5/src/events.c.raster	Fri Apr  9 17:23:49 1999
++++ enlightenment-0.15.5/src/events.c	Fri Apr  9 17:24:17 1999
+@@ -428,9 +428,11 @@
+ 	      ev->xcrossing.detail != NotifyInferior &&
+ 	      mode.focuswin)
+ 	    HandleFocusWindow(root.focuswin);
++	  else
++	    HandleFocusWindow(ev->xcrossing.window);
+ 	}
+-      else
+-	HandleFocusWindow(ev->xcrossing.window);
++/*      else */
++/*	HandleFocusWindow(ev->xcrossing.window);*/
+     }
+   EDBUG_RETURN_;
+ }

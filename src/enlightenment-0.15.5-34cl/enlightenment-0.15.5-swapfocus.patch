@@ -1,0 +1,268 @@
+--- enlightenment-0.15.5/src/focus.c.raster	Tue May 25 11:42:52 1999
++++ enlightenment-0.15.5/src/focus.c	Tue May 25 12:08:07 1999
+@@ -320,89 +320,170 @@
+ void
+ BeginNewDeskFocus(void)
+ {
+-  EWin               *ewin;
+-  int                 i;
+-
++  EWin               *ewin, **lst;
++  int                 i, j, num;
++  
+   /* we are about to flip desktops or areas - disable enter and leave events
+    * temproarily */
+-
+-  events_removed_ewin = NULL;
+-  if (mode.focuswin)
+-    {
+-      ewin = mode.focuswin;
+-      events_removed_ewin = ewin;
+-      XSelectInput(disp, ewin->win, FocusChangeMask | SubstructureNotifyMask |
+-		   SubstructureRedirectMask |
+-		   PointerMotionMask | PropertyChangeMask |
+-		   ResizeRedirectMask |
+-		   ButtonPressMask | ButtonReleaseMask);
+-      if (ewin->pager)
+-	XSelectInput(disp, ewin->client.win, PropertyChangeMask |
+-		  FocusChangeMask | ResizeRedirectMask | StructureNotifyMask |
+-		     ColormapChangeMask | ButtonPressMask | ButtonReleaseMask |
+-		     PointerMotionMask);
+-      else
+-	XSelectInput(disp, ewin->client.win, PropertyChangeMask |
+-		  FocusChangeMask | ResizeRedirectMask | StructureNotifyMask |
+-		     ColormapChangeMask);
++  
++  lst = (EWin **) ListItemType(&num, LIST_TYPE_EWIN);
++  if (lst)
++    {
++      for (i = 0; i < num; i++)
++	{
++	  ewin = lst[i];
++	  XSelectInput(disp, ewin->win,
++		       FocusChangeMask |
++		       SubstructureNotifyMask |
++		       SubstructureRedirectMask |
++		       PropertyChangeMask |
++		       ResizeRedirectMask);
++	  if (ewin->pager)
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask |
++			 ButtonPressMask |
++			 ButtonReleaseMask |
++			 PointerMotionMask);
++	  else if (ewin->dialog)
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask |
++			 ExposureMask);
++	  else
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask);
++	  for (j = 0; j < ewin->border->num_winparts; j++)
++	    {
++	      if (ewin->border->part[j].flags & FLAG_TITLE)
++		XSelectInput(disp, ewin->bits[j].win,
++			     ExposureMask |
++			     ButtonPressMask |
++			     ButtonReleaseMask);
++	      else
++		XSelectInput(disp, ewin->bits[j].win,
++			     ButtonPressMask |
++			     ButtonReleaseMask);
++	    }
++	}
++      Efree(lst);
+     }
+   for (i = 0; i < ENLIGHTENMENT_CONF_NUM_DESKTOPS; i++)
+-    {
+-      XSelectInput(disp, desks.desk[i].win,
+-		   SubstructureNotifyMask | ButtonPressMask |
+-		   ButtonReleaseMask |
+-		   ButtonMotionMask |
+-		   PropertyChangeMask | SubstructureRedirectMask |
+-		   KeyPressMask | KeyReleaseMask | PointerMotionMask);
+-    }
++    XSelectInput(disp, desks.desk[i].win,
++		 PropertyChangeMask |
++		 SubstructureRedirectMask |
++		 ButtonPressMask |
++		 ButtonReleaseMask);
+ }
+ 
+ void
+ NewDeskFocus(void)
+ {
+-  EWin               *ewin;
+-  int                 i;
+-
++  EWin               *ewin, **lst;
++  int                 i, j, num;
++  
+   EDBUG(4, "NewDeskFocus");
+-
++  
+   /* we flipped - re-enable ener and leave events */
+-  if (events_removed_ewin)
++  lst = (EWin **) ListItemType(&num, LIST_TYPE_EWIN);
++  if (lst)
+     {
+-      ewin = events_removed_ewin;
+-      XSelectInput(disp, ewin->win, FocusChangeMask | SubstructureNotifyMask |
+-		   SubstructureRedirectMask |
+-		   EnterWindowMask | LeaveWindowMask |
+-		   PointerMotionMask | PropertyChangeMask |
+-		   ResizeRedirectMask |
+-		   ButtonPressMask | ButtonReleaseMask);
+-      if (ewin->pager)
+-	XSelectInput(disp, ewin->client.win, PropertyChangeMask |
+-		     EnterWindowMask | LeaveWindowMask |
+-		  FocusChangeMask | ResizeRedirectMask | StructureNotifyMask |
+-		     ColormapChangeMask | ButtonPressMask | ButtonReleaseMask |
+-		     PointerMotionMask);
+-      else
+-	XSelectInput(disp, ewin->client.win, PropertyChangeMask |
+-		     EnterWindowMask | LeaveWindowMask |
+-		  FocusChangeMask | ResizeRedirectMask | StructureNotifyMask |
+-		     ColormapChangeMask);
+-      events_removed_ewin = NULL;
++      for (i = 0; i < num; i++)
++	{
++	  ewin = lst[i];
++	  XSelectInput(disp, ewin->win,
++		       FocusChangeMask |
++		       SubstructureNotifyMask |
++		       SubstructureRedirectMask |
++		       EnterWindowMask |
++		       LeaveWindowMask |
++		       PointerMotionMask |
++		       PropertyChangeMask |
++		       ResizeRedirectMask |
++		       ButtonPressMask |
++		       ButtonReleaseMask);
++	  if (ewin->pager)
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 EnterWindowMask |
++			 LeaveWindowMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask |
++			 ButtonPressMask |
++			 ButtonReleaseMask |
++			 PointerMotionMask);
++	  else if (ewin->dialog)
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 EnterWindowMask |
++			 LeaveWindowMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask |
++			 ExposureMask);
++	  else
++	    XSelectInput(disp, ewin->client.win,
++			 PropertyChangeMask |
++			 EnterWindowMask |
++			 LeaveWindowMask |
++			 FocusChangeMask |
++			 ResizeRedirectMask |
++			 StructureNotifyMask |
++			 ColormapChangeMask);
++	  for (j = 0; j < ewin->border->num_winparts; j++)
++	    {
++	      if (ewin->border->part[j].flags & FLAG_TITLE)
++		XSelectInput(disp, ewin->bits[j].win,
++			     ExposureMask |
++			     KeyPressMask |
++			     KeyReleaseMask |
++			     ButtonPressMask |
++			     ButtonReleaseMask |
++			     EnterWindowMask |
++			     LeaveWindowMask |
++			     PointerMotionMask);
++	      else
++		XSelectInput(disp, ewin->bits[j].win,
++			     KeyPressMask |
++			     KeyReleaseMask |
++			     ButtonPressMask |
++			     ButtonReleaseMask |
++			     EnterWindowMask |
++			     LeaveWindowMask |
++			     PointerMotionMask);
++	    }
++	}
++      Efree(lst);
+     }
+   for (i = 0; i < ENLIGHTENMENT_CONF_NUM_DESKTOPS; i++)
+-    {
+-      XSelectInput(disp, desks.desk[i].win,
+-		   SubstructureNotifyMask | ButtonPressMask |
+-		   ButtonReleaseMask |
+-		   EnterWindowMask | LeaveWindowMask |
+-		   ButtonMotionMask |
+-		   PropertyChangeMask | SubstructureRedirectMask |
+-		   KeyPressMask | KeyReleaseMask | PointerMotionMask);
+-    }
++    XSelectInput(disp, desks.desk[i].win,
++		 SubstructureNotifyMask |
++		 ButtonPressMask |
++		 ButtonReleaseMask |
++		 EnterWindowMask |
++		 LeaveWindowMask |
++		 ButtonMotionMask |
++		 PropertyChangeMask |
++		 SubstructureRedirectMask |
++		 KeyPressMask |
++		 KeyReleaseMask |
++		 PointerMotionMask);
+   if ((mode.focusmode == FOCUS_POINTER) ||
+       (mode.focusmode == FOCUS_SLOPPY))
+     {
+-      EWin               *ewin = NULL;
+-
+       ewin = GetEwinPointerInClient();
+       if (ewin)
+ 	ICCCM_Focus(ewin);
+@@ -411,8 +492,26 @@
+     }
+   else
+     {
+-      GetNextFocusEwin();
+-      ICCCM_Focus(mode.focuswin);
++      lst = (EWin **) ListItemType(&num, LIST_TYPE_EWIN);
++      if (lst)
++	{
++	  int                 ax, ay;
++	  
++	  GetCurrentArea(&ax, &ay);
++	  for (i = 0; i < num; i++)
++	    {
++	      ewin = lst[i];
++	      if ((ewin->sticky) ||
++		  ((((ewin->area_x == ax) && (ewin->area_y == ay)) ||
++		    (ewin->fixedpos)) && (ewin->desktop == desks.current)))
++		{
++		  ICCCM_Focus(ewin);
++		  Efree(lst);
++		  EDBUG_RETURN_;
++		}
++	    }
++	  Efree(lst);
++	}
+     }
+   EDBUG_RETURN_;
+ }

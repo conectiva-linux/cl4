@@ -1,0 +1,180 @@
+--- enlightenment-0.15.5/src/icccm.c.raster	Tue May  4 17:07:43 1999
++++ enlightenment-0.15.5/src/icccm.c	Tue May  4 17:07:50 1999
+@@ -870,13 +870,15 @@
+   else
+     ewin->client.is_group_leader = 0;
+   if (!a)
+-    a2 = XInternAtom(disp, "WM_CLIENT_LEADER", False);
++    a = XInternAtom(disp, "WM_CLIENT_LEADER", False);
+   XGetWindowProperty(disp, ewin->client.win, a, 0, 0x7fffffff, False,
+ 		     XA_WINDOW, &a2, &dummy, &lnum, &ldummy,
+ 		     (unsigned char **)&cleader);
+   if (cleader)
+     {
+       ewin->client.client_leader = *cleader;
++      if (!ewin->client.group)
++	ewin->client.group = *cleader;
+       XFree(cleader);
+     }
+   EDBUG_RETURN_;
+--- enlightenment-0.15.5/src/session.c.raster	Tue May  4 17:08:01 1999
++++ enlightenment-0.15.5/src/session.c	Wed May  5 11:50:06 1999
+@@ -182,7 +182,8 @@
+ 	  for (i = 0; i < num; i++)
+ 	    {
+ 	      ewin = lst[i];
+-	      if (!(ewin->internal))
++	      if ((!(ewin->internal)) &&
++		  ((ewin->client.command) || (ewin->session_id)))
+ 		{
+ 		  x = 0;
+ 		  y = 0;
+@@ -234,6 +235,7 @@
+     {
+       while (fgets(s, sizeof(s), f))
+ 	{
++	  s[strlen(s) - 1] = 0;
+ 	  sscanf(s, "%4000s", s1);
+ 	  if (!strcmp(s1, "[CLIENT]"))
+ 	    {
+@@ -257,32 +259,17 @@
+ 		     &(matches[num_match - 1].layer)
+ 		);
+ 	    }
+-	  else if (!strcmp(s1, "[SESSION_ID]"))
+-	    {
+-	      sscanf(s, "%*s %4000s", s1);
+-	      matches[num_match - 1].session_id = duplicate(s1);
+-	    }
++          else if (!strcmp(s1, "[SESSION_ID]"))
++	    matches[num_match - 1].session_id = duplicate(atword(s, 2));
+ 	  else if (!strcmp(s1, "[NAME]"))
+-	    {
+-	      sscanf(s, "%*s %4000s", s1);
+-	      matches[num_match - 1].name = duplicate(s1);
+-	    }
++	    matches[num_match - 1].name = duplicate(atword(s, 2));
+ 	  else if (!strcmp(s1, "[CLASS]"))
+-	    {
+-	      sscanf(s, "%*s %4000s", s1);
+-	      matches[num_match - 1].class = duplicate(s1);
+-	    }
++	    matches[num_match - 1].class = duplicate(atword(s, 2));
+ 	  else if (!strcmp(s1, "[ROLE]"))
+-	    {
+-	      sscanf(s, "%*s %4000s", s1);
+-	      matches[num_match - 1].role = duplicate(s1);
+-	    }
++	    matches[num_match - 1].role = duplicate(atword(s, 2));
+ 	  /* Needed for matching X11R5 clients */
+ 	  else if (!strcmp(s1, "[COMMAND]"))
+-	    {
+-	      sscanf(s, "%*s %4000s", s1);
+-	      matches[num_match - 1].command = duplicate(s1);
+-	    }
++	    matches[num_match - 1].command = duplicate(atword(s, 2));
+ 	}
+       fclose(f);
+     }
+@@ -295,17 +282,24 @@
+ {
+   int                 i;
+ 
++  if (GetSMfd() < 0)
++    return;
+   for (i = 0; i < num_match; i++)
+     {
+       if ((!matches[i].used))
+ 	{
+ 	  /* No match unless both have or both lack a session_id */
+-	  if ((!ewin->session_id) != (!matches[i].session_id))
+-	    continue;
+-	  /* disable R5 session management - REALLY not possible */
+-	  if ((!ewin->session_id) || (!matches[i].session_id))
+-	    continue;
+-
++	  if (!ewin->session_id)
++	    {
++	      if (matches[i].session_id)
++		continue;
++	    }
++	  if (ewin->session_id)
++	    {
++	      if (!matches[i].session_id)
++		continue;
++	    }
++	  
+ 	  if ((ewin->session_id))
+ 	    {
+ 	      /* The X11R6 protocol guarantees matching session_ids */
+@@ -362,12 +356,19 @@
+ 	      ewin->layer = matches[i].layer;
+ 	      if (!ewin->sticky)
+ 		ewin->desktop = matches[i].desktop;
+-	      ewin->client.x = matches[i].x;
+-	      ewin->client.y = matches[i].y;
+-	      ewin->client.w = matches[i].w;
+-	      ewin->client.h = matches[i].h;
+-	      XResizeWindow(disp, ewin->client.win,
+-			    ewin->client.w, ewin->client.h);
++	      /* if it's NOT (X11R6 and already placed by the client) */
++	      if (!((ewin->client.already_placed) && (ewin->session_id)))
++		{
++		  ewin->client.x = matches[i].x -
++		    (desks.desk[ewin->desktop].current_area_x * root.w);
++		  ewin->client.y = matches[i].y -
++		  (desks.desk[ewin->desktop].current_area_y * root.h);
++		  ewin->client.w = matches[i].w;
++		  ewin->client.h = matches[i].h;
++		  XMoveResizeWindow(disp, ewin->client.win,
++				    ewin->client.x, ewin->client.y,
++				    ewin->client.w, ewin->client.h);
++		}
+ 	    }
+ 	  break;
+ 	}
+@@ -382,7 +383,6 @@
+     {
+       char                s[4096];
+ 
+-      SaveWindowStates();
+       SaveSnapInfo();
+       Etmp(s);
+       SaveUserControlConfig(fopen(s, "w"));
+@@ -768,6 +768,7 @@
+ {
+   char                master_flag = (master_pid == getpid());
+ 
++  autosave();
+   if (!master_flag)
+     {
+       struct timeval      tv1, tv2;
+@@ -787,8 +788,6 @@
+ 	}
+     }
+   stale_sm_file = 1;
+-  SaveSnapInfo();
+-  SaveWindowStates();
+   set_save_props(smc_conn, master_flag);
+   SmcSaveYourselfDone(smc_conn, True);
+   if (restarting)
+@@ -833,6 +832,7 @@
+  * }
+  */
+     }
++  SaveWindowStates();
+   SmcRequestSaveYourselfPhase2(smc_conn, callback_save_yourself2, NULL);
+   client_data = NULL;
+   save_style = 0;
+@@ -1005,9 +1005,11 @@
+ 	  ewin->session_id = Emalloc(size + 1);
+ 	  memcpy(ewin->session_id, s, size);
+ 	  ewin->session_id[size] = 0;
++	  Efree(w);
+ 	  Efree(s);
+ 	  return;
+ 	}
++      Efree(w);
+     }
+ }
+ 

@@ -1,0 +1,46 @@
+--- enlightenment-0.15.5/src/text.c.raster	Sat Apr 10 16:53:05 1999
++++ enlightenment-0.15.5/src/text.c	Sat Apr 10 16:54:04 1999
+@@ -334,8 +334,8 @@
+ 		  Efont_extents(ts->efont, new_line, &ascent, &descent, &wid,
+ 				NULL, NULL, NULL, NULL);
+ 		}
+-	      strcpy(lines[i], new_line);
+-	      Efree(new_line);
++	      Efree(lines[i]);
++	      lines[i] = new_line;
+ 	    }
+ 	  if (i == 0)
+ 	    yy += ascent;
+@@ -410,8 +410,8 @@
+ 		  strcat(new_line, lines[i] + ((len - nuke_count) / 2) + nuke_count);
+ 		  XmbTextExtents(ts->xfontset, new_line, strlen(new_line), &ret1, &ret2);
+ 		}
+-	      strcpy(lines[i], new_line);
+-	      Efree(new_line);
++	      Efree(lines[i]);
++	      lines[i] = new_line;
+ 	    }
+ 	  if (i == 0)
+ 	    yy += ts->xfontset_ascent;
+@@ -482,8 +482,8 @@
+ 		  strcat(new_line, lines[i] + ((len - nuke_count) / 2) + nuke_count);
+ 		  wid = XTextWidth(ts->xfont, new_line, strlen(new_line));
+ 		}
+-	      strcpy(lines[i], new_line);
+-	      Efree(new_line);
++	      Efree(lines[i]);
++	      lines[i] = new_line;
+ 	    }
+ 	  if (i == 0)
+ 	    yy += ts->xfont->ascent;
+@@ -555,8 +555,8 @@
+ 		  wid = XTextWidth16(ts->xfont, (XChar2b *) new_line,
+ 				     strlen(new_line) / 2);
+ 		}
+-	      strcpy(lines[i], new_line);
+-	      Efree(new_line);
++	      Efree(lines[i]);
++	      lines[i] = new_line;
+ 	    }
+ 	  if (i == 0)
+ 	    yy += ts->xfont->ascent;

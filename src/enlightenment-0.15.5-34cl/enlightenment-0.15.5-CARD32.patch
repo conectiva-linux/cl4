@@ -1,0 +1,13 @@
+--- e/src/E.h.raster	Sat Apr 10 16:58:47 1999
++++ e/src/E.h	Sat Apr 10 16:58:48 1999
+@@ -57,6 +57,10 @@
+ #include <freetype.h>
+ #include "econfig.h"
+ 
++/* workaround for 64bit architectures - xlib expects 32bit CARDINALS to be */
++/* long's on 64bit machines... thus well the CARD32's Im unsing shoudl be.. */
++#define CARD32 long
++
+ #define RESET_ALERT \
+   AssignTitleText("Enlightenment Message Dialog"); \
+   AssignIgnoreText("Ignore this message"); \

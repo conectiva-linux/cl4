@@ -1,0 +1,14 @@
+--- enlightenment-0.15.5/src/gnome.c.fixleak	Mon Apr 19 12:04:41 1999
++++ enlightenment-0.15.5/src/gnome.c	Mon Apr 19 12:05:50 1999
+@@ -317,8 +317,11 @@
+ 	  if (data)
+ 	    memcpy(data, retval, num_ret);
+ 	}
++      XFree(retval);
+       EDBUG_RETURN(data);
+     }
++  if (retval)
++    XFree(retval);
+   EDBUG_RETURN(NULL);
+ }
+ 

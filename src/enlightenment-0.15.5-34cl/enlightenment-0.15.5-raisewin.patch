@@ -1,0 +1,11 @@
+--- enlightenment-0.15.5/src/evhandlers.c.blum	Wed May  5 13:36:58 1999
++++ enlightenment-0.15.5/src/evhandlers.c	Wed May  5 13:37:11 1999
+@@ -936,7 +936,7 @@
+ 	    winrel = ewin2->win;
+ 	  xwc.sibling = winrel;
+ 	  xwc.stack_mode = ev->xconfigurerequest.detail;
+-          if (mode.mode != MODE_NONE)
++          if (mode.mode == MODE_NONE)
+ 	    {
+ 	      if (xwc.stack_mode == Above)
+ 		RaiseEwin(ewin);
