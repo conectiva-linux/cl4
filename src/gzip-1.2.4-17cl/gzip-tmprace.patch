@@ -1,0 +1,39 @@
+diff -Nur gzip-1.2.4.orig/zdiff.in gzip-1.2.4/zdiff.in
+--- gzip-1.2.4.orig/zdiff.in	Mon Nov 30 01:21:25 1998
++++ gzip-1.2.4/zdiff.in	Mon Nov 30 01:40:52 1998
+@@ -10,6 +10,8 @@
+ # necessary) and fed to cmp or diff.  The exit status from cmp
+ # or diff is preserved.
+ 
++TMP_FILE=`mktemp /tmp/zdiff.XXXXXX`
++
+ PATH="BINDIR:$PATH"; export PATH
+ prog=`echo $0 | sed 's|.*/||'`
+ case "$prog" in
+@@ -47,10 +49,10 @@
+                 case "$2" in
+ 	        *[-.]gz* | *[-.][zZ] | *.t[ga]z)
+ 			F=`echo "$2" | sed 's|.*/||;s|[-.][zZtga]*||'`
+-                        gzip -cdfq "$2" > /tmp/"$F".$$
+-                        gzip -cdfq "$1" | $comp $OPTIONS - /tmp/"$F".$$
++                        gzip -cdfq "$2" > "$TMP_FILE"
++                        gzip -cdfq "$1" | $comp $OPTIONS - "$TMP_FILE"
+                         STAT="$?"
+-			/bin/rm -f /tmp/"$F".$$;;
++			/bin/rm -f "$TMP_FILE";;
+ 
+                 *)      gzip -cdfq "$1" | $comp $OPTIONS - "$2"
+                         STAT="$?";;
+diff -Nur gzip-1.2.4.orig/znew.in gzip-1.2.4/znew.in
+--- gzip-1.2.4.orig/znew.in	Mon Nov 30 01:21:25 1998
++++ gzip-1.2.4/znew.in	Mon Nov 30 01:41:29 1998
+@@ -14,7 +13,8 @@
+ # block is the disk block size (best guess, need not be exact)
+ 
+ warn="(does not preserve modes and timestamp)"
+-tmp=/tmp/zfoo.$$
++tmp=`mktemp /tmp/zfoo.XXXXXX`
++
+ echo hi > $tmp.1
+ echo hi > $tmp.2
+ if test -z "`(${CPMOD-cpmod} $tmp.1 $tmp.2) 2>&1`"; then

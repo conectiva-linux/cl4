@@ -1,0 +1,29 @@
+--- gzip-1.2.4/gzexe.in.ewt	Sun Sep 14 14:44:55 1997
++++ gzip-1.2.4/gzexe.in	Sun Sep 14 14:45:16 1997
+@@ -91,7 +91,7 @@
+     sed 1q $0 > $tmp
+     sed "s|^if tail|if $tail|" >> $tmp <<'EOF'
+ skip=18
+-if tail +$skip $0 | "BINDIR"/gzip -cd > /tmp/gztmp$$; then
++if tail +$skip $0 | "/bin"/gzip -cd > /tmp/gztmp$$; then
+   /bin/chmod 700 /tmp/gztmp$$
+   prog="`echo $0 | /bin/sed 's|^.*/||'`"
+   if /bin/ln /tmp/gztmp$$ "/tmp/$prog" 2>/dev/null; then
+@@ -107,7 +107,7 @@
+   echo Cannot decompress $0; exit 1
+ fi; exit $res
+ EOF
+-    "BINDIR"/gzip -cv9 "$i" >> $tmp || {
++    "/bin"/gzip -cv9 "$i" >> $tmp || {
+       /bin/rm -f $tmp
+       echo ${x}: compression not possible for $i, file unchanged.
+       res=1
+@@ -120,7 +120,7 @@
+     if sed -e 1d -e 2q "$i" | grep "^skip=[0-9]*$" >/dev/null; then
+       eval `sed -e 1d -e 2q "$i"`
+     fi
+-    if tail +$skip "$i" | "BINDIR"/gzip -cd > $tmp; then
++    if tail +$skip "$i" | "/bin"/gzip -cd > $tmp; then
+       :
+     else
+       echo ${x}: $i probably not in gzexe format, file unchanged.
