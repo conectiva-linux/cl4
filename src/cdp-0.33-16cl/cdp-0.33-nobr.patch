@@ -1,0 +1,15 @@
+--- cdp-0.33/Makefile.nobr	Sat Aug 15 18:17:30 1998
++++ cdp-0.33/Makefile	Sat Aug 15 18:19:45 1998
+@@ -56,9 +56,9 @@
+ install: cdp cdp.1.Z
+ 	chmod 755 cdp
+ 	chmod 644 cdp.1.Z
+-	install -o 0 -g 0 -m 755 -s cdp /usr/bin
+-	ln -sf /usr/bin/cdp /usr/bin/cdplay
+-	install -o 0 -g 0 -m 644 cdp.1 /usr/man/man1
++	install -m 755 -s cdp $(DESTDIR)/usr/bin
++	ln -sf cdp $(DESTDIR)/usr/bin/cdplay
++	install -m 644 cdp.1 $(DESTDIR)/usr/man/man1
+ 
+ clean:
+ 	rm -f cdp cdp.1.Z *.o core *~

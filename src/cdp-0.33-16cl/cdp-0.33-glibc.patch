@@ -1,0 +1,10 @@
+--- cdp-0.33/hardware.c.ewt	Thu Jul 10 14:35:41 1997
++++ cdp-0.33/hardware.c	Thu Jul 10 14:35:49 1997
+@@ -15,6 +15,7 @@
+ #include  <sys/param.h>
+ #include  <sys/stat.h>
+ #include  <sys/time.h>
++#include  <sys/ustat.h>
+ #ifdef linux
+ #  include  <linux/cdrom.h>
+ #else

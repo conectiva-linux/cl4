@@ -1,0 +1,35 @@
+--- cdp-0.33/Makefile.orig	Mon Jan  8 12:05:20 1996
++++ cdp-0.33/Makefile	Mon Jan  8 12:07:21 1996
+@@ -10,7 +10,7 @@
+ COMP_OPT = -Wall -O2 
+ LINK_OPT = 
+ LIBPATH=/usr/lib
+-LIBS = -ltermcap -L$(LIBPATH) -lncurses
++LIBS = -L$(LIBPATH) -lncurses
+ OBJS = cdp.o color.o display.o misc.o volume.o hardware.o database.o getline.o
+ 
+ 
+@@ -22,10 +22,7 @@
+ #
+ # If you compile under SystemV, set the NCURSES variable to `.'
+ #
+-NCURSES=/usr/local/include
+-ifeq ($(wildcard /usr/include/ncurses), /usr/include/ncurses)
+ NCURSES=/usr/include/ncurses
+-endif
+ 
+ DBG = -I$(NCURSES) 
+ 
+@@ -59,9 +56,9 @@
+ install: cdp cdp.1.Z
+ 	chmod 755 cdp
+ 	chmod 644 cdp.1.Z
+-	cp cdp /usr/local/bin
+-	ln -s /usr/local/bin/cdp /usr/local/bin/cdplay
+-	cp cdp.1.Z /usr/man/cat1
++	install -o 0 -g 0 -m 755 -s cdp /usr/bin
++	ln -sf /usr/bin/cdp /usr/bin/cdplay
++	install -o 0 -g 0 -m 644 cdp.1 /usr/man/man1
+ 
+ clean:
+ 	rm -f cdp cdp.1.Z *.o core *~

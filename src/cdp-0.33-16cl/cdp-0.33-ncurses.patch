@@ -1,0 +1,14 @@
+--- hardware.c.orig	Fri Nov 10 01:10:42 1995
++++ hardware.c	Wed Dec 11 22:04:57 1996
+@@ -177,10 +177,8 @@
+         if ((pStatus->cd_fd = open (cd_device, O_RDONLY )) < 0) {
+             if (errno == EACCES) {
+                 if (!warned) {
+-		    displayClearScreen( NULL );
++  		    exit_ncurses();
+                     strcpy (realname, cd_device);
+-		    resetty();
+-		    resetterm();
+                     fprintf (stderr,
+                         "As root, please run\n\nchmod 666 %s\n\n%s\n", realname,
+                         "to give yourself permission to access the CD-ROM device.");

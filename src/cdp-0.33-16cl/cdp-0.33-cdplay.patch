@@ -1,0 +1,42 @@
+--- cdp-0.33/misc.c.orig	Wed Apr 24 22:34:55 1996
++++ cdp-0.33/misc.c	Wed Apr 24 22:34:59 1996
+@@ -54,12 +54,12 @@
+ 
+ void      exit_ncurses( void )
+ {
+-    curs_set( 1 );
+-    resetty();
+-    resetterm();
+-
+-    if  ( fNCursesActive )
++    if  ( fNCursesActive ) {
++	curs_set( 1 );
++	resetty();
++	resetterm();
+ 	endwin();
++    }
+ 
+     fNCursesActive = FALSE;
+ }
+--- cdp-0.33/cdp.c.ewt	Fri Aug  9 15:44:20 1996
++++ cdp-0.33/cdp.c	Fri Aug  9 15:44:29 1996
+@@ -20,6 +20,7 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ \*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
+ 
++#include  <errno.h>
+ #include  <stdlib.h>
+ #include  <stdio.h>
+ #include  <stdarg.h>
+--- cdp-0.33/volume.c.ewt	Fri Aug  9 15:44:54 1996
++++ cdp-0.33/volume.c	Fri Aug  9 15:45:07 1996
+@@ -22,7 +22,8 @@
+ #include  <unistd.h>
+ #include  <stdio.h>
+ #include  <fcntl.h>
+-#include  <sys/soundcard.h>
++#include  <linux/soundcard.h>
++#include  <sys/ioctl.h>
+ 
+ #include  "volume.h"
+ 
