@@ -1,0 +1,785 @@
+diff -uNr linux_logo-2.05/Makefile linux_logo-2.05.i18n/Makefile
+--- linux_logo-2.05/Makefile	Thu Jul  9 15:27:59 1998
++++ linux_logo-2.05.i18n/Makefile	Sat Aug  1 22:04:28 1998
+@@ -10,7 +10,7 @@
+ 
+ #For Intel Linux Systems
+ PLATFORM = 'Linux'
+-C_OPTS = -O2 -Wall -DLINUX_ANSI 
++C_OPTS = -O2 -Wall -DLINUX_ANSI -DI18N
+ 
+ #For Sgi
+ #PLATFORM = 'SGI'
+@@ -25,14 +25,17 @@
+ #C_OPTS = -O2 
+ 
+ all:	linux_logo
++	make -C po
+ 
+ clean:
+ 	rm -f *.o
+ 	rm -f linux_logo
+-	rm *~
++	rm -f *~
++	make -C po clean
+ 
+ install:	linux_logo
+ 	cp linux_logo /usr/local/bin
++	make -C po install
+ 	
+ linux_logo:	linux_logo.o sysinfo.o bogomips.o
+ 	$(CC) $(C_OPTS) -o linux_logo linux_logo.o bogomips.o sysinfo.o $(L_OPTS)
+diff -uNr linux_logo-2.05/intl.h linux_logo-2.05.i18n/intl.h
+--- linux_logo-2.05/intl.h	Wed Dec 31 21:00:00 1969
++++ linux_logo-2.05.i18n/intl.h	Sat Aug  1 21:13:55 1998
+@@ -0,0 +1,10 @@
++/* Dummy header for libintl.h */
++
++#ifdef I18N
++#undef __OPTIMIZE__
++#include <libintl.h>
++#define _(String) gettext((String))
++#else
++#define _(String) (String)
++#endif
++#define N_(String) (String)
+diff -uNr linux_logo-2.05/linux_logo.c linux_logo-2.05.i18n/linux_logo.c
+--- linux_logo-2.05/linux_logo.c	Thu Jul  9 14:47:52 1998
++++ linux_logo-2.05.i18n/linux_logo.c	Sat Aug  1 21:13:55 1998
+@@ -19,6 +19,7 @@
+             Adam Lackorzynski -- improved '-o' handling, and modular
+                                  help screen.
+             Thomas Grewe -- AIX port
++	    Arnaldo Carvalho de Melo <acme@conectiva.com.br> - i18n
+ -------------------------------------------------------------------------*/
+ 
+ #include <stdio.h>
+@@ -36,6 +37,9 @@
+ /* Change the values in the below file to alter default behavior */
+ #include "defaults.h"
+ 
++/* internationalization i18n macros */
++#include "intl.h"
++
+ /* Some global variables.  Possibly bad in practice, but it saves a lot *\
+ \* of paramater passing, which has caused bugs to develop before        */
+ /* To change these defaults, edit the 'defaults.h' file                 */ 
+@@ -46,7 +50,7 @@
+      skip_bogomips=DEFAULT_SKIP_BOGOMIPS,  /* Defaults to No   */
+      offset=DEFAULT_OFFSET,                /* Defaults to 0    */
+      plain_ascii=DEFAULT_PLAIN_ASCII,      /* Defaults to No   */
+-     banner_mode=DEFAULT_BANNER_MODE,      /* Defualts to Yes  */
++     banner_mode=DEFAULT_BANNER_MODE,      /* Defaults to Yes  */
+      wipe_screen=DEFAULT_WIPE_SCREEN,      /* Defaults to No   */
+      display_logo_only=0,
+      display_sysinfo_only=0;
+@@ -89,35 +93,35 @@
+ 
+ void help_message(char *binname, char full)
+ {
+-    printf("\nLinux Logo Version %s",VERSION);
+-    printf(" -- by Vince Weaver (weave@eng.umd.edu)\n");
+-    printf("   Newest Versions at:\n");
++    printf(_("\nLinux Logo Version %s"),VERSION);
++    printf(_(" -- by Vince Weaver (weave@eng.umd.edu)\n"));
++    printf(_("   Newest Versions at:\n"));
+     printf("      http://www.glue.umd.edu/~weave/vmwprod\n");
+     printf("      http://sunsite.unc.edu/pub/Linux/logos/penguins\n\n");
+     if (!full) exit(0);
+-    printf("Usage:   %s [-ascii] [-banner] [-classic] [-f] [-g] [-h] [-kX] "
++    printf(_("Usage:   %s [-ascii] [-banner] [-classic] [-f] [-g] [-h] [-kX] "
+ 	   "[-l]\n"
+-	   "                     [-n] [-o Num] [-p] [-rX] [-s] [-v] [-w Num]\n"
++	   "                     [-n] [-o Num] [-p] [-rX] [-s] [-v] [-w Num]\n")
+ 	   ,binname);
+-    printf("         [-ascii] -- Display logo as ascii only monochrome\n");
+-    printf("         [-banner] - New default Banner Logo!\n");
+-    printf("         [-classic]- The Old [original] linux_logo look\n");
+-    printf("         [-f]     -- force the screen clear before drawing\n");
+-    printf("         [-g]     -- give system info only\n");
+-    printf("         [-h]     -- this help screen\n");   
+-    printf("         [-kX]    -- X is a character to replace the "
+-	   "background one.\n");
+-    printf("         [-l]     -- display logo only\n");
+-    printf("         [-n]     -- toggle periods off [may make cleaner "
+-           "output\n");
+-    printf("         [-o Num] -- offset output Num spaces to the right\n");
+-    printf("         [-p]     -- preserve cursor location\n");
+-    printf("         [-rX]    -- X is a character to replace '#' with "
+-	   "in banner mode\n");  
+-    printf("         [-s]     -- skip Bogomips [speeds up on non-Linux "
+-           "platforms]\n");
+-    printf("         [-v]     -- version information\n");
+-    printf("         [-w Num] -- set width of screen to Num [default 80]\n\n");
++    printf(_("         [-ascii] -- Display logo as ascii only monochrome\n"));
++    printf(_("         [-banner] - New default Banner Logo!\n"));
++    printf(_("         [-classic]- The Old [original] linux_logo look\n"));
++    printf(_("         [-f]     -- force the screen clear before drawing\n"));
++    printf(_("         [-g]     -- give system info only\n"));
++    printf(_("         [-h]     -- this help screen\n"));   
++    printf(_("         [-kX]    -- X is a character to replace the "
++	   "background one.\n"));
++    printf(_("         [-l]     -- display logo only\n"));
++    printf(_("         [-n]     -- toggle periods off [may make cleaner "
++           "output\n"));
++    printf(_("         [-o Num] -- offset output Num spaces to the right\n"));
++    printf(_("         [-p]     -- preserve cursor location\n"));
++    printf(_("         [-rX]    -- X is a character to replace '#' with "
++	   "in banner mode\n"));  
++    printf(_("         [-s]     -- skip Bogomips [speeds up on non-Linux "
++           "platforms]\n"));
++    printf(_("         [-v]     -- version information\n"));
++    printf(_("         [-w Num] -- set width of screen to Num [default 80]\n\n"));
+     exit(0); 
+ }
+ 
+@@ -141,7 +145,7 @@
+     get_os_info((char *)&os_name,(char *)&os_version,
+ 		(char *)&os_revision,(char *)&host_name);
+     
+-    sprintf(temp_string,"^[[2C^[[1;37;40m%s Version %s^[[0m\n",
++    sprintf(temp_string,_("^[[2C^[[1;37;40m%s Version %s^[[0m\n"),
+ 	    os_name,os_version);
+     ansi_print(temp_string,0,0,0,0);
+     ansi_print(logo[8],no_periods,offset,0,0);
+@@ -192,7 +196,7 @@
+     get_os_info((char *)&os_name,(char *)&os_version,
+ 		(char *)&os_revision,(char *)&host_name);
+     
+-    sprintf(temp_string,"^[[2C^[[1;37;40m%s Version %s^[[0m\n",
++    sprintf(temp_string,_("^[[2C^[[1;37;40m%s Version %s^[[0m\n"),
+ 	    os_name,os_version);
+     ansi_print(temp_string,0,0,0,0);
+     ansi_print(logo[8],no_periods,offset,0,0);
+@@ -250,7 +254,7 @@
+ 
+        i=((width-(strlen(os_name)+11+strlen(os_version)+
+ 		 strlen(os_revision)))/2);
+-       sprintf(temp_string,"^[[%dC^[[1;37;40m%s Version %s, %s^[[0m\n",
++       sprintf(temp_string,_("^[[%dC^[[1;37;40m%s Version %s, %s^[[0m\n"),
+ 	       i,os_name,os_version,os_revision);
+        ansi_print(temp_string,0,0,0,0);
+     
+@@ -277,7 +281,10 @@
+     char *endptr;
+     char ch,symbol='#',symbol_bgnd='#';
+     int i;
+-
++#ifdef I18N
++        bindtextdomain("linux_logo", "/usr/share/locale");
++        textdomain("linux_logo");
++#endif
+        /* Parse Command Line Arguments */
+     for(i=1;i<argc;i++) {
+           /* they all start with a '-' */
+diff -uNr linux_logo-2.05/po/Makefile linux_logo-2.05.i18n/po/Makefile
+--- linux_logo-2.05/po/Makefile	Wed Dec 31 21:00:00 1969
++++ linux_logo-2.05.i18n/po/Makefile	Sat Aug  1 21:13:55 1998
+@@ -0,0 +1,61 @@
++INSTALL= /usr/bin/install -c
++INSTALL_PROGRAM= ${INSTALL}
++INSTALL_DATA= ${INSTALL} -m 644
++INSTALLNLSDIR=${BASEDIR}/usr/share/locale
++
++TUPDATE = tupdate
++
++NLSPACKAGE = linux_logo
++
++CATALOGS = pt_BR.mo
++
++POTFILES= ../linux_logo.c ../sysinfo_alpha.c ../sysinfo_default.c \
++        ../sysinfo_ix86.c ../sysinfo_m68k.c ../sysinfo_sgi.c \
++        ../sysinfo_sparc.c
++
++all: $(NLSPACKAGE).pot $(CATALOGS)
++
++$(NLSPACKAGE).pot: $(POTFILES)
++	xgettext --default-domain=$(NLSPACKAGE) \
++       	  --add-comments --keyword=_ --keyword=N_ $(POTFILES)
++	if cmp -s $(NLSPACKAGE).po $(NLSPACKAGE).pot; then \
++	    rm -f $(NLSPACKAGE).po; \
++	else \
++	    mv $(NLSPACKAGE).po $(NLSPACKAGE).pot; \
++	fi
++
++
++update-po: Makefile
++	$(MAKE) $(NLSPACKAGE).pot
++	catalogs='$(CATALOGS)'; \
++	for cat in $$catalogs; do \
++		lang=`echo $$cat | sed 's/.mo//'`; \
++		mv $$lang.po $$lang.old.po; \
++		echo "$$lang:"; \
++		if $(TUPDATE) $(NLSPACKAGE).pot $$lang.old.po > $$lang.po; then \
++		rm -f $$lang.old.po; \
++	else \
++    		echo "tupdate for $$cat failed!"; \
++		rm -f $$lang.po; \
++		mv $$lang.old.po $$lang.po; \
++	fi; \
++	done
++
++clean:
++	rm -f *mo $(NLSPACKAGE).pot
++
++distclean: clean
++	rm -f .depend Makefile
++
++depend:
++
++install: $(CATALOGS)
++	for n in $(CATALOGS); do \
++	    l=`basename $$n .mo`; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
++	    $(INSTALL) -m 644 $$n $(INSTALLNLSDIR)/$$l/LC_MESSAGES/$(NLSPACKAGE).mo; \
++	done
++
++%.mo: %.po
++	msgfmt -o $@ $<
+diff -uNr linux_logo-2.05/po/aaa linux_logo-2.05.i18n/po/aaa
+--- linux_logo-2.05/po/aaa	Wed Dec 31 21:00:00 1969
++++ linux_logo-2.05.i18n/po/aaa	Sat Aug  1 21:13:55 1998
+@@ -0,0 +1,61 @@
++INSTALL= /usr/bin/install -c
++INSTALL_PROGRAM= ${INSTALL}
++INSTALL_DATA= ${INSTALL} -m 644
++INSTALLNLSDIR=${ROOTDIR}/usr/share/locale
++
++MSGMERGE = msgmerge
++
++NLSPACKAGE = linux_logo
++
++CATALOGS = pt_BR.mo
++
++POTFILES= ../linux_logo.c ../sysinfo_alpha.c ../sysinfo_default.c \
++	../sysinfo_ix86.c ../sysinfo_m68k.c ../sysinfo_sgi.c \
++	../sysinfo_sparc.c
++
++all: $(NLSPACKAGE).pot $(CATALOGS)
++
++$(NLSPACKAGE).pot: $(POTFILES)
++	xgettext --default-domain=$(NLSPACKAGE) -v \
++       	  --add-comments --keyword=_ --keyword=N_ $(POTFILES)
++	if cmp -s $(NLSPACKAGE).po $(NLSPACKAGE).pot; then \
++	    rm -f $(NLSPACKAGE).po; \
++	else \
++	    mv $(NLSPACKAGE).po $(NLSPACKAGE).pot; \
++	fi
++
++
++update-po: Makefile
++	$(MAKE) $(NLSPACKAGE).pot
++	catalogs='$(CATALOGS)'; \
++	for cat in $$catalogs; do \
++		lang=`echo $$cat | sed 's/.mo//'`; \
++		mv $$lang.po $$lang.old.po; \
++		echo "$$lang:"; \
++		if $(MSGMERGE) $$lang.old.po $(NLSPACKAGE).pot -o $$lang.po; then \
++		rm -f $$lang.old.po; \
++	else \
++    		echo "msgmerge for $$cat failed!"; \
++		rm -f $$lang.po; \
++		mv $$lang.old.po $$lang.po; \
++	fi; \
++	done
++
++clean:
++	rm -f *mo $(NLSPACKAGE).pot
++
++distclean: clean
++	rm -f .depend Makefile
++
++depend:
++
++install: $(CATALOGS)
++	for n in $(CATALOGS); do \
++	    l=`basename $$n .mo`; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
++	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
++	    $(INSTALL) -m 644 $$n $(INSTALLNLSDIR)/$$l/LC_MESSAGES/$(NLSPACKAGE).mo; \
++	done
++
++%.mo: %.po
++	msgfmt -o $@ $<
+diff -uNr linux_logo-2.05/po/pt_BR.po linux_logo-2.05.i18n/po/pt_BR.po
+--- linux_logo-2.05/po/pt_BR.po	Wed Dec 31 21:00:00 1969
++++ linux_logo-2.05.i18n/po/pt_BR.po	Sat Aug  1 21:59:33 1998
+@@ -0,0 +1,180 @@
++msgid ""
++msgstr ""
++"Date: 1998-07-30 16:37:49-0300\n"
++"From: Arnaldo Carvalho de Melo <acme@conectiva.com.br>\n"
++"Content-Type: text/plain; charset=\n"
++"Xgettext-Options: --default-domain=linux_logo -v --add-comments --keyword=_ --keyword=N_\n"
++"Files: ../linux_logo.c ../sysinfo_alpha.c ../sysinfo_default.c ../sysinfo_ix86.c ../sysinfo_m68k.c ../sysinfo_sgi.c ../sysinfo_sparc.c\n"
++
++#: ../linux_logo.c:96
++msgid ""
++"\n"
++"Linux Logo Version %s"
++msgstr ""
++"\n"
++"Linux Logo Versão %s"
++
++#: ../linux_logo.c:97
++msgid " -- by Vince Weaver (weave@eng.umd.edu)\n"
++msgstr " -- por Vince Weaver (weave@eng.umd.edu)\n"
++
++#: ../linux_logo.c:98
++msgid "   Newest Versions at:\n"
++msgstr "   Versões mais novas em:\n"
++
++#: ../linux_logo.c:102
++msgid "Usage:   %s [-ascii] [-banner] [-classic] [-f] [-g] [-h] [-kX] "
++msgstr "Uso:     %s [-ascii] [-banner] [-classic] [-f] [-g] [-h] [-kX]"
++
++#: ../linux_logo.c:106
++msgid "         [-ascii] -- Display logo as ascii only monochrome\n"
++msgstr "         [-ascii] -- Mostra logo como monocromático somente ascii\n"
++
++#: ../linux_logo.c:107
++msgid "         [-banner] - New default Banner Logo!\n"
++msgstr "         [-banner] - Novo logo cartaz default!\n"
++
++#: ../linux_logo.c:108
++msgid "         [-classic]- The Old [original] linux_logo look\n"
++msgstr "         [-classic]- A Antiga [original] aparência do linux_logo\n"
++
++#: ../linux_logo.c:109
++msgid "         [-f]     -- force the screen clear before drawing\n"
++msgstr "         [-f]     -- força limpeza da tela antes de desenhar\n"
++
++#: ../linux_logo.c:110
++msgid "         [-g]     -- give system info only\n"
++msgstr "         [-g]     -- mostre somente as informações do sistema\n"
++
++#: ../linux_logo.c:111
++msgid "         [-h]     -- this help screen\n"
++msgstr "         [-h]     -- esta tela de ajuda\n"
++
++#: ../linux_logo.c:112
++msgid "         [-kX]    -- X is a character to replace the "
++msgstr "         [-kX]    -- X é o caractere que substituirá o "
++
++#: ../linux_logo.c:114
++msgid "         [-l]     -- display logo only\n"
++msgstr "         [-l]     -- mostra somente o logo\n"
++
++#: ../linux_logo.c:115
++msgid "         [-n]     -- toggle periods off [may make cleaner "
++msgstr "         [-n]     -- desliga pontos [pode tornar mais claro "
++
++#: ../linux_logo.c:117
++msgid "         [-o Num] -- offset output Num spaces to the right\n"
++msgstr "         [-o Num] -- desloque a saida Num espaços para a direita\n"
++
++#: ../linux_logo.c:118
++msgid "         [-p]     -- preserve cursor location\n"
++msgstr "         [-p]     -- preserve a localização do cursor\n"
++
++#: ../linux_logo.c:119
++msgid "         [-rX]    -- X is a character to replace '#' with "
++msgstr "         [-rX]    -- X é o caractere para substituir o '#'"
++
++#: ../linux_logo.c:121
++msgid "         [-s]     -- skip Bogomips [speeds up on non-Linux "
++msgstr "         [-s]     -- não calcule Bogomips [acelera em sistemas não Linux "
++
++#: ../linux_logo.c:123
++msgid "         [-v]     -- version information\n"
++msgstr "         [-v]     -- informação de versão\n"
++
++#: ../linux_logo.c:124
++msgid ""
++"         [-w Num] -- set width of screen to Num [default 80]\n"
++"\n"
++msgstr ""
++"         [-w Num] -- configura a largura da tela para Num [default 80]\n"
++"\n"
++
++#: ../linux_logo.c:148 ../linux_logo.c:199
++msgid "^[[2C^[[1;37;40m%s Version %s^[[0m\n"
++msgstr "^[[2C^[[1;37;40m%s Versão %s^[[0m\n"
++
++#: ../linux_logo.c:257
++msgid "^[[%dC^[[1;37;40m%s Version %s, %s^[[0m\n"
++msgstr "^[[%dC^[[1;37;40m%s Versão %s, %s^[[0m\n"
++
++#: ../sysinfo_alpha.c:55 ../sysinfo_ix86.c:57 ../sysinfo_m68k.c:58 ../sysinfo_sparc.c:56
++msgid "Compiled "
++msgstr "Compilado "
++
++#. Anyone have more than 9 cpu's yet?
++#: ../sysinfo_alpha.c:72 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Zero"
++msgstr ""
++
++#: ../sysinfo_alpha.c:72 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "One"
++msgstr "Um"
++
++#: ../sysinfo_alpha.c:72 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Two"
++msgstr "Dois"
++
++#: ../sysinfo_alpha.c:72 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Three"
++msgstr "Três"
++
++#: ../sysinfo_alpha.c:73 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Four"
++msgstr "Quatro"
++
++#: ../sysinfo_alpha.c:73 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Five"
++msgstr "Cinco"
++
++#: ../sysinfo_alpha.c:73 ../sysinfo_ix86.c:77 ../sysinfo_sparc.c:76
++msgid "Six"
++msgstr "Seis"
++
++#: ../sysinfo_alpha.c:74 ../sysinfo_ix86.c:78 ../sysinfo_sparc.c:77
++msgid "Seven"
++msgstr "Sete"
++
++#: ../sysinfo_alpha.c:74 ../sysinfo_ix86.c:78 ../sysinfo_sparc.c:77
++msgid "Eight"
++msgstr "Oito"
++
++#: ../sysinfo_alpha.c:74 ../sysinfo_ix86.c:78 ../sysinfo_sparc.c:77
++msgid "Nine"
++msgstr "Nove"
++
++#: ../sysinfo_alpha.c:101
++msgid "%s %s %s, %ldM RAM"
++msgstr ""
++
++#: ../sysinfo_alpha.c:102 ../sysinfo_ix86.c:155 ../sysinfo_sparc.c:124
++msgid "Processors"
++msgstr "\b"
++
++#: ../sysinfo_alpha.c:102 ../sysinfo_ix86.c:155 ../sysinfo_sparc.c:124
++msgid "Processor"
++msgstr "\b"
++
++#: ../sysinfo_alpha.c:103 ../sysinfo_ix86.c:156 ../sysinfo_sparc.c:125
++msgid "%.2f Bogomips Total"
++msgstr ""
++
++#: ../sysinfo_default.c:84
++msgid "Unknown CPU"
++msgstr "CPU Desconhecida"
++
++#: ../sysinfo_default.c:90 ../sysinfo_sgi.c:100
++msgid "%s Bogomips Total"
++msgstr ""
++
++#: ../sysinfo_ix86.c:154
++msgid "%s %s%s %s, %ldM RAM"
++msgstr ""
++
++#: ../sysinfo_sgi.c:57
++msgid "Revision "
++msgstr "Revisão "
++
++#: ../sysinfo_sparc.c:123
++msgid "%s %s %s %s, %ldM RAM"
++msgstr ""
+diff -uNr linux_logo-2.05/sysinfo_aix.c linux_logo-2.05.i18n/sysinfo_aix.c
+--- linux_logo-2.05/sysinfo_aix.c	Thu Jun  4 17:38:50 1998
++++ linux_logo-2.05.i18n/sysinfo_aix.c	Sat Aug  1 21:13:55 1998
+@@ -4,7 +4,8 @@
+ \*----------------------------------------------------------------*/
+ /* Initial gernic Linux and Irix -- Vince Weaver                  *\
+ \* Added Linux mc6800 support    -- Christian Marillat            */
+-/* Added Cyrix 6x86 support"     -- Adam J. Thornton              */
++/* Added Cyrix 6x86 support"     -- Adam J. Thornton              *\
++\* Added i18n support            -- Arnaldo Carvalho de Melo      */
+ 
+ #include <stdio.h>
+ #include <ctype.h>
+@@ -12,6 +13,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -52,7 +54,7 @@
+ 
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.version);   /* switched around, JSt */
+-   strcpy(os_revision,"Revision ");
++   strcpy(os_revision,_("Revision "));
+    strcat(os_revision,buf.release);
+    strcpy(host_name,buf.nodename);
+    
+@@ -72,8 +74,9 @@
+    char temp_string[80],bogomips_total[30];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
+-	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+-	                      "Seven","Eight","Nine"};
++	char ordinal[10][10]={N_("Zero"),N_("One"),N_("Two"),N_("Three"),
++			      N_("Four"),N_("Five"),N_("Six"),
++	                      N_("Seven"),N_("Eight"),N_("Nine")};
+    
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+@@ -107,12 +110,13 @@
+ 	  }
+     pclose(fff);
+ 
+-    sprintf(cpuinfo,"%s %s Processor%s %ldM RAM",ordinal[cpus],chip,(cpus>1)?"s,":",",mem/1024);
++    sprintf(cpuinfo,"%s %s %s, %ldM RAM",_(ordinal[cpus]),
++		chip,(cpus>1)?_("Processors"):_("Processor"),mem/1024);
+   	    
+       if (!skip_bogomips)
+          if ( (external_bogomips( (char *)&bogomips_total))==-1 )
+          sprintf(bogo_total," ");
+-         else sprintf(bogo_total,"%s Bogomips Total",bogomips_total);
++         else sprintf(bogo_total,_("%s Bogomips Total"),bogomips_total);
+       else sprintf(bogo_total," ");
+ 	 
+ }
+diff -uNr linux_logo-2.05/sysinfo_alpha.c linux_logo-2.05.i18n/sysinfo_alpha.c
+--- linux_logo-2.05/sysinfo_alpha.c	Wed May 13 22:48:40 1998
++++ linux_logo-2.05.i18n/sysinfo_alpha.c	Sat Aug  1 21:13:55 1998
+@@ -10,6 +10,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -51,7 +52,7 @@
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.release);   
+    strcpy(os_revision,buf.version);
+-   strcpy(os_revision,"Compiled ");
++   strcpy(os_revision,_("Compiled "));
+    strcat(os_revision,buf.version);
+    strcpy(host_name,buf.nodename);
+  }
+@@ -68,8 +69,9 @@
+    char temp_string[255],bogomips_total[30];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
+-	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+-	                      "Seven","Eight","Nine"};
++	char ordinal[10][10]={N_("Zero"),N_("One"),N_("Two"),N_("Three"),
++			      N_("Four"),N_("Five"),N_("Six"),
++	                      N_("Seven"),N_("Eight"),N_("Nine")};
+    
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+@@ -96,8 +98,8 @@
+    mem=buff.st_size;
+    mem/=1024; mem/=1024;
+ 	    
+-      sprintf(cpuinfo,"%s %s Processor%s %ldM RAM",ordinal[cpus],model,
+-	      (cpus>1)?"s,":",",(long int)mem);
+-      sprintf(bogo_total,"%.2f Bogomips Total",total_bogo);      
++      sprintf(cpuinfo,_("%s %s %s, %ldM RAM"),_(ordinal[cpus]),model,
++	      (cpus>1)?_("Processors"):_("Processor"),(long int)mem);
++      sprintf(bogo_total,_("%.2f Bogomips Total"),total_bogo);      
+ 
+ }
+diff -uNr linux_logo-2.05/sysinfo_default.c linux_logo-2.05.i18n/sysinfo_default.c
+--- linux_logo-2.05/sysinfo_default.c	Thu May 28 15:30:00 1998
++++ linux_logo-2.05.i18n/sysinfo_default.c	Sat Aug  1 21:13:55 1998
+@@ -12,6 +12,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -71,20 +72,22 @@
+    char temp_string[80],bogomips_total[30];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
++/*
+ 	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+ 	                      "Seven","Eight","Nine"};
++*/
+    
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+ /*   fopen() them.                                                    */
+    
+-      sprintf(cpuinfo,"Unknown CPU");	    
++      sprintf(cpuinfo,_("Unknown CPU"));	    
+ 
+    
+       if (!skip_bogomips)
+          if ( (external_bogomips( (char *)&bogomips_total))==-1 )
+          sprintf(bogo_total," ");
+-         else sprintf(bogo_total,"%s Bogomips Total",bogomips_total);
++         else sprintf(bogo_total,_("%s Bogomips Total"),bogomips_total);
+       else sprintf(bogo_total," ");
+ 	 
+ }
+diff -uNr linux_logo-2.05/sysinfo_ix86.c linux_logo-2.05.i18n/sysinfo_ix86.c
+--- linux_logo-2.05/sysinfo_ix86.c	Thu Jun 18 17:41:54 1998
++++ linux_logo-2.05.i18n/sysinfo_ix86.c	Sat Aug  1 21:13:55 1998
+@@ -12,6 +12,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -53,7 +54,7 @@
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.release);   
+    strcpy(os_revision,buf.version);
+-   strcpy(os_revision,"Compiled ");
++   strcpy(os_revision,_("Compiled "));
+    strcat(os_revision,buf.version);
+    strcpy(host_name,buf.nodename);
+    /* 
+@@ -73,8 +74,8 @@
+    char temp_string[BUFSIZ],bogomips_total[BUFSIZ];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
+-	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+-	                      "Seven","Eight","Nine"};
++	char ordinal[10][10]={N_("Zero"),N_("One"),N_("Two"),N_("Three"),N_("Four"),N_("Five"),N_("Six"),
++	                      N_("Seven"),N_("Eight"),N_("Nine")};
+    
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+@@ -150,9 +151,9 @@
+    mem=buff.st_size;
+    mem/=1024; mem/=1024;
+ 	    
+-      sprintf(cpuinfo,"%s %s%s Processor%s %ldM RAM",ordinal[cpus],vendor,
+-	      model,(cpus>1)?"s,":",",(long int)mem);
+-      sprintf(bogo_total,"%.2f Bogomips Total",total_bogo);      
++      sprintf(cpuinfo,_("%s %s%s %s, %ldM RAM"),_(ordinal[cpus]),vendor,
++	      model,(cpus>1)?_("Processors"):_("Processor"),(long int)mem);
++      sprintf(bogo_total,_("%.2f Bogomips Total"),total_bogo);      
+ 
+ }
+       
+diff -uNr linux_logo-2.05/sysinfo_m68k.c linux_logo-2.05.i18n/sysinfo_m68k.c
+--- linux_logo-2.05/sysinfo_m68k.c	Fri Mar 13 18:39:19 1998
++++ linux_logo-2.05.i18n/sysinfo_m68k.c	Sat Aug  1 21:13:55 1998
+@@ -4,7 +4,8 @@
+ \*----------------------------------------------------------------*/
+ /* Initial gernic Linux and Irix -- Vince Weaver                  *\
+ \* Added Linux mc6800 support    -- Christian Marillat            */
+-/* Added Cyrix 6x86 support"     -- Adam J. Thornton              */
++/* Added Cyrix 6x86 support"     -- Adam J. Thornton              *\
++\* i18n                          -- Arnaldo Carvalho de Melo      */
+ 
+ #include <stdio.h>
+ #include <ctype.h>
+@@ -12,6 +13,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -53,7 +55,7 @@
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.release);   
+    strcpy(os_revision,buf.version);
+-   strcpy(os_revision,"Compiled ");
++   strcpy(os_revision,_("Compiled "));
+    strcat(os_revision,buf.version);
+    strcpy(host_name,buf.nodename);
+    /* 
+diff -uNr linux_logo-2.05/sysinfo_sgi.c linux_logo-2.05.i18n/sysinfo_sgi.c
+--- linux_logo-2.05/sysinfo_sgi.c	Fri Mar 13 18:40:25 1998
++++ linux_logo-2.05.i18n/sysinfo_sgi.c	Sat Aug  1 21:13:55 1998
+@@ -12,6 +12,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -53,7 +54,7 @@
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.release);   
+    strcpy(os_revision,buf.version);
+-   strcpy(os_revision,"Revision ");
++   strcpy(os_revision,_("Revision "));
+    strcat(os_revision,buf.version);
+    strcpy(host_name,buf.nodename);
+    /* 
+@@ -73,9 +74,11 @@
+    char temp_string[80],bogomips_total[30];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
++/*
+ 	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+ 	                      "Seven","Eight","Nine"};
+    
++*/
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+ /*   fopen() them.                                                    */
+@@ -94,7 +97,7 @@
+       if (!skip_bogomips)
+          if ( (external_bogomips( (char *)&bogomips_total))==-1 )
+          sprintf(bogo_total," ");
+-         else sprintf(bogo_total,"%s Bogomips Total",bogomips_total);
++         else sprintf(bogo_total,_("%s Bogomips Total"),bogomips_total);
+       else sprintf(bogo_total," ");
+ 	 
+ }
+diff -uNr linux_logo-2.05/sysinfo_sparc.c linux_logo-2.05.i18n/sysinfo_sparc.c
+--- linux_logo-2.05/sysinfo_sparc.c	Mon Jun  1 11:19:09 1998
++++ linux_logo-2.05.i18n/sysinfo_sparc.c	Sat Aug  1 21:13:55 1998
+@@ -11,6 +11,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <string.h>
++#include "intl.h"
+ 
+ int external_bogomips(char *bogomips_total);
+ 
+@@ -52,7 +53,7 @@
+    strcpy(os_name,buf.sysname);
+    strcpy(os_version,buf.release);   
+    strcpy(os_revision,buf.version);
+-   strcpy(os_revision,"Compiled ");
++   strcpy(os_revision,_("Compiled "));
+    strcat(os_revision,buf.version);
+    strcpy(host_name,buf.nodename);
+    /* 
+@@ -72,8 +73,8 @@
+    char temp_string[BUFSIZ],bogomips_total[BUFSIZ];
+    float total_bogo=0.0;
+    /*Anyone have more than 9 cpu's yet?*/	
+-	char ordinal[10][10]={"Zero","One","Two","Three","Four","Five","Six",
+-	                      "Seven","Eight","Nine"};
++	char ordinal[10][10]={N_("Zero"),N_("One"),N_("Two"),N_("Three"),N_("Four"),N_("Five"),N_("Six"),
++	                      N_("Seven"),N_("Eight"),N_("Nine")};
+    
+ /* Print CPU Type and BogoMips -- Handles SMP Correctly now            *\  
+ \* To debug other architectures, create copies of the  proc files and  */ 
+@@ -119,9 +120,9 @@
+    mem=buff.st_size;
+    mem/=1024; mem/=1024;
+ 	    
+-      sprintf(cpuinfo,"%s %s %s Processor%s %ldM RAM",ordinal[cpus],
+-	      vendor,model,(cpus>1)?"s,":",",(long int)mem);
+-      sprintf(bogo_total,"%.2f Bogomips Total",total_bogo);      
++      sprintf(cpuinfo,_("%s %s %s %s, %ldM RAM"),_(ordinal[cpus]),
++	      vendor,model,(cpus>1) ? _("Processors"):_("Processor"),(long int)mem);
++      sprintf(bogo_total,_("%.2f Bogomips Total"),total_bogo);      
+ 
+ }
+       
