@@ -1,0 +1,283 @@
+diff -ru gnome-core-1.0.5.anterior/applets/another_clock/another_clock_applet.desktop gnome-core-1.0.5/applets/another_clock/another_clock_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/another_clock/another_clock_applet.desktop	Fri Apr  9 13:02:36 1999
++++ gnome-core-1.0.5/applets/another_clock/another_clock_applet.desktop	Thu Jul  1 13:45:48 1999
+@@ -2,8 +2,10 @@
+ Name=Another Clock
+ Name[es]=Reloj Analógico
+ Name[eu]=Erloju analogikoa
++Name[pt_BR]=Relógio Analógico
+ Comment=An analog clock similar to that in CDE panel
+ Comment[es]=Reloj analógico similar al del panel del CDE
++Comment[pt_BR]=Relógio analógico similar ao do painel CDE
+ Comment[eu]=CDE panelaren pareko erloju analogikoa
+ Exec=another_clock_applet --activate-goad-server=another_clock_applet
+ Icon=
+diff -ru gnome-core-1.0.5.anterior/applets/charpick/charpick_applet.desktop gnome-core-1.0.5/applets/charpick/charpick_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/charpick/charpick_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/charpick/charpick_applet.desktop	Thu Jul  1 13:44:05 1999
+@@ -21,6 +21,7 @@
+ Comment[nl]=Speciale karakters die niet bereikbaar zijn via het toetsenbord
+ Comment[no]=Tegnvelger
+ Comment[pt]=Permite seleccionar carateres que não se podem digitar directamente no teclado
++Comment[pt_BR]=Permite selecionar carateres que não se podem digitar diretamente no teclado
+ Exec=charpick_applet --activate-goad-server=charpick_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/clockmail/clockmail_applet.desktop gnome-core-1.0.5/applets/clockmail/clockmail_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/clockmail/clockmail_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/clockmail/clockmail_applet.desktop	Thu Jul  1 13:42:49 1999
+@@ -11,6 +11,7 @@
+ Name[no]=Klokke og e-postsjekk
+ Name[pl]=Zegar z monitorem poczty
+ Name[pt]=Relógio e Caixa de Correio
++Name[pt_BR]=Relógio e Caixa de Correio
+ Comment=Displays new mail and time
+ Comment[es]=Muestra la hora y si se recibió correo electrónico
+ Comment[eu]=Posta helduberria eta ordua erakusten ditu
+@@ -23,6 +24,7 @@
+ Comment[no]=Viser klokken og om det er kommet ny e-post
+ Comment[pl]=Zegar z monitorem poczty
+ Comment[pt]=Mostra novo correio electrónico e as horas
++Comment[pt_BR]=Mostra novo email e as horas
+ Exec=clockmail_applet --activate-goad-server=clockmail_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/cpumemusage/cpumemusage_applet.desktop gnome-core-1.0.5/applets/cpumemusage/cpumemusage_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/cpumemusage/cpumemusage_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/cpumemusage/cpumemusage_applet.desktop	Thu Jul  1 13:47:07 1999
+@@ -25,6 +25,7 @@
+ Comment[no]=Måler for bruk av prosessor og minne
+ Comment[pl]=Monitoruje procesor i pamiêæ
+ Comment[pt]=Monitor para utilização da memória e CPU
++Comment[pt_BR]=Monitor da utilização da memória e CPU
+ Exec=cpumemusage_applet --activate-goad-server=cpumemusage_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/dialer/dialer_applet.desktop gnome-core-1.0.5/applets/dialer/dialer_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/dialer/dialer_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/dialer/dialer_applet.desktop	Thu Jul  1 13:41:34 1999
+@@ -11,6 +11,7 @@
+ Name[nl]=PPP connector
+ Name[pl]=Po³±czenie PPP
+ Name[pt]=Ligação PPP
++Name[pt_BR]=Discador PPP
+ Comment=PPP Dialer
+ Comment[es]=Inicia/termina una conexión PPP
+ Comment[eu]=PPP konexioa hasi edo amaitzeko
+@@ -23,6 +24,7 @@
+ Comment[no]=Program for PPP-oppringing
+ Comment[pl]=Obs³uga po³aczenia PPP
+ Comment[pt]=Efectua uma ligação PPP
++Comment[pt_BR]=Efetuar uma ligação PPP
+ Exec=dialer_applet --activate-goad-server=dialer_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/diskusage/diskusage_applet.desktop gnome-core-1.0.5/applets/diskusage/diskusage_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/diskusage/diskusage_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/diskusage/diskusage_applet.desktop	Thu Jul  1 13:47:22 1999
+@@ -23,6 +23,7 @@
+ Comment[no]=Oversikt over diskbruk
+ Comment[pl]=Monitor przestrzeni dyskowej
+ Comment[pt]=Mostra a percentagem de utilização dos discos
++Comment[pt_BR]=Mostra a porcentagem de utilização dos discos
+ Exec=diskusage_applet --activate-goad-server=diskusage_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/drivemount/drivemount_applet.desktop gnome-core-1.0.5/applets/drivemount/drivemount_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/drivemount/drivemount_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/drivemount/drivemount_applet.desktop	Thu Jul  1 13:42:17 1999
+@@ -11,6 +11,7 @@
+ Name[no]=Diskmontering
+ Name[pl]=Obs³uga napêdów
+ Name[pt]=Drive Mount
++Name[pt_BR]=Montador de discos
+ Comment=Mounts and unmount drives
+ Comment[es]=Permite montar/desmontar discos/disquettes/CD/...
+ Comment[eu]=Diskak, CDak eta abar muntatzekoa
+diff -ru gnome-core-1.0.5.anterior/applets/esd-manager/esdmanager_applet.desktop gnome-core-1.0.5/applets/esd-manager/esdmanager_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/esd-manager/esdmanager_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/esd-manager/esdmanager_applet.desktop	Thu Jul  1 13:46:51 1999
+@@ -11,7 +11,9 @@
+ Name[no]=Esound Manager
+ Name[pl]=Esound Manager
+ Name[pt]=Esound Manager
++Name[pt_BR]=Gerenciador Esound
+ Comment=Esound network audio mixer manager and monitoring program
++Comment[pt_BR]=programa monitor e mixador de áudio de rede 
+ Comment[es]=Programa de monitoreo y de mezclado audio por red de Esound
+ Comment[eu]=Esound sare bidezko audio nahasle eta monitorea
+ Comment[fi]=Esound-verkkoäänijärjestelmän mikserinhallinta ja -valvontaohjelma
+diff -ru gnome-core-1.0.5.anterior/applets/fifteen/fifteen_applet.desktop gnome-core-1.0.5/applets/fifteen/fifteen_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/fifteen/fifteen_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/fifteen/fifteen_applet.desktop	Thu Jul  1 13:43:07 1999
+@@ -23,6 +23,7 @@
+ Comment[nl]=Schuifpuzzle met vijftien cellen
+ Comment[no]=Femten celler
+ Comment[pt]=Puzzle das 15 casas
++Comment[pt_BR]=Quebra-cabeças das 15 casas
+ Exec=fifteen_applet --activate-goad-server=fifteen_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/gen_util/mailcheck_applet.desktop gnome-core-1.0.5/applets/gen_util/mailcheck_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/gen_util/mailcheck_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/gen_util/mailcheck_applet.desktop	Thu Jul  1 13:40:40 1999
+@@ -11,6 +11,7 @@
+ Name[no]=E-postsjekk
+ Name[pl]=Monitor poczty
+ Name[pt]=Caixa Correio
++Name[pt_BR]=Caixa de Correio
+ Name[wa]=Boesse ås emiles
+ Comment=Mailcheck
+ Comment[de]=Überwachung des Posteingangs
+@@ -24,6 +25,7 @@
+ Comment[no]=Se etter e-post
+ Comment[pl]=Aplet monitoruj±cy skrzynkê pocztow±
+ Comment[pt]=Indica se há novo correio electrónico
++Comment[pt_BR]=Indica se há novo email
+ Comment[wa]=Mostre si i gna des emilaedjes dins li boesse ås emiles
+ Exec=gen_util_applet --activate-goad-server=gen_util_mailcheck
+ Icon=
+diff -ru gnome-core-1.0.5.anterior/applets/gen_util/printer.desktop gnome-core-1.0.5/applets/gen_util/printer.desktop
+--- gnome-core-1.0.5.anterior/applets/gen_util/printer.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/gen_util/printer.desktop	Thu Jul  1 13:40:55 1999
+@@ -24,6 +24,7 @@
+ Comment[no]=Skriverovervåking
+ Comment[pl]=Obs³uga wydruku
+ Comment[pt]=Monitor de Impressora
++Comment[pt_BR]=Monitor da Impressora
+ Comment[wa]=Aplikete po rexhe
+ Exec=gen_util_applet --activate-goad-server=gen_util_printer
+ Icon=
+diff -ru gnome-core-1.0.5.anterior/applets/life/life_applet.desktop gnome-core-1.0.5/applets/life/life_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/life/life_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/life/life_applet.desktop	Thu Jul  1 13:43:35 1999
+@@ -1,8 +1,10 @@
+ [Desktop Entry]
+ Name=Game of Life
+ Name[eu]=Bizitzaren Jokoa
++Name[pt_BR]=Jogo da Vida
+ Comment=The Game of Life (to waste your time)
+ Comment[eu]=Bizitzaren Jokoa(denborapasa)
++Comment[pt_BR]=Jogo da Vida
+ Exec=life_applet --activate-goad-server=life_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/netload/netload_applet.desktop gnome-core-1.0.5/applets/netload/netload_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/netload/netload_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/netload/netload_applet.desktop	Thu Jul  1 13:47:53 1999
+@@ -25,6 +25,7 @@
+ Comment[no]=Monitor for belastning av nettverk
+ Comment[pl]=Monitor obci±¿enia sieci
+ Comment[pt]=Mostra o nível de utilização de rede
++Comment[pt_BR]=Mostra o nível de utilização da rede
+ Exec=netload_applet --activate-goad-server=netload_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/slashapp/slash_applet.desktop gnome-core-1.0.5/applets/slashapp/slash_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/slashapp/slash_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/slashapp/slash_applet.desktop	Thu Jul  1 13:48:05 1999
+@@ -20,6 +20,7 @@
+ Comment[nl]=Het laatste nieuws van slashdot.org
+ Comment[no]=Vis siste nyheter fra slashdot.org
+ Comment[pt]=Mostra as últimas notícias de slashdot.org
++Comment[pt_BR]=Mostra as últimas notícias do slashdot.org
+ Exec=slash_applet --activate-goad-server=slash_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/applets/webcontrol/webcontrol_applet.desktop gnome-core-1.0.5/applets/webcontrol/webcontrol_applet.desktop
+--- gnome-core-1.0.5.anterior/applets/webcontrol/webcontrol_applet.desktop	Fri Apr  9 13:02:37 1999
++++ gnome-core-1.0.5/applets/webcontrol/webcontrol_applet.desktop	Thu Jul  1 13:41:54 1999
+@@ -11,6 +11,7 @@
+ Name[no]=WebKontroll
+ Name[pl]=Pasek adresu URL
+ Name[pt]=Controlo WEB
++Name[pt]=Controle WEB
+ Comment=WebControl
+ Comment[es]=Control WEB
+ Comment[eu]=Amaraunaren kontrola
+@@ -23,6 +24,7 @@
+ Comment[no]=WebKontroll
+ Comment[pl]=Pasek adresu URL
+ Comment[pt]=Controlo WEB
++Comment[pt_BR]=Controle WEB
+ Exec=webcontrol_applet --activate-goad-server=webcontrol_applet
+ Icon=
+ Terminal=0
+diff -ru gnome-core-1.0.5.anterior/desktop-links/Balsa.desktop gnome-core-1.0.5/desktop-links/Balsa.desktop
+--- gnome-core-1.0.5.anterior/desktop-links/Balsa.desktop	Fri Apr  9 13:02:38 1999
++++ gnome-core-1.0.5/desktop-links/Balsa.desktop	Thu Jul  1 13:38:26 1999
+@@ -26,6 +26,7 @@
+ Comment[nl]=Elektronische post
+ Comment[no]=E-post verktøy
+ Comment[pt]=Programa de correio electrónico
++Comment[pt_BR]=Programa de correio electrônico
+ Comment[ru]=üÌÅËÔÒÏÎÎÁÑ ÐÏÞÔÁ
+ TryExec=balsa
+ Exec=balsa
+diff -ru gnome-core-1.0.5.anterior/desktop-links/Gmc.desktop gnome-core-1.0.5/desktop-links/Gmc.desktop
+--- gnome-core-1.0.5.anterior/desktop-links/Gmc.desktop	Fri Apr  9 13:02:38 1999
++++ gnome-core-1.0.5/desktop-links/Gmc.desktop	Thu Jul  1 13:39:35 1999
+@@ -13,6 +13,7 @@
+ Name[nl]=Bestandsbeheer
+ Name[no]=Filbehandler
+ Name[pt]=Gestor de Ficheiros
++Name[pt_BR]=Gerenciador de Arquivos
+ Name[ru]=äÉÓÐÅÔÞÅÒ ÆÁÊÌÏ×
+ Name[wa]=Manaedjeu di fitchîs
+ Comment=Graphical File Manager
+@@ -29,6 +30,7 @@
+ Comment[nl]=Grafisch bestandsbeheer
+ Comment[no]=Grafisk filbehandler
+ Comment[pt]=Gestor de ficheiros gráfico
++Comment[pt_BR]=Gerenciador de arquivos gráfico
+ Comment[ru]=çÒÁÆÉÞÅÓËÉÊ ÄÉÓÐÅÔÞÅÒ ÆÁÊÌÏ×
+ Comment[wa]=Manadjeu grafike di fitchîs
+ TryExec=gmc
+diff -ru gnome-core-1.0.5.anterior/desktop-links/Tkrat.desktop gnome-core-1.0.5/desktop-links/Tkrat.desktop
+--- gnome-core-1.0.5.anterior/desktop-links/Tkrat.desktop	Fri Apr  9 13:02:38 1999
++++ gnome-core-1.0.5/desktop-links/Tkrat.desktop	Thu Jul  1 13:38:38 1999
+@@ -26,6 +26,7 @@
+ Comment[nl]=Elektronische post
+ Comment[no]=E-post verktøy
+ Comment[pt]=Programa de correio electrónico
++Comment[pt]=Programa de correio electrônico
+ Comment[wa]=Programe d' emilaedje
+ TryExec=tkrat
+ Exec=tkrat
+diff -ru gnome-core-1.0.5.anterior/desktop-links/UNIX-regular.desktop gnome-core-1.0.5/desktop-links/UNIX-regular.desktop
+--- gnome-core-1.0.5.anterior/desktop-links/UNIX-regular.desktop	Fri Apr  9 13:02:38 1999
++++ gnome-core-1.0.5/desktop-links/UNIX-regular.desktop	Thu Jul  1 13:37:47 1999
+@@ -13,6 +13,7 @@
+ Name[nl]=Normale XTerm
+ Name[no]=Vanlig X-terminal
+ Name[pt]=XTerm Normal
++Name[pt_BR]=XTerm Normal
+ Name[ru]=ïÂÙÞÎÙÊ XTerm
+ Comment=Regular XTerm
+ Comment[da]=Sædvanlig X-terminal
+@@ -28,6 +29,7 @@
+ Comment[nl]=Normale XTerm
+ Comment[no]=Vanlig X-terminal
+ Comment[pt]=XTerm Regular
++Comment[pt_BR]=XTerm Normal
+ Comment[ru]=ïÂÙÞÎÙÊ XTerm
+ TryExec=xterm
+ Exec=xterm
+diff -ru gnome-core-1.0.5.anterior/gsm/session.desktop gnome-core-1.0.5/gsm/session.desktop
+--- gnome-core-1.0.5.anterior/gsm/session.desktop	Fri Apr  9 13:02:38 1999
++++ gnome-core-1.0.5/gsm/session.desktop	Thu Jul  1 13:36:43 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=Session Manager Properties
++Name[pt_BR]=Propriedade do Gerente de Sessões
+ Name[es]=Propiedades del Gestor de Sesiones
+ Name[eu]=Ekitaldi kudeatzailearen ezaugarriak
+ Name[fi]=Istunnonhallinnan ominaisuudet
+@@ -20,6 +21,7 @@
+ Comment[nl]=Sessiebeheer eigenschappen
+ Comment[no]=Egenskaper for sesjonsbehandler
+ Comment[pt]=Propriedades do Gestor de Sessões
++Comment[pt_BR]=Propriedades do Gerente de Sessões
+ Comment[ru]=îÁÓÔÒÏÊËÁ ÄÉÓÐÅÔÞÅÒÁ ÒÁÂÏÞÅÊ ÓÅÓÓÉÉ × GNOME
+ Exec=session-properties
+ Icon=

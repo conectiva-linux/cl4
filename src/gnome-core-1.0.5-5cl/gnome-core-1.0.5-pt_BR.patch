@@ -1,0 +1,12 @@
+diff -uNr gnome-core-1.0.5/configure.in gnome-core-1.0.5-pt_BR/configure.in
+--- gnome-core-1.0.5/configure.in	Thu Apr  8 20:25:58 1999
++++ gnome-core-1.0.5-pt_BR/configure.in	Wed Jun 23 20:02:08 1999
+@@ -32,7 +32,7 @@
+ AM_CONDITIONAL(FALSE, test "x" = "y")
+ 
+ dnl ## all 'es_??' are only needed for format numbers different of 'es'
+-ALL_LINGUAS="ca cs da de es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fi fr ga hu it ja ko nl no pl pt ru sv wa"
++ALL_LINGUAS="ca cs da de es es_DO es_GT es_HN es_MX es_PA es_PE es_SV fi fr ga hu it ja ko nl no pl pt pt_BR ru sv wa"
+ AM_GNU_GETTEXT
+ 
+ AC_SUBST(CFLAGS)

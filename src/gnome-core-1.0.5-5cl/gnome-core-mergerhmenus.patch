@@ -1,0 +1,444 @@
+--- gnome-core-1.0.1/panel/menu.c.mergemenu	Thu Mar 11 15:40:15 1999
++++ gnome-core-1.0.1/panel/menu.c	Thu Mar 11 15:40:29 1999
+@@ -97,6 +97,53 @@
+ 
+ static void create_rh_menu(int dofork);
+ 
++/* The directory which we shadow the apps/ for Red Hat */
++#define SHADOW_DIR "/etc/X11/applnk"
++
++static void
++shadow_menudir(char *dir, char **menudir, char **shadowdir)
++{
++	static char *appsdir = NULL;
++	static guint appsdir_len = 0;
++	static guint shadowdir_len = 0;
++	
++	if (!appsdir) {
++		appsdir = gnome_datadir_file("gnome/apps");
++		appsdir_len = strlen (appsdir);
++		shadowdir_len = strlen (SHADOW_DIR);
++	}
++
++	if (strncmp (appsdir, dir, appsdir_len) == 0) {
++		*menudir = dir;
++		*shadowdir = g_strconcat (SHADOW_DIR, dir + appsdir_len, NULL);
++	} else if (strncmp (SHADOW_DIR, dir, shadowdir_len) == 0) {
++		*menudir = g_strconcat (appsdir, dir + shadowdir_len, NULL);
++		*shadowdir = dir;
++	} else {
++		*menudir = dir;
++		*shadowdir = NULL;
++	}
++}
++
++typedef struct _OrderEntry OrderEntry;
++
++struct _OrderEntry {
++	char *name;
++	char *location;
++};
++
++static OrderEntry *
++find_order_entry (GSList *list, gchar *name)
++{
++	while (list) {
++		OrderEntry *entry = list->data;
++		if (strcmp (name, entry->name) == 0)
++			return entry;
++		list = list->next;
++	}
++	return NULL;
++}
++
+ /*reads in the order file and makes a list*/
+ static GSList *
+ get_presorted_from(char *dir)
+@@ -111,39 +158,171 @@
+ 		return NULL;
+ 	}
+ 	while(fgets(buf,PATH_MAX+1,fp)!=NULL) {
++		OrderEntry *entry;
+ 		char *p = strchr(buf,'\n');
+ 		if(p) *p = '\0';
+-		list = g_slist_prepend(list,g_strdup(buf));
++
++		entry = g_new (OrderEntry, 1);
++		entry->name = g_strdup(buf);
++		entry->location = NULL;
++		
++		list = g_slist_prepend(list, entry);
+ 	}
+ 	fclose(fp);
+ 	g_free(fname);
+ 	return g_slist_reverse(list);
+ }
+ 
+-static GSList *
+-get_files_from_menudir(char *menudir)
++/* Find the files in the given directory that are not in
++ * the presort list pres or extra_files, and fill in entry->location 
++ * fields in the pres list. The full names are prepended in reverse
++ * order to 'result', and basenames to extra_files.
++ */
++static void
++get_additional_files_from (char *menudir, GSList *pres,
++			   GSList **result, GSList **extra_files)
+ {
++	DIR *dir = NULL;
+ 	struct dirent *dent;
+-	DIR *dir;
+-	GSList *out = NULL;
+-	GSList *pres = NULL;
+-	
+-	dir = opendir (menudir);
+-	if (dir == NULL)
+-		return NULL;
++
++	/* Get the files from the GNOME directory */
++	if (menudir)
++		dir = opendir (menudir);
++	
++	if (dir != NULL) {
++		while((dent = readdir (dir)) != NULL) {
++			OrderEntry *entry;
++			
++			/* Skip over dot files */
++			if (dent->d_name [0] == '.')
++				continue;
++			entry = find_order_entry(pres,dent->d_name);
++			if (entry) {
++				if (!entry->location)
++					entry->location = g_concat_dir_and_file (menudir, dent->d_name);
++			} else if (!string_is_in_list (*extra_files, dent->d_name)) {
++				*extra_files = g_slist_prepend(*extra_files, g_strdup (dent->d_name));
++				*result = g_slist_prepend (*result, g_concat_dir_and_file (menudir, dent->d_name));
++			}
++		}
++		closedir(dir);
++	}
++}
++
++/* Returns a list of all files in a given directory, omitting
++ * . files, and including files from the shadow directory
++ */
++static GSList *
++get_files_from_menudir(char *menudir, gint *n_sorted)
++{
++	GSList *out;
++	GSList *extras;
++	GSList *tmp_out;
++	GSList *pres;
++	GSList *pres2;
++	GSList *tmp_list;
++	char *maindir;
++	char *shadowdir;
++
++	shadow_menudir (menudir, &maindir, &shadowdir);
+ 	
+-	pres = get_presorted_from(menudir);
++	/* Form an order list from the two directories .order files
++	 */
++	if (shadowdir) {
++		pres = get_presorted_from(shadowdir);
++		pres2 = get_presorted_from(maindir);
++
++		tmp_list = pres2;
++		while (tmp_list) {
++			OrderEntry *entry = tmp_list->data;
++			
++			if (!find_order_entry(pres, entry->name))
++				pres = g_slist_append (pres, entry);
++			else {
++				g_free (entry->name);
++				g_free (entry);
++			}
++			tmp_list = tmp_list->next;
++		}
++		g_slist_free (pres2);
++		
++	} else {
++		pres = get_presorted_from(maindir);
++	}
++
++	/* Add unordered files
++	 */
++	out = NULL;
++	extras = NULL;
++	if (shadowdir)
++		get_additional_files_from (shadowdir, pres, &out, &extras);
++	get_additional_files_from (maindir, pres, &out, &extras);
++	g_slist_foreach (extras, (GFunc)g_free, NULL);
++	g_slist_free (extras);
++
++	out = g_slist_reverse (out);
++
++	/* Add the files in the order list
++	 */
++	tmp_out = NULL;
++	tmp_list = pres;
++	while (tmp_list) {
++		OrderEntry *entry = tmp_list->data;
++
++		if (entry->location)
++			tmp_out = g_slist_prepend (tmp_out, entry->location);
++		g_free (entry->name);
++		g_free (entry);
++
++		tmp_list = tmp_list->next;
++	}
++	g_slist_free (pres);
++
++	if (n_sorted)
++		*n_sorted = g_slist_length (tmp_out);
++	out = g_slist_concat (g_slist_reverse (tmp_out), out);
+ 	
+-	while((dent = readdir (dir)) != NULL) {
+-		/* Skip over dot files */
+-		if (dent->d_name [0] == '.')
+-			continue;
+-		if(!string_is_in_list(pres,dent->d_name))
+-			out = g_slist_prepend(out,g_strdup(dent->d_name));
++	if (shadowdir && shadowdir != menudir)
++		g_free (shadowdir);
++	if (maindir && maindir != menudir)
++		g_free (maindir);
++
++	return out;
++}
++
++/* Get the modification time for a menu directory, taking
++ * into account shadowing. Returns FALSE if neither the
++ * directory nor it's shadow exists.
++ */
++static gboolean
++get_menudir_modtime(char *menudir, time_t *result)
++{
++	char *shadowdir;
++	char *maindir;
++	struct stat s;
++	gboolean found = FALSE;
++
++	shadow_menudir (menudir, &maindir, &shadowdir);
++
++	if (stat (maindir, &s) != -1) {
++		found = TRUE;
++		*result = s.st_mtime;
++	}
++
++	if (shadowdir && stat (shadowdir, &s) != -1) {
++		if (!found) {
++			found = TRUE;
++			*result = s.st_mtime;
++		} else
++			*result = MAX (*result, s.st_mtime);
+ 	}
+ 
+-	closedir(dir);
+-	return g_slist_concat(pres,g_slist_reverse(out));
++	if (shadowdir && shadowdir != menudir)
++		g_free (shadowdir);
++	if (maindir && maindir != menudir)
++		g_free (maindir);
++
++	return found;
+ }
+ 
+ static char *
+@@ -203,14 +382,58 @@
+ 
+ static FileRec * fr_read_dir(DirRec *dr, char *mdir, struct stat *dstat, int sublevels);
+ 
++/* Form a pretty name from a pathname */
++static gchar *
++make_fullname (gchar *pathname)
++{
++	char *p;
++	char *itemname;
++	itemname = g_strdup(g_basename(pathname));
++	p = strrchr(itemname,'.');
++	if(p) *p = '\0';
++
++	return itemname;
++}
++
++static gint 
++fr_compare (gconstpointer a, gconstpointer b)
++{
++	const FileRec *fr_a = a;
++	const FileRec *fr_b = b;
++	char *name_a;
++	char *name_b;
++	gint result;
++
++	if (fr_a->fullname)
++		name_a = fr_a->fullname;
++	else
++		name_a = make_fullname (fr_a->name);
++
++
++	if (fr_b->fullname)
++		name_b = fr_b->fullname;
++	else
++		name_b = make_fullname (fr_b->name);
++
++	result = g_strcasecmp (name_a, name_b);
++
++	if (!fr_a->fullname)
++		g_free (name_a);
++	if (!fr_b->fullname)
++		g_free (name_b);
++	
++	return result;
++}
++
+ static void
+ fr_fill_dir(FileRec *fr, int sublevels)
+ {
+-	GSList *flist;
++	GSList *flist, *unsorted;
+ 	struct stat s;
+ 	DirRec *dr = (DirRec *)fr;
+ 	FileRec *ffr;
+ 	time_t curtime = time(NULL);
++	gint index, n_sorted;
+ 	
+ 	g_return_if_fail(dr->recs==NULL);
+ 
+@@ -223,37 +446,34 @@
+ 	ffr->last_stat = curtime;
+ 	dr->recs = g_slist_prepend(dr->recs,ffr);
+ 
+-	flist = get_files_from_menudir(fr->name);
++	flist = get_files_from_menudir(fr->name, &n_sorted);
++	unsorted = NULL;
++	index = 0;
+ 	while(flist) {
+-		char *name = g_concat_dir_and_file(fr->name,flist->data);
++		char *name = flist->data;
+ 		GSList *tmp = flist;
+-		g_free(flist->data);
+ 		flist = flist->next;
+ 		g_slist_free_1(tmp);
++
++		ffr = NULL;
+ 		
+-		if (stat (name, &s) == -1) {
+-			g_free(name);
+-			continue;
+-		}
++		if (stat (name, &s) == -1)
++			goto next;
+ 
+ 		if (S_ISDIR (s.st_mode)) {
+ 			ffr = fr_read_dir(NULL,name,&s,sublevels-1);
+-			g_free(name);
+-			if(ffr)
+-				dr->recs = g_slist_prepend(dr->recs,ffr);
+ 		} else {
+ 			GnomeDesktopEntry *dentry;
+ 			char *p = strrchr(name,'.');
+-			if(p && strcmp(p,".desktop")!=0) {
+-				g_free(name);
+-				continue;
+-			}
++			if(p && strcmp(p,".desktop")!=0)
++				goto next;
+ 
+ 			dentry = gnome_desktop_entry_load(name);
+ 			if(dentry) {
+ 				ffr = g_new0(FileRec,1);
+ 				ffr->type = FILE_REC_FILE;
+ 				ffr->name = name;
++				name = NULL;
+ 				ffr->mtime = s.st_mtime;
+ 				ffr->last_stat = curtime;
+ 				ffr->parent = dr;
+@@ -264,13 +484,26 @@
+ 				ffr->goad_id =
+ 					get_applet_goad_id_from_dentry(dentry);
+ 				gnome_desktop_entry_free(dentry);
+-
++			}
++		}
++	next:
++		if (ffr) {
++			if (index >= n_sorted)
++				unsorted = g_slist_prepend (unsorted, ffr);
++			else
+ 				dr->recs = g_slist_prepend(dr->recs,ffr);
+-			} else
+-				g_free(name);
++
++			index++;
++		} else {
++			if (index < n_sorted)
++				n_sorted--;
+ 		}
++
++		if (name)
++			g_free(name);
+ 	}
+-	dr->recs = g_slist_reverse(dr->recs);
++	dr->recs = g_slist_concat (g_slist_reverse (dr->recs),
++				   g_slist_sort (unsorted, fr_compare));
+ }
+ 
+ static FileRec *
+@@ -288,12 +521,13 @@
+ 
+ 	if(fr->last_stat < curtime-1) {
+ 		if(!dstat) {
+-			if (stat (mdir, &s) == -1) {
++			time_t mtime;
++			if (!get_menudir_modtime(mdir, &mtime)) {
+ 				fr_free(fr,TRUE);
+ 				return NULL;
+ 			}
+ 
+-			fr->mtime = s.st_mtime;
++			fr->mtime = mtime;
+ 		} else
+ 			fr->mtime = dstat->st_mtime;
+ 		fr->last_stat = curtime;
+@@ -375,11 +609,12 @@
+ 		struct stat ds;
+ 		GSList *li;
+ 		if (fr->last_stat < curtime-1) {
+-			if(stat(fr->name,&ds)==-1) {
++			time_t mtime;
++			if (!get_menudir_modtime(fr->name, &mtime)) {
+ 				fr_free(fr,TRUE);
+ 				return NULL;
+ 			}
+-			if(ds.st_mtime != fr->mtime)
++			if(mtime != fr->mtime)
+ 				reread = TRUE;
+ 		}
+ 		for(li = dr->recs; !reread && li!=NULL; li=g_slist_next(li)) {
+@@ -622,11 +857,10 @@
+ 	g_return_if_fail(drawer);
+ 	newpanel = PANEL_WIDGET(BASEP_WIDGET(drawer->drawer)->panel);
+ 	
+-	list = get_files_from_menudir(dirname);
++	list = get_files_from_menudir(dirname, NULL);
+ 	for(li = list; li!= NULL; li = g_slist_next(li)) {
+-		char *filename = g_concat_dir_and_file(dirname, li->data);
++		char *filename = li->data;
+ 		struct stat s;
+-		g_free(li->data);
+ 		if (stat (filename, &s) == 0) {
+ 			if (S_ISDIR (s.st_mode)) {
+ 				add_drawers_from_dir(filename,NULL,INT_MAX/2,
+@@ -1562,10 +1796,7 @@
+ 	if(fr->fullname) {
+ 		itemname = g_strdup(fr->fullname);
+ 	} else {
+-		char *p;
+-		itemname = g_strdup(g_basename(fr->name));
+-		p = strrchr(itemname,'.');
+-		if(p) *p = '\0';
++		itemname = make_fullname (fr->name);
+ 	}
+ 
+ 	if(fr->type == FILE_REC_DIR) {

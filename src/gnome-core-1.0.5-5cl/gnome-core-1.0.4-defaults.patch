@@ -1,0 +1,49 @@
+diff -ur gnome-core-1.0.4/panel/session.c gnome-core-1.0.4.acme/panel/session.c
+--- gnome-core-1.0.4/panel/session.c	Thu Mar 25 17:48:15 1999
++++ gnome-core-1.0.4.acme/panel/session.c	Sun Mar 28 19:13:43 1999
+@@ -616,9 +616,9 @@
+ 	char *def_launchers[] =
+ 	      { "gnome/apps/gnome-help.desktop",
+ 		"gnome/apps/Settings/gnomecc.desktop",
+-		"gnome/apps/Applications/Netscape.desktop",
++		"gnome/apps/Utilities/gnome-terminal.desktop",
+ 		NULL };
+-	int i;
++	int i, center;
+ 	int flags = MAIN_MENU_SYSTEM|MAIN_MENU_USER;
+ 
+ 	/*guess redhat menus*/
+@@ -629,15 +629,23 @@
+ 		flags |= MAIN_MENU_DEBIAN|MAIN_MENU_DEBIAN_SUB;
+ 	load_menu_applet(NULL,flags, panels->data, 0);
+ 
++	center = gdk_screen_width()/2;
+ 	for(i=0;def_launchers[i]!=NULL;i++) {
+ 		char *p = gnome_datadir_file (def_launchers[i]);
+-		int center = gdk_screen_width()/2;
+ 		if(p) {
+ 			load_launcher_applet(p,panels->data,center+i);
+ 			g_free(p);
+ 		}
+ 	}
+ 
++        if (g_file_exists("/etc/X11/applnk/Internet/netscape-communicator.desktop"))
++           load_launcher_applet("/etc/X11/applnk/Internet/netscape-communicator.desktop",panels->data,center+i);
++        else if (g_file_exists("/etc/X11/applnk/Internet/netscape-navigator.desktop"))
++           load_launcher_applet("/etc/X11/applnk/Internet/netscape-navigator.desktop",panels->data,center+i);
++
++       load_extern_applet("gnomepager_applet",NULL,
++                          panels->data,INT_MAX/2/*right flush*/,TRUE);
++
+ 	load_extern_applet("gen_util_clock",NULL,
+ 			   panels->data,INT_MAX/2/*right flush*/,TRUE);
+ 	/*we laoded default applets, so we didn't find the config or
+@@ -932,7 +940,7 @@
+ load_up_globals(void)
+ {
+ 	GString *buf;
+-	char *tile_def[]={"normal","purple","green","blue"};
++	char *tile_def[]={"normal","normal","normal","normal"};
+ 	int i;
+ 	
+ 	buf = g_string_new(NULL);

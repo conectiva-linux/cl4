@@ -1,0 +1,22 @@
+--- gnome-core-1.0.1/applets/gnome-pager/gnomepager_applet.c.smallpager	Sat Feb 27 19:01:39 1999
++++ gnome-core-1.0.1/applets/gnome-pager/gnomepager_applet.c	Thu Mar 11 15:53:30 1999
+@@ -1360,7 +1360,7 @@
+   /*FIXME: remove this later!!!!!, in favour of the WELL BEHAVED
+     session saving/loading, leave it in for now so that people that
+     have some saved config get it*/
+-  config.pager_rows = gnome_config_get_int("gnome_pager/stuff/pager_rows=2");
++  config.pager_rows = gnome_config_get_int("gnome_pager/stuff/pager_rows=1");
+   config.pager_size = gnome_config_get_int("gnome_pager/stuff/pager_size=0");
+   config.tasks_all = gnome_config_get_int("gnome_pager/stuff/tasks_all=0");
+   config.task_rows_h = gnome_config_get_int("gnome_pager/stuff/task_rows_h=2");
+@@ -1411,8 +1411,8 @@
+ 
+   /*this really loads the correct data*/
+   gnome_config_push_prefix(APPLET_WIDGET(applet)->privcfgpath);
+-  config.pager_rows = gnome_config_get_int("stuff/pager_rows=2");
+-  config.pager_size = gnome_config_get_int("stuff/pager_size=1");
++  config.pager_rows = gnome_config_get_int("stuff/pager_rows=1");
++  config.pager_size = gnome_config_get_int("stuff/pager_size=0");
+   config.tasks_all = gnome_config_get_int("stuff/tasks_all=0");
+   config.task_rows_h = gnome_config_get_int("stuff/task_rows_h=2");
+   config.task_rows_v = gnome_config_get_int("stuff/task_rows_v=1");

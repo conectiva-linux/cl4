@@ -1,0 +1,11 @@
+--- gnome-core-0.99.8.1/gnome-terminal/gnome-terminal.c.msf	Tue Feb 16 17:48:02 1999
++++ gnome-core-0.99.8.1/gnome-terminal/gnome-terminal.c	Tue Feb 16 17:50:47 1999
+@@ -28,7 +28,7 @@
+ 
+ char **env;
+ 
+-#define DEFAULT_FONT "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1"
++#define DEFAULT_FONT "-misc-fixed-medium-r-normal-*-*-130-*-*-c-*-iso8859-1"
+ #define EXTRA 2
+ 
+ /* Initial geometry */
