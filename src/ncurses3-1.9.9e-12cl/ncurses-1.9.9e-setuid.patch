@@ -1,0 +1,34 @@
+--- ncurses-1.9.9e/ncurses/read_termcap.c~	Wed Jul  1 00:23:43 1998
++++ ncurses-1.9.9e/ncurses/read_termcap.c	Wed Jul  1 00:51:22 1998
+@@ -425,7 +425,11 @@
+ 			(void)lseek(fd, (off_t)0, SEEK_SET);
+ 			myfd = 0;
+ 		} else {
++			setfsuid(getuid());
++			setfsgid(getgid());
+ 			fd = open(*db_p, O_RDONLY, 0);
++			setfsuid(geteuid());
++			setfsgid(getegid());
+ 			if (fd < 0) {
+ 				/* No error on unfound file. */
+ 				if (errno == ENOENT)
+--- ncurses-1.9.9e/ncurses/read_entry.c~	Tue Jan  9 07:18:09 1996
++++ ncurses-1.9.9e/ncurses/read_entry.c	Wed Jul  1 00:53:10 1998
+@@ -69,7 +69,16 @@
+     int		i, fd, numread;
+     char 	buf[MAX_ENTRY_SIZE];
+ 
+-    if ((fd = open(filename, 0)) < 0)
++    /*
++     *	Do this as the user if we are set*id
++     */
++    setfsuid(getuid());
++    setfsgid(getgid());
++    fd = open(filename, 0);
++    setfsuid(geteuid());
++    setfsgid(getegid());
++    
++    if (fd < 0)
+     {
+ 	if (errno == ENOENT)
+ 	{  

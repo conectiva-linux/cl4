@@ -1,0 +1,15 @@
+--- ncurses-1.9.9e/ncurses/read_entry.c.share	Tue Jan  9 02:18:09 1996
++++ ncurses-1.9.9e/ncurses/read_entry.c	Thu Apr 23 17:37:18 1998
+@@ -226,6 +226,12 @@
+ 			return(1);
+ 	}
+ 
++	{
++	    (void) snprintf(filename, "/usr/share/terminfo/%c/%s", ttn[0], ttn);
++	    if (_nc_read_file_entry(filename, tp) == 1)
++		return(1);
++	}
++
+ 	/* try the system directory */
+ 	(void) sprintf(filename, "%s/%c/%s", TERMINFO, ttn[0], ttn);
+ 	return(_nc_read_file_entry(filename, tp));

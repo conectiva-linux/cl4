@@ -1,0 +1,10 @@
+--- ncurses-1.9.9e/include/MKterm.h.awk.in.ewt	Tue Dec  9 21:13:22 1997
++++ ncurses-1.9.9e/include/MKterm.h.awk.in	Tue Dec  9 21:13:30 1997
+@@ -48,6 +48,7 @@
+ 		    print "#define TERMIOS 1"
+ 		    print "#endif"
+ 		    print "#include <termios.h>"
++		    print "#include <sys/ioctl.h>"
+ 		    print "#define TTY struct termios"
+ 		    print ""
+ 		    print "#else"

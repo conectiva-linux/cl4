@@ -1,0 +1,23 @@
+--- ncurses-1.9.9e/misc/Makefile.in.rh	Mon Apr 20 16:35:33 1998
++++ ncurses-1.9.9e/misc/Makefile.in	Mon Apr 20 16:36:01 1998
+@@ -28,7 +28,8 @@
+ ################################################################################
+ all:
+ 
+-install: install.data
++install: 
++	@echo "Done."
+ 
+ install.data: $(ticdir)
+ 	rm -fr $(ticdir)/[0-9A-Za-z]
+--- ncurses-1.9.9e/aclocal.m4.rh	Mon Apr 20 16:34:31 1998
++++ ncurses-1.9.9e/aclocal.m4	Mon Apr 20 16:35:04 1998
+@@ -190,7 +190,7 @@
+ 	cd include; \$(MAKE) \$(NC_MFLAGS) \[$]@
+ 
+ install.data ::
+-	cd misc; \$(MAKE) \$(NC_MFLAGS) \[$]@
++	@echo "Done."
+ 
+ install.man ::
+ 	cd man; \$(MAKE) \$(NC_MFLAGS) \[$]@

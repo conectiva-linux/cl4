@@ -1,0 +1,65 @@
+--- ncurses-1.9.9e/aclocal.m4.winsz	Thu Aug 13 14:14:35 1998
++++ ncurses-1.9.9e/aclocal.m4	Thu Aug 13 14:16:06 1998
+@@ -535,51 +535,6 @@
+ AC_MSG_RESULT(System type is $nc_cv_systype)
+ ])dnl
+ dnl ---------------------------------------------------------------------------
+-dnl On some systems ioctl(fd, TIOCGWINSZ, &size) will always return {0,0} until
+-dnl ioctl(fd, TIOCSWINSZ, &size) is called to explicitly set the size of the
+-dnl screen.
+-dnl
+-dnl Attempt to determine if we're on such a system by running a test-program.
+-dnl This won't work, of course, if the configure script is run in batch mode,
+-dnl since we've got to have access to the terminal.
+-AC_DEFUN([NC_TIOCGWINSZ],
+-[
+-AC_MSG_CHECKING([for working TIOCGWINSZ])
+-AC_CACHE_VAL(nc_cv_use_tiocgwinsz,[
+-	AC_TRY_RUN([
+-#if HAVE_TERMIOS_H
+-#include <termios.h>
+-#endif
+-#if SYSTEM_LOOKS_LIKE_SCO
+-/* they neglected to define struct winsize in termios.h -- it's only
+-   in termio.h	*/
+-#include	<sys/stream.h>
+-#include	<sys/ptem.h>
+-#endif
+-#if !defined(sun) || !defined(HAVE_TERMIOS_H)
+-#include <sys/ioctl.h>
+-#endif
+-int main()
+-{
+-	static	struct winsize size;
+-	int fd;
+-	for (fd = 0; fd <= 2; fd++) {	/* try in/out/err in case redirected */
+-		if (ioctl(0, TIOCGWINSZ, &size) == 0
+-		 && size.ws_row > 0
+-		 && size.ws_col > 0)
+-			exit(0);
+-	}
+-	exit(1);
+-}
+-		],
+-		[nc_cv_use_tiocgwinsz=yes],
+-		[nc_cv_use_tiocgwinsz=no],
+-		[nc_cv_use_tiocgwinsz=unknown])
+-	])
+-AC_MSG_RESULT($nc_cv_use_tiocgwinsz)
+-test $nc_cv_use_tiocgwinsz != yes && AC_DEFINE(BROKEN_TIOCGWINSZ)
+-])dnl
+-dnl ---------------------------------------------------------------------------
+ dnl
+ AC_DEFUN([NC_TYPE_SIGACTION],
+ [
+--- ncurses-1.9.9e/configure.in.winsz	Mon Mar  4 00:11:04 1996
++++ ncurses-1.9.9e/configure.in	Thu Aug 13 14:16:50 1998
+@@ -260,7 +260,7 @@
+ AC_MSG_RESULT($sigact_bad)
+ 
+ NC_TYPE_SIGACTION
+-NC_TIOCGWINSZ
++dnl NC_TIOCGWINSZ
+ 
+ dnl FIXME checks we don't do (but neither does the old Configure script):
+ dnl -DGOOD_SELECT

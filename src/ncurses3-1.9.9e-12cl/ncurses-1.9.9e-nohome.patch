@@ -1,0 +1,21 @@
+--- ncurses-1.9.9e/ncurses/read_termcap.c.ewt	Thu Oct 24 15:25:43 1996
++++ ncurses-1.9.9e/ncurses/read_termcap.c	Thu Oct 24 15:26:20 1996
+@@ -844,11 +844,13 @@
+ 	else if (access("/usr/share/misc/termcap", R_OK) == 0)
+ 	    termpaths[filecount++] = "/usr/share/misc/termcap";
+ 
+-	/* user's .termcap, if any, should override it */
+-	(void) strncpy(envhome, getenv("HOME"), PATH_MAX - 10);
+-	envhome[PATH_MAX - 10] = '\0';
+-	(void) sprintf(pathbuf, "%s/.termcap", envhome);
+-	termpaths[filecount++] = pathbuf;
++	if (getenv("HOME")) { 
++	    /* user's .termcap, if any, should override it */
++	    (void) strncpy(envhome, getenv("HOME"), PATH_MAX - 10);
++	    envhome[PATH_MAX - 10] = '\0';
++	    (void) sprintf(pathbuf, "%s/.termcap", envhome);
++	    termpaths[filecount++] = pathbuf;
++	}
+ 
+ 	termpaths[filecount] = (char *)NULL;
+     }

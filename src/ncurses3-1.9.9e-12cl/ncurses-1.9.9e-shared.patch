@@ -1,0 +1,11 @@
+--- ncurses-1.9.9e/mk-1st.awk.ewt	Tue Jul  8 12:04:04 1997
++++ ncurses-1.9.9e/mk-1st.awk	Tue Jul  8 12:04:11 1997
+@@ -73,7 +73,7 @@
+ 				}
+ 				printf "../lib/%s : $(%s_OBJS)\n", lib_name, MODEL
+ 				print  "\t@-rm -f $@"
+-				printf "\t$(MK_SHARED_LIB) $(%s_OBJS)\n", MODEL
++				printf "\t$(MK_SHARED_LIB) $(%s_OBJS) -lc\n", MODEL
+ 				sharedlinks("../lib")
+ 				print  ""
+ 				print  "install.libs \\"
