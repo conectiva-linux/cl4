@@ -1,0 +1,1061 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 1999-02-14 16:47-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Antonio Carlos Antunes da Silva <acasman@mandic.com.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: Revisão
+msgid ""
+msgstr "Revisão: Sandro Henrique <sandro@conectiva.com.br>\n" 
+
+#: gdns/prototype/gdns.c:114
+msgid "gdns - Zone List"
+msgstr "gdns - Lista de Zonas"
+
+#: gdns/prototype/gdns.c:127 gdns/prototype/gdns.c:388
+#: gdns/prototype/gdns.c:676 gdns/prototype/gdns.c:883 logview/logview.c:135
+msgid "File"
+msgstr "Arquivo"
+
+#: gdns/prototype/gdns.c:136
+msgid "New"
+msgstr "Novo"
+
+#: gdns/prototype/gdns.c:148
+msgid "Open..."
+msgstr "Abrir..."
+
+#: gdns/prototype/gdns.c:163 gdns/prototype/gdns.c:397
+msgid "Save"
+msgstr "Salvar"
+
+#: gdns/prototype/gdns.c:173
+msgid "Save As..."
+msgstr "Salvar Como..."
+
+#: gdns/prototype/gdns.c:186
+msgid "Exit"
+msgstr "Sair"
+
+#: gdns/prototype/gdns.c:196 gdns/prototype/gdns.c:424
+msgid "Edit"
+msgstr "Editar"
+
+#: gdns/prototype/gdns.c:205 gdns/prototype/gdns.c:433
+msgid "Cut"
+msgstr "Cortar"
+
+#: gdns/prototype/gdns.c:215 gdns/prototype/gdns.c:443
+msgid "Copy"
+msgstr "Copiar"
+
+#: gdns/prototype/gdns.c:225 gdns/prototype/gdns.c:453
+msgid "Paste"
+msgstr "Colar"
+
+#: gdns/prototype/gdns.c:240 gdns/prototype/gdns.c:468
+#: gdns/prototype/gdns.c:864 gdns/prototype/gdns.c:1831
+#: gdns/prototype/gdns.c:1947 gdns/prototype/gdns.c:1963
+msgid "Delete"
+msgstr "Excluir"
+
+#: gdns/prototype/gdns.c:255
+msgid "Server Options..."
+msgstr "Opções do Servidor..."
+
+#: gdns/prototype/gdns.c:265 gdns/prototype/gdns.c:321
+msgid "Zone"
+msgstr "Zona"
+
+#: gdns/prototype/gdns.c:274 gdns/prototype/gdns.c:487
+msgid "New..."
+msgstr "Novo..."
+
+#: gdns/prototype/gdns.c:284 gdns/prototype/gdns.c:497 logview/actions.c:120
+msgid "Edit..."
+msgstr "Editar..."
+
+#: gdns/prototype/gdns.c:294 gdns/prototype/gdns.c:623
+#: gdns/prototype/gdns.c:757 gdns/prototype/gdns.c:1042
+#: gdns/prototype/gdns.c:1291 gdns/prototype/gdns.c:2083 logview/logview.c:141
+msgid "Help"
+msgstr "Ajuda"
+
+#: gdns/prototype/gdns.c:303
+msgid "About..."
+msgstr "Sobre..."
+
+#: gdns/prototype/gdns.c:326 gdns/prototype/gdns.c:522
+msgid "Type"
+msgstr "Tipo"
+
+#: gdns/prototype/gdns.c:331
+msgid "Servers / Source filename"
+msgstr "Servidores / Nome do Arquivo Origem"
+
+#: gdns/prototype/gdns.c:375
+msgid "Zone Editor"
+msgstr "Editor de Zonas"
+
+#: gdns/prototype/gdns.c:414 gulp/gulp.m:27
+msgid "Close"
+msgstr "Fechar"
+
+#: gdns/prototype/gdns.c:478
+msgid "Record"
+msgstr "Registro"
+
+#: gdns/prototype/gdns.c:517
+msgid "Name"
+msgstr "Nome"
+
+#: gdns/prototype/gdns.c:527
+msgid "Value"
+msgstr "Valor"
+
+#: gdns/prototype/gdns.c:557
+msgid "Zone Type"
+msgstr "Tipo de Zona"
+
+#: gdns/prototype/gdns.c:570 gdns/prototype/gdns.c:1844
+msgid "Master"
+msgstr "Mestre"
+
+#: gdns/prototype/gdns.c:581 gdns/prototype/gdns.c:1873
+msgid "Slave"
+msgstr "Escravo"
+
+#: gdns/prototype/gdns.c:589
+msgid "Stub"
+msgstr "Curto"
+
+#: gdns/prototype/gdns.c:597
+msgid "Hint"
+msgstr "Sugestão"
+
+#: gdns/prototype/gdns.c:615 gdns/prototype/gdns.c:749
+#: gdns/prototype/gdns.c:1034 gdns/prototype/gdns.c:1283
+#: gdns/prototype/gdns.c:2075 logview/actions.c:141 logview/actions.c:662
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: gdns/prototype/gdns.c:659
+msgid "New/Edit Hint Zone"
+msgstr "Novo/Editar Zona"
+
+#: gdns/prototype/gdns.c:692
+msgid ".."
+msgstr ".."
+
+#: gdns/prototype/gdns.c:700 gdns/prototype/gdns.c:985
+#: gdns/prototype/gdns.c:1234
+msgid "Check Names"
+msgstr "Checar Nomes"
+
+#: gdns/prototype/gdns.c:711 gdns/prototype/gdns.c:996
+#: gdns/prototype/gdns.c:1245 gdns/prototype/gdns.c:1855
+#: gdns/prototype/gdns.c:1884 gdns/prototype/gdns.c:1913
+msgid "Warn"
+msgstr "Aviso"
+
+#: gdns/prototype/gdns.c:717 gdns/prototype/gdns.c:1002
+#: gdns/prototype/gdns.c:1251 gdns/prototype/gdns.c:1861
+#: gdns/prototype/gdns.c:1890 gdns/prototype/gdns.c:1919
+msgid "Fail"
+msgstr "Falhar"
+
+#: gdns/prototype/gdns.c:723 gdns/prototype/gdns.c:1008
+#: gdns/prototype/gdns.c:1257 gdns/prototype/gdns.c:1867
+#: gdns/prototype/gdns.c:1896 gdns/prototype/gdns.c:1925
+msgid "Ignore"
+msgstr "Ignorar"
+
+#: gdns/prototype/gdns.c:739 gdns/prototype/gdns.c:1024
+#: gdns/prototype/gdns.c:1273 gdns/prototype/gdns.c:2065 logview/misc.c:79
+msgid "Ok"
+msgstr "Ok"
+
+#: gdns/prototype/gdns.c:815
+msgid "New/Edit Slave/Stub Zone"
+msgstr "Novo/Editar Escravo/Zona Curto"
+
+#: gdns/prototype/gdns.c:827
+msgid "Name Servers"
+msgstr "Servidores de Nome"
+
+#: gdns/prototype/gdns.c:846
+msgid "label1"
+msgstr "Rótulo1"
+
+#: gdns/prototype/gdns.c:856 gdns/prototype/gdns.c:1823 logview/actions.c:113
+msgid "Add..."
+msgstr "Adicionar..."
+
+#: gdns/prototype/gdns.c:872
+msgid "Zone Backups"
+msgstr "Cópias de Segurança de Zonas"
+
+#: gdns/prototype/gdns.c:893 gdns/prototype/gdns.c:1142
+msgid "Access Control"
+msgstr "Controle de Acesso"
+
+#: gdns/prototype/gdns.c:904 gdns/prototype/gdns.c:1153
+msgid "Update..."
+msgstr "Atualizar..."
+
+#: gdns/prototype/gdns.c:912 gdns/prototype/gdns.c:1161
+msgid "Query..."
+msgstr "Consulta..."
+
+#: gdns/prototype/gdns.c:920 gdns/prototype/gdns.c:1169
+msgid "Transfer..."
+msgstr "Tranferir..."
+
+#: gdns/prototype/gdns.c:928 gdns/prototype/gdns.c:1177
+msgid "Zone Transfers"
+msgstr "Tranferidores de Zonas"
+
+#: gdns/prototype/gdns.c:939 gdns/prototype/gdns.c:1188
+msgid "Longest Transfer"
+msgstr "Tranferidor Longo"
+
+#: gdns/prototype/gdns.c:949 gdns/prototype/gdns.c:1198
+msgid "(seconds)"
+msgstr "(segundos)"
+
+#: gdns/prototype/gdns.c:954 gdns/prototype/gdns.c:1203
+msgid "DNS NOTIFY"
+msgstr "NOTIFICAÇÃO DNS"
+
+#: gdns/prototype/gdns.c:965 gdns/prototype/gdns.c:1214
+msgid "On"
+msgstr "Ligado"
+
+#: gdns/prototype/gdns.c:971 gdns/prototype/gdns.c:1220
+msgid "Off"
+msgstr "Desligado"
+
+#: gdns/prototype/gdns.c:977 gdns/prototype/gdns.c:1226
+msgid "Also Notify..."
+msgstr "Notificar Também..."
+
+#: gdns/prototype/gdns.c:1095
+msgid "New/Edit Master Zone"
+msgstr "Nova/Editar Zona Mestre"
+
+#: gdns/prototype/gdns.c:1107
+msgid "Zone Records"
+msgstr "Registros de Zona"
+
+#: gdns/prototype/gdns.c:1113
+msgid "Edit Zone Resource Records..."
+msgstr "Editar Registros de Recursos de Zona..."
+
+#: gdns/prototype/gdns.c:1121
+msgid "On-disk Storage"
+msgstr "Armazenamento em disco"
+
+#: gdns/prototype/gdns.c:1132
+msgid "Zone File"
+msgstr "Arquivo de Zona"
+
+#: gdns/prototype/gdns.c:1436
+msgid "Server Options"
+msgstr "Opções do Servidor"
+
+#: gdns/prototype/gdns.c:1453
+msgid "Master directory"
+msgstr "Diretório Principal"
+
+#: gdns/prototype/gdns.c:1460
+msgid "named.xfer program"
+msgstr "programa named.xfer"
+
+#: gdns/prototype/gdns.c:1467
+msgid "Dump file"
+msgstr "Arquivo de Registro"
+
+#: gdns/prototype/gdns.c:1474
+msgid "Mem stats file"
+msgstr "Arquivo de Status de Memória"
+
+#: gdns/prototype/gdns.c:1481
+msgid "PID file"
+msgstr "Arquivo PID"
+
+#: gdns/prototype/gdns.c:1488
+msgid "Statistics file"
+msgstr "Arquivo de Estatísticas"
+
+#: gdns/prototype/gdns.c:1536
+msgid "Auth NX Domain"
+msgstr "Domínio Auth NX"
+
+#: gdns/prototype/gdns.c:1542
+msgid "Dealloc on exit"
+msgstr "Desalocar na Saída"
+
+#: gdns/prototype/gdns.c:1548
+msgid "Fake IQUERY"
+msgstr "IQUERY falso"
+
+#: gdns/prototype/gdns.c:1554
+msgid "Fetch glue records"
+msgstr "Editar registros cola"
+
+#: gdns/prototype/gdns.c:1560
+msgid "Recursive searches"
+msgstr "Buscas Recursivas"
+
+#: gdns/prototype/gdns.c:1566
+msgid "Send NOTIFY messages"
+msgstr "Enviar mensagens de NOTIFICAÇÃO"
+
+#: gdns/prototype/gdns.c:1572
+msgid "Support multiple CNAMEs"
+msgstr "Suporte a múltiplos CNAMEs"
+
+#: gdns/prototype/gdns.c:1578
+msgid "Keep per-host statistics"
+msgstr "Manter estatísticas por hospedeiro"
+
+#: gdns/prototype/gdns.c:1589
+msgid "Core size"
+msgstr "Tamanho do núcleo"
+
+#: gdns/prototype/gdns.c:1595
+msgid "Data size"
+msgstr "Tamanho de dados"
+
+#: gdns/prototype/gdns.c:1601
+msgid "Stack size"
+msgstr "Tamanho da pilha"
+
+#: gdns/prototype/gdns.c:1607
+msgid "Open files"
+msgstr "Abrir Arquivos "
+
+#: gdns/prototype/gdns.c:1619 gdns/prototype/gdns.c:1642
+#: gdns/prototype/gdns.c:1665 gdns/prototype/gdns.c:1688
+msgid "default"
+msgstr "padrão"
+
+#: gdns/prototype/gdns.c:1625 gdns/prototype/gdns.c:1648
+#: gdns/prototype/gdns.c:1671 gdns/prototype/gdns.c:1694
+msgid "unlimited"
+msgstr "ilimitado"
+
+#: gdns/prototype/gdns.c:1710
+msgid "Cleaning interval (minutes)"
+msgstr "intervalo de limpeza (minutos)"
+
+#: gdns/prototype/gdns.c:1716
+msgid "Interface scan interval (minutes)"
+msgstr "Intervalo de varredura de Interface (minutos)"
+
+#: gdns/prototype/gdns.c:1722
+msgid "Statistics interval (minutes)"
+msgstr "Intervalo de Estatísticas (minutos)"
+
+#: gdns/prototype/gdns.c:1756
+msgid "Forward"
+msgstr "Avançar"
+
+#: gdns/prototype/gdns.c:1761
+msgid "first"
+msgstr "primeiro"
+
+#: gdns/prototype/gdns.c:1767
+msgid "only"
+msgstr "apenas"
+
+#: gdns/prototype/gdns.c:1783
+msgid "Forward-to IP addresses:"
+msgstr "Seguir para endereços IP"
+
+#: gdns/prototype/gdns.c:1902
+msgid "Response"
+msgstr "Resposta"
+
+#: gdns/prototype/gdns.c:1942 gdns/prototype/gdns.c:1958
+msgid "Add"
+msgstr "Adicionar"
+
+#: gdns/prototype/gdns.c:1979
+msgid "Allow queries"
+msgstr "Permitir consultas"
+
+#: gdns/prototype/gdns.c:2005
+msgid "Allow zone xfers"
+msgstr "Permitir zona xfers"
+
+#: gdns/prototype/gdns.c:2020
+msgid "Paths"
+msgstr "Caminhos"
+
+#: gdns/prototype/gdns.c:2025
+msgid "Options"
+msgstr "Opções"
+
+#: gdns/prototype/gdns.c:2030
+msgid "Limits"
+msgstr "Limites"
+
+#: gdns/prototype/gdns.c:2035
+msgid "Periodic"
+msgstr "Periódico"
+
+#: gdns/prototype/gdns.c:2040
+msgid "Forwarding"
+msgstr "Avançando"
+
+#: gdns/prototype/gdns.c:2045
+msgid "Name Ck"
+msgstr "Nome Ck"
+
+#: gdns/prototype/gdns.c:2050
+msgid "Access Ctl"
+msgstr "Ctl Acesso"
+
+#: gulp/gulp.m:36
+msgid "Elliot Lee (sopwith@cuc.edu)"
+msgstr "Elliot Lee (sopwith@cuc.edu)"
+
+#: gulp/gulp.m:37
+msgid "Federico Mena (quartic@gimp.org)"
+msgstr "Federico Mena (quartic@gimp.org)"
+
+#: gulp/gulp.m:41
+msgid "GULP"
+msgstr "GULP"
+
+#. copyright notice
+#: gulp/gulp.m:43
+msgid "(C) 1998 the Free Software Foundation"
+msgstr "(C) 1998 the Free Software Foundation"
+
+#. another comments
+#: gulp/gulp.m:46
+msgid "GNOME Unified Link to Printers program."
+msgstr "Programa GNOME de Ligação Unificada à Impressoras "
+
+#: gulp/gulp.m:89 gulp/gulp.m:141
+msgid "You must select a printer"
+msgstr "Você tem que selecionar um impressora"
+
+#: gulp/gulp.m:119 gulp/gulp.m:177
+msgid "Operation failed"
+msgstr "Operação falhou"
+
+#: gulp/gulp.m:159
+msgid "You must select a job"
+msgstr "Você tem que selecionar um trabalho"
+
+#: gulp/gulp.m:174
+msgid "Click on unknown widget\n"
+msgstr "Clicar no símbolo desconhecido\n"
+
+#: gulp/gulp.m:207
+msgid "Job ID"
+msgstr "Identificação da Tarefa"
+
+#: gulp/gulp.m:208
+msgid "Filenames"
+msgstr "Nomes de Arquivo"
+
+#: gulp/gulp.m:209
+msgid "Size"
+msgstr "Tamanho"
+
+#: gulp/gulp.m:210
+msgid "Owner"
+msgstr "Proprietário"
+
+#: gulp/gulp.m:285
+msgid "Printer"
+msgstr "Impressora"
+
+#: gulp/gulp.m:286
+msgid "Jobs"
+msgstr "Trabalhos"
+
+#: gulp/gulp.m:287 gulp/gulp.m:468
+msgid "Queueing"
+msgstr "Consultando"
+
+#: gulp/gulp.m:288 gulp/gulp.m:469
+msgid "Printing"
+msgstr "Imprimindo"
+
+#: gulp/gulp.m:308
+#, c-format
+msgid "oldoffset for printer_list is %d\n"
+msgstr "antigo deslocamento para a lista de impressoras é %d\n"
+
+#: gulp/gulp.m:331
+#, c-format
+msgid "Doing row %d\n"
+msgstr "Criando linha %d\n"
+
+#: gulp/gulp.m:347
+#, c-format
+msgid "Setting row data %d to %#lx\n"
+msgstr "Definindo linha de dados %d para %#lx\n"
+
+#: gulp/gulp.m:383
+msgid "E_xit"
+msgstr "Sai_r"
+
+#: gulp/gulp.m:391
+msgid "_About..."
+msgstr "_Sobre..."
+
+#: gulp/gulp.m:397
+msgid "_Program"
+msgstr "_Programa"
+
+#: gulp/gulp.m:399
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: gulp/gulp.m:414
+msgid "Printing system not installed/configured."
+msgstr "Sistema de impressão não instalado/configurado. "
+
+#: gulp/gulp.m:423
+msgid "GNOME Unified Link to Printers"
+msgstr "Ligação GNOME unificada à impressoras "
+
+#: gulp/gulp.m:449
+msgid "Printer queues"
+msgstr "Filas de Impressão"
+
+#: gulp/gulp.m:470
+msgid "Clear queue"
+msgstr "Limpar fila"
+
+#: gulp/gulp.m:471
+msgid "Restart daemon"
+msgstr "Reinicializar servidor"
+
+#. Jobs
+#: gulp/gulp.m:485
+msgid "Jobs for selected printer"
+msgstr "Trabalhos para a impressora selecionada"
+
+#: gulp/gulp.m:498
+msgid "Cancel job"
+msgstr "Trabalho cancelado"
+
+#: logview/about.c:61
+msgid "This  program  is  part of  the  GNOME  project for  Linux."
+msgstr "Esse programa é parte do projeto GNOME para Linux."
+
+#: logview/about.c:62
+msgid "Logview comes with ABSOLUTELY NO WARRANTY. This"
+msgstr "Logview não tem ABSOLUTAMENTE NENHUMA GARANTIA. Este"
+
+#: logview/about.c:63
+msgid "is free software, and you are welcome to redistribute it"
+msgstr "software é livre e você é bem-vindo a redistribuí-lo"
+
+#: logview/about.c:64
+msgid "under the conditions of the GNU General Public Licence. The "
+msgstr "sob as condições da Licença Pública Geral GNU. O "
+
+#: logview/about.c:65
+msgid "log icon is a courtesy of Tuomas Kuosmanen (a.k.a tigert)."
+msgstr "ícone log é uma cortesia de Tuomas Kuosmanen (conhecido como tigert)."
+
+#: logview/about.c:94
+#, c-format
+msgid "Version %s"
+msgstr "Versão %s"
+
+#: logview/about.c:97
+msgid "Written by:"
+msgstr "Escrito por:"
+
+#: logview/about.c:99
+msgid "Cesar Miquel"
+msgstr "Cesar Miquel"
+
+#: logview/about.c:101
+msgid "email:"
+msgstr "email:"
+
+#: logview/about.c:103
+msgid "email: "
+msgstr "email: "
+
+#: logview/about.c:142
+msgid "Cesar Miquel (miquel@df.uba.ar)"
+msgstr "Cesar Miquel (miquel@df.uba.ar)"
+
+#: logview/about.c:143
+msgid ""
+"This  program  is  part of  the  GNOME  project for Linux. Logview comes "
+"with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to "
+"redistribute it under the conditions of the GNU General Public Licence. The "
+"log icon is a courtesy of Tuomas Kuosmanen (a.k.a tigert)."
+msgstr ""
+"Esse programa é parte do projeto GNOME para Linux.  Logview não tem\n"
+"com ABSOLUTAMENTE NENHUMA GARANTIA. Esse software é livre, e você\n"
+"é bem-vindo a redistribuí-lo sob as condições da Licença Pública \n"
+"Geral GNU. O ícone log é uma cortesia de Tuomas Kuosmanen\n"
+"(conhecido tigert)."
+
+#. go get logview.xpm in $(prefix)/share/pixmaps/logview
+#: logview/about.c:150
+msgid "Logview"
+msgstr "Logview"
+
+#: logview/about.c:151
+msgid "Copyright (C) 1998"
+msgstr "Copyright (C) 1998"
+
+#: logview/actions.c:56
+msgid "Action database"
+msgstr "Banco de dados de Ações"
+
+#: logview/actions.c:61 logview/monitor.c:114
+msgid "Monitor options"
+msgstr "Opções do monitor"
+
+#: logview/actions.c:127
+msgid "Remove"
+msgstr "Remover"
+
+#: logview/actions.c:146 logview/actions.c:667
+msgid "OK"
+msgstr "OK"
+
+#: logview/actions.c:281 logview/actions.c:294 logview/actions.c:305
+#: logview/actions.c:316 logview/actions.c:327 logview/actions.c:338
+msgid "Error parsing actions data base"
+msgstr "Erro ao tratar ações na base de dados "
+
+#: logview/actions.c:370
+msgid "Can't write to actions database!"
+msgstr "Não posso escrever no banco de dados de ações"
+
+#: logview/actions.c:476
+msgid "<empty>"
+msgstr "<vazio>"
+
+#: logview/actions.c:477
+msgid "log. name regexp"
+msgstr "log. nome regexp"
+
+#: logview/actions.c:478
+msgid "process regexp"
+msgstr "processo regexp"
+
+#: logview/actions.c:479
+msgid "message regexp"
+msgstr "mensagem regexp"
+
+#: logview/actions.c:480
+msgid "action to execute when regexps are TRUE"
+msgstr "ação à executar quando regexp for VERDADEIRO"
+
+#: logview/actions.c:481
+msgid "description"
+msgstr "descrição"
+
+#: logview/actions.c:638
+msgid "description:"
+msgstr "descrição:"
+
+#: logview/actions.c:647
+msgid "Description of this entry."
+msgstr "Descrição desta entrada."
+
+#: logview/actions.c:709
+#, c-format
+msgid ""
+"tag: [%s]\n"
+"log_name: [%s]\n"
+"process: [%s]\n"
+"message: [%s]\n"
+"description: [%s]\n"
+"action: [%s]\n"
+msgstr ""
+"descrição: [%s]\n" 
+"nome_log: [%s]\n" 
+"processo: [%s]\n" 
+"mensagem: [%s]\n" 
+"descrição: [%s]\n" 
+"ação: [%s]\n" 
+
+#: logview/calendar.c:132
+msgid "Calendar"
+msgstr "Calendário"
+
+#: logview/calendar.c:152
+msgid "Prev Month"
+msgstr "Mês Anterior"
+
+#: logview/calendar.c:159
+msgid "Next Month"
+msgstr "Mês Seguinte"
+
+#: logview/calendar.c:167
+msgid "Hide calendar"
+msgstr "Esconder calendário"
+
+#: logview/calendar.c:258
+msgid "Program error: mark is NULL!"
+msgstr "Erro do programa: marca é NULA!"
+
+#: logview/calendar.c:275
+msgid "SUN"
+msgstr "DOM"
+
+#: logview/calendar.c:275
+msgid "MON"
+msgstr "SEG"
+
+#: logview/calendar.c:275
+msgid "TUE"
+msgstr "TER"
+
+#: logview/calendar.c:275
+msgid "WED"
+msgstr "QUA"
+
+#: logview/calendar.c:276
+msgid "THU"
+msgstr "QUI"
+
+#: logview/calendar.c:276
+msgid "FRI"
+msgstr "SEX"
+
+#: logview/calendar.c:276
+msgid "SAT"
+msgstr "SAB"
+
+#: logview/info.c:80
+msgid "Log stats"
+msgstr "Status de registros do sistema"
+
+#: logview/info.c:140
+msgid "Log information"
+msgstr "Informação do sistema"
+
+#: logview/info.c:157
+msgid "Log:"
+msgstr "Mensagens do sistema:"
+
+#: logview/info.c:159
+msgid "Size:"
+msgstr "Tamanho:"
+
+#: logview/info.c:161
+msgid "Modified:"
+msgstr "Modificado:"
+
+#: logview/info.c:163
+msgid "Start date:"
+msgstr "Data de Início:"
+
+#: logview/info.c:165
+msgid "Last date:"
+msgstr "Data de Término"
+
+#: logview/info.c:167
+msgid "Num. lines:"
+msgstr "Num. Linhas:"
+
+#: logview/info.c:183
+#, c-format
+msgid "%ld bytes"
+msgstr "%ld bytes"
+
+#: logview/log_repaint.c:86
+msgid "January"
+msgstr "Janeiro"
+
+#: logview/log_repaint.c:86
+msgid "February"
+msgstr "Fevereiro"
+
+#: logview/log_repaint.c:86
+msgid "March"
+msgstr "Março"
+
+#: logview/log_repaint.c:86
+msgid "April"
+msgstr "Abril"
+
+#: logview/log_repaint.c:86
+msgid "May"
+msgstr "Maio"
+
+#: logview/log_repaint.c:87
+msgid "June"
+msgstr "Junho"
+
+#: logview/log_repaint.c:87
+msgid "July"
+msgstr "Julho"
+
+#: logview/log_repaint.c:87
+msgid "August"
+msgstr "Agosto"
+
+#: logview/log_repaint.c:87
+msgid "September"
+msgstr "Setembro"
+
+#: logview/log_repaint.c:87
+msgid "October"
+msgstr "Outubro"
+
+#: logview/log_repaint.c:88
+msgid "November"
+msgstr "Novembro"
+
+#: logview/log_repaint.c:88
+msgid "December"
+msgstr "Dezembro"
+
+#: logview/logrtns.c:96
+msgid "Not enough memory!\n"
+msgstr "Memória insuficiente!\n"
+
+#: logview/logrtns.c:103
+msgid "Out of memory!\n"
+msgstr "Sem memória!\n"
+
+#: logview/logrtns.c:128
+msgid "Unable to open logfile!\n"
+msgstr "Impossível abrir o arquivo de registros do sistema!\n"
+
+#: logview/logrtns.c:182
+#, c-format
+msgid "%s is not a regular file."
+msgstr "%s não é um arquivo normal."
+
+#: logview/logrtns.c:189
+#, c-format
+msgid ""
+"%s is not user readable. Probably has read-only permission. Either run the "
+"program as root or ask the sysadmin to change the permissions on the file."
+msgstr ""
+"%s não está disponível para o usuário.  Provavelmente tem permissão\n"
+"somente para leitura. Rode o programa como superusuário ou peça ao\n"
+"administrador do sistema para alterar as permissões do arquivo."
+
+#: logview/logrtns.c:201
+#, c-format
+msgid "%s could not be opened."
+msgstr "%s não pode ser aberto."
+
+#: logview/logrtns.c:210 logview/logrtns.c:220
+#, c-format
+msgid "%s not a log file."
+msgstr "%s não é um arquivo de registros do sistema."
+
+#: logview/logrtns.c:618 logview/logrtns.c:649 logview/logrtns.c:780
+msgid "ReadLogStats: out of memory"
+msgstr "ReadLogStatus: sem memória"
+
+#: logview/logview.c:82
+msgid "Open log...            "
+msgstr "Abrir registros do sistema..."
+
+#: logview/logview.c:83
+msgid "Open log"
+msgstr "Abrir Regs. do Sistema"
+
+#: logview/logview.c:85
+msgid "Export log...          "
+msgstr "Exportar regs. do sistema..."
+
+#: logview/logview.c:86
+msgid "Export log"
+msgstr "Exportar registros do sistema"
+
+#: logview/logview.c:88
+msgid "Close log              "
+msgstr "Fechar registros do sistema"
+
+#: logview/logview.c:89
+msgid "Close log"
+msgstr "Fechar registros do sistema"
+
+#: logview/logview.c:91
+msgid "Switch log             "
+msgstr "Alternar registros do sistema"
+
+#: logview/logview.c:92
+msgid "Switch log"
+msgstr "Alternar registros do sistema"
+
+#: logview/logview.c:94
+msgid "Monitor..              "
+msgstr "Monitor..              "
+
+#: logview/logview.c:95
+msgid "Monitor log"
+msgstr "Monitor de registros do sistema"
+
+#: logview/logview.c:97
+msgid "Exit                   "
+msgstr "Sair                   "
+
+#: logview/logview.c:98
+msgid "Exit program"
+msgstr "Sair do programa"
+
+#: logview/logview.c:104
+msgid "Calendar                "
+msgstr "Calendário                "
+
+#: logview/logview.c:105
+msgid "Show calendar log"
+msgstr "Mostra registros do calendário"
+
+#: logview/logview.c:107
+msgid "Log stats               "
+msgstr "status dos registros do sistema"
+
+#: logview/logview.c:108
+msgid "Show log stats"
+msgstr "Mostra status dos registros do sistema"
+
+#: logview/logview.c:110
+msgid "Zoom                    "
+msgstr "Aproximar               "
+
+#: logview/logview.c:111
+msgid "Show line info"
+msgstr "Mostrar informações da linha"
+
+#: logview/logview.c:117
+msgid "Select...               "
+msgstr "Selecionar...               "
+
+#: logview/logview.c:118
+msgid "Select log events"
+msgstr "Selecionar eventos dos registros do sistema"
+
+#: logview/logview.c:120
+msgid "Filter...                "
+msgstr "Filtro...                "
+
+#: logview/logview.c:121
+msgid "Filter log events"
+msgstr "Filtrar eventos dos registros do sistema"
+
+#: logview/logview.c:127
+msgid "About...                "
+msgstr "Sobre...                "
+
+#: logview/logview.c:128
+msgid "Info about logview"
+msgstr "Informações sobre o logview"
+
+#: logview/logview.c:137
+msgid "View"
+msgstr "Visualizar"
+
+#: logview/logview.c:139
+msgid "Filter"
+msgstr "Filtro"
+
+#: logview/logview.c:229
+msgid "No log files to open"
+msgstr "Nenhum arquivo de registro dos sistemas para abrir"
+
+#. Create App
+#: logview/logview.c:258
+msgid "System Log Viewer"
+msgstr "Visualizador de registros do sistema"
+
+#: logview/logview.c:338
+msgid "Filename: "
+msgstr "Nome do Arquivo: "
+
+#: logview/logview.c:354
+msgid "Date: "
+msgstr "Data: "
+
+#: logview/logview.c:569
+msgid "Too many open logs. Close one and try again"
+msgstr "Muitos arquivos abertos. Feche alguns e tente novamente"
+
+#: logview/logview.c:624
+msgid "Open new logfile"
+msgstr "Abrir um novo arquivo de registro do sistema"
+
+#: logview/misc.c:78
+#, c-format
+msgid "Error: [%s]\n"
+msgstr "Erro: [%s]\n"
+
+#: logview/monitor.c:131
+msgid "Choose logs to monitor"
+msgstr "Escolher os arquivos de registros a serem monitorados"
+
+#. Check boxes
+#: logview/monitor.c:210
+msgid "Hide app"
+msgstr "Esconder aplicação"
+
+#: logview/monitor.c:218
+msgid "Exec actions"
+msgstr "Executar ações"
+
+#: logview/monitor.c:282 logview/monitor.c:329
+msgid "tmp_list is NULL\n"
+msgstr "tmp_list é NULA\n"
+
+#: logview/monitor.c:456
+msgid "Monitoring logs..."
+msgstr "Monitorando registros do sistema..."
+
+#: logview/monitor.c:634
+msgid "TOUCHED!!\n"
+msgstr "TOUCHED!!\n"
+
+#: logview/zoom.c:77
+msgid "Zoom view"
+msgstr "Visão ampliada"
+
+#: logview/zoom.c:151
+#, c-format
+msgid "Log line detail for %s"
+msgstr "detalhe da linha do registro do sistema para %s"
+
+#: logview/zoom.c:153
+msgid "Log line detail for <No log loaded>"
+msgstr "detalhe da linha do reg. do sistema para <nenhum registro carregado>"
+
+#: logview/zoom.c:176
+msgid "Date:"
+msgstr "Data:"
+
+#: logview/zoom.c:178
+msgid "Process:"
+msgstr "Processo:"
+
+#: logview/zoom.c:180
+msgid "Message:"
+msgstr "Mensagem:"
+
+#: logview/zoom.c:182
+msgid "Description:"
+msgstr "Descrição:"

@@ -1,0 +1,35 @@
+diff -ru gnome-admin-1.0.2.old/gulp/gulp.desktop gnome-admin-1.0.2/gulp/gulp.desktop
+--- gnome-admin-1.0.2.old/gulp/gulp.desktop	Mon Aug 24 21:34:46 1998
++++ gnome-admin-1.0.2/gulp/gulp.desktop	Thu Jul  1 14:00:57 1999
+@@ -4,11 +4,13 @@
+ Name[fr]=Gestionnaire d'Impression
+ Name[no]=GNOME Skriverbehandling
+ Name[pt]=Gestor de Impressão
++Name[pt_BR]=Gerenciador de Impressão
+ Comment=Unified Link to Printers.
+ Comment[es]=Gestor de impresión de GNOME.
+ Comment[fr]=Gestionnaire d'Impression GNOME.
+ Comment[no]=Program for skriverbehandling.
+ Comment[pt]=Programa para gerir as filas de impressão
++Comment[pt_BR]=Programa para gerenciar as filas de impressão
+ Exec=gulp
+ Icon=
+ Terminal=0
+diff -ru gnome-admin-1.0.2.old/logview/logview.desktop gnome-admin-1.0.2/logview/logview.desktop
+--- gnome-admin-1.0.2.old/logview/logview.desktop	Mon Aug 24 21:35:44 1998
++++ gnome-admin-1.0.2/logview/logview.desktop	Thu Jul  1 14:00:34 1999
+@@ -6,12 +6,14 @@
+ Name[de]=Systemprotokoll Monitor
+ Name[no]=Systemlogg-monitor
+ Name[pt]=Monitor de Ficheiros de "log"
++Name[pt_BR]=Monitor de Arquivos de "log"
+ Comment=SysLog tool
+ Comment[es]=Muestra los archivos de bitácora del sistema
+ Comment[fr]=Moniteur de fichiers d'historique
+ Comment[ko]=Á¢±Ù±â·ÏÀ» º¸´Â ÇÁ·Î±×·¥
+ Comment[no]=Visning av systemlogger
+ Comment[pt]=Aplicação para visualizar ficheiros de "log"
++Comment[pt_BR]=Aplicação para visualizar arquivos de "log"
+ Exec=logview
+ Icon=gnome-log.png
+ Terminal=0

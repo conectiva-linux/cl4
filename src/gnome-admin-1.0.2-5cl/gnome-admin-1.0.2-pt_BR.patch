@@ -1,0 +1,12 @@
+diff -uNr gnome-admin-1.0.2/configure.in gnome-admin-1.0.2-pt_BR/configure.in
+--- gnome-admin-1.0.2/configure.in	Mon Mar 22 19:20:57 1999
++++ gnome-admin-1.0.2-pt_BR/configure.in	Thu Jun 24 14:14:57 1999
+@@ -18,7 +18,7 @@
+ GNOME_CHECK_OBJC
+ GNOME_INIT_OBJC
+ 
+-ALL_LINGUAS="ca de es fr ga it ko no pt sv ru"
++ALL_LINGUAS="ca de es fr ga it ko no pt pt_BR sv ru"
+ AM_GNOME_GETTEXT
+ 
+ dnl Checks for header files.
