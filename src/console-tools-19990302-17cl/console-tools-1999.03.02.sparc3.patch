@@ -1,0 +1,82 @@
+--- console-tools-1999.03.02/lib/fontstruct.c.jj	Tue Feb 23 15:29:39 1999
++++ console-tools-1999.03.02/lib/fontstruct.c	Fri Mar 12 17:20:37 1999
+@@ -197,6 +197,7 @@
+ 
+ #ifndef NDEBUG
+       /* if (verbose)*/
++      if (0)
+       fprintf(stderr, _("Reading SFM from font file.\n"));
+ #endif
+     }
+--- console-tools-1999.03.02/lib/kernelfont.c.jj	Sun Feb 28 13:03:26 1999
++++ console-tools-1999.03.02/lib/kernelfont.c	Fri Mar 12 17:19:47 1999
+@@ -51,6 +51,7 @@
+     struct console_font_op cfo;
+ 
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying KDFONTOP.\n");
+ # endif
+     
+@@ -88,6 +89,7 @@
+     struct consolefontdesc cfd;
+ 
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying GIO_FONTX.\n");
+ # endif
+     
+@@ -125,6 +127,7 @@
+   cfd_ret->charwidth = 8;
+ 
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying GIO_FONT.\n");
+ # endif
+     
+@@ -178,6 +181,7 @@
+     struct console_font_op cfo;
+ 
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying KDFONTOP.\n");
+ # endif
+     
+@@ -207,6 +211,7 @@
+     struct consolefontdesc cf;
+     
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying PIO_FONTX.\n");
+ # endif
+     
+@@ -223,6 +228,7 @@
+ 
+ #ifdef PIO_FONT
+ # ifndef NDEBUG
++    if (0)
+     fprintf (stderr, "Trying PIO_FONT.\n");
+ # endif
+     
+--- console-tools-1999.03.02/data/consolefonts/Makefile.in.jj	Tue Mar  2 15:47:52 1999
++++ console-tools-1999.03.02/data/consolefonts/Makefile.in	Fri Mar 12 17:15:46 1999
+@@ -122,7 +122,7 @@
+ CP_FILES =  161.cp 162.cp 163.cp 164.cp 165.cp 737.cp 880.cp 972.cp
+ 
+ 
+-PSF_FILES =  Agafari-12.psf Agafari-14.psf Agafari-16.psf Cyr_a8x14.psf Cyr_a8x16.psf Cyr_a8x8.psf Goha-12.psf Goha-14.psf Goha-16.psf GohaClassic-12.psf GohaClassic-14.psf GohaClassic-16.psf LatArCyrHeb-08.psf LatArCyrHeb-14.psf LatArCyrHeb-16+.psf LatArCyrHeb-16.psf LatArCyrHeb-19.psf Mik_8x16.psf alt-8x14.psf alt-8x16.psf alt-8x8.psf altb-8x16.psf altc-8x16.psf aply16.psf cp850-8x14.psf cp850-8x16.psf cp850-8x8.psf cp865-8x14.psf cp865-8x16.psf cp865-8x8.psf def2_8x16.psf default8x16.psf default8x9.psf gr.f14.psf gr.f16.psf gr8x14.psf gr8x16.psf gr8x6.psf gr8x7.psf gr8x8.psf greek.psf iso01.f08.psf iso01.f14.psf iso01.f16.psf iso01a-8x14.psf iso01a-8x16.psf iso01a-8x8.psf iso02.f08.psf iso02.f14.psf iso02.f16.psf iso03.f08.psf iso03.f14.psf iso03.f16.psf iso04.f08.psf iso04.f14.psf iso04.f16.psf iso05.f08.psf iso05.f14.psf iso05.f16.psf iso06.f08.psf iso06.f14.psf iso06.f16.psf iso07.f08.psf iso07.f14.psf iso07.f16.psf iso08.f08.psf iso08.f14.psf iso08.f16.psf iso09.f08.psf iso09.f14.psf iso09.f16.psf iso14.f16.psf							iso10.f08.psf iso10.f14.psf iso10.f16.psf koi8-14.psf koi8-8x14.psf koi8-8x16.psf koi8-8x8.psf koi8b-8x16.psf koi8c-8x16.psf lat1-08.psf lat1-10.psf lat1-12.psf lat1-14.psf lat1-16.psf lat1u-08.psf lat1u-10.psf lat1u-12.psf lat1u-14.psf lat1u-16.psf lat2-08.psf lat2-10.psf lat2-12.psf lat2-14.psf lat2-16.psf lat4-08.psf lat4-10.psf lat4-12.psf lat4-14.psf lat4-16+.psf lat4-16.psf lat4-19.psf lat4u-08.psf lat4u-10.psf lat4u-12.psf lat4u-14.psf lat4u-16+.psf lat4u-16.psf lat4u-19.psf lat4a-08.psf lat4a-10.psf lat4a-12.psf lat4a-14.psf lat4a-16+.psf lat4a-16.psf lat4a-19.psf arm8.psf gr737-8x8-2.psf gr737-8x8.psf gr737-9x14-2.psf gr737-9x14.psf gr737-9x16-2.psf gr737-9x16-medieval.psf gr737-9x16.psf grcourier.psf grfixed.psf lat0-08.psf lat0-10.psf lat0-12.psf lat0-14.psf lat0-16.psf t.psf t850b.psf tcvn8x16.psf viscii10-8x16.psf
++PSF_FILES =  Agafari-12.psf Agafari-14.psf Agafari-16.psf Cyr_a8x14.psf Cyr_a8x16.psf Cyr_a8x8.psf Goha-12.psf Goha-14.psf Goha-16.psf GohaClassic-12.psf GohaClassic-14.psf GohaClassic-16.psf LatArCyrHeb-08.psf LatArCyrHeb-14.psf LatArCyrHeb-16+.psf LatArCyrHeb-16.psf LatArCyrHeb-19.psf Mik_8x16.psf alt-8x14.psf alt-8x16.psf alt-8x8.psf altb-8x16.psf altc-8x16.psf aply16.psf cp850-8x14.psf cp850-8x16.psf cp850-8x8.psf cp865-8x14.psf cp865-8x16.psf cp865-8x8.psf def2_8x16.psf default8x16.psf default8x9.psf gr.f14.psf gr.f16.psf gr8x14.psf gr8x16.psf gr8x6.psf gr8x7.psf gr8x8.psf greek.psf iso01.f08.psf iso01.f14.psf iso01.f16.psf iso01a-8x14.psf iso01a-8x16.psf iso01a-8x8.psf iso02.f08.psf iso02.f14.psf iso02.f16.psf iso03.f08.psf iso03.f14.psf iso03.f16.psf iso04.f08.psf iso04.f14.psf iso04.f16.psf iso05.f08.psf iso05.f14.psf iso05.f16.psf iso06.f08.psf iso06.f14.psf iso06.f16.psf iso07.f08.psf iso07.f14.psf iso07.f16.psf iso08.f08.psf iso08.f14.psf iso08.f16.psf iso09.f08.psf iso09.f14.psf iso09.f16.psf iso14.f16.psf							iso10.f08.psf iso10.f14.psf iso10.f16.psf koi8-14.psf koi8-8x14.psf koi8-8x16.psf koi8-8x8.psf koi8b-8x16.psf koi8c-8x16.psf lat1-08.psf lat1-10.psf lat1-12.psf lat1-14.psf lat1-16.psf lat1u-08.psf lat1u-10.psf lat1u-12.psf lat1u-14.psf lat1u-16.psf lat2-08.psf lat2-10.psf lat2-12.psf lat2-14.psf lat2-16.psf lat4-08.psf lat4-10.psf lat4-12.psf lat4-14.psf lat4-16+.psf lat4-16.psf lat4-19.psf lat4u-08.psf lat4u-10.psf lat4u-12.psf lat4u-14.psf lat4u-16+.psf lat4u-16.psf lat4u-19.psf lat0-sun16.psf lat2-sun16.psf lat4a-08.psf lat4a-10.psf lat4a-12.psf lat4a-14.psf lat4a-16+.psf lat4a-16.psf lat4a-19.psf arm8.psf gr737-8x8-2.psf gr737-8x8.psf gr737-9x14-2.psf gr737-9x14.psf gr737-9x16-2.psf gr737-9x16-medieval.psf gr737-9x16.psf grcourier.psf grfixed.psf lat0-08.psf lat0-10.psf lat0-12.psf lat0-14.psf lat0-16.psf t.psf t850b.psf tcvn8x16.psf viscii10-8x16.psf
+ 
+ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+ CONFIG_HEADER = ../../config.h
+--- console-tools-1999.03.02/data/consolefonts/Makefile.am.jj	Sun Feb 28 14:46:31 1999
++++ console-tools-1999.03.02/data/consolefonts/Makefile.am	Fri Mar 12 17:13:52 1999
+@@ -41,7 +41,7 @@
+ lat4u-08.psf lat4u-10.psf lat4u-12.psf lat4u-14.psf lat4u-16+.psf \
+ lat4u-16.psf lat4u-19.psf \
+ lat4a-08.psf lat4a-10.psf lat4a-12.psf lat4a-14.psf lat4a-16+.psf \
+-lat4a-16.psf lat4a-19.psf \
++lat4a-16.psf lat4a-19.psf lat0-sun16.psf lat2-sun16.psf \
+ arm8.psf \
+ gr737-8x8-2.psf gr737-8x8.psf gr737-9x14-2.psf gr737-9x14.psf \
+ gr737-9x16-2.psf gr737-9x16-medieval.psf gr737-9x16.psf \

@@ -1,0 +1,19 @@
+--- console-tools-1998.08.11/vttools/resizecons.c.jj	Thu Apr 16 19:23:01 1998
++++ console-tools-1998.08.11/vttools/resizecons.c	Fri Dec  4 15:17:15 1998
+@@ -291,6 +291,8 @@
+ 	     }
+ 	 }
+ 
++/* This is a bad idea. */
++#if 0
+   /* Try to tell selection about the change */
+   if ((fd = open("/tmp/selection.pid", 0)) >= 0) 
+     {
+@@ -306,6 +308,7 @@
+ 	}
+       close(fd);
+     }
++#endif
+ 
+   /* do: setfont default8x16 */
+   /* (other people might wish other fonts - this should be settable) */

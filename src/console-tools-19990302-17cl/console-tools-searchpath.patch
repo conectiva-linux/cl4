@@ -1,0 +1,49 @@
+--- console-tools-1999.03.02/lib/findfile-lct.c.orig	Tue Apr  6 00:14:07 1999
++++ console-tools-1999.03.02/lib/findfile-lct.c	Tue Apr  6 00:21:04 1999
+@@ -8,7 +8,7 @@
+   "", 
+   DATADIR "/" TRANSDIR "/", 
+ #ifdef LOCALDATADIR
+-  LOCALDATADIR "/" TRANSDIR "/",
++  LOCALDATADIR "/",
+ #endif
+   0 };
+ static const char *mapsuffixes[] = {
+@@ -24,7 +24,7 @@
+ 
+ static const char *fontdirpath[] = { "", DATADIR "/" FONTDIR "/", 
+ #ifdef LOCALDATADIR
+-  LOCALDATADIR "/" FONTDIR "/", 
++  LOCALDATADIR "/",
+ #endif
+   0 };
+ static const char *fontsuffixes[] = { 
+@@ -35,8 +35,7 @@
+ {
+   "", DATADIR "/" KEYMAPDIR "/**/", 
+ #ifdef LOCALDATADIR
+-  LOCALDATADIR "/" KEYMAPDIR "/**/",
+-  LOCALDATADIR "/" OLDKEYMAPDIR "/**/",
++  LOCALDATADIR "/",
+ #endif
+   KERNDIR "/", 
+   0 };
+@@ -46,7 +45,7 @@
+ 
+ static const char *videomodedirpath[] = { "", DATADIR "/" VIDEOMODEDIR "/", 
+ #ifdef LOCALDATADIR
+-  LOCALDATADIR "/" VIDEOMODEDIR "/", 
++  LOCALDATADIR "/",
+ #endif
+   0};
+ static const char *videomodesuffixes[] = { "", 0 };
+--- console-tools-1999.03.02/lib/Makefile.am.orig	Tue Apr  6 00:19:00 1999
++++ console-tools-1999.03.02/lib/Makefile.am	Tue Apr  6 00:19:23 1999
+@@ -4,6 +4,7 @@
+ 
+ FindfileLctDefs = -DDATADIR=\"$(datadir)\" -DTRANSDIR=\"$(TRANSDIR)\" \
+ 	  -DFONTDIR=\"$(FONTDIR)\" -DKEYMAPDIR=\"$(KEYMAPDIR)\" \
++	  -DOLDKEYMAPDIR=\"$(KEYMAPDIR)\" \
+ 	  -DVIDEOMODEDIR=\"$(VIDEOMODEDIR)\" -D__USE_GNU
+ 
+ INCLUDES = -I$(top_srcdir)/include $(FindfileLctDefs)

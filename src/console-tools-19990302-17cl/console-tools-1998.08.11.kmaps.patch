@@ -1,0 +1,56 @@
+Jakub Jelinek
+(jj@ultra.linux.cz)
+Prague, CZ
+========================================================================
+--- console-tools-1998.08.11/data/keymaps/i386/qwertz/de-latin1-nodeadkeys.kmap.jj	Tue Aug 11 14:04:59 1998
++++ console-tools-1998.08.11/data/keymaps/i386/qwertz/de-latin1-nodeadkeys.kmap	Mon Dec  7 17:23:16 1998
+@@ -1,7 +1,7 @@
+ # de-latin1-nodeadkeys.map: German keymap
+ # Due to Olaf Flebbe (flebbe@pluto.tat.physik.uni-tuebingen.de)
+ 
+-include "de-latin1.map"
++include "de-latin1.kmap"
+ 
+ control keycode   7 = Control_asciicircum
+ keycode  13 = apostrophe       grave
+--- console-tools-1998.08.11/data/keymaps/i386/qwerty/pc110.kmap.jj	Tue Aug 11 14:05:31 1998
++++ console-tools-1998.08.11/data/keymaps/i386/qwerty/pc110.kmap	Mon Dec  7 17:23:37 1998
+@@ -6,7 +6,7 @@
+ # The yen symbol is mapped to backslash (for no good reason)
+ # 4 Apr 1997 robin@acm.org
+ 
+-include "jp106.map"
++include "jp106.kmap"
+ 
+ keycode  13 = circumflex       underscore
+ 	control keycode  13 = Control_underscore
+--- console-tools-1998.08.11/data/keymaps/i386/dvorak/ANSI-dvorak.kmap.jj	Tue Aug 11 14:05:45 1998
++++ console-tools-1998.08.11/data/keymaps/i386/dvorak/ANSI-dvorak.kmap	Mon Dec  7 17:23:50 1998
+@@ -1,4 +1,4 @@
+-include "dvorak.map"
++include "dvorak.kmap"
+ 
+ plain keycode 12 = bracketright
+ shift keycode 12 = bracketleft
+--- console-tools-1998.08.11/data/keymaps/i386/azerty/be2-latin1.kmap.jj	Tue Aug 11 14:05:50 1998
++++ console-tools-1998.08.11/data/keymaps/i386/azerty/be2-latin1.kmap	Mon Dec  7 17:24:05 1998
+@@ -7,7 +7,7 @@
+ #same behaviour than in ms-dos)
+ 
+ # be-latin1.map modified by Pablo Saratxaga <srtxg@f2219.n293.z2.fidonet.org>
+-include "be-latin1.map"
++include "be-latin1.kmap"
+ 
+ 	altgr keycode 7 = asciicircum
+ keycode  41 = twosuperior  threesuperior
+--- console-tools-1998.08.11/data/keymaps/i386/azerty/wangbe.kmap.jj	Tue Aug 11 14:05:53 1998
++++ console-tools-1998.08.11/data/keymaps/i386/azerty/wangbe.kmap	Mon Dec  7 17:24:20 1998
+@@ -2,7 +2,7 @@
+ # to fit an azerty wang belgium keyboard
+ # Servaas Vandenberghe, servaas.vandenberghe@esat.kuleuven.ac.be - 1997.
+ 
+-include "azerty.map"		# has two alt keys
++include "azerty.kmap"		# has two alt keys
+ keymaps 6			# add one more keymap
+ 
+ keycode 100 = AltGr		# install AltGr on right Alt

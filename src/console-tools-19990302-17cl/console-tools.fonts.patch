@@ -1,0 +1,29 @@
+diff -ur data.orig/consolefonts/Makefile.am data/consolefonts/Makefile.am
+--- data.orig/consolefonts/Makefile.am	Sun Feb 28 20:46:31 1999
++++ data/consolefonts/Makefile.am	Fri Mar 26 15:56:02 1999
+@@ -47,4 +47,6 @@
+ gr737-9x16-2.psf gr737-9x16-medieval.psf gr737-9x16.psf \
+ grcourier.psf grfixed.psf \
+ lat0-08.psf lat0-10.psf lat0-12.psf lat0-14.psf lat0-16.psf \
+-t.psf t850b.psf tcvn8x16.psf viscii10-8x16.psf
++t.psf t850b.psf tcvn8x16.psf viscii10-8x16.psf \
++lat0-sun16.psf lat2-sun16.psf ucw08.psf ucw11m.psf ucw11z.psf ucw16.psf \
++latin5-16.psf
+diff -ur data.orig/consoletrans/Makefile.am data/consoletrans/Makefile.am
+--- data.orig/consoletrans/Makefile.am	Sun Feb 28 20:55:19 1999
++++ data/consoletrans/Makefile.am	Fri Mar 26 16:31:16 1999
+@@ -57,11 +57,12 @@
+ iso07.sfm iso08.sfm iso09.sfm iso10.sfm iso14.sfm iso15.sfm \
+ ECMA144.sfm cp437.sfm def.sfm ethiopic.sfm koi8-r.sfm \
+ lat1.sfm lat1u.sfm lat2u.sfm lat4.sfm lat4u.sfm \
+-armscii8.sfm cp850.sfm cp850b.sfm tcvn.sfm viscii.sfm
++armscii8.sfm cp850.sfm cp850b.sfm tcvn.sfm viscii.sfm latin2-ucw.uni
+ 
+ OLD_ACM_FILES = koi2alt null space trivial vga2iso zero \
+ cp437_to_iso01.trans cp850_to_iso01.trans \
+-viscii1.0_to_tcvn.trans viscii1.0_to_viscii1.1.trans
++viscii1.0_to_tcvn.trans viscii1.0_to_viscii1.1.trans latin2-ucw.scrnmap \
++latin5
+ 
+ ACM_FILES = \
+ cp437.acm iso01.acm iso02.acm iso03.acm iso04.acm iso05.acm iso06.acm \
