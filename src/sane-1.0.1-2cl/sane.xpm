@@ -1,0 +1,69 @@
+/* XPM */
+static char *sane[] = {
+/* width height num_colors chars_per_pixel */
+"    86    29       32            1",
+/* colors */
+". c #120204",
+"# c #1f0207",
+"a c #2c020c",
+"b c #33020c",
+"c c #392d2f",
+"d c #3c020c",
+"e c #470213",
+"f c #540214",
+"g c #5c0214",
+"h c #640219",
+"i c #6c021c",
+"j c #74021c",
+"k c #77424e",
+"l c #7b031c",
+"m c #870422",
+"n c #930624",
+"o c #937d82",
+"p c #9c0624",
+"q c #a40627",
+"r c #aca3a5",
+"s c #b0062c",
+"t c #bc062c",
+"u c #ca0633",
+"v c #ccbbbf",
+"w c #cdcdcd",
+"x c #e2e0e0",
+"y c #eacbd1",
+"z c #efebec",
+"A c #f4c2cc",
+"B c #f4f4f4",
+"C c #fcf4f6",
+"D c None",
+/* pixels */
+"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+"DDDDDAAuurDAAAAAAAADDDDDDDDArrrrrrrrADDDDDDrrrrrrrrryDvrrrrrrryDDDrooroorrryAAAAAAAADD",
+"DDDDAuuuukrAuuuuuuuozDDDDDDzssqqqpqppvDDDDDmmlmjjjjjirDhhggfffkwDDeeddbbbbarea####.#oz",
+"DDDAuuuuucvzuuuuuuukxDDDDDDDsssqqqpppoDDDDDvllljljijikxmhhggfferDDeeddbbbbbox##a##.#cx",
+"DDyuuuuuuurDxuuuuuucxDDDDDDDsqsqqqqppkzDDDDzllljjjiiiirxhggffferDDedddddbbaoDw####..cx",
+"DDAuuuuuuukxDwuuuuucxDDDDDDDrqqsqqppncxDDDDDomlljjjiiiozgggffferDDededddbbaoDDw###..cx",
+"DDAuuuuuuuuoDDvuuuucxDDDDDuDAqqqqqpppivDDDDDxmljjjiiihhvyhggfferDDdeeddbbaaoDDDv###.cx",
+"DDruuuuuuuuurDDruuucxDDDDAsvxqqqpppppnrDDDDDDllljjjiiihozhggfferDDedddddbaaoDDDDr...cx",
+"DDAuuuuuuuuuuwDzuutcxDDDDAsozqqqpppnnnoDDDDvDyljjjijhhhiwAgffferDDededdbbaaoDDDDxr##cx",
+"DDDuuuuuuuuuusxDxtucxDDDDuskxsqqppppnnkzDDDmxDljjjjjihhhozgffferDDddddbbbaaoDDDv.vr#cx",
+"DDDuuuuuuuuuuuozDwtcxDDDzsscwoqqpppnpncwDDDlrxAljjjihhhhkxoffferDDddddbbbbaoDDv##rxokx",
+"DDDxuuuuuuuuuuurDDvoxDDDAsssrAqqqppnnmjvDDDllrDjjiiihhhggrzffeerDDdddddbbaaoDva#.oDzrz",
+"DDDDwuuuuuuuuuuuvDDwDDDDAsqsoyqppppnnmnrDDDllozAjjiihhhhgkxjfferDDdddddbbaaov####rDDDD",
+"DDDDDvuuuuuuuutuuxDDDDDDssssozpppnnnnnmoDDDlljvziiiihhhgggrxfeerDDdeddbbbaara###.oDDDD",
+"DDDDDDruuuuuuututoxDDDDzssqskxqppppnnmmkzDDlljozoiiiihhgggoxfferDDeeddbbbbao####.oDDDD",
+"DDzxDDzuuuuuuuuuutoDDDDAssqqquupppnnnnmcwDDmljjwziiiihgggfgvyeerDDeddbbaaaaov##.#oDADD",
+"DDzurDDxuuuututtuttrDDDvqsqqqqppnnnnmmmjvDDlljjoziihhghgggfozecrDDddddbbaa#oDwe##rzcwD",
+"DDzuuvDDwuttuttttttkxDDsqqqqpppnpnnmmmmmrDDljjjkwxhhhhggggfcwAkrDDddbbbaaa#oDDxk#ov.ox",
+"DDzuuuwDDvtuttttstssrDAsqsqqqcopnnnmmmmmoDDljjjirDihhgggfffeozovDDdddbbbaaaoDDDxkA..kx",
+"DDztttsxDDutttttssssoDAqqqqqpcwnnnnnmmmmkxDljjjikxAhgggggfffkxxxDDdddbabaa#oDDDDA...cx",
+"DDzuuutozDxtttstsssskzosqqpqpcwknnmmmmmmcwDjjjjiirDhhggfffeeerDDDDddbbabaa#oDDDA#...cx",
+"DDztttttrDDvtssssssqkzqqqqpppnrAmmmmmmmljrDjjjjiikxvhggffffefkxDDDddbbaaaaaoDDy#....cx",
+"DDztuttttvDDustssssloAqqpqppnnoymmmmmmllloDjjjjiihvzggggfffeeevDDDddbbaaaaaoDDr.....cx",
+"DDzttttttswDxssssqqcrAqppppnnnozmmmmmmmlloDjjiiiihozogffffffeeoDDDdbbabaa#aoDA......cx",
+"DDztttttstkxDssssq.oxsqppppnnnkxmnmmmmmllkxjijihhhhwzggfeeefeecwDDdbbaaaaa#oA.##....cx",
+"DDztsssstssozsqqq#kwDpppppnnnncwsmmmlllljcwiiihhhhgozigffeeeeeerDDbbaaaaaa#v##.#....cx",
+"DDDwkccccccowwokorxDDxokkkkkkkowzokkkkkkkowxoccccccoxxokkkkkkkowDDwokkkkkkkrvokkkkkkox",
+"DDDDxxxxxxxxDDzzDDDDDDzzzzzzzzzDDzzzzzzzzzDDxxxxxxxxDDDzzzzzzzzDDDDzzzzzzzzDDxxxxxxxzD"
+};
+SIMPLE  =                    T                                                  DITPIX  =                    8                                                  NAXIS   =                    2                                                  NAXIS1  =                   86                                                  NAXIS2  =                   29                                                  HISTORY Written by XV 3.10a                                                     END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ıııôààààààààôıììôıııı÷ìììììììììııìììììììììııààààààààııôììììììììııııììììììììôôàààààààìııııÍV111111…ÍÍ…V…¦àııà…VVVVVVV…Íì…VVVVVVV…Íà…111111…àà…VVVVVVV…ÍııÍ…VVVVVVV¦Á…VVVVVV…àııìJFFFFJFF…ìFAAAVÍô>>>>>;;;;1ÍF5550000-1Í***''''#…ì*#!!¦ııÁ1àııìJJJJJFJVàıFFFFA…àFA>>>>;;;Và5;5555500Và-*-*''''Íì##!!1Íıı…Ô1àııìJJJJJJFÍıàFFFFAA1¦ÔA>>>>;;;…ì555555500…ô--****'…ì…#!!!!!!…ôıı…ôÔ1àııìJPJJJJÁıôPFJFFFF0…ÔAA>A>>;;…Ö555555000…ô----**'Áì####!!!Áııı…ôı¦1àııìJJJJJ¦ôıÁJFFFFFFAVìAAAA>>>;¦Ô55555550-¦ı----**VàÁ'##!!!!!Vàııı…ôıÖ1àııìPPPJ…ìıàJJJFJFFFFVì…FAA>A>1ÍV;;5555551Íı----**¦ô''##!!!¦ôııı…ôııÔ1àııìJJJFàıôPJJJJJFFFF…ôÔAAAAA>1Í;;;;;5555Vàı0---*VàÔ'#####!!!Vàààıı…ôıııÔ1àııìPPPÍııÁJPJJJJFJFF¦ıÔFAFAAA1…>;;;55555…ôı0---*¦ô*''###!!!…ì…Áıı…ôııàVÔVàııìPPÁııÍPJJPJJJJJJVàııFAAAA>>>;>;;55555¦ıı0---VÍà''''####!1ÍÔV¦ıı…ôıàV…Á…àııìP¦ôıàPPPPJPJJPJJ¦÷ııÁAFAAAA>>;;;;555-Áıı00--…ì**''#'###!…ì1¦ıı…ôÍ¦ì1Íôııìà÷ıìPPPPPPPPPPJ…ôıııÔFFAAAPP>>>;;;;51Íıı50--Íì****'###!#ÁÖ¦ıı…Á…÷Ôıııııııô¦PPPPPPPJPJ…àııııìFFAFVàA>>>>;;55Vìıı00-…ì…****''###…à!!¦ıı……ıııııııı÷ÁPPPPPPPPJPPàı÷ııııFFFF…ì>>>;;;;;5…ôıı00-Áì****'''###¦à!¦ıı¦…ııııııııÍPPPPPPPPPPPÁıôÍôıııÔFAF…ÖA>>>>;;5;¦ııı00…ìÔ--**''''#Và-!!¦ıı…Á¦ıııııııàPPPPPPPPPPP¦ôıÁ…àıııÔFFF¦ÔAAA>>;;5-Áııı00¦ô--***'''##¦ì!!¦ıı…ôÁ…ôì¦ìıııPPPPPPPPPPP…ìıÍJ1àıııìFF1Í…AA>>>;>;1Íııı0¦àÔ0---*''''Và…!!!¦ıı…ôıÁ¦à…VàııôPPPPPPPPPPFàıàJP1àııııPFVàFAA>>>>;;Vìııı5àô0-----*'''…ì#!!!¦ıı…ôııÁÁ¦1àııÔPPPPPPPPPPÍıìPPJ1àııııÔF…ìAAA>>>;;;…ôıııÁıÖ0---*-'''*ÍÔ#!!!¦ıı…ôıııà¦1àıı¦PPPPPPPPP¦ôô¦PPP1àııııÔFÁàAAA>>>>>;¦ıııııı000---***'…ì'##!!¦ıı…ôıı÷¦1àııÔPPPPPPPP…ô÷ÁPPPP1àıııııPôÔAAAAA>>>*Áıııııà50---***''ÁÖ'##!!¦ıı…ôııÁ1àııÔPPPPPPPVà÷ÍPPPPP1àııııııı¦AAFAA>>;1àııııı…500---***…ì###!!!¦ıı…ôıÍ1àııÖPPPPPPP¦ıàPPPPPP1àıııııııFAFAAAA>>Vìııııì000---****¦à'##!!!¦ıı…ôÍ1àıııÔPPPPP1ÁìPPPPPPPVàıııııııFFFAAA>>>…÷ııııÁ000-0-*-*Và5''##!!¦ıı…à1àııııÔPPPPV¦ÔPPPPPPP…ìııııııìFFAAA>A>>Áııııı5505-----*¦ô''##!!!VÍıı¦…ìıııııÔÔPP¦ôÔÔÔÔÔÔÔÔôıııııııÔ¦¦¦¦¦¦¦¦Ô÷ııııı¦¦¦¦¦¦¦¦¦Ö÷Á¦¦¦¦¦¦¦Öııı¦……¦……¦¦¦ÖÔÔÔÔÔÔÔÔôııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııııı                                                                                                                                                                                                                                                                                                                                                                                                  
