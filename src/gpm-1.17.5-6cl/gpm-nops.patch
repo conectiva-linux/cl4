@@ -1,0 +1,11 @@
+--- gpm-1.17.2/doc/Makefile.in.nops	Wed Jan 13 15:43:49 1999
++++ gpm-1.17.2/doc/Makefile.in	Wed Jan 13 15:44:22 1999
+@@ -83,7 +83,7 @@
+ 
+ # Main portion
+ 
+-all:	$(srcdir)/gpmdoc.ps $(srcdir)/gpm.info $(srcdir)/gpmdoc.txt \
++all:	$(srcdir)/gpm.info $(srcdir)/gpmdoc.txt \
+ 	$(srcdir)/gpm.8 $(srcdir)/mev.1 $(srcdir)/gpm-root.1
+ 
+ $(srcdir)/gpm.8 $(srcdir)/mev.1 $(srcdir)/gpm-root.1:	$(srcdir)/doc.gpm $(srcdir)/manpager

@@ -1,0 +1,11 @@
+--- gpm-1.17.5/configure.in.fixso	Mon Mar 22 11:23:24 1999
++++ gpm-1.17.5/configure.in	Mon Mar 22 11:23:48 1999
+@@ -15,7 +15,7 @@
+ dnl transparently.
+ abi=18
+ abi_age=17
+-abi_rev=2
++abi_rev=5
+ 
+ abi_lev=`expr $abi - $abi_age`
+ abi_full=$abi_lev.$abi_age.$abi_rev

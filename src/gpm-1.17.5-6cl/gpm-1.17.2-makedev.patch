@@ -1,0 +1,29 @@
+--- gpm-1.17.2/mouse-test.c.makedev	Tue Feb 16 11:09:46 1999
++++ gpm-1.17.2/mouse-test.c	Tue Feb 16 11:10:17 1999
+@@ -130,7 +130,7 @@
+   exit(0);
+ }
+ 
+-struct device **makedev(struct device **current, char *name)
++struct device ** gpm_makedev(struct device **current, char *name)
+ {
+   int fd; int modes;
+   if ((fd=open(name,O_RDWR|O_NONBLOCK))==-1)
+@@ -273,7 +273,7 @@
+   /* init the list of possible devices */
+ 
+   for (nextdev=&devlist, i=1; i<argc; i++)
+-    nextdev=makedev(nextdev,argv[i]);
++    nextdev=gpm_makedev(nextdev,argv[i]);
+ 
+   if (argc==1) /* no cmdline, get all devices */
+     {
+@@ -287,7 +287,7 @@
+     while (fgets(s,64,f))
+       {
+       s[strlen(s)-1]='\0'; /* trim '\n' */
+-      nextdev=makedev(nextdev,s);
++      nextdev=gpm_makedev(nextdev,s);
+       }
+     pclose(f);
+     }
