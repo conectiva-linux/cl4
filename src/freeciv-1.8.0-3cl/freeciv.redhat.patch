@@ -1,0 +1,30 @@
+diff -ur freeciv-1.8.0.OLD/civ freeciv-1.8.0/civ
+--- freeciv-1.8.0.OLD/civ	Wed Jun  3 11:18:12 1998
++++ freeciv-1.8.0/civ	Wed Apr 21 03:05:13 1999
+@@ -15,10 +15,9 @@
+ #***********************************************************************/
+ DIR=`dirname $0`
+ if [ "$FREECIV_DATADIR" = "" ] ; then
+-    FREECIV_DATADIR=$DIR/data; export FREECIV_DATADIR
++    FREECIV_DATADIR=/usr/share/games/freeciv; export FREECIV_DATADIR
+ fi
+ 
+-[ -x $DIR/client/civclient ] && EXE=$DIR/client/civclient
+ [ -x $DIR/civclient ] && EXE=$DIR/civclient
+ 
+ if [ "$EXE" = "" ]; then
+diff -ur freeciv-1.8.0.OLD/ser freeciv-1.8.0/ser
+--- freeciv-1.8.0.OLD/ser	Wed Jan 20 11:25:43 1999
++++ freeciv-1.8.0/ser	Wed Apr 21 03:05:29 1999
+@@ -15,10 +15,9 @@
+ #***********************************************************************/
+ DIR=`dirname $0`
+ if [ "$FREECIV_DATADIR" = "" ] ; then
+-    FREECIV_DATADIR=$DIR/data; export FREECIV_DATADIR
++    FREECIV_DATADIR=/usr/share/games/freeciv; export FREECIV_DATADIR
+ fi
+ 
+-[ -x $DIR/server/civserver ] && EXE=$DIR/server/civserver
+ [ -x $DIR/civserver ] && EXE=$DIR/civserver
+ 
+ if [ "$EXE" = "" ]; then
