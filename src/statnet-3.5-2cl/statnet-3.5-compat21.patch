@@ -1,0 +1,17 @@
+diff -Nur statnet-3.5.orig/statnetd.c statnet-3.5/statnetd.c
+--- statnet-3.5.orig/statnetd.c	Thu Jun 10 17:44:07 1999
++++ statnet-3.5/statnetd.c	Thu Jun 10 17:45:33 1999
+@@ -6,11 +6,11 @@
+ /* This is the main program for the monitoring daemon */
+ #define MAIN_LINE 1
+ 
+-#include <fcntlbits.h>
+-#include <ioctls.h>
++#include <sys/ioctl.h>
+ #include <signal.h>
+ #include <stdio.h>
+ #include <sys/utsname.h>
++#include <sys/fcntl.h>
+ 
+ #include <sys/ipc.h>
+ #ifdef IPC_DIPC
