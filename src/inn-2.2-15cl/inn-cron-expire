@@ -1,0 +1,2 @@
+#!/bin/sh
+/sbin/chkconfig innd && su - news -c "/usr/bin/news.daily delayrm"

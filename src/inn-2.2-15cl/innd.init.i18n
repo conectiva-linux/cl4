@@ -1,0 +1,89 @@
+#! /bin/sh
+#
+# innd		InterNet News System
+#
+# chkconfig: 345 95 05
+# description: inn is the most popular server for Usenet news. It allows \
+#              you to setup local news servers. It can be difficult to \
+#              set up properly though, so be sure to read /usr/doc/inn* \
+#              before trying.
+# description(pt_BR): inn é o mais popular servidor de news Usenet. Ele \
+#              permite que você configure um servidor local. Certifique-se \
+#              de ler a documentação disponível em /usr/doc/inn* antes de \
+#              começar a configurá-lo.
+# processname: innd
+# pidfile: /var/run/news/innd.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get config.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+if [ ${NETWORKING} = "no" ]
+then
+	exit 0
+fi
+
+[ -d /etc/news ] || exit 0
+[ -d /usr/lib/news ] || exit 0
+[ -d /var/spool/news ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting %s services: " "INND"
+	su - news -c ". /etc/rc.d/init.d/functions ; daemon /etc/rc.d/rc.news"
+	touch /var/lock/subsys/innd
+	echo
+	;;
+  stop)
+	if [ -f /var/run/news/innd.pid ]
+	then
+		gprintf "Stopping %s service: " "INND"
+		killproc innd
+		rm -f /var/run/news/innd.pid
+		echo
+	fi
+	if [ -f /var/run/news/innwatch.pid ]
+	then
+		gprintf "Stopping %s service: " "INNWatch"
+		killproc innwatch -9
+		rm -f /var/run/news/innwatch.pid
+		echo
+	fi
+	if [ -f /var/run/news/innfeed.pid ]
+	then
+		gprintf "Stopping %s service: " "INNFeed"
+		killproc innfeed -9
+		rm -f /var/run/news/innfeed.pid
+		echo
+	fi
+	if [ -f /var/run/news/actived.pid ]
+	then
+		gprintf "Stopping %s service: " "INN actived"
+		killproc actived -9
+		rm -f /var/run/news/actived.pid
+		echo
+	fi
+	rm -f /var/lock/subsys/innd /var/lock/news/*
+	;;
+  status)
+	status innd
+	;;
+  reload)
+	gprintf "Reloading %s service: " "INN"
+	killproc innd -HUP
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|reload|restart}\n" "$0"
+	exit 1
+	;;
+esac
+
+exit 0

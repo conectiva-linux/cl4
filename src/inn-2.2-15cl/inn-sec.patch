@@ -1,0 +1,14 @@
+--- inn-2.2/innd/inndstart.c.sec	Thu May 20 22:15:07 1999
++++ inn-2.2/innd/inndstart.c	Thu May 20 22:23:04 1999
+@@ -75,8 +75,9 @@
+     if (ReadInnConf() < 0) exit(1);
+ 
+     /* Make sure INND directory exists. */
+-    if (stat(innconf->pathrun, &Sb) < 0 || !S_ISDIR(Sb.st_mode)) {
+-	syslog(L_FATAL, "inndstart cant stat %s %m", innconf->pathrun);
++    /* hardcode dirname to avoid security problems - notting 1999/05/21 */
++    if (stat("/var/run/news", &Sb) < 0 || !S_ISDIR(Sb.st_mode)) {
++	syslog(L_FATAL, "inndstart cant stat /var/run/news %m");
+ 	exit(1);
+     }
+     NewsUID = Sb.st_uid;

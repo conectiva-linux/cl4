@@ -1,0 +1,69 @@
+--- inn-2.2/samples/inn.conf.in.rh	Fri Nov  6 22:06:05 1998
++++ inn-2.2/samples/inn.conf.in	Wed Jun  2 12:04:09 1999
+@@ -12,7 +12,7 @@
+ #
+ organization:		A poorly-installed InterNetNews site
+ server:			localhost
+-pathhost:		@HOSTNAME@
++pathhost:		localhost
+ moderatormailer:
+ domain:
+ fromhost:
+@@ -23,15 +23,15 @@
+ checkincludedtext:	false
+ maxforks:		10
+ maxartsize:		1000000
+-nicekids:		4
++nicekids:		0
+ nicenewnews:		0
+-verifycancels:		false
+-logcancelcomm:		false
++verifycancels:		true
++logcancelcomm:		true
+ wanttrash:		false
+ remembertrash:		true
+ linecountfuzz:		0
+ peertimeout:		3600
+-clienttimeout:		600
++clienttimeout:		1800
+ allownewnews:		true
+ localmaxartsize:	1000000
+ logartsize:		true
+@@ -52,7 +52,7 @@
+ storeonxref:		true
+ nnrpdcheckart:		true
+ storemsgid:		true
+-usecontrolchan:		false
++usecontrolchan:		true
+ mergetogroups:		false
+ backoffauth:		false
+ backoffdb:		@DBDIR@/backoff
+@@ -63,7 +63,7 @@
+ mimecontenttype:
+ mimeencoding:
+ refusecybercancels:	false
+-activedenable:		false
++activedenable:		true
+ activedupdate:		30
+ activedport:		1119
+ nnrpperlauth:		false
+@@ -108,7 +108,7 @@
+ #
+ # Other options
+ innflags:		
+-doinnwatch:		true
++doinnwatch:		false
+ innwatchsleeptime:	600
+ pgpverify:		@pgpverify@
+ controlfailnotice:	false
+--- inn-2.2/Makefile.rh	Thu Jan 21 05:30:00 1999
++++ inn-2.2/Makefile	Wed Jun  2 10:30:57 1999
+@@ -44,7 +44,7 @@
+ ##  Directories where files get put.
+ directories:
+ 	chmod +x ./makedirs.sh
+-	DESTDIR=$(DESTDIR) ./makedirs.sh;
++	DESTDIR=$(DESTDIR) ./makedirs.sh -p;
+ 
+ ##  Other generic targets.
+ depend tags ctags profiled:

@@ -1,0 +1,84 @@
+#! /bin/sh
+#
+# innd		InterNet News System
+#
+# chkconfig: - 95 05
+# description: inn is the most popular server for Usenet news. It allows \
+#              you to setup local news servers. It can be difficult to \
+#              set up properly though, so be sure to read /usr/doc/inn* \
+#              before trying.
+# processname: innd
+# pidfile: /var/run/news/innd.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get config.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+if [ ${NETWORKING} = "no" ]
+then
+	exit 0
+fi
+
+[ -d /etc/news ] || exit 0
+[ -d /usr/lib/news ] || exit 0
+[ -d /var/spool/news ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	echo -n "Starting INND system: "
+	su - news -c ". /etc/rc.d/init.d/functions ; daemon /etc/rc.d/rc.news"
+	touch /var/lock/subsys/innd
+	echo
+	;;
+  stop)
+	if [ -f /var/run/news/innd.pid ]
+	then
+		echo -n "Stopping INND service: "
+		killproc innd
+		rm -f /var/run/news/innd.pid
+		echo
+	fi
+	if [ -f /var/run/news/innwatch.pid ]
+	then
+		echo -n "Stopping INNWatch service: "
+		killproc innwatch -9
+		rm -f /var/run/news/innwatch.pid
+		echo
+	fi
+	if [ -f /var/run/news/innfeed.pid ]
+	then
+		echo -n "Stopping INNFeed service: "
+		killproc innfeed -9
+		rm -f /var/run/news/innfeed.pid
+		echo
+	fi
+	if [ -f /var/run/news/actived.pid ]
+	then
+		echo -n "Stopping INN actived service: "
+		killproc actived -9
+		rm -f /var/run/news/actived.pid
+		echo
+	fi
+	rm -f /var/lock/subsys/innd /var/lock/news/*
+	;;
+  status)
+	status innd
+	;;
+  reload)
+        echo -n "Reloading INN Service: "
+	killproc innd -HUP
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+	;;
+esac
+
+exit 0

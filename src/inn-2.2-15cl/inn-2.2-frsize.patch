@@ -1,0 +1,11 @@
+--- inn-2.2/backends/inndf.c.frsize	Wed Jun  2 10:31:30 1999
++++ inn-2.2/backends/inndf.c	Wed Jun  2 11:06:02 1999
+@@ -80,7 +80,7 @@
+ #define STATFUNCT	statvfs		/* function call */
+ #define STATSTRUC	statvfs		/* structure name */
+ #define STATAVAIL	f_bavail	/* blocks available */
+-#define STATMULTI	f_frsize	/* fragment size/block size */
++#define STATMULTI	f_bsize		/* fragment size/block size */
+ #define STATINODE	f_favail	/* inodes available */
+ #define STATTYPES	u_long		/* type of f_bavail etc */
+ #define STATFORMT	"%lu"		/* format string to match */
