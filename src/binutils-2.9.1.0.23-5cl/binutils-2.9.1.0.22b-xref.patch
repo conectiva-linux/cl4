@@ -1,0 +1,22 @@
+--- binutils-2.9.1.0.22b/bfd/hash.c.xref	Sun Mar 21 11:39:52 1999
++++ binutils-2.9.1.0.22b/bfd/hash.c	Sun Mar 21 11:40:29 1999
+@@ -73,7 +73,7 @@
+ 	The function <<bfd_hash_table_init>> take as an argument a
+ 	function to use to create new entries.  For a basic hash
+ 	table, use the function <<bfd_hash_newfunc>>.  @xref{Deriving
+-	a New Hash Table Type} for why you would want to use a
++	a New Hash Table Type}, for why you would want to use a
+ 	different value for this argument.
+ 
+ @findex bfd_hash_allocate
+--- binutils-2.9.1.0.22b/bfd/linker.c.xref	Thu Jan 15 12:37:32 1998
++++ binutils-2.9.1.0.22b/bfd/linker.c	Sun Mar 21 11:39:18 1999
+@@ -74,7 +74,7 @@
+ @cindex target vector (_bfd_link_hash_table_create)
+ 	The linker routines must create a hash table, which must be
+ 	derived from <<struct bfd_link_hash_table>> described in
+-	<<bfdlink.c>>.  @xref{Hash Tables} for information on how to
++	<<bfdlink.c>>.  @xref{Hash Tables}, for information on how to
+ 	create a derived hash table.  This entry point is called using
+ 	the target vector of the linker output file.
+ 
