@@ -1,0 +1,20 @@
+--- netkit-timed-0.10/MCONFIG.ewt	Tue Jul 15 15:02:17 1997
++++ netkit-timed-0.10/MCONFIG	Tue Jul 15 15:02:35 1997
+@@ -30,7 +30,7 @@
+ WARNINGS= -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Winline -Wcast-align
+ 
+ # Compiler flags to use
+-CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS)
++CFLAGS= -pipe -O2 -D__USE_BSD_SIGNAL $(WARNINGS) $(RPM_OPT_FLAGS)
+ 
+ # Link-time flags to use
+ LDFLAGS= -s
+@@ -43,7 +43,7 @@
+ 
+ 
+ # Work around GNU libc lossage
+-USE_GLIBC=0
++USE_GLIBC=1
+ 
+ 
+ 
