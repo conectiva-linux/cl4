@@ -1,0 +1,34 @@
+--- mtools-3.9.1/mtools.conf.linux	Sun Jan  4 04:29:32 1998
++++ mtools-3.9.1/mtools.conf	Thu Mar 18 14:45:31 1999
+@@ -1,22 +1,21 @@
+ # Example mtools.conf files.  Uncomment the lines which correspond to
+ # your architecture and comment out the "SAMPLE FILE" line below
+-SAMPLE FILE
+ 
+-# # Linux floppy drives
+-# drive a: file="/dev/fd0" exclusive
+-# drive b: file="/dev/fd1" exclusive
++# Linux floppy drives
++drive a: file="/dev/fd0" exclusive 1.44m
++drive b: file="/dev/fd1" exclusive 1.44m
+ 
+-# # First SCSI hard disk partition
+-# drive c: file="/dev/sda1"
++# First SCSI hard disk partition
++#drive c: file="/dev/sda1"
+ 
+-# # First IDE hard disk partition
+-# drive c: file="/dev/hda1"
++# First IDE hard disk partition
++#drive c: file="/dev/hda1"
+ 
+ # # dosemu floppy image
+ # drive m: file="/var/lib/dosemu/diskimage"
+ 
+-# # dosemu hdimage
+-# drive n: file="/var/lib/dosemu/diskimage" offset=3840
++# dosemu hdimage
++drive n: file="/var/lib/dosemu/hdimage" offset=8832
+ 
+ # # Atari ramdisk image
+ # drive o: file="/tmp/atari_rd" offset=136

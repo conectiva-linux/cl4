@@ -1,0 +1,11 @@
+--- mtools-3.9.1/mzip.c~	Mon Mar 23 01:36:53 1998
++++ mtools-3.9.1/mzip.c	Tue Dec 29 19:36:16 1998
+@@ -90,7 +90,7 @@
+ 		
+ 		if (S_ISBLK (st_mnt.st_mode)) {
+ #ifdef OS_linux
+-			if (MAJOR(st_mnt.st_rdev) == SCSI_DISK_MAJOR &&
++			if (MAJOR(st_mnt.st_rdev) == SCSI_DISK0_MAJOR &&
+ 			    MINOR(st_mnt.st_rdev) >= MINOR(st_dev.st_rdev) &&
+ 			    MINOR(st_mnt.st_rdev) <= MINOR(st_dev.st_rdev)+15) {
+ 				fprintf (stderr, 

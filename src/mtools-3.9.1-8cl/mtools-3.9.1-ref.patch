@@ -1,0 +1,56 @@
+--- mtools-3.9.1/mtools.texi.ref	Thu Mar 18 15:46:41 1999
++++ mtools-3.9.1/mtools.texi	Thu Mar 18 15:48:32 1999
+@@ -250,7 +250,7 @@
+ drive is assumed to be at Scsi target 4, and the Zip at Scsi target 5
+ (factory default settings).  On Linux, both drives are assumed to be the
+ second drive on the Scsi bus (/dev/sdb). The default settings can be
+-changes using a configuration file (@xref{Configuration}).
++changes using a configuration file (@xref{Configuration}.).
+ 
+ 
+ @node directory, long names, drive letters, Common features
+@@ -551,7 +551,7 @@
+ sector format, and almost as fast as the standard 18 sector format. In
+ order to access these disks, make sure mtools has been compiled with XDF
+ support, and set the @code{use_xdf} variable for the drive in the
+-configuration file. @xref{Compiling mtools} and @ref{misc variables},
++configuration file. @xref{Compiling mtools}, and @ref{misc variables},
+ for details on how to do this. Fast XDF access is only available for
+ Linux kernels which are more recent than 1.1.34.
+ 
+@@ -781,7 +781,7 @@
+ @item formatting
+ The geometry information is written into the boot sector of the newly
+ made disk. However, you may also describe the geometry information on
+-the command line. @xref{mformat} for details.
++the command line. @xref{mformat}. for details.
+ @item filtering
+ On some Unices there are device nodes which only support one physical
+ geometry. For instance, you might need a different node to access a disk
+@@ -789,7 +789,7 @@
+ actual geometry stored on the boot sector to make sure that this device
+ node is able to correctly read the disk. If the geometry doesn't match,
+ this drive entry fails, and the next drive entry bearing the same drive
+-letter is tried. @xref{multiple descriptions} for more details on
++letter is tried. @xref{multiple descriptions}. for more details on
+ supplying several descriptions for one drive letter.
+ 
+ If no geometry information is supplied in the configuration file, all
+@@ -1056,7 +1056,7 @@
+ @vindex use_xdf
+ If this is set to a non-zero value, mtools also tries to access this
+ disk as an XDF disk. XDF is a high capacity format used by OS/2. This
+-is off by default. @xref{XDF} for more details.
++is off by default. @xref{XDF}. for more details.
+ @item mformat_only
+ @vindex mformat_only
+ Tells mtools to use the geometry for this drive only for mformatting and 
+@@ -1707,7 +1707,7 @@
+ If this option is given, an Atari style serial number is generated.
+ Ataris store their serial number in the OEM label.
+ @item X
+-formats the disk as an XDF disk. @xref{XDF} for more details. The
++formats the disk as an XDF disk. @xref{XDF}. for more details. The
+ disk has first to be low-level formatted using the xdfcopy utility
+ included in the fdutils package.
+ @item C
