@@ -1,0 +1,27 @@
+*** all.h.orig	Wed Oct 11 21:32:39 1995
+--- all.h	Wed Oct 11 21:33:04 1995
+***************
+*** 22,28 ****
+--- 22,30 ----
+  #define ALL_H
+  
+  typedef float		real;		// float should be enough
++ #ifndef LINUX
+  typedef short		bool;
++ #endif
+  typedef unsigned	uint32;		// 32 Bit unsigned integer
+  	// some compilers may need "typedef unsigned long uint32" instead
+  typedef int		int32;		// 32 Bit signed integer
+*** configuration.sh.orig	Wed Oct 11 21:31:19 1995
+--- configuration.sh	Wed Oct 11 21:31:29 1995
+***************
+*** 1,4 ****
+! 
+  #
+  #  @(#) configuration.sh 1.9, last edit: 6/17/94 15:41:41
+  #  @(#) Copyright (C) 1993, 1994 Tobias Bading (bading@cs.tu-berlin.de)
+--- 1,4 ----
+! #!/bin/sh
+  #
+  #  @(#) configuration.sh 1.9, last edit: 6/17/94 15:41:41
+  #  @(#) Copyright (C) 1993, 1994 Tobias Bading (bading@cs.tu-berlin.de)

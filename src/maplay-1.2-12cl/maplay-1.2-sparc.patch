@@ -1,0 +1,28 @@
+--- maplay-1.2/configuration.sh.sopwith	Tue Jul  2 17:42:12 1996
++++ maplay-1.2/configuration.sh	Tue Jul  2 17:44:59 1996
+@@ -42,7 +42,7 @@
+ #
+ 
+ ###*** Please modify the entries for your machine: ***###
+-case `uname -sr` in
++case `uname -msr` in
+   IRIX\ 4.0.*)
+      COMPILER=g++
+      COMPILERFLAGS='-O2 -DIRIX -DIndigo'
+@@ -72,9 +72,15 @@
+      INCLUDEDIRS=
+      LIBRARIES=
+      AUDIO_INCLUDES='#include <sys/audioio.h>' ;;
++  Linux*sparc*)
++     COMPILER=g++
++     COMPILERFLAGS='-O2 -funroll-loops -DLINUX'
++     INCLUDEDIRS=
++     LIBRARIES= 
++     AUDIO_INCLUDES='#include <sys/soundcard.h>' ;;
+   Linux*)
+      COMPILER=g++
+-     COMPILERFLAGS='-O2 -m486 -funroll-loops -DLINUX -DDAMN_INTEL_BYTE_ORDER'
++     COMPILERFLAGS='-O2 -funroll-loops -DLINUX -DDAMN_INTEL_BYTE_ORDER'
+      INCLUDEDIRS=
+      LIBRARIES= 
+      AUDIO_INCLUDES='#include <sys/soundcard.h>' ;;
