@@ -1,0 +1,106 @@
+--- bash-2.03/doc/bash.1.bash2	Wed Jan 20 16:48:04 1999
++++ bash-2.03/doc/bash.1	Mon Feb 22 14:44:04 1999
+@@ -10,7 +10,7 @@
+ .\"
+ .\" bash_builtins, strip all but Built-Ins section
+ .if \n(zZ=1 .ig zZ
+-.TH BASH 1 "1999 Jan 20" GNU
++.TH BASH2 1 "1999 Jan 20" GNU
+ .\"
+ .\" There's some problem with having a `@'
+ .\" in a tagged paragraph with the BSD man macros.
+@@ -44,9 +44,9 @@
+ \fI\|\\$1\|\fP
+ ..
+ .SH NAME
+-bash \- GNU Bourne-Again SHell
++bash2 \- GNU Bourne-Again SHell
+ .SH SYNOPSIS
+-.B bash
++.B bash2
+ [options]
+ [file]
+ .SH COPYRIGHT
+@@ -7354,7 +7354,7 @@
+ .SH FILES
+ .PD 0
+ .TP
+-.FN /bin/bash
++.FN /bin/bash2
+ The \fBbash\fP executable
+ .TP
+ .FN /etc/profile
+--- bash-2.03/doc/bashbug.1.bash2	Thu Jul 30 16:22:49 1998
++++ bash-2.03/doc/bashbug.1	Mon Feb 22 15:41:37 1999
+@@ -1,19 +1,19 @@
+-.TH BASHBUG 1 "1998 July 30" GNU
++.TH BASHBUG2 1 "1998 July 30" GNU
+ .SH NAME
+-bashbug \- report a bug in bash
++bashbug2 \- report a bug in bash
+ .SH SYNOPSIS
+-\fBbashbug\fP [\fIaddress\fP]
++\fBbashbug2\fP [\fIaddress\fP]
+ .SH DESCRIPTION
+-.B bashbug
++.B bashbug2
+ is a shell script to help the user compose and mail bug reports
+ concerning bash in a standard format.
+-.B bashbug
++.B bashbug2
+ invokes the editor specified by the environment variable
+ .SM
+ .B EDITOR
+ on a temporary copy of the bug report format outline. The user must
+ fill in the appropriate fields and exit the editor.
+-.B bashbug
++.B bashbug2
+ then mails the completed report to \fIbug-bash@gnu.org\fP, or
+ \fIaddress\fP.  If the report cannot be mailed, it is saved in the
+ file \fIdead.bashbug\fP in the invoking user's home directory.
+@@ -25,7 +25,7 @@
+ should be a description of how to reproduce the bug.  The optional
+ fourth section is for a proposed fix.  Fixes are encouraged.
+ .SH ENVIRONMENT
+-.B bashbug
++.B bash2bug
+ will utilize the following environment variables if they exist:
+ .TP
+ .B EDITOR
+@@ -33,7 +33,7 @@
+ .SM
+ .B EDITOR
+ is not set,
+-.B bashbug
++.B bash2bug
+ defaults to
+ .BR emacs .
+ .TP
+--- bash-2.03/doc/bashref.texi.bash2	Wed Jan 20 16:47:01 1999
++++ bash-2.03/doc/bashref.texi	Mon Feb 22 14:42:46 1999
+@@ -25,7 +25,7 @@
+ @ifinfo
+ @dircategory Utilities
+ @direntry
+-     * Bash: (bash).                     The GNU Bourne-Again SHell.
++     * Bash2: (bash2).                     The GNU Bourne-Again SHell.
+ @end direntry
+ 
+ @format
+--- bash-2.03/doc/builtins.1.bash2	Fri Apr 12 11:20:01 1996
++++ bash-2.03/doc/builtins.1	Mon Feb 22 14:42:47 1999
+@@ -3,10 +3,10 @@
+ .TH BASH_BUILTINS 1 "1996 March 20" GNU
+ .SH NAME
+ bash, :, ., alias, bg, bind, break, builtin, case, cd, command,
+-continue, declare, dirs, disown, echo, enable, eval, exec, exit,
+-export, fc, fg, for, getopts, hash, help, history, if, jobs, kill,
+-let, local, logout, popd, pushd, pwd, read, readonly, return, set,
+-shift, shopt, source, suspend, test, times, trap, type, typeset,
++continue, declare, dirs, disown, bash-echo, enable, eval, exec, exit,
++bash-export, fc, fg, for, getopts, hash, help, history, if, jobs, bash-kill,
++let, local, logout, popd, pushd, bash-pwd, read, readonly, return, set,
++shift, shopt, source, suspend, bash-test, times, trap, type, typeset,
+ ulimit, umask, unalias, unset, until, wait, while \- bash built-in commands, see \fBbash\fR(1)
+ .SH BASH BUILTIN COMMANDS
+ .nr zZ 1
