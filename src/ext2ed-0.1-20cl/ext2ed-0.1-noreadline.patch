@@ -1,0 +1,102 @@
+--- ext2ed-0.1/main.c.ewt	Tue Mar 23 20:17:33 1999
++++ ext2ed-0.1/main.c	Tue Mar 23 20:17:36 1999
+@@ -96,6 +96,41 @@
+ 	return (1);						/* And quit */
+ }
+ 
++int ourgetc(FILE * f) {
++    return wgetch(command_win);
++}
++
++void read_line(char * foo) {
++    char * chptr = foo;
++    char ch;
++    int done = 0;
++
++    noecho();
++
++    while (!done && (ch = wgetch(command_win))) {
++	switch (ch) {
++	  case '\n':
++	    done = 1;
++	    break;
++
++	  case '\b':
++	    if (chptr > foo) {
++		wprintw(command_win, "\b \b");
++		chptr--;
++	    }
++	    break;
++
++	  default:
++	    if (ch == '\n') break;
++	    *chptr++ = ch;
++	    wprintw(command_win, "%c", ch);
++	    break;
++	}
++    }
++
++    *chptr = '\0';
++}
++
+ 
+ void parser (void)
+ 
+@@ -110,7 +145,7 @@
+ */
+ 
+ {
+-	char *ptr,command_line [80];
++	char command_line [80];
+ 	int quit=0;
+ 
+ 	while (!quit) {
+@@ -119,21 +154,11 @@
+ 			dispatch ("redraw");dispatch ("show");redraw_request=0;
+ 		}
+ 
+-		wmove (command_win,0,0);wclrtoeol (command_win);refresh_command_win ();
+-
+-		mvcur (-1,-1,LINES-COMMAND_WIN_LINES,0);	/* At last ! I spent ** days ** on this one */
+-
+-								/* The ncurses library optimizes cursor movement by */
+-								/* keeping track of the cursor position. However, by */
+-								/* using the readline library I'm breaking its */
+-								/* assumptions. The double -1 arguments tell ncurses */
+-								/* to disable cursor movement optimization this time. */
+-		echo ();
+-		ptr=readline ("ext2ed > ");			/* Read the user's command line. */
+-		noecho ();
++		wmove (command_win,0,0);wclrtoeol (command_win);
+ 
+-		strcpy (command_line,ptr);			/* Readline allocated the buffer - Copy the string */
+-		free (ptr);					/* and free the allocated buffer */
++		wmove(command_win, 0, 0);
++		wprintw(command_win, "ext2ed > ");
++		read_line(command_line);
+ 
+ 		if (*command_line != 0)
+ 			add_history (command_line);		/* Add the non-empty command to the command histroy */
+@@ -141,14 +166,7 @@
+ 		if (*command_line==0)				/* If only enter was pressed, recall the last command */
+ 			strcpy (command_line,last_command_line);
+ 		
+-								/* Emulate readline's actions for ncurses */
+-
+-		mvcur (-1,-1,LINES-COMMAND_WIN_LINES,0);	/* Again, needed for correct integration of the */
+-								/* ncurses and readline libraries */
+-
+-		werase (command_win);
+-		wprintw (command_win,"ext2ed > ");wprintw (command_win,command_line);
+-		wprintw (command_win,"\n");refresh_command_win ();
++		mvcur (-1,-1,LINES-COMMAND_WIN_LINES + 1,0);	
+ 
+ 		strcpy (last_command_line,command_line);	/* Save this command in our tiny cache */
+ 
+@@ -371,4 +389,4 @@
+ 	refresh_command_win ();getch ();werase (command_win);
+ }
+ 
+-#endif
+\ No newline at end of file
++#endif

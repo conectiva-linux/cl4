@@ -1,0 +1,15 @@
+--- ext2ed-0.1/init.c.glibc	Thu Aug 24 17:26:39 1995
++++ ext2ed-0.1/init.c	Wed Apr 15 18:47:41 1998
+@@ -427,9 +427,9 @@
+ void init_signals (void)
+ 
+ {
+-	signal (SIGWINCH,(SignalHandler) signal_SIGWINCH_handler);	/* Catch SIGWINCH */
+-	signal (SIGTERM,(SignalHandler) signal_SIGTERM_handler);
+-	signal (SIGSEGV,(SignalHandler) signal_SIGSEGV_handler);
++	signal (SIGWINCH,(void *) signal_SIGWINCH_handler);	/* Catch SIGWINCH */
++	signal (SIGTERM,(void *) signal_SIGTERM_handler);
++	signal (SIGSEGV,(void *) signal_SIGSEGV_handler);
+ 	
+ }
+ 
