@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=GXedit
+Comment=Simple editor
+Exec=gxedit
+Icon=gnome-note.png
+Terminal=0
+Type=Application

@@ -1,0 +1,36 @@
+--- GXedit1.23/Makefile.make	Fri Mar 19 01:01:49 1999
++++ GXedit1.23/Makefile	Thu Apr  1 01:47:25 1999
+@@ -1,8 +1,8 @@
+ BIN_DIR =
+ INSTALL = /usr/bin/install
+-INSTALL_DIR = /usr/X11R6/bin/
++#INSTALL_DIR = /usr/X11R6/bin/
+ DOCS = /usr/doc
+-SHARE = /usr/share
++#SHARE = /usr/share
+ CFLAGS = `gtk-config --cflags` -I/usr/local/include -I. -O -Wall -DVERSION=\"1.23\"
+ GTKEDITOR_CFLAGS = -I../gtkeditor-0.0.6 -I../gtkeditor-0.0.6/gtkeditor
+ LIBS = `gtk-config --libs`
+@@ -59,14 +59,14 @@
+ 	$(INSTALL) -m 0644 traceroute.scr $(SHARE)/GXedit/traceroute.scr
+ 	$(INSTALL) -m 0644 www.scr $(SHARE)/GXedit/www.scr
+ 	$(INSTALL) -m 0644 docs/charmap.txt $(SHARE)/GXedit/charmap.txt
+-	$(INSTALL) -d $(DOCS)/GXedit
+-	$(INSTALL) -m 0644 docs/manual.txt $(DOCS)/GXedit/manual.txt
+-	$(INSTALL) -m 0644 docs/manual.ps $(DOCS)/GXedit/manual.ps
+-	$(INSTALL) -m 0644 docs/quickref.ps $(DOCS)/GXedit/quickref.ps
+-	$(INSTALL) -m 0644 docs/quickref.txt $(DOCS)/GXedit/quickref.txt
+-	$(INSTALL) -m 0644 docs/COPYING $(DOCS)/GXedit/COPYING
+-	$(INSTALL) -m 0644 README $(DOCS)/GXedit/README
+-	$(INSTALL) -m 0644 CHANGELOG $(DOCS)/GXedit/CHANGELOG
++#	$(INSTALL) -d $(DOCS)/GXedit
++#	$(INSTALL) -m 0644 docs/manual.txt $(DOCS)/GXedit/manual.txt
++#	$(INSTALL) -m 0644 docs/manual.ps $(DOCS)/GXedit/manual.ps
++#	$(INSTALL) -m 0644 docs/quickref.ps $(DOCS)/GXedit/quickref.ps
++#	$(INSTALL) -m 0644 docs/quickref.txt $(DOCS)/GXedit/quickref.txt
++#	$(INSTALL) -m 0644 docs/COPYING $(DOCS)/GXedit/COPYING
++#	$(INSTALL) -m 0644 README $(DOCS)/GXedit/README
++#	$(INSTALL) -m 0644 CHANGELOG $(DOCS)/GXedit/CHANGELOG
+ 
+ distro:
+ 	rm -f *.o $(BIN_DIR)gxedit $(BIN_DIR)say $(BIN_DIR)xproc *.log *.enc core
