@@ -1,0 +1,24 @@
+--- sgml-tools-1.0.6/lib/SGMLTools.pm.djb	Tue May  5 11:51:22 1998
++++ sgml-tools-1.0.6/lib/SGMLTools.pm	Tue May  5 11:51:37 1998
+@@ -102,7 +102,7 @@
+     { option => "include",   type => "s", short => "i" },
+     { option => "pass",      type => "s", short => "P" }
+   ];
+-  $global->{papersize} = "a4";
++  $global->{papersize} = "letter";
+   $global->{language}  = "en";
+   $global->{charset}   = "ascii";
+   $global->{style}     = "";
+--- sgml-tools-1.0.6/man/sgmltools.1.djb	Tue May  5 11:52:03 1998
++++ sgml-tools-1.0.6/man/sgmltools.1	Tue May  5 11:52:34 1998
+@@ -28,8 +28,8 @@
+ back-ends have additional specific options to control rendering to
+ their particular output format.  Here are the common options:
+ .IP "--papersize=\fIsize\fR, -p
+-Set the paper size.  Default is ``a4'' (European 297x210mm paper).
+-You may also specify ``letter'' size.
++Set the paper size.  Default is ``letter''.
++You may also specify ``a4'' size (European 297x210mm paper).
+ .IP "--language=\fIlang\fR, -l"
+ Specify the language of the document (this may change which style
+ files are used for formatting by a back end).  The default language is
