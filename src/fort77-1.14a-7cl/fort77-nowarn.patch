@@ -1,0 +1,22 @@
+--- fort77-1.14a/fort77.msf	Mon Dec  2 17:01:51 1996
++++ fort77-1.14a/fort77	Wed Oct 29 03:36:33 1997
+@@ -270,14 +270,14 @@
+ 	if ($extract_prototypes) {
+ 	    $pfile = ($basefile =~ /([^\/]*\.).$/)[0] . "P";
+ 	    open(CFILE, "$cfile") || die ("$0: Cannot open $cfile\n");
+-	    while (($line = <CFILE>) &&
+-		   ($line !~ '#ifdef P_R_O_T_O_T_Y_P_E_S\n')) {
+-		print $line;
++	    while ((<CFILE>) &&
++		   ($_ !~ '#ifdef P_R_O_T_O_T_Y_P_E_S\n')) {
++		print $_;
+ 	    }
+ 	    if ($_) {
+ 		open(PFILE, ">$pfile") || die ("$0: Cannot open $pfile\n");
+-		while (($line = <CFILE>) && ($line !~ '#endif')) {
+-		    print PFILE $line;
++		while ((<CFILE>) && ($_ !~ '#endif')) {
++		    print PFILE $_;
+ 		}
+ 		close(PFILE);
+ 	    }
