@@ -1,0 +1,101 @@
+--- gdbm-1.7.3/Makefile.in.shared	Sun May 15 05:28:49 1994
++++ gdbm-1.7.3/Makefile.in	Tue Jul  8 11:40:30 1997
+@@ -1,5 +1,10 @@
+ #### Start of system configuration section. ####
+ 
++VERSION_MAJOR = 2
++VERSION_MINOR = 0
++VERSION_TINY = 0
++VERSION = $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_TINY)
++
+ srcdir = @srcdir@
+ VPATH = @srcdir@
+ 
+@@ -19,11 +24,11 @@
+ LIBS = @LIBS@ -lc
+ 
+ # SunOS users might wish to add '-fpcc-struct-return' to CFLAGS. see INSTALL.
+-CFLAGS = -O
+-LDFLAGS =
++CFLAGS = $(RPM_OPT_FLAGS) -fomit-frame-pointer
++LDFLAGS = -s
+ 
+ # Common prefix for installation directories
+-prefix = /usr/local
++prefix = /usr
+ exec_prefix = $(prefix)
+ binprefix = $(exec_prefix)
+ manprefix = $(prefix)
+@@ -40,6 +45,7 @@
+ #### End of system configuration section. ####
+ 
+ .c.o:
++	$(CC) -c $(CPPFLAGS) $(DEFS) -fPIC -I$(srcdir) $(CFLAGS) $< -o shared/$@ 
+ 	$(CC) -c $(CPPFLAGS) $(DEFS) -I. -I$(srcdir) $(CFLAGS) $<
+ 
+ SHELL = /bin/sh
+@@ -58,7 +64,6 @@
+ 
+ TEST_CF = testdbm.c testndbm.c testgdbm.c
+ 
+-
+ DBM_OF = dbminit.o delete.o fetch.o store.o seq.o close.o
+ 
+ NDBM_OF = dbmopen.o dbmdelete.o dbmfetch.o dbmstore.o dbmseq.o \
+@@ -88,25 +93,31 @@
+ 
+ DISTFILES = $(SRCS) $(HDRS) $(MSCFILES)
+ 
+-all: libgdbm.a
++all: libgdbm.a libgdbm.so.$(VERSION)
+ 
+ progs: $(PROGS)
+ 
+-install: libgdbm.a gdbm.h gdbm.info
++install: libgdbm.a libgdbm.so.$(VERSION) gdbm.h gdbm.info
+ 	$(INSTALL_DATA) libgdbm.a $(libdir)/libgdbm.a
++	$(INSTALL_DATA) libgdbm.so.$(VERSION) $(libdir)/libgdbm.so.$(VERSION)
+ 	$(INSTALL_DATA) gdbm.h $(includedir)/gdbm.h
+ 	$(INSTALL_DATA) $(srcdir)/gdbm.3 $(man3dir)/gdbm.3
+ 	$(INSTALL_DATA) $(srcdir)/gdbm.info $(infodir)/gdbm.info
+ 
+ install-compat:
+ 	$(INSTALL_DATA) $(srcdir)/dbm.h $(includedir)/dbm.h
+-	$(INSTALL_DATA) $(srcdir/ndbm.h $(includedir)/ndbm.h
++	$(INSTALL_DATA) $(srcdir)/ndbm.h $(includedir)/ndbm.h
+ 
+ libgdbm.a: $(OBJS) gdbm.h
+ 	rm -f libgdbm.a
+ 	ar q libgdbm.a $(OBJS)
+ 	$(RANLIB) libgdbm.a
+ 
++libgdbm.so.$(VERSION): $(OBJS) gdbm.h
++	rm -f libgdbm.so*
++	$(CC) -shared -Wl,-soname,libgdbm.so.$(VERSION_MAJOR) -o \
++		libgdbm.so.$(VERSION) shared/*.o -lc
++
+ gdbm.h:	gdbm.proto gdbmerrno.h gdbm.proto2
+ 	rm -f gdbm.h
+ 	cp $(srcdir)/gdbm.proto gdbm.h
+@@ -116,10 +127,10 @@
+ 	chmod -w gdbm.h
+ 
+ testgdbm: testgdbm.o libgdbm.a @LIBOBJS@
+-	$(CC) $(LDFLAGS) -o testgdbm testgdbm.o libgdbm.a @LIBOBJS@
++	$(CC) $(LDFLAGS) -o testgdbm testgdbm.o -lgdbm @LIBOBJS@
+ 
+ testdbm: testdbm.o libgdbm.a
+-	$(CC) $(LDFLAGS) -o testdbm testdbm.o libgdbm.a
++	$(CC) $(LDFLAGS) -o testdbm testdbm.o -lgdbm
+ 
+ tdbm: testdbm.o libgdbm.a
+ 	$(CC) $(LDFLAGS) -o tdbm testdbm.o $(LIBS)
+@@ -158,7 +169,7 @@
+ 	$(TEXI2DVI) $(srcdir)/gdbm.texinfo
+ 
+ clean:
+-	rm -f $(PROGS) $(TEX_F) *.o core junk*
++	rm -f $(PROGS) $(TEX_F) *.o *.so* shared/* core junk*
+ 
+ mostlyclean: clean
+ 
