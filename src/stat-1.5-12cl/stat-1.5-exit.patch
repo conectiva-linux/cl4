@@ -1,0 +1,123 @@
+From ewt@redhat.com  Thu Jul 30 19:06:30 1998
+Return-Path: <ewt@redhat.com>
+Received: from mercury.redhat.com (hermes.redhat.com [199.183.24.18])
+	by lacrosse.redhat.com (8.8.7/8.8.7) with ESMTP id TAA13923
+	for <jbj@redhat.com>; Thu, 30 Jul 1998 19:06:28 -0400
+Received: from localhost (ewt@localhost)
+	by mercury.redhat.com (8.8.7/8.8.7) with SMTP id TAA18714
+	for <jbj@redhat.com>; Thu, 30 Jul 1998 19:06:54 -0400
+X-Authentication-Warning: mercury.redhat.com: ewt owned process doing -bs
+Date: Thu, 30 Jul 1998 19:06:53 -0400 (EWT)
+From: Erik Troan <ewt@redhat.com>
+To: Jeff Johnson <jbj@redhat.com>
+Subject: patch for stat-1.5-7 (fwd)
+Message-ID: <Pine.LNX.3.96.980730190650.18712A-100000@mercury.redhat.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+Content-Length: 3244
+Lines: 102
+
+
+
+-------------------------------------------------------------------------------
+|       "For the next two hours, VH1 will be filled with foul-mouthed,        |
+|          crossdressing Australians. Viewer discretion is advised."          |
+|                                                                             |
+|   Linux Application Development  --  http://www.redhat.com/~johnsonm/lad    |
+
+---------- Forwarded message ----------
+Date: Thu, 30 Jul 1998 08:00:06 +0100 (BST)
+From: Alan Iwi <iwi@atm.ox.ac.uk>
+To: ewt@redhat.com
+Subject: patch for stat-1.5-7
+
+Erik,
+
+Here is a little patch for stat.c.
+
+A few conditions cause stat to exit fatally, namely a username or group name
+not on the system or an atime/ctime/mtime in the future, although these can
+quite legitimately occur (e.g. if users have been removed from /etc/passwd
+since the file was created, or if the file was "touch"ed).
+
+It is inconvenient if doing a "stat *" on a large number of files terminates
+just because there is one file which it doesn't like.
+
+This patch turns these into non-fatal conditions.
+
+Regards
+Alan
+
+---------------------------------------------------------------------------
+
+--- stat-1.5/stat.c.orig	Fri Jun 17 02:38:18 1994
++++ stat-1.5/stat.c	Thu Jul 30 07:40:15 1998
+@@ -81,6 +81,8 @@
+ char	*ctime();		/* Time conversion	*/
+ struct	passwd	*getpwuid();	/* User entry */
++char    *username;              /* Username */
+ struct	passwd	*pwent;		/* User structure */
+ struct	group	*getgrgid();	/* Group entry */
++char    *grpname;               /* Group name */
+ struct	group	*grent;		/* Group structure */
+ 
+@@ -285,23 +287,21 @@
+ 
+ 	(void) setpwent();
+-	if( (pwent = getpwuid(Sbuf.st_uid)) == NULL) {
+-		(void) fprintf(stderr,"getpwuid() failed\n");
+-		exit(1);
+-	}
++	
++	username=( (pwent = getpwuid(Sbuf.st_uid)) == NULL) ? "(none)" : pwent->pw_name;
++
+ 	if(oneperline)
+-		(void) printf("Uid: (%d/%s)\n", Sbuf.st_uid, pwent->pw_name);
++		(void) printf("Uid: (%d/%s)\n", Sbuf.st_uid, username);
+ 
+ 	else
+-		(void) printf("         Uid: (%5d/%8s)", Sbuf.st_uid, pwent->pw_name);
++		(void) printf("         Uid: (%5d/%8s)", Sbuf.st_uid, username);
+ 
+ 	(void) setgrent();
+-	if( (grent = getgrgid(Sbuf.st_gid)) == NULL) {
+-		(void) fprintf(stderr,"getgrgid() failed\n");
+-		exit(1);
+-	}
++
++	grpname=( (grent = getgrgid(Sbuf.st_gid)) == NULL) ? "(none)" : grent->gr_name;
++
+ 	if(oneperline)
+-		(void) printf("Gid: (%d/%s)\n", Sbuf.st_gid, grent->gr_name);
++		(void) printf("Gid: (%d/%s)\n", Sbuf.st_gid, grpname);
+ 	else
+-		(void) printf("  Gid: (%5d/%8s)\n", Sbuf.st_gid, grent->gr_name);
++		(void) printf("  Gid: (%5d/%8s)\n", Sbuf.st_gid, grpname);
+ 
+ 
+@@ -366,9 +366,12 @@
+ 
+ 	if(time_sec > time_buf) {
+-		(void) fprintf(stderr,"Time going backwards\n");
+-		exit(1);
++	        (void) printf("(-");
++		s_since = time_sec - time_buf;
+ 	}
+-
+-	s_since = time_buf - time_sec;
++	else {
++	        (void) printf("(");
++		s_since = time_buf - time_sec;
++	}
++	  
+ 	d_since = s_since / 86400l ;
+ 	s_since -= d_since * 86400l ;
+@@ -378,5 +381,5 @@
+ 	s_since -= m_since * 60l ;
+ 
+-	(void) printf("(%05ld.%02ld:%02ld:%02ld)\n",d_since,h_since,m_since,s_since);
++	(void) printf("%05ld.%02ld:%02ld:%02ld)\n",d_since,h_since,m_since,s_since);
+ 
+ 	return(OKAY);
+

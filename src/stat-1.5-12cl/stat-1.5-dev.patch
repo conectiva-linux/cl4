@@ -1,0 +1,94 @@
+*** stat.c~	Thu Dec 10 21:50:07 1998
+--- stat.c	Thu Dec 10 23:14:40 1998
+***************
+*** 66,71 ****
+--- 66,72 ----
+  #endif MASSCOMP
+  
+  #include <stdio.h>
++ #include <unistd.h>
+  #include <sys/time.h>
+  #include <sys/types.h>
+  #include <linux/kdev_t.h>
+***************
+*** 88,93 ****
+--- 89,95 ----
+  struct	group	*getgrgid();	/* Group entry */
+  char    *grpname;               /* Group name */
+  struct	group	*grent;		/* Group structure */
++ int	stat_it(char *);
+  
+  char	Mode[10];	/* File protection mode */
+  
+***************
+*** 131,137 ****
+   *			  FAIL if couldn't open or other nastiness
+   *
+   */
+! stat_it(filename)
+  char	*filename;
+  {
+  	register int count;
+--- 133,139 ----
+   *			  FAIL if couldn't open or other nastiness
+   *
+   */
+! int stat_it(filename)
+  char	*filename;
+  {
+  	register int count;
+***************
+*** 308,320 ****
+  		(void) printf("  Gid: (%5d/%8s)\n", Sbuf.st_gid, grpname);
+  
+  
+! 	(void) printf("Device: %2d,%-2d", major(Sbuf.st_dev), minor(Sbuf.st_dev));
+  	if(oneperline)
+  		(void) printf("\n");
+  	if(oneperline)
+! 		(void) printf("Inode: %-10d\n", Sbuf.st_ino);
+  	else
+! 		(void) printf("  Inode: %-10d", Sbuf.st_ino);
+  	(void) printf("Links: %-5d", Sbuf.st_nlink);
+  
+  	/* Only meaningful if file is device */
+--- 310,322 ----
+  		(void) printf("  Gid: (%5d/%8s)\n", Sbuf.st_gid, grpname);
+  
+  
+! 	(void) printf("Device: %2d,%-2d", (int) major(Sbuf.st_dev), (int) minor(Sbuf.st_dev));
+  	if(oneperline)
+  		(void) printf("\n");
+  	if(oneperline)
+! 		(void) printf("Inode: %-10ld\n", Sbuf.st_ino);
+  	else
+! 		(void) printf("  Inode: %-10ld", Sbuf.st_ino);
+  	(void) printf("Links: %-5d", Sbuf.st_nlink);
+  
+  	/* Only meaningful if file is device */
+***************
+*** 323,332 ****
+  	    || ( (Sbuf.st_mode & S_IFMT) == S_IFBLK) ) {
+  		if(oneperline)
+  			(void) printf("\nDevice type: %2d,%-2d\n",
+! 				major(Sbuf.st_rdev), minor(Sbuf.st_rdev));
+  		else
+  			(void) printf("     Device type: %2d,%-2d\n",
+! 				major(Sbuf.st_rdev), minor(Sbuf.st_rdev));
+  	} else {
+  		(void) printf("\n");
+  	}
+--- 325,336 ----
+  	    || ( (Sbuf.st_mode & S_IFMT) == S_IFBLK) ) {
+  		if(oneperline)
+  			(void) printf("\nDevice type: %2d,%-2d\n",
+! 				      (int) major(Sbuf.st_rdev),
+! 				      (int) minor(Sbuf.st_rdev));
+  		else
+  			(void) printf("     Device type: %2d,%-2d\n",
+! 				      (int) major(Sbuf.st_rdev),
+! 				      (int) minor(Sbuf.st_rdev));
+  	} else {
+  		(void) printf("\n");
+  	}
+

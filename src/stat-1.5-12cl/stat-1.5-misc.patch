@@ -1,0 +1,32 @@
+--- stat-1.5/Makefile.orig	Thu Aug 31 12:31:43 1995
++++ stat-1.5/Makefile	Fri Aug  9 18:16:09 1996
+@@ -8,9 +8,9 @@
+ S=/usr/include/sys
+ 
+ INCLUDE=
+-DEBUG=	-O2 -m486 -s -N
++DEBUG=	$(EXTRA_FLAGS) 
+ CDEFS=	-DSINCE -DSYSV
+-CFLAGS= ${DEBUG} ${CDEFS} ${INCLUDE}
++CFLAGS= $(RPM_OPT_FLAGS) ${DEBUG} ${CDEFS} ${INCLUDE}
+ 
+ HDR=	
+ SRC=	stat.c
+--- stat-1.5/stat.c.orig	Fri Aug  9 18:16:20 1996
++++ stat-1.5/stat.c	Fri Aug  9 18:16:40 1996
+@@ -68,11 +68,14 @@
+ #include <stdio.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+-#include <sys/sysmacros.h>
++#include <linux/kdev_t.h>
+ #include <ctype.h>
+ #include <sys/stat.h>
+ #include <pwd.h>
+ #include <grp.h>
++
++#define major MAJOR
++#define minor MINOR
+ 
+ #define	FAIL	-1		/* Failure return code from call */	
+ #define OKAY	0		/* Success return code from call */
