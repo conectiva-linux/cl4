@@ -1,0 +1,12 @@
+diff -uNr gtop-1.0.1/configure.in gtop-1.0.1-pt_BR/configure.in
+--- gtop-1.0.1/configure.in	Mon Mar  1 19:47:20 1999
++++ gtop-1.0.1-pt_BR/configure.in	Fri Jun 25 18:03:47 1999
+@@ -44,7 +44,7 @@
+ AC_FUNC_STRFTIME
+ AC_CHECK_FUNCS(getcwd gettimeofday getwd putenv strdup strtoul uname)
+ 
+-ALL_LINGUAS="de es fr it ko cs no ga pt ja"
++ALL_LINGUAS="de es fr it ko cs no ga pt pt_BR ja"
+ AM_GNOME_GETTEXT
+ 
+ dnl Check for LibGTop

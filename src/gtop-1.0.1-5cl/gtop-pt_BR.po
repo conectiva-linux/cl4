@@ -1,0 +1,1002 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GTOP\n"
+"POT-Creation-Date: 1999-03-01 23:49+0100\n"
+"PO-Revision-Date: 1999-04-09 01:40-0300\n"
+"Last-Translator: Elvis Pfützenreuter <epx@netville.com.br>\n"
+"Language-Team: Brazilian Portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso8859-1\n"
+"Content-Transfer-Encoding: base64\n"
+
+#: Revisão
+msgid ""
+msgstr "Revisão: Sandro Henrique <sandro@conectiva.com.br>\n" 
+
+#: details.c:43 details.c:159
+#, c-format
+msgid "Process %d details"
+msgstr "Detalhes do proceso %d"
+
+#: details.c:60
+msgid "Update"
+msgstr "Atualizar"
+
+#: details.c:96 procview.c:1178
+msgid "Automatically update details dialog"
+msgstr "Atualizar automaticamente janela de detalhes"
+
+#: details.c:251 procview.c:1013
+msgid "<unknown>"
+msgstr "<desconhecido>"
+
+#: details.c:315
+msgid "Process info"
+msgstr "Informações do Processo"
+
+#: details.c:317
+msgid "Attribute"
+msgstr "Atributo"
+
+#: details.c:318
+msgid "Value"
+msgstr "Valor"
+
+#: details.c:564
+msgid "Raw memory map"
+msgstr "Mapa da memória"
+
+#: details.c:566
+msgid "VM start"
+msgstr "início da VM"
+
+#: details.c:567
+msgid "VM end"
+msgstr "fim da VM"
+
+#: details.c:568
+msgid "Flags"
+msgstr "Indicadores"
+
+#: details.c:569
+msgid "VM offset"
+msgstr "Deslocamento da VM"
+
+#: details.c:570
+msgid "Device"
+msgstr "Dispositivo"
+
+#: details.c:571
+msgid "Inode"
+msgstr "Inode"
+
+#: details.c:572
+msgid "Filename"
+msgstr "Nome de arquivo"
+
+#: details.c:653
+msgid "Data"
+msgstr "Dados"
+
+#: details.c:655
+msgid "Text"
+msgstr "Texto"
+
+#: details.c:661
+msgid "Stack"
+msgstr "Pilha"
+
+#: details.c:663
+msgid "Hole"
+msgstr "Buraco"
+
+#: details.c:718
+msgid "Graphical memory map"
+msgstr "Mapa gráfico da memória"
+
+#: fsusage.c:40
+msgid "ufs"
+msgstr "ufs"
+
+#: fsusage.c:41
+msgid "nfs"
+msgstr "nfs"
+
+#: fsusage.c:42
+msgid "msdos"
+msgstr "msdos"
+
+#: fsusage.c:43
+msgid "iso9660"
+msgstr "iso9660"
+
+#: fsusage.c:44
+msgid "ext2"
+msgstr "ext2"
+
+#: fsusage.c:45
+msgid "minix"
+msgstr "minix"
+
+#: fsusage.c:46
+msgid "other"
+msgstr "outro"
+
+#: fsusage.c:50
+msgid "User Filesystem (FreeBSD)"
+msgstr "Sistema de arquivos do usuário (FreeBSD)"
+
+#: fsusage.c:51
+msgid "Network Filesystem"
+msgstr "Sistema de arquivos de Rede"
+
+#: fsusage.c:52
+msgid "MSDOS Filesystem"
+msgstr "Sistema de arquivos MSDOS"
+
+#: fsusage.c:53
+msgid "CDROM Filesystem"
+msgstr "Sistema de arquivos de CD-ROM"
+
+#: fsusage.c:54
+msgid "Second Extended Filesystem (Linux)"
+msgstr "Sistema de arquivos Estendido II (Linux)"
+
+#: fsusage.c:55
+msgid "Minix Filesystem (Linux)"
+msgstr "Sistema de arquivos Minix (Linux)"
+
+#: fsusage.c:56
+msgid "Other Filesystems"
+msgstr "Outros Sistemas de Arquivos"
+
+#: fsusage.c:61
+msgid "File System Usage"
+msgstr "Uso do Sistema de Arquivos"
+
+#: fsusage.c:114
+msgid "Total Filesystem Sizes (including reserved blocks)"
+msgstr "Tamanhos Totais dos Sistemas de Arquivos (inclusive blocos reservados)"
+
+#: fsusage.c:116 fsusage.c:134 memusage.c:102
+#, c-format
+msgid "Sum of Total Sizes: %ldk"
+msgstr "Soma dos Tamanhos Totais: %ldk"
+
+#: fsusage.c:119
+msgid "Used Space on Filesystems (including reserved blocks)"
+msgstr "Espaço Utilizado nos Sistemas de Arquivos (inclusive blocos reservados)"
+
+#: fsusage.c:121 fsusage.c:138
+#, c-format
+msgid "Sum of Uses Space: %ldk"
+msgstr "Soma dos Espaços Utilizados: %ldk"
+
+#: fsusage.c:124
+msgid "Free Space on Filesystems (including reserved blocks)"
+msgstr "Espaço Livre nos Sistemas de Arquivos (inclusive blocos reservados)"
+
+#: fsusage.c:126 fsusage.c:142
+#, c-format
+msgid "Sum of Free Space: %ldk"
+msgstr "Soma do Espaço Livre: %ldk"
+
+#: fsusage.c:133
+msgid "Total Filesystem Sizes"
+msgstr "Tamanhos Totais dos Sistemas de Arquivos"
+
+#: fsusage.c:137
+msgid "Used Space on Filesystems"
+msgstr "Espaço Utilizado nos Sistemas de Arquivos"
+
+#: fsusage.c:141
+msgid "Free Space on Filesystems"
+msgstr "Espaço Utilizado nos Sistemas de Arquivos"
+
+#: fsusage.c:149
+msgid "Total Number of Inodes"
+msgstr "Número total de Inodes"
+
+#: fsusage.c:150
+#, c-format
+msgid "Sum of Total Number of Inodes: %ld"
+msgstr "Soma do número total de Inodes: %ld"
+
+#: fsusage.c:153
+msgid "Used Inodes on Filesystems"
+msgstr "Inodes em uso nos Sistemas de Arquivos"
+
+#: fsusage.c:154
+#, c-format
+msgid "Sum of Used Inodes: %ld"
+msgstr "Soma dos Inodes em Uso: %ld"
+
+#: fsusage.c:157
+msgid "Free Inodes on Filesystems"
+msgstr "Inodes disponíveis nos Sistemas de Arquivos"
+
+#: fsusage.c:158
+#, c-format
+msgid "Sum of Free Inodes: %ld"
+msgstr "Soma dos Inodes disponíveis: %ld"
+
+#. avoids some trouble.
+#: fsusage.c:348 summary.c:663
+msgid "unknown"
+msgstr "desconhecido"
+
+#: fsusage.c:471
+msgid "Select information to show"
+msgstr "Selecionar informações a mostrar"
+
+#: fsusage.c:476
+msgid "Show 1k-blocks reserved blocks"
+msgstr "Mostrar blocos reservados/blocos de 1k"
+
+#: fsusage.c:490
+msgid "Show 1k-blocks"
+msgstr "Mostrar blocos de 1k"
+
+#: fsusage.c:504
+msgid "Show inodes"
+msgstr "Mostrar inodes"
+
+#: fsusage.c:525
+msgid "Only show selected filesystems"
+msgstr "Mostrar somente sistemas de arquivos selecionados"
+
+#: global.c:18
+msgid "Global"
+msgstr "Global"
+
+#: global.c:89
+msgid "Session management"
+msgstr "Gerenciamento de sessão"
+
+#: global.c:93
+msgid "Always save session"
+msgstr "Sempre salvar sessão"
+
+#: global.c:109
+msgid "Update times (notebook pages)"
+msgstr "Atualizar datas (página de portáteis)"
+
+#: global.c:115
+msgid "Process List"
+msgstr "Lista de Processos"
+
+#: global.c:134 global.c:157 global.c:180 global.c:213 global.c:236
+#: global.c:259 global.c:292 global.c:315 global.c:338 global.c:361
+msgid "ms"
+msgstr "ms"
+
+#: global.c:138 gtop-memusage.c:212 memusage.c:44
+msgid "Memory Usage"
+msgstr "Utilização de Memória"
+
+#: global.c:161
+msgid "Filesystem Usage"
+msgstr "Utilização de Sistemas de Arquivos" 
+
+#: global.c:188
+msgid "Update times (graphical summary)"
+msgstr "Datas de atualização (resumo gráfico)"
+
+#: global.c:194 summary.c:1216
+msgid "Summary CPU"
+msgstr "Sumário de CPU"
+
+#: global.c:217
+msgid "Summary Mem and Swap"
+msgstr "Sumário de Memória e Troca"
+
+#: global.c:240
+msgid "Load Average"
+msgstr "Média de carga"
+
+#: global.c:267
+msgid "Update times (textual summary)"
+msgstr "Data de atualização (resumo texto)"
+
+#: global.c:273
+msgid "CPU statistics"
+msgstr "Estatísticas de CPU"
+
+#: global.c:296
+msgid "Memory statistics"
+msgstr "Estatísticas de memória"
+
+#: global.c:319
+msgid "Uptime"
+msgstr "Tempo de atividade"
+
+#: global.c:342
+msgid "Load average"
+msgstr "Média de carga"
+
+#: global.c:369
+msgid "MDI Mode"
+msgstr "Modo MDI"
+
+#: global.c:373
+msgid "Notebook"
+msgstr "Portátil"
+
+#: global.c:388
+msgid "Toplevel"
+msgstr "Nível Principal"
+
+#: global.c:403
+msgid "Modal"
+msgstr "Modal"
+
+#: graph.c:37
+msgid "Graph"
+msgstr "Gráfico"
+
+#: graph.c:524 graph.c:526
+msgid "Graph Font"
+msgstr "Fonte do Gráfico"
+
+#: graph.c:534
+msgid "Graph Geometry"
+msgstr "Geometria do Gráfico"
+
+#: graph.c:539
+msgid "Default width:"
+msgstr "Largura padrão:"
+
+#: graph.c:557
+msgid "Default height:"
+msgstr "Altura padrão:"
+
+#: graph.c:575
+msgid "Horizontal border:"
+msgstr "Borda horizontal:"
+
+#: graph.c:593
+msgid "Vertical border height:"
+msgstr "Altura da borda vertical:"
+
+#: graph.c:611
+msgid "Line width:"
+msgstr "Largura da linha:"
+
+#: graph.c:629
+msgid "Pad width:"
+msgstr "Largura da área: "
+
+#: graph.c:647
+msgid "Graph width:"
+msgstr "Largura do gráfico:"
+
+#: graph.c:665
+msgid "Extra height:"
+msgstr "Altura extra:"
+
+#: graph.c:686
+msgid "Foreground"
+msgstr "Frente"
+
+#: graph.c:687
+msgid "Background"
+msgstr "Fundo"
+
+#: graph.c:693
+#, c-format
+msgid "Color %d"
+msgstr "Cor %d"
+
+#: graph.c:698
+msgid "Graph Colors"
+msgstr "Cores do Gráfico"
+
+#: gtop-fsusage.c:23 mdi.c:95
+msgid "_Total Filesystem Sizes"
+msgstr "_Tamanhos Totais dos Sistemas de Arquivos"
+
+#: gtop-fsusage.c:24 mdi.c:96
+msgid "Show total filesystem sizes"
+msgstr "Mostrar tamanhos totais dos sistemas de arquivos"
+
+#: gtop-fsusage.c:28 mdi.c:100
+msgid "_Used Filesystem Sizes"
+msgstr "Tamanhos dos Sistemas de Arquivos _Usados"
+
+#: gtop-fsusage.c:29 mdi.c:101
+msgid "Show used filesystem sizes"
+msgstr "Mostrar tamanho dos sistemas de arquivos usados"
+
+#: gtop-fsusage.c:33 mdi.c:105
+msgid "_Free Filesystem Sizes"
+msgstr "Tamanhos dos Sistemas de Arquivos _Livres"
+
+#: gtop-fsusage.c:34 mdi.c:106
+msgid "Show free filesystem sizes"
+msgstr "Mostra os tamanhos livres nos sistemas de arquivos"
+
+#: gtop-fsusage.c:186
+msgid "Filesystems (total)"
+msgstr "Sistemas de Arquivos (total)"
+
+#: gtop-fsusage.c:189
+msgid "Filesystems (used)"
+msgstr "Sistemas de Arquivos (utilizados)"
+
+#: gtop-fsusage.c:192
+msgid "Filesystems (free)"
+msgstr "Sistemas de Arquivos (livres)"
+
+#: gtop-fsusage.c:195
+msgid "Filesystems"
+msgstr "Sistemas de Arquivos"
+
+#: gtop-memusage.c:23 mdi.c:66
+msgid "_Resident Sizes of Processes"
+msgstr "Tamanho dos Processos _Residentes "
+
+#: gtop-memusage.c:24 mdi.c:67
+msgid "Show resident sizes of processes"
+msgstr "Mostrar tamanho dos processos residentes "
+
+#: gtop-memusage.c:28 mdi.c:71
+msgid "_Shared Sizes of Processes"
+msgstr "Tamanhos dos Processos _Compartilhados"
+
+#: gtop-memusage.c:29 mdi.c:72
+msgid "Show shared sizes of processes"
+msgstr "Mostrar tamanho dos processos compartilhados "
+
+#: gtop-memusage.c:33 mdi.c:76
+msgid "_Total Sizes of Processes"
+msgstr "Tamanhos _Totais dos Processos"
+
+#: gtop-memusage.c:34 mdi.c:77
+msgid "Show total sizes of processes"
+msgstr "Mostrar tamanhos totais dos processos"
+
+#: gtop-memusage.c:38 mdi.c:81
+msgid "_Virtual Sizes of Processes"
+msgstr "Tamanhos _Virtuais dos Processos"
+
+#: gtop-memusage.c:39 mdi.c:82
+msgid "Show virtual sizes of processes"
+msgstr "Mostrar tamanhos virtuais dos processos"
+
+#: gtop-memusage.c:43 mdi.c:86
+msgid "S_wapped Sizes of Processes"
+msgstr "Tamanhos dos Processos na Área de _Troca "
+
+#: gtop-memusage.c:44 mdi.c:87
+msgid "Show swapped sizes of processes"
+msgstr "Mostrar tamanhos dos processa na área de troca."
+
+#: gtop-memusage.c:196
+msgid "Memory Usage (resident)"
+msgstr "Uso de Memória (residente)"
+
+#: gtop-memusage.c:199
+msgid "Memory Usage (shared)"
+msgstr "Uso de Memória (compartilhada)"
+
+#: gtop-memusage.c:202
+msgid "Memory Usage (size)"
+msgstr "Uso de Memória (tamanho)"
+
+#: gtop-memusage.c:205
+msgid "Memory Usage (virtual)"
+msgstr "Uso de Memória (virtual)"
+
+#: gtop-memusage.c:208
+msgid "Memory Usage (swap)"
+msgstr "Uso de Memória (troca)"
+
+#: gtop-procview.c:27 mdi.c:52
+msgid "_All Processes"
+msgstr "Todos os _Processos"
+
+#: gtop-procview.c:28 mdi.c:53 memusage.c:414
+msgid "Show all processes"
+msgstr "Mostrar todos os processos"
+
+#: gtop-procview.c:32 mdi.c:57
+msgid "_User Processes"
+msgstr "Processos de _Usuário"
+
+#: gtop-procview.c:33 mdi.c:58 memusage.c:423
+msgid "Only show user processes"
+msgstr "Mostrar somente processos de usuário"
+
+#: gtop-procview.c:47
+msgid "Only _TTY Processes"
+msgstr "Somente processos de _Terminal"
+
+#: gtop-procview.c:48
+msgid "Only show processes with a controlling TTY"
+msgstr "Mostrar somente processos associados a um terminal"
+
+#: gtop-procview.c:52
+msgid "Hide _Idle Processes"
+msgstr "Esconder Processos _Parados"
+
+#: gtop-procview.c:52
+msgid "Hide idle processes"
+msgstr "Esconder processos parados"
+
+#: gtop-procview.c:56
+msgid "Hide _System Processes"
+msgstr "Esconder Processos de _Sistema"
+
+#: gtop-procview.c:56
+msgid "Hide system processes"
+msgstr "Esconder processos de sistema"
+
+#: gtop-procview.c:241
+msgid "Processes (all)"
+msgstr "Processos (todos)"
+
+#: gtop-procview.c:244
+msgid "Processes (user)"
+msgstr "Processos (usuário)"
+
+#: gtop-procview.c:247 procview.c:74
+msgid "Processes"
+msgstr "Processos"
+
+#: main.c:71
+msgid "GTop"
+msgstr "GTop"
+
+#. copyright notice
+#: main.c:73
+msgid "(C) 1998 the Free Software Foundation"
+msgstr "(C) 1998 Free Software Foundation"
+
+#. another comments
+#: main.c:76
+msgid "The GNOME System Monitor program"
+msgstr "Programa GNOME de Monitoração de Sistema "
+
+#: main.c:100
+msgid "Start / Stop sampling"
+msgstr "Iniciar / Parar amostragem"
+
+#: main.c:104
+msgid "Set gtop properties"
+msgstr "Configurar propriedades do GTop"
+
+#. prepare MDI interface.
+#: main.c:176
+msgid "GNOME System Monitor"
+msgstr "Monitoração de Sistema GNOME"
+
+#: mdi.c:32
+msgid "New _View"
+msgstr "Nova _Visão"
+
+#: mdi.c:32
+msgid "Create new MDI view"
+msgstr "Criar nova visão MDI"
+
+#: mdi.c:34
+msgid "New _Window"
+msgstr "Nova _Janela"
+
+#: mdi.c:34
+msgid "Create new MDI toplevel view"
+msgstr "Criar nova visão MDI" 
+
+#: mdi.c:45
+msgid "_Process View"
+msgstr "Visão de _Processos"
+
+#: mdi.c:46
+msgid "_Memory Usage"
+msgstr "Uso de _Memória"
+
+#: mdi.c:47
+msgid "_Filesystem Usage"
+msgstr "Utilização dos _Sistemas de Arquivos"
+
+#: memusage.c:93
+msgid "Resident Sizes of Processes"
+msgstr "Tamanhos Residentes dos Processos"
+
+#: memusage.c:94
+#, c-format
+msgid "Sum of Resident Sizes: %ldk"
+msgstr "Soma dos Tamanhos Residentes: %ldk"
+
+#: memusage.c:97
+msgid "Shared Sizes of Processes"
+msgstr "Tamanhos Compartilhados dos Processos"
+
+#: memusage.c:98
+#, c-format
+msgid "Sum of Shared Sizes: %ldk"
+msgstr "Soma dos Tamanhos Compartilhados: %ldk"
+
+#: memusage.c:101
+msgid "Total Sizes of Processes"
+msgstr "Tamanhos Totais dos Processos"
+
+#: memusage.c:105
+msgid "Virtual Sizes of Processes"
+msgstr "Tamanhos Virtuais dos Processos"
+
+#: memusage.c:106
+#, c-format
+msgid "Sum of Virtual Sizes: %ldk"
+msgstr "Soma dos Tamanhos Virtuais: %ldk"
+
+#: memusage.c:109
+msgid "Swapped Sizes of Processes"
+msgstr "Tamanhos dos Processos na Área em Troca"
+
+#: memusage.c:110
+#, c-format
+msgid "Sum of Swapped Sizes: %ldk"
+msgstr "Soma dos Tamanhos em Troca: %ldk"
+
+#: memusage.c:409
+msgid "Select Processes"
+msgstr "Selecionar Processos"
+
+#: memusage.c:432
+msgid "Only show processes with a controlling tty"
+msgstr "Mostrar somente processos associados a um terminal"
+
+#: memusage.c:447
+msgid "Minimum Resident Memory Size"
+msgstr "Tamanho Mínimo de Memória Residente"
+
+#: memusage.c:466
+msgid "Minimum Shared Memory Size"
+msgstr "Tamanho Mínimo de Memória Compartilhada"
+
+#: memusage.c:485
+msgid "Minimum Total Process Size"
+msgstr "Tamanho Mínimo Total de um Processo "
+
+#: memusage.c:504
+msgid "Minimum Virtual Memory Size"
+msgstr "Tamanho Mínimo de Memória Virtual"
+
+#: memusage.c:523
+msgid "Minimum Swapped Memory Size"
+msgstr "Tamanho Mínimo de Memória em Área de Troca"
+
+#: procview.c:87
+msgid "Process Fields"
+msgstr "Campos de Processo"
+
+#: procview.c:151
+msgid "PID"
+msgstr "PID"
+
+#: procview.c:151
+msgid "Process ID"
+msgstr "ID do Processo"
+
+#: procview.c:153 summary.c:32
+msgid "User"
+msgstr "Usuário"
+
+#: procview.c:153
+msgid "User name"
+msgstr "Nome de usuário"
+
+#: procview.c:155
+msgid "Pri"
+msgstr "Pri"
+
+#: procview.c:155
+msgid "Priority"
+msgstr "Prioridade"
+
+#: procview.c:157
+msgid "Ni"
+msgstr "Ni"
+
+#: procview.c:157 summary.c:32
+msgid "Nice"
+msgstr "Prioridade"
+
+#: procview.c:159
+msgid "Size"
+msgstr "Tamanho"
+
+#: procview.c:159
+msgid "Used memory size"
+msgstr "Tamanho da memória em uso"
+
+#: procview.c:161
+msgid "RSS"
+msgstr "RSS"
+
+#: procview.c:161
+msgid "Resident memory set size"
+msgstr "Tamanho da memória residente"
+
+#: procview.c:163
+msgid "Resident"
+msgstr "Residente"
+
+#: procview.c:163
+msgid "Resident memory size"
+msgstr "Tamanho da memória residente"
+
+#: procview.c:165
+msgid "Share"
+msgstr "Compartilhada"
+
+#: procview.c:165
+msgid "Shared memory size"
+msgstr "Tamanho da memória compartilhada"
+
+#: procview.c:167
+msgid "Stat"
+msgstr "Estado"
+
+#: procview.c:167
+msgid "Process state"
+msgstr "Estado do processo"
+
+#: procview.c:169
+msgid "CPU"
+msgstr "CPU"
+
+#: procview.c:169
+msgid "Percent CPU usage"
+msgstr "Utilização da CPU"
+
+#: procview.c:171
+msgid "MEM"
+msgstr "MEM"
+
+#: procview.c:171
+msgid "Percent memory usage"
+msgstr "Utilização de memória"
+
+#: procview.c:173
+msgid "Time"
+msgstr "Tempo"
+
+#: procview.c:173
+msgid "Time consumed"
+msgstr "Tempo consumido"
+
+#: procview.c:175
+msgid "UTime"
+msgstr "Tempo de Usuário"
+
+#: procview.c:175
+msgid "User time consumed"
+msgstr "Tempo de usuário consumido"
+
+#: procview.c:177
+msgid "STime"
+msgstr "Tempo de Sistema"
+
+#: procview.c:177
+msgid "System time consumed"
+msgstr "Tempo de sistema consumido"
+
+#: procview.c:179
+msgid "Cmd"
+msgstr "Cmd"
+
+#: procview.c:179
+msgid "Command"
+msgstr "Comando"
+
+#: procview.c:437
+#, c-format
+msgid "Cannot locate process %d"
+msgstr "Impossível localizar processo %d"
+
+#: procview.c:442
+msgid "Only root can set negative priority"
+msgstr "Somente o superusuário pode usar prioridade negativa"
+
+#: procview.c:445
+msgid "Permission denied"
+msgstr "Permissão negada"
+
+#: procview.c:494
+msgid "Renice"
+msgstr "Repriorizar"
+
+#: procview.c:506
+msgid "Set priority"
+msgstr "Configurar prioridade"
+
+#: procview.c:549
+msgid "Send"
+msgstr "Enviar"
+
+#: procview.c:573
+msgid "More ..."
+msgstr "Mais ..."
+
+#: procview.c:587
+msgid "SIGTERM"
+msgstr "SIGTERM"
+
+#: procview.c:596
+msgid "SIGKILL"
+msgstr "SIGKILL"
+
+#: procview.c:610
+msgid "Renice ..."
+msgstr "Repriorizar ..."
+
+#: procview.c:617
+msgid "Details ..."
+msgstr "Detalhes ..."
+
+#: procview.c:1161
+msgid "Process View Font"
+msgstr "Fonte da visualização de processos"
+
+#: procview.c:1164
+msgid "ProcView Font"
+msgstr "Fonte da Visualização de Processos"
+
+#: procview.c:1172
+msgid "Details Dialog"
+msgstr "Janela de Detalhes"
+
+#: procview.c:1195
+msgid "Use full pathnames in memory maps"
+msgstr "Utilizar caminhos completos nos mapas de memória"
+
+#: procview.c:1212
+msgid "Remember dialog position"
+msgstr "Lembrar da posição da janela"
+
+#: procview.c:1232
+msgid "Misc"
+msgstr "Divrs"
+
+#: procview.c:1238
+msgid "Use cumulative timings"
+msgstr "Utilizar tempos cumulativos"
+
+#: properties.c:59
+msgid "GTop - Preferences"
+msgstr "GTop - Preferências"
+
+#: session.c:13
+msgid ""
+"Set initial geometry to GEOMETRY where\n"
+"GEOMETRY is <width>x<height>+<x>+<y>.\n"
+"Disabled when using session management."
+msgstr "Configurar geometria inicial para GEOMETRIA onde\n"
+"GEOMETRIA é igual a <largura>x<altura>+<x>+<y>.\n"
+"Desligado ao se usar gerenciador de sessão."
+
+#: session.c:16
+msgid "GEOMETRY"
+msgstr "GEOMETRIA"
+
+#: summary.c:32
+msgid "System"
+msgstr "Sistema"
+
+#: summary.c:32
+msgid "Idle"
+msgstr "Parado"
+
+#: summary.c:36
+msgid "Other"
+msgstr "Outra"
+
+#: summary.c:36
+msgid "Shared"
+msgstr "Compartilhada"
+
+#: summary.c:36
+msgid "Buffers"
+msgstr "Buffers"
+
+#: summary.c:36 summary.c:40 summary.c:44
+msgid "Free"
+msgstr "Livre"
+
+#: summary.c:40 summary.c:44
+msgid "Used"
+msgstr "Utilizados"
+
+#: summary.c:98
+msgid "Summary Colors"
+msgstr "Cores do Sumário"
+
+#: summary.c:109
+msgid "Summary"
+msgstr "Sumário"
+
+#: summary.c:843 summary.c:846
+msgid "Statusbar Font"
+msgstr "Fonte da Barra de Status"
+
+#: summary.c:854
+msgid "Graphical Summary"
+msgstr "Sumário Gráfico"
+
+#: summary.c:861
+msgid "Show graphical summary"
+msgstr "Mostrar sumário gráfico"
+
+#: summary.c:875
+msgid "Show cpu usage"
+msgstr "Mostrar utilização de CPU"
+
+#: summary.c:889
+msgid "Enable SMP support"
+msgstr "Habilitar suporte a SMP"
+
+#: summary.c:903
+msgid "Show physical memory usage"
+msgstr "Mostrar uso de memória real"
+
+#: summary.c:917
+msgid "Show swap memory usage"
+msgstr "Mostrar uso de memória de troca"
+
+#: summary.c:931 summary.c:1083
+msgid "Show load average"
+msgstr "Mostrar média de carga"
+
+#: summary.c:951
+msgid "Maximum load average:"
+msgstr "Média máxima de carga:"
+
+#: summary.c:972
+msgid "Textual Summary"
+msgstr "Sumário Textual"
+
+#: summary.c:977
+msgid "Show text summary"
+msgstr "Mostrar texto sumário"
+
+#: summary.c:992
+msgid "Show statusbar"
+msgstr "Mostrar barra de status"
+
+#: summary.c:1005
+msgid "include hostname"
+msgstr "incluir nome de máquina"
+
+#: summary.c:1018
+msgid "use fully qualified name"
+msgstr "usar nome qualificado"
+
+#: summary.c:1031
+msgid "Show cpu statistics"
+msgstr "Mostrar estatísticas de CPU"
+
+#: summary.c:1044
+msgid "Show memory statistics"
+msgstr "Mostrar estatísticas de memória"
+
+#: summary.c:1057
+msgid "include swap statistics"
+msgstr "incluir estatísticas de troca"
+
+#: summary.c:1070
+msgid "Show uptime"
+msgstr "Mostrar tempo de operação"
+
+#: summary.c:1222
+msgid "Summary physical memory"
+msgstr "Sumário de memória real (RAM física)"
+
+#: summary.c:1228
+msgid "Summary swap memory"
+msgstr "Sumário de memória de troca (virtual/disco)"
+
+#: summary.c:1234
+msgid "Summary load average"
+msgstr "Sumário de média de carga"
+

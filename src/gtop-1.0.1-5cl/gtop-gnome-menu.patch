@@ -1,0 +1,17 @@
+--- ./gtop.desktop~	Wed Dec 30 19:10:06 1998
++++ ./gtop.desktop	Tue Jun 29 23:26:20 1999
+@@ -1,5 +1,6 @@
+ [Desktop Entry]
+ Name=System monitor
++Name[pt_BR]=Monitor do Sistema
+ Name[es]=Monitor del sistema
+ Name[de]=System Monitor
+ Name[ko]=시스템 모니터
+@@ -8,6 +9,7 @@
+ Name[no]=Systemmonitor
+ Name[pt]=Monitor de sistema
+ Comment=GNOME System Monitor
++Comment[pt_BR]=Monitor do Sistema GNOME
+ Comment[es]=Monitor del sistema GNOME
+ Comment[de]=Gnome System Monitor
+ Comment[ko]=그놈 시스템 모니터
