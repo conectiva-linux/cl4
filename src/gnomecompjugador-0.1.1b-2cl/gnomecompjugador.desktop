@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Compjugator
+Comment=Conjugator of spanish verbs
+Comment[pt]=Conjugador de verbos em espanhol
+Comment[es]=Conjugador de verbos en español
+Exec=gnomecompjugador
+Terminal=false
+Type=Application
