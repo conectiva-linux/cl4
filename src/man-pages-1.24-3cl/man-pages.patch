@@ -1,0 +1,11 @@
+--- man-pages-1.21/man3/tzset.3.mike	Fri Feb 12 12:11:09 1999
++++ man-pages-1.21/man3/tzset.3	Fri Feb 12 12:11:44 1999
+@@ -45,7 +45,7 @@
+ variable is initialized with the best approximation of local wall clock
+ time, as specified by the
+ .BR tzfile (5)-format
+-file \fI/usr/lib/zoneinfo/localtime\fP.
++file \fI/etc/localtime\fP.
+ .PP
+ If the TZ variable does appear in the environment but its value is NULL
+ or its value cannot be interpreted using any of the formats specified

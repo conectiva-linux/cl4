@@ -1,0 +1,11 @@
+--- man-pages-1.23/man3/ftw.3~	Sun Jul 20 12:42:05 1997
++++ man-pages-1.23/man3/ftw.3	Fri Apr 16 03:30:02 1999
+@@ -28,7 +28,7 @@
+ .B #include <ftw.h>
+ .sp
+ .BI "int ftw(const char *" directory ", int (*" funcptr
+-.BI ")(const char *" file ", struct stat *" sb ", int " flag "), int " depth );
++.BI ")(const char *" file ", const struct stat *" sb ", int " flag "), int " depth );
+ .SH DESCRIPTION
+ \fBftw\fP() walks through the directory tree starting from the indicated
+ \fIdirectory\fP.  For each found entry in the tree, it calls

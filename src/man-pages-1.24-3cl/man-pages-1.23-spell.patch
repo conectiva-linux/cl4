@@ -1,0 +1,11 @@
+--- man-pages-1.23/man5/nologin.5~	Thu Oct 24 13:41:37 1996
++++ man-pages-1.23/man5/nologin.5	Mon Apr  5 19:55:40 1999
+@@ -24,7 +24,7 @@
+ .\" Corrected Mon Oct 21 17:47:19 EDT 1996 by Eric S. Raymond (esr@thyrsus.com)
+ .TH NOLOGIN 5 "December 29 1992" "Linux" "Linux Programmer's Manual"
+ .SH NAME
+-nologin \- prevent non-root users from log into the system
++nologin \- prevent non-root users from logging into the system
+ .SH DESCRIPTION
+ If the file \fB/etc/nologin\fP exists, 
+ .BR login (1)
