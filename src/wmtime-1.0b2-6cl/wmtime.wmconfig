@@ -1,0 +1,4 @@
+wmtime name "Wmtime"
+wmtime description "Applet para mostrar data e hora"
+wmtime exec "wmtime &"
+wmtime group "Applets do Dock do WindowMaker"
