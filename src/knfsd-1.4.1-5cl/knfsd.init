@@ -1,0 +1,111 @@
+#!/bin/sh
+#
+# nfs           This shell script takes care of starting and stopping
+#               the NFS services.
+#
+# chkconfig: 345 60 20
+# description: NFS is a popular protocol for file sharing across TCP/IP \
+#              networks. This service provides NFS server functionality, \
+#              which is configured via the /etc/exports file.
+# probe: true
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+if [ ! -f /etc/sysconfig/network ]; then
+    exit 0
+fi
+
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -x /usr/sbin/rpc.nfsd ] || exit 0
+[ -x /usr/sbin/rpc.mountd ] || exit 0
+[ -x /usr/sbin/exportfs ] || exit 0
+[ -f /etc/exports ] || exit 0
+
+# Number of servers to be started uo by default
+RPCNFSDCOUNT=8
+
+# See how we were called.
+case "$1" in
+  start)
+	# Start daemons.
+	action "Starting %s services: " "NFS" /usr/sbin/exportfs -r
+	gprintf "Starting %s" "statd (NFS)"
+	daemon rpc.statd
+	echo
+	gprintf "Starting %s" "quotas (NFS)"
+	daemon rpc.rquotad
+	echo
+	gprintf "Starting %s" "mountd (NFS)"
+	daemon rpc.mountd
+	echo
+	gprintf "Starting %s" "rpc.nfsd (NFS)"
+	daemon rpc.nfsd $RPCNFSDCOUNT
+	echo
+	touch /var/lock/subsys/nfs
+	;;
+  stop)
+	# Stop daemons.
+	action "Stopping %s services: " "NFS" /usr/sbin/exportfs -au
+	gprintf "Stopping %s" "mountd (NFS)"
+	killproc rpc.mountd
+	echo
+	gprintf "Stopping %s" "nfsd (NFS)"
+	killproc nfsd
+	echo
+	gprintf "Stopping %s" "quotas (NFS)"
+	killproc rpc.rquotad
+	echo
+	gprintf "Stopping %s" "statd (NFS)"
+	killproc rpc.statd
+	echo
+	rm -f /var/lock/subsys/nfs
+	;;
+  status)
+	status rpc.statd
+	status rpc.mountd
+	status nfsd
+	status rpc.rquotad
+	;;
+  restart)
+	gprintf "Restarting %s services: " "NFS"
+	gprintf "rpc.statd "
+	killall -HUP rpc.statd
+	gprintf "nfsd "
+	killall -HUP nfsd
+	gprintf "rpc.mountd "
+	killall -HUP rpc.mountd
+	gprintf "rpc.quotad "
+	killall -HUP rpc.rquotad
+	touch /var/lock/subsys/nfs
+	echo
+	;;
+  reload)
+	/usr/sbin/exportfs
+	touch /var/lock/subsys/nfs
+	;;
+  probe)
+	if [ ! -f /var/lock/subsys/nfs ] ; then
+	  echo start; exit 0
+	fi
+	/sbin/pidof rpc.mountd >/dev/null 2>&1; MOUNTD="$?"
+	/sbin/pidof nfsd >/dev/null 2>&1; NFSD="$?"
+	if [ $MOUNTD = 1 -o $NFSD = 1 ] ; then
+	  echo restart; exit 0
+	fi
+	if [ /etc/exports -nt /var/lock/subsys/nfs ] ; then
+	  echo reload; exit 0
+	fi
+	;;
+  *)
+	gprintf "Usage: %s {start|stop|status|restart|reload}\n" nfs
+	exit 1
+esac
+
+exit 0
+
